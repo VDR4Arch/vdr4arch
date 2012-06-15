@@ -1,6 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-softhddevice
 pkgver=20120608
+_gitver=da9886e
 pkgrel=1
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
@@ -13,18 +14,18 @@ conflicts=()
 replaces=()
 backup=()
 install=''
-source=("${pkgname}-${pkgver}.tar.bz2")
-md5sums=('38f31d8e63cbd573eed2e6e6eb4e6738')
+source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
+md5sums=('efd0e6db409b4835dc4e956081baf190')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${_gitver}"
 
   sed -i '/DAV_INFO/d' Makefile
   sed -i '/DUSE_OSS/d' Makefile
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${_gitver}"
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make VDRDIR=/usr/include/vdr \
        LIBDIR=$pkgdir/usr/lib/vdr/plugins \
