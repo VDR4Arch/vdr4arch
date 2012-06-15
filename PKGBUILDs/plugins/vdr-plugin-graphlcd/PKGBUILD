@@ -1,6 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-graphlcd
 pkgver=20120327
+_gitver=f0c1141
 pkgrel=1
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
@@ -13,11 +14,11 @@ conflicts=()
 replaces=()
 backup=()
 install='vdr-plugin-graphlcd.install'
-source=("${pkgname}-${pkgver}.tar.bz2")
-md5sums=('98f9ede5d51ab1cf59b16f120f67b2cd')
+source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
+md5sums=('347a8132ef2545ef187902f418aa0d2c')
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${_gitver}"
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make VDRDIR=/usr/include/vdr \
