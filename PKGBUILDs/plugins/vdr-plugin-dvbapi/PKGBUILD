@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-dvbapi
-pkgver=20120513
+pkgver=1.0.2
 pkgrel=1
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
@@ -13,11 +13,11 @@ conflicts=()
 replaces=()
 backup=()
 install=''
-source=("${pkgname}-${pkgver}.tar.bz2")
-md5sums=('571e6587a5f9d85dbbda3ac1c53e5ecf')
+source=("https://github.com/manio/$pkgname/tarball/v$pkgver")
+md5sums=('59b395c23f74b3bb1e253fd1eae5166e')
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/manio-${pkgname}-"*
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make VDRDIR=/usr/include/vdr \
        LIBDIR=$pkgdir/usr/lib/vdr/plugins \
