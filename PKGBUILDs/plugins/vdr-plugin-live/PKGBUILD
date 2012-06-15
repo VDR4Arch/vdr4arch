@@ -1,6 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-live
 pkgver=20120325
+_gitver=94a0a21
 pkgrel=1
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
 url="http://projects.vdr-developer.org/projects/plg-extrecmenu"
@@ -13,13 +14,13 @@ conflicts=()
 replaces=()
 backup=()
 install='vdr-plugin-live.install'
-source=("${pkgname}-${pkgver}.tar.bz2"
+source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2"
         'live_1.7.28_fix.diff')
-md5sums=('f1da3bcbaa76986e711189b99dc45d20'
+md5sums=('7a4037544bf31babd13b823afebf4f33'
          '74167417d121da69f1bd06235324440f')
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${_gitver}"
 
   patch -p1 -i ${srcdir}/live_1.7.28_fix.diff
 
