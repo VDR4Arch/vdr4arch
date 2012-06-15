@@ -1,0 +1,38 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=serdisplib
+pkgver=1.97.9
+pkgrel=1
+pkgdesc=""
+url="http://serdisplib.sourceforge.net/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gd')
+optdepends=()
+makedepends=()
+conflicts=()
+replaces=()
+backup=()
+install=''
+source=("http://sourceforge.net/projects/serdisplib/files/serdisplib/$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('130552ec60d01e974712a60274f34de7')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr \
+              --includedir=${pkgdir}/usr/include \
+              --bindir=${pkgdir}/usr/bin \
+              --libdir=${pkgdir}/usr/lib
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  mkdir -p ${pkgdir}/usr/lib/udev/rules.d
+  make DESTDIR="${pkgdir}" \
+       install
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  rm -r $pkgdir/usr/lib/udev
+}
+
+# vim:set ts=2 sw=2 et:

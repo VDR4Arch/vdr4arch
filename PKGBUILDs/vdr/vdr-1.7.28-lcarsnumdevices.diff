@@ -1,0 +1,33 @@
+--- skinlcars.c	2012/06/07 10:37:07	2.8
++++ skinlcars.c	2012/06/07 11:43:35
+@@ -1149,6 +1149,7 @@
+      osd->DrawRectangle(xs07, ys04, xs13 - 1, ys05 - 1, Theme.Color(clrBackground));
+      cSortedTimers SortedTimers;
+      cVector<int> FreeDeviceSlots;
++     int NumDevices = 0;
+      int y = ys04;
+      // Timers and recording devices:
+      while (1) {
+@@ -1167,6 +1168,7 @@
+                               Device = RecordControl->Device();
+                               deviceOffset[Device->DeviceNumber()] = y;
+                               deviceRecording[Device->DeviceNumber()] = true;
++                              NumDevices++;
+                               }
+                            else
+                               FreeDeviceSlots.Append(y);
+@@ -1202,12 +1204,13 @@
+                      break;
+                   deviceOffset[Device->DeviceNumber()] = y;
+                   y += lineHeight + Gap;
++                  NumDevices++;
+                   }
+                }
+             }
+          }
+      osd->DrawText(xs02, ys00, itoa(Timers.Count()), Theme.Color(clrMenuFrameFg), frameColor, font, xs03 - xs02, ys01 - ys00, taBottom | taLeft | taBorder);
+-     osd->DrawText(xs08, ys00, itoa(cDevice::NumDevices()), Theme.Color(clrMenuFrameFg), frameColor, font, xs09 - xs08, ys01 - ys00, taBottom | taRight | taBorder);
++     osd->DrawText(xs08, ys00, itoa(NumDevices), Theme.Color(clrMenuFrameFg), frameColor, font, xs09 - xs08, ys01 - ys00, taBottom | taRight | taBorder);
+      lastSignalDisplay = 0;
+      initial = true; // forces redrawing of devices
+      }

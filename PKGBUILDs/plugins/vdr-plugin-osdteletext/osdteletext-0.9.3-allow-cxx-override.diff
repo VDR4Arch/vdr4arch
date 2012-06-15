@@ -1,0 +1,37 @@
+From 68fc8c22d30b658162fffbc07aaa3d9706b3d982 Mon Sep 17 00:00:00 2001
+From: etobi
+Date: Wed, 04 Apr 2012 20:20:59 +0000
+Subject: Allow to override the CXXFLAGS
+
+---
+diff --git a/HISTORY b/HISTORY
+index 84030a3..53260d9 100644
+--- a/HISTORY
++++ b/HISTORY
+@@ -1,6 +1,9 @@
+ VDR Plugin 'osdteletext' Revision History
+ -----------------------------------------
+ 
++2012-xx-xx: version x.x.x
++- Allow to override the CXXFLAGS
++
+ 2012-04-03: version 0.9.3
+ - VDR 1.7.27 compatibility (Closes #919), Credit goes to nox and gda fro
+   vdrportal.de
+diff --git a/Makefile b/Makefile
+index 976a082..d0d831d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -15,8 +15,8 @@ VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ pri
+ 
+ ### The C++ compiler and options:
+ 
+-OPTLEVEL ?= 2
+-CXXFLAGS = -O$(OPTLEVEL) -g -Wall -Werror -Woverloaded-virtual -fPIC -DPIC
++CXX      ?= g++
++CXXFLAGS ?= -fPIC -g -O3 -Wall -Woverloaded-virtual -Wno-parentheses
+ 
+ ### The directory environment:
+ 
+--
+cgit v0.9.0.2-39-g756e 

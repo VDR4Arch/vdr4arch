@@ -1,0 +1,34 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-plugin-softhddevice
+pkgver=20120608
+pkgrel=1
+pkgdesc=""
+url="http://projects.vdr-developer.org/projects/plg-softhddevice"
+arch=('x86_64' 'i686')
+license=('AGPL3')
+depends=('ffmpeg' 'libvdpau' 'vdr'  'xcb-util-wm')
+optdepends=('nvidia: Required for VDPAU acceleration')
+makedepends=('mesa' 'libxdamage' 'libxxf86vm' 'xcb-util' 'xcb-util-keysyms')
+conflicts=()
+replaces=()
+backup=()
+install=''
+source=("${pkgname}-${pkgver}.tar.bz2")
+md5sums=('38f31d8e63cbd573eed2e6e6eb4e6738')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  sed -i '/DAV_INFO/d' Makefile
+  sed -i '/DUSE_OSS/d' Makefile
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make VDRDIR=/usr/include/vdr \
+       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
+       LOCALEDIR=$pkgdir/usr/share/locale
+  install -Dm644 AGPL-3.0.txt "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+}

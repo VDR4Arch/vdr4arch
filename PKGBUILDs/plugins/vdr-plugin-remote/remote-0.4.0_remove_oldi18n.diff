@@ -1,0 +1,302 @@
+diff -ruN remote-0.4.0/i18n.c remote-0.4.0.patched/i18n.c
+--- remote-0.4.0/i18n.c	2007-10-06 01:18:08.000000000 +0200
++++ remote-0.4.0.patched/i18n.c	1970-01-01 01:00:00.000000000 +0100
+@@ -1,276 +0,0 @@
+-/*
+- * Remote Control plugin for the Video Disk Recorder
+- *
+- * i18n.c: Internationalization
+- *
+- * See the README file for copyright information and how to reach the author.
+- *
+- * Translations provided by:
+- * Finnish	Ville Skyttä <ville dot skytta at iki dot fi>
+- * French	Pierre Briec <eclipse dot vdr at gmail dot com>
+- * Italian	Nicola Franchi <franchi at cefriel dot it>
+- * Polish	Jakub Wolnicki
+- * Russian	Waldemar Nikel
+- */
+-
+-#include "i18n.h"
+-
+-/* 
+-  // The name of the language (this MUST be the first phrase!):
+-  { "English",
+-    "Deutsch",
+-    "Slovenski",
+-    "Italiano",
+-    "Nederlands",
+-    "Português",
+-    "Français",
+-    "Norsk",
+-    "suomi",
+-    "Polski",
+-    "Español",
+-    "Ellinika",
+-    "Svenska",
+-    "Romaneste",
+-    "Magyar",
+-    "Català",
+-    "ÀãááÚØÙ", // Russian
+-  },
+-*/
+-
+-const tI18nPhrase remotePhrases[] = {
+-
+-  // Menu titles:
+-  { "Remote control",
+-    "Fernbedienung",
+-    "",
+-    "Telecomando",
+-    "",
+-    "",
+-    "Télécommande",
+-    "",
+-    "Kaukosäädin",
+-    "Zdalne sterowanie",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "¿ãÛìâ ãßàÐÒÛÕÝØï",
+-#endif
+-  },
+-
+-  { "Press any key to use pre-loaded keymap",
+-    "Taste drücken, um zuvor geladene Keymap zu verwenden",
+-    "",
+-    "Premi un tasto per usare una mappa dei tasti pre-caricata",
+-    "",
+-    "",
+-    "Appuyez sur une touche pour utiliser un Keymap préchargé",
+-    "",
+-    "Paina mitä tahansa näppäintä käyttääksesi oletusnäppäinkarttaa",
+-    "Nacisnij dowolny klawisz, aby uzyc zaladowanej mapy klawiszy",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "½ÐÖÜØâÕ ÛîÑãî ÚÝÞßÚã ÔÛï ØáßÞÛì×ÞÒÐÝØï àÐÝÕÕ ×ÐÓàãÖÕÝÞÙ àÐáÚÛÐÔÚØ",
+-#endif
+-  },
+-
+-  { "User-supplied keymap will be used",
+-    "Benutzerdefinierte Keymap wird verwendet",
+-    "",
+-    "Verrà usata una mappa dei tasti fornita dall'utente",
+-    "",
+-    "",
+-    "Keymap personnalisé va être utilisé",
+-    "",
+-    "Käytetään käyttäjän määrittelemää näppäinkarttaa",
+-    "Uzyta zostanie mapa klawiszy, zdefinowana przez uzytkownika",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "±ãÔÕâ ØáßÞÛì×ÞÒÐâìáï àÐáÚÛÐÔÚÐ ßÞÛì×ÞÒÐâÕÛï",
+-#endif
+-  },
+-
+-
+-  { "Remote control test - press and hold down any key",
+-    "Test der Fernbedienung - beliebige Taste gedrückt halten",
+-    "",
+-    "Test del telecomando - premi e tieni premuto un tasto",
+-    "",
+-    "",
+-    "Test télécommande - Appuyer et maintenir une touche enfoncée",
+-    "",
+-    "Kaukosäädintesti - paina ja pidä alhaalla jotain kaukosäätimen näppäintä",
+-    "Test zdalnego sterowania - nacisnij i przytrzymaj dowolny klawisz",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "¿àÞÒÕàÚÐ ßãÛìâÐ - ÝÐÖÜØâÕ Ø ãÔÕàÖØâÕ ÛîÑãî ÚÝÞßÚã",
+-#endif
+-  },
+-
+-  { "RC5 protocol detected",
+-    "RC5-Protokoll erkannt",
+-    "",
+-    "Rilevato il protocollo RC5",
+-    "",
+-    "",
+-    "Protocole RC5 détecté",
+-    "",
+-    "RC5-yhteyskäytäntö tunnistettu",
+-    "Wykryto protokol RC5",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "¾ßÞ×ÝÐÝ ßàÞâÞÚÞÛ RC5",
+-#endif
+-  },
+-
+-  { "RC5 protocol detected (inverted signal)",
+-    "RC5-Protokoll erkannt (invertiertes Signal)",
+-    "",
+-    "Rilevato il protocollo RC5 (segnale invertito)",
+-    "",
+-    "",
+-    "Protocole RC5 détecté (signal inversé)",
+-    "",
+-    "RC5-yhteyskäytäntö tunnistettu (käänteinen signaali)",
+-    "Wykryto protokol RC5 (sygnal odwrocony)",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "¾ßÞ×ÝÐÝ ßàÞâÞÚÞÛ RC5 (á ØÝÒÕàâØàÞÒÐÝØÕÜ áØÓÝÐÛÐ)",
+-#endif
+-  },
+-
+-  { "RCMM protocol detected",
+-    "RCMM-Protokoll erkannt",
+-    "",
+-    "Rilevato il protocollo RCMM",
+-    "",
+-    "",
+-    "Protocole RCMM détecté",
+-    "",
+-    "RCMM-yhteyskäytäntö tunnistettu",
+-    "Wykryto protokol RCMM",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "¾ßÞ×ÝÐÝ ßàÞâÞÚÞÛ RCMM",
+-#endif
+-  },
+-
+-  { "RCMM protocol detected (inverted signal)",
+-    "RCMM-Protokoll erkannt (invertiertes Signal)",
+-    "",
+-    "Rilevato il protocollo RCMM (segnale invertito)",
+-    "",
+-    "",
+-    "Protocole RCMM détecté (signal inversé)",
+-    "",
+-    "RCMM-yhteyskäytäntö tunnistettu (käänteinen signaali)",
+-    "Wykryto protokol RCMM (sygnal odwrocony)",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "¾ßÞ×ÝÐÝ ßàÞâÞÚÞÛ RCMM (á ØÝÒÕàâØàÞÒÐÝØÕÜ áØÓÝÐÛÐ)",
+-#endif
+-  },
+-
+-  { "No remote control detected",
+-    "Keine Fernbedienung erkannt",
+-    "",
+-    "Nessun telecomando rilevato",
+-    "",
+-    "",
+-    "Aucune télécommande détectée",
+-    "",
+-    "Kaukosäädintä ei tunnistettu",
+-    "Nie znaleziono zdalnego sterowania",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "¿ãÛìâ ãßàÐÒÛÕÝØï ÝÕ ÞßÞ×ÝÐÝ",
+-#endif
+-  },
+-
+-  { "Error uploading keymap",
+-    "Fehler beim Laden der Tastenbelegung",
+-    "",
+-    "Errore nel caricamento della mappa dei tasti",
+-    "",
+-    "",
+-    "Erreur chargement tables de touches",
+-    "",
+-    "Näppäinkartan lataaminen epäonnistui",
+-    "Blad przy przesylaniu mapy klawiszy",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "¾èØÑÚÐ ßàØ ×ÐÓàã×ÚÕ àÐáÚÛÐÔÚØ",
+-#endif
+-  },
+-
+-  { "%s: %s",
+-    "%s: %s",
+-    "",
+-    "%s: %s",
+-    "",
+-    "",
+-    "%s: %s",
+-    "",
+-    "%s: %s",
+-    "%s: %s",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-    "",
+-#if VDRVERSNUM >= 10302
+-    "%s: %s",
+-#endif
+-  },
+-
+-  { NULL }
+-  };
+diff -ruN remote-0.4.0/Makefile remote-0.4.0.patched/Makefile
+--- remote-0.4.0/Makefile	2007-10-06 14:58:06.000000000 +0200
++++ remote-0.4.0.patched/Makefile	2012-06-09 00:28:34.435540174 +0200
+@@ -81,7 +81,6 @@
+ 
+ ### Internationalization (I18N):
+ 
+-ifneq ($(shell grep 'LOCALEDIR' $(VDRDIR)/Makefile),)
+ PODIR     = po
+ LOCALEDIR = $(VDRDIR)/locale
+ I18Npo    = $(wildcard $(PODIR)/*.po)
+@@ -104,10 +103,6 @@
+ 	    mkdir -p $(LOCALEDIR)/$$i/LC_MESSAGES;\
+ 	    cp $(PODIR)/$$i.mo $(LOCALEDIR)/$$i/LC_MESSAGES/vdr-$(PLUGIN).mo;\
+ 	    done
+-else
+-OBJS += i18n.o
+-i18n: ;
+-endif
+ 
+ ### Targets:
+ 

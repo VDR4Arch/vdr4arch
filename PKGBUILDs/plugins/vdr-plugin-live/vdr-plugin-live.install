@@ -1,0 +1,3 @@
+post_install() {
+    chown -R vdr:vdr var/lib/vdr
+}

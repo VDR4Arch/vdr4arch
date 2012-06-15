@@ -1,0 +1,41 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=v4l-dvb-saa716x
+pkgver=20120304
+_extramodules=extramodules-3.3-ARCH
+pkgrel=1
+pkgdesc=""
+url=""
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=()
+optdepends=()
+makedepends=('linux-headers')
+conflicts=()
+replaces=()
+backup=()
+install="${pkgname}.install"
+source=("${pkgname}-${pkgver}.tar.bz2"
+        "compat.diff")
+md5sums=('b30b84d0e86fd915f19ba77adc7d215f'
+         '7e683b6855bbe1984d6aaf725366903b')
+
+build() {
+  _kernver="$(cat /lib/modules/${_extramodules}/version)"
+  cd "${srcdir}/${pkgname}-${pkgver}"/linux/drivers/media/common/saa716x
+
+  patch -i ${srcdir}/compat.diff
+
+  make -C /lib/modules/${_kernver}/build CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_FF=m M=$(pwd) modules
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  cd linux/drivers/media/common/saa716x
+
+  gzip *.ko
+  install -Dm644 saa716x_core.ko.gz "$pkgdir/lib/modules/${_extramodules}/saa716x_core.ko.gz"
+  install -Dm644 saa716x_ff.ko.gz "$pkgdir/lib/modules/${_extramodules}/saa716x_ff.ko.gz"
+}
+
+# vim:set ts=2 sw=2 et:

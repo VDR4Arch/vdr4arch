@@ -1,0 +1,30 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-plugin-epgsearch
+pkgver=20120611
+pkgrel=1
+pkgdesc="Searchtimer and replacement of the VDR program menu"
+url="http://winni.vdr-developer.org/epgsearch"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('pcre' 'vdr')
+optdepends=()
+makedepends=()
+conflicts=()
+replaces=()
+backup=()
+install=''
+source=("${pkgname}-${pkgver}.tar.bz2")
+md5sums=('d114cc67722d825fcc468894eef6b512')
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make VDRDIR=/usr/include/vdr \
+       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
+       LOCALEDIR=$pkgdir/usr/share/locale \
+       MANDIR=$pkgdir/usr/share/man \
+       all install-doc
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+}

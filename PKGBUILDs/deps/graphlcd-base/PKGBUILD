@@ -1,0 +1,42 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=graphlcd-base
+pkgver=20120311
+pkgrel=1
+pkgdesc=""
+url="http://www.foo.tld"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('freetype2' 'gcc-libs')
+optdepends=()
+makedepends=()
+conflicts=()
+replaces=()
+backup=(etc/graphlcd.conf)
+install=''
+source=("${pkgname}-${pkgver}.tar.bz2")
+md5sums=('38ddfd2bfb57fd7cb9eca0e435158edd')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  sed -i '/CFLAGS/d' Make.config
+  sed -i '/CXXFLAGS/d' Make.config
+  sed -i '/LDFLAGS/d' Make.config
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  mkdir -p ${pkgdir}/usr/lib/udev/rules.d
+  make DESTDIR="${pkgdir}" \
+       BINDIR=${pkgdir}/usr/bin \
+       LIBDIR=${pkgdir}/usr/lib \
+       INCDIR=${pkgdir}/usr/include \
+       MANDIR=${pkgdir}/usr/share/man \
+       UDEVRULESDIR=${pkgdir}/usr/lib/udev/rules.d \
+       install
+  install -Dm644 graphlcd.conf "$pkgdir/etc/graphlcd.conf"
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,5 @@
+setwakeup() {
+  echo '0' > /sys/class/rtc/rtc0/wakealarm
+  echo $(($(cat /tmp/.wakeup) - 300 )) > /sys/class/rtc/rtc0/wakealarm
+}
+add_hook shutdown_postkillall setwakeup

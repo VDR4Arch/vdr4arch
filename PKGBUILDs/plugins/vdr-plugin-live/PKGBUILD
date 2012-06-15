@@ -1,0 +1,37 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-plugin-live
+pkgver=20120325
+pkgrel=1
+pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
+url="http://projects.vdr-developer.org/projects/plg-extrecmenu"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('pcre' 'tntnet' 'vdr')
+optdepends=()
+makedepends=()
+conflicts=()
+replaces=()
+backup=()
+install='vdr-plugin-live.install'
+source=("${pkgname}-${pkgver}.tar.bz2"
+        'live_1.7.28_fix.diff')
+md5sums=('f1da3bcbaa76986e711189b99dc45d20'
+         '74167417d121da69f1bd06235324440f')
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  patch -p1 -i ${srcdir}/live_1.7.28_fix.diff
+
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make VDRDIR=/usr/include/vdr \
+       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
+       LOCALEDIR=$pkgdir/usr/share/locale
+
+  mkdir -p $pkgdir/usr/share/vdr $pkgdir/var/lib/vdr/plugins
+  cp -r live $pkgdir/usr/share/vdr
+  ln -s /usr/share/vdr/live $pkgdir/var/lib/vdr/plugins
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+}

@@ -1,0 +1,11 @@
+--- skinlcars.c	2012/06/07 10:21:47	2.7
++++ skinlcars.c	2012/06/07 10:37:07
+@@ -928,7 +928,7 @@
+ {
+   int h = y1 - y0;
+   osd->DrawEllipse(x0, y0, x1 - 1, y1 - 1, ColorBg, 7);
+-  osd->DrawText(x1 + Gap, y0, Text, ColorFg, ColorBg, Font, x2 - x1 - Gap, h, taBottom | taRight);
++  osd->DrawText(x1, y0, Text, ColorFg, ColorBg, Font, x2 - x1, h, taBottom | taRight);
+   osd->DrawEllipse(x2, y0, x3 - 1, y1 - 1, ColorBg, 5);
+ }
+ 

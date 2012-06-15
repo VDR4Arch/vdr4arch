@@ -1,0 +1,118 @@
+--- ./eit.c	2012/06/02 14:05:22	2.17
++++ ./eit.c	2012/06/04 10:10:11
+@@ -45,6 +45,7 @@
+      return;
+      }
+ 
++  bool handledExternally = EpgHandlers.HandledExternally(channel);
+   cSchedule *pSchedule = (cSchedule *)Schedules->GetSchedule(channel, true);
+ 
+   bool Empty = true;
+@@ -70,7 +71,7 @@
+       cEvent *newEvent = NULL;
+       cEvent *rEvent = NULL;
+       cEvent *pEvent = (cEvent *)pSchedule->GetEvent(SiEitEvent.getEventId(), StartTime);
+-      if (!pEvent) {
++      if (!pEvent || handledExternally) {
+          if (OnlyRunningStatus)
+             continue;
+          // If we don't have that event yet, we create a new one.
+@@ -78,7 +79,8 @@
+          pEvent = newEvent = new cEvent(SiEitEvent.getEventId());
+          newEvent->SetStartTime(StartTime);
+          newEvent->SetDuration(Duration);
+-         pSchedule->AddEvent(newEvent);
++         if (!handledExternally)
++            pSchedule->AddEvent(newEvent);
+          }
+       else {
+          // We have found an existing event, either through its event ID or its start time.
+@@ -290,11 +292,8 @@
+          channel->SetLinkChannels(LinkChannels);
+       Modified = true;
+       EpgHandlers.HandleEvent(pEvent);
+-
+-      if (EpgHandlers.DeleteEvent(pEvent)) {
+-         pSchedule->DelEvent(pEvent);
+-         pEvent = NULL;
+-         }
++      if (handledExternally)
++         delete pEvent;
+       }
+   if (Tid == 0x4E) {
+      if (Empty && getSectionNumber() == 0)
+--- ./epg.c	2012/06/02 14:08:12	2.14
++++ ./epg.c	2012/06/04 10:06:22
+@@ -1331,6 +1331,15 @@
+   return false;
+ }
+ 
++bool cEpgHandlers::HandledExternally(const cChannel *Channel)
++{
++  for (cEpgHandler *eh = First(); eh; eh = Next(eh)) {
++      if (eh->HandledExternally(Channel))
++         return true;
++      }
++  return false;
++}
++
+ void cEpgHandlers::SetEventID(cEvent *Event, tEventID EventID)
+ {
+   for (cEpgHandler *eh = First(); eh; eh = Next(eh)) {
+@@ -1429,15 +1438,6 @@
+       }
+ }
+ 
+-bool cEpgHandlers::DeleteEvent(const cEvent *Event)
+-{
+-  for (cEpgHandler *eh = First(); eh; eh = Next(eh)) {
+-      if (eh->DeleteEvent(Event))
+-         return true;
+-      }
+-  return false;
+-}
+-
+ void cEpgHandlers::SortSchedule(cSchedule *Schedule)
+ {
+   for (cEpgHandler *eh = First(); eh; eh = Next(eh)) {
+--- ./epg.h	2012/06/02 14:07:51	2.10
++++ ./epg.h	2012/06/04 10:05:21
+@@ -244,6 +244,12 @@
+           ///< EPG handlers are queried to see if any of them would like to do the
+           ///< complete processing by itself. TableID and Version are from the
+           ///< incoming section data.
++  virtual bool HandledExternally(const cChannel *Channel) { return false; }
++          ///< If any EPG handler returns true in this function, it is assumed that
++          ///< the EPG for the given Channel is handled completely from some external
++          ///< source. Incoming EIT data is processed as usual, but any new EPG event
++          ///< will not be added to the respective schedule. It's up to the EPG
++          ///< handler to take care of this.
+   virtual bool SetEventID(cEvent *Event, tEventID EventID) { return false; }
+   virtual bool SetTitle(cEvent *Event, const char *Title) { return false; }
+   virtual bool SetShortText(cEvent *Event, const char *ShortText) { return false; }
+@@ -258,9 +264,6 @@
+   virtual bool HandleEvent(cEvent *Event) { return false; }
+           ///< After all modifications of the Event have been done, the EPG handler
+           ///< can take a final look at it.
+-  virtual bool DeleteEvent(const cEvent *Event) { return false; }
+-          ///< After the complete processing of the Event is finished, an EPG handler
+-          ///< can decide that this Event shall be deleted from its schedule.
+   virtual bool SortSchedule(cSchedule *Schedule) { return false; }
+           ///< Sorts the Schedule after the complete table has been processed.
+   virtual bool DropOutdated(cSchedule *Schedule, time_t SegmentStart, time_t SegmentEnd, uchar TableID, uchar Version) { return false; }
+@@ -272,6 +275,7 @@
+ public:
+   bool IgnoreChannel(const cChannel *Channel);
+   bool HandleEitEvent(cSchedule *Schedule, const SI::EIT::Event *EitEvent, uchar TableID, uchar Version);
++  bool HandledExternally(const cChannel *Channel);
+   void SetEventID(cEvent *Event, tEventID EventID);
+   void SetTitle(cEvent *Event, const char *Title);
+   void SetShortText(cEvent *Event, const char *ShortText);
+@@ -283,7 +287,6 @@
+   void SetVps(cEvent *Event, time_t Vps);
+   void FixEpgBugs(cEvent *Event);
+   void HandleEvent(cEvent *Event);
+-  bool DeleteEvent(const cEvent *Event);
+   void SortSchedule(cSchedule *Schedule);
+   void DropOutdated(cSchedule *Schedule, time_t SegmentStart, time_t SegmentEnd, uchar TableID, uchar Version);
+   };

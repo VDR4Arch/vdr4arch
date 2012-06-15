@@ -1,0 +1,56 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=oscam
+pkgver=20120612
+pkgrel=1
+pkgdesc=""
+url="http://www.oscam.to"
+arch=('x86_64' 'i686')
+license=('GPL3')
+depends=('bash' 'libusb' 'openssl')
+optdepends=()
+makedepends=()
+conflicts=()
+replaces=()
+backup=('var/lib/oscam/oscam.ac'
+        'var/lib/oscam/oscam.cacheex'
+        'var/lib/oscam/oscam.cert'
+        'var/lib/oscam/oscam.conf'
+        'var/lib/oscam/oscam.dvbapi'
+        'var/lib/oscam/oscam.guess'
+        'var/lib/oscam/oscam.ird'
+        'var/lib/oscam/oscam.provid'
+        'var/lib/oscam/oscam.server'
+        'var/lib/oscam/oscam.services'
+        'var/lib/oscam/oscam.srvid'
+        'var/lib/oscam/oscam.tiers'
+        'var/lib/oscam/oscam.user'
+        'var/lib/oscam/oscam.whitelist')
+install=''
+source=("${pkgname}-${pkgver}.tar.bz2"
+        'rc.oscam')
+md5sums=('d6080a4ed7b829457e9e88f7ee195223'
+         '3696ac9fa61a8eafbfd0b5bac68b735e')
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  mkdir -p $pkgdir/usr/bin
+  make CONF_DIR=/var/lib/oscam \
+       USE_SSL=1 \
+       USE_LIBUSB=1 \
+       OSCAM_BIN=$pkgdir/usr/bin/oscam \
+       LIST_SMARGO_BIN=$pkgdir/usr/bin/list_smargo
+
+  mkdir -p $pkgdir/var/lib/oscam
+  install -Dm644 Distribution/doc/example/* "$pkgdir/var/lib/oscam"
+
+  mkdir -p $pkgdir/usr/share/man/man1/
+  mkdir -p $pkgdir/usr/share/man/man5/
+  install -Dm644 Distribution/doc/man/*.1 "$pkgdir/usr/share/man/man1"
+  install -Dm644 Distribution/doc/man/*.5 "$pkgdir/usr/share/man/man5"
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+
+  install -Dm755 ${srcdir}/rc.oscam "$pkgdir/etc/rc.d/oscam"
+}
+
+# vim:set ts=2 sw=2 et:

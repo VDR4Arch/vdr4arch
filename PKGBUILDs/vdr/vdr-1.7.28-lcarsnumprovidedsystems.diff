@@ -1,0 +1,54 @@
+--- skinlcars.c	2012/06/03 15:59:26	2.3
++++ skinlcars.c	2012/06/04 08:05:03
+@@ -1192,15 +1192,17 @@
+      int Slot = 0;
+      for (int i = 0; i < cDevice::NumDevices(); i++) {
+          if (const cDevice *Device = cDevice::GetDevice(i)) {
+-            if (!deviceRecording[Device->DeviceNumber()]) {
+-               if (Slot < FreeDeviceSlots.Size()) {
+-                  y = FreeDeviceSlots[Slot];
+-                  Slot++;
++            if (Device->NumProvidedSystems()) {
++               if (!deviceRecording[Device->DeviceNumber()]) {
++                  if (Slot < FreeDeviceSlots.Size()) {
++                     y = FreeDeviceSlots[Slot];
++                     Slot++;
++                     }
++                  if (y + lineHeight > ys05)
++                     break;
++                  deviceOffset[Device->DeviceNumber()] = y;
++                  y += lineHeight + Gap;
+                   }
+-               if (y + lineHeight > ys05)
+-                  break;
+-               deviceOffset[Device->DeviceNumber()] = y;
+-               y += lineHeight + Gap;
+                }
+             }
+          }
+@@ -1231,8 +1233,10 @@
+ void cSkinLCARSDisplayMenu::DrawDevices(void)
+ {
+   for (int i = 0; i < cDevice::NumDevices(); i++) {
+-      if (const cDevice *Device = cDevice::GetDevice(i))
+-         DrawDevice(Device);
++      if (const cDevice *Device = cDevice::GetDevice(i)) {
++         if (Device->NumProvidedSystems())
++            DrawDevice(Device);
++         }
+       }
+ }
+ 
+@@ -1264,8 +1268,10 @@
+   if (initial || Now - lastSignalDisplay >= SIGNALDISPLAYDELTA) {
+      for (int i = 0; i < cDevice::NumDevices(); i++) {
+          if (const cDevice *Device = cDevice::GetDevice(i)) {
+-            if (int y = deviceOffset[i])
+-               DrawDeviceSignal(osd, Device, xs + lineHeight / 2, y, xs11, y + lineHeight, lastSignalStrength[i], lastSignalQuality[i], initial);
++            if (Device->NumProvidedSystems()) {
++               if (int y = deviceOffset[i])
++                  DrawDeviceSignal(osd, Device, xs + lineHeight / 2, y, xs11, y + lineHeight, lastSignalStrength[i], lastSignalQuality[i], initial);
++               }
+             }
+          }
+      lastSignalDisplay = Now;

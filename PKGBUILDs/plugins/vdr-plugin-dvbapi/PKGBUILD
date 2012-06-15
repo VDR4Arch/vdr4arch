@@ -1,0 +1,30 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-plugin-dvbapi
+pkgver=20120513
+pkgrel=1
+pkgdesc="A bridge between VDR and OScam."
+url="https://github.com/manio/vdr-plugin-dvbapi"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('vdr')
+optdepends=()
+makedepends=()
+conflicts=()
+replaces=()
+backup=()
+install=''
+source=("${pkgname}-${pkgver}.tar.bz2")
+md5sums=('571e6587a5f9d85dbbda3ac1c53e5ecf')
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make VDRDIR=/usr/include/vdr \
+       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
+       LOCALEDIR=$pkgdir/usr/share/locale \
+       CPUOPT=native \
+       PARALLEL=PARALLEL_128_SSE2 \
+       CSAFLAGS="-O3 -fexpensive-optimizations -fPIC -funroll-loops -mmmx -msse -msse2"
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+}

@@ -1,0 +1,28 @@
+--- config.c	2012/06/04 09:06:57	2.23
++++ config.c	2012/06/04 09:14:04
+@@ -424,10 +424,10 @@
+   UseDolbyDigital = 1;
+   ChannelInfoPos = 0;
+   ChannelInfoTime = 5;
+-  OSDLeftP = 0.08;
+-  OSDTopP = 0.08;
+-  OSDWidthP = 0.87;
+-  OSDHeightP = 0.84;
++  OSDLeftP = 0.03;
++  OSDTopP = 0.03;
++  OSDWidthP = 0.93;
++  OSDHeightP = 0.93;
+   OSDLeft = 54;
+   OSDTop = 45;
+   OSDWidth = 624;
+@@ -439,8 +439,8 @@
+   strcpy(FontOsd, DefaultFontOsd);
+   strcpy(FontSml, DefaultFontSml);
+   strcpy(FontFix, DefaultFontFix);
+-  FontOsdSizeP = 0.038;
+-  FontSmlSizeP = 0.035;
++  FontOsdSizeP = 0.032;
++  FontSmlSizeP = 0.028;
+   FontFixSizeP = 0.031;
+   FontOsdSize = 22;
+   FontSmlSize = 18;

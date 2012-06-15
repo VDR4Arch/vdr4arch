@@ -1,0 +1,94 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr
+pkgver=1.7.28
+pkgrel=1
+pkgdesc=""
+url="http://tvdr.de/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('fontconfig' 'libjpeg-turbo' 'perl' 'ttf-dejavu')
+optdepends=('lirc: remote control support')
+backup=('var/lib/vdr/channels.conf'
+        'var/lib/vdr/diseqc.conf'
+        'var/lib/vdr/keymacros.conf'
+        'var/lib/vdr/scr.conf'
+        'var/lib/vdr/sources.conf'
+        'var/lib/vdr/svdrphosts.conf')
+options='!emptydirs'
+install='vdr.install'
+source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
+        '60-vdr-tty.rules'
+        'av7110_ir_vdr_perms.conf'
+        'MainMenuHooks-v1_0_2.diff'
+        'setwakeup.function'
+        'shutdown.sh'
+        'shutdown-wrapper.c'
+        'vdr-1.7.28-epghandledexternally.diff'
+        'vdr-1.7.28-lcarsnumprovidedsystems.diff'
+        'vdr-1.7.28-osdandfontsizesforhd.diff'
+        'vdr-1.7.28-lcarsbuttoncolors.diff'
+        'vdr-1.7.28-lcarsnogapinmainbuttons.diff'
+        'vdr-1.7.28-lcarsnumdevices.diff')
+md5sums=('3ccff2dcc42d112e23dd64f2c39f02f1'
+         '32dcab4ce46f8164977ab3abdeccec57'
+         '180249e83f867e11a9c0c73e9b4805c8'
+         '301c9b9766ed5182b07f1debc79abc21'
+         '7cb3224f7b60d5afe8a5b1abaed61c40'
+         '8d69ab549639fa41190cdf1a5bc898c8'
+         '7cad811b4ac5ee6c0b5496d006f1e0ee'
+         '91048c2e0bbaeef0ff44c6ab6f5f4414'
+         'c9cfea861ffa6bbbf9546e04a188aea3'
+         'a958f4f4685458106ece80a99d5abfef'
+         '459853f5bd43cd05f150e07919924332'
+         '260bbf5615185f894f2a74469d87d236'
+         '4c6475899c3d0cab559d1b21245d18f2')
+
+build() {
+  cd "${srcdir}"
+  gcc -o shutdown-wrapper shutdown-wrapper.c
+
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+cat > Make.config <<EOF
+PREFIX       = /usr
+LOCDIR       = /usr/share/locale
+PLUGINLIBDIR = /usr/lib/vdr/plugins
+VIDEODIR     = /srv/vdr/video0
+CONFDIR      = /var/lib/vdr
+VDR_USER     = vdr
+EOF
+
+  patch -i ${srcdir}/vdr-1.7.28-epghandledexternally.diff
+  patch -i ${srcdir}/vdr-1.7.28-lcarsnumprovidedsystems.diff
+  patch -i ${srcdir}/vdr-1.7.28-osdandfontsizesforhd.diff
+  patch -i ${srcdir}/vdr-1.7.28-lcarsbuttoncolors.diff
+  patch -i ${srcdir}/vdr-1.7.28-lcarsnogapinmainbuttons.diff
+  patch -i ${srcdir}/vdr-1.7.28-lcarsnumdevices.diff
+  patch -p1 -i ${srcdir}/MainMenuHooks-v1_0_2.diff
+  
+  make plugins
+
+  ## Build core VDR with recommended optimization level
+  CFLAGS=$(echo "$CFLAGS" | sed 's/-O2/-O3/g')
+  CXXFLAGS=$(echo "$CXXFLAGS" | sed 's/-O2/-O3/g')
+
+  make
+}
+
+package() {
+  cd "${srcdir}"
+  install -Dm754 shutdown-wrapper "$pkgdir/usr/lib/vdr/bin/shutdown-wrapper"
+  install -Dm755 shutdown.sh "$pkgdir/usr/lib/vdr/bin/shutdown.sh"
+  install -Dm644 setwakeup.function "$pkgdir/etc/rc.d/functions.d/setwakeup"
+  install -Dm644 60-vdr-tty.rules "$pkgdir/usr/lib/udev/rules.d/60-vdr-tty.rules"
+  install -Dm644 av7110_ir_vdr_perms.conf "$pkgdir/usr/lib/modprobe.d/av7110_ir_vdr_perms.conf"
+  
+
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+
+  install -Dm644 Make.config "$pkgdir/usr/include/vdr/Make.config"
+  install -Dm644 Make.global "$pkgdir/usr/include/vdr/Make.global"
+}
+

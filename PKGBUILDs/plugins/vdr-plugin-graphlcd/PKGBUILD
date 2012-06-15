@@ -1,0 +1,37 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-plugin-graphlcd
+pkgver=20120327
+pkgrel=1
+pkgdesc=""
+url="http://projects.vdr-developer.org/projects/show/graphlcd"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('graphlcd-base' 'vdr')
+optdepends=('serdisplib: Support more modern LCDs')
+makedepends=()
+conflicts=()
+replaces=()
+backup=()
+install='vdr-plugin-graphlcd.install'
+source=("${pkgname}-${pkgver}.tar.bz2")
+md5sums=('98f9ede5d51ab1cf59b16f120f67b2cd')
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make VDRDIR=/usr/include/vdr \
+       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
+       LOCALEDIR=$pkgdir/usr/share/locale
+
+  install -Dm644 graphlcd/channels.alias $pkgdir/var/lib/vdr/plugins/graphlcd/channels.alias
+
+  mkdir -p $pkgdir/usr/share/vdr/graphlcd/fonts
+  cp -r graphlcd/fonts graphlcd/logos graphlcd/skins $pkgdir/usr/share/vdr/graphlcd
+  ln -s /usr/share/vdr/graphlcd/fonts $pkgdir/var/lib/vdr/plugins/graphlcd
+  ln -s /usr/share/vdr/graphlcd/logos $pkgdir/var/lib/vdr/plugins/graphlcd
+  ln -s /usr/share/vdr/graphlcd/skins $pkgdir/var/lib/vdr/plugins/graphlcd
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+}

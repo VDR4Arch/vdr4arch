@@ -1,0 +1,9 @@
+post_install() {
+    mkdir -p /var/cache/vdr
+    chown -R vdr:vdr /var/cache/vdr/vtx
+}
+
+post_remove() {
+    rm -r /var/cache/vdr/vtx
+    rmdir /var/cache/vdr > /dev/null #Remove if empty
+}
