@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-epgsearch
-pkgver=20120611
+pkgver=1.0.1.beta2
 pkgrel=1
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
@@ -13,11 +13,12 @@ conflicts=()
 replaces=()
 backup=()
 install=''
-source=("${pkgname}-${pkgver}.tar.bz2")
-md5sums=('d114cc67722d825fcc468894eef6b512')
+_plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
+source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/vdr-$_plugname-$pkgver.tgz")
+md5sums=('8ad2bd6a6557532b388adbf70d87d59a')
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${_plugname}-${pkgver}"
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make VDRDIR=/usr/include/vdr \
