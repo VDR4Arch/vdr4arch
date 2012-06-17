@@ -7,7 +7,7 @@ pkgdesc="This plugin extends the remote control capabilities of vdr"
 url="http://www.escape-edv.de/endriss/vdr/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 optdepends=()
 makedepends=()
 conflicts=()

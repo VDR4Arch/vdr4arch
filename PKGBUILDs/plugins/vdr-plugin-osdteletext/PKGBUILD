@@ -7,7 +7,7 @@ pkgdesc="A teletext viewer for VDR"
 url="http://projects.vdr-developer.org/projects/plg-osdteletext"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 optdepends=()
 makedepends=()
 conflicts=()
