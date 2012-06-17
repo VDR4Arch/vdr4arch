@@ -15,11 +15,15 @@ conflicts=()
 replaces=()
 backup=()
 install=''
-source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
-md5sums=('efd0e6db409b4835dc4e956081baf190')
+source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2"
+        'softhddevice-Make.global.diff')
+md5sums=('efd0e6db409b4835dc4e956081baf190'
+         'e16e42028e972c74e90f8ae0147959ac')
 
 build() {
   cd "${srcdir}/${pkgname}-${_gitver}"
+
+  patch -i ${srcdir}/softhddevice-Make.global.diff
 
   sed -i '/DAV_INFO/d' Makefile
   sed -i '/DUSE_OSS/d' Makefile
@@ -28,7 +32,9 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${_gitver}"
   mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make VDRDIR=/usr/include/vdr \
+  make CFLAGS="$CFLAGS -fPIC" \
+       CXXFLAGS="$CXXFLAGS -fPIC" \
+       VDRDIR=/usr/include/vdr \
        LIBDIR=$pkgdir/usr/lib/vdr/plugins \
        LOCALEDIR=$pkgdir/usr/share/locale
   install -Dm644 AGPL-3.0.txt "$pkgdir/usr/share/licenses/$pkgname/COPYING"

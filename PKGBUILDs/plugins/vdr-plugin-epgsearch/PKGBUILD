@@ -22,7 +22,9 @@ package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make VDRDIR=/usr/include/vdr \
+  make CFLAGS="$CFLAGS -fPIC" \
+       CXXFLAGS="$CXXFLAGS -fPIC" \
+       VDRDIR=/usr/include/vdr \
        LIBDIR=$pkgdir/usr/lib/vdr/plugins \
        LOCALEDIR=$pkgdir/usr/share/locale \
        MANDIR=$pkgdir/usr/share/man \

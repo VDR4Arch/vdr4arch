@@ -26,7 +26,9 @@ package() {
   patch -p1 -i ${srcdir}/live_1.7.28_fix.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make VDRDIR=/usr/include/vdr \
+  make CFLAGS="$CFLAGS -fPIC" \
+       CXXFLAGS="$CXXFLAGS -fPIC" \
+       VDRDIR=/usr/include/vdr \
        LIBDIR=$pkgdir/usr/lib/vdr/plugins \
        LOCALEDIR=$pkgdir/usr/share/locale
 

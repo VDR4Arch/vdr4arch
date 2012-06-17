@@ -1,5 +1,5 @@
 post_install() {
-    mkdir -p /var/cache/vdr
+    mkdir -p /var/cache/vdr/vtx
     chown -R vdr:vdr /var/cache/vdr/vtx
 }
 
