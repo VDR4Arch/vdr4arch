@@ -1,13 +1,13 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=graphlcd-base
-pkgver=20120311
-_gitver=6ce1975
+pkgver=20120616
+_gitver=433faa5
 pkgrel=1
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('freetype2' 'gcc-libs')
+depends=('fontconfig' 'gcc-libs')
 optdepends=()
 makedepends=()
 conflicts=()
@@ -15,7 +15,7 @@ replaces=()
 backup=(etc/graphlcd.conf)
 install=''
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
-md5sums=('b7d7a4ff323ecda9aaad5d10f3bb13b9')
+md5sums=('9bb81493ff3a72e5723d7345d9b6b0aa')
 
 build() {
   cd "${srcdir}/${pkgname}-${_gitver}"
