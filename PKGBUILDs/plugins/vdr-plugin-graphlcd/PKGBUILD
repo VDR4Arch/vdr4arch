@@ -2,12 +2,13 @@
 pkgname=vdr-plugin-graphlcd
 pkgver=20120327
 _gitver=f0c1141
+_vdrapi=1.7.28
 pkgrel=1
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('graphlcd-base' 'vdr')
+depends=('graphlcd-base' "vdr-api=${_vdrapi}")
 optdepends=('serdisplib: Support more modern LCDs')
 makedepends=()
 conflicts=()
@@ -34,5 +35,5 @@ package() {
   ln -s /usr/share/vdr/graphlcd/skins $pkgdir/var/lib/vdr/plugins/graphlcd
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+  pkgver=${pkgver}_${_vdrapi}
 }

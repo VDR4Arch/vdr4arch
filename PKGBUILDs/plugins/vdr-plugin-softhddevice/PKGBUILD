@@ -2,12 +2,13 @@
 pkgname=vdr-plugin-softhddevice
 pkgver=20120608
 _gitver=da9886e
+_vdrapi=1.7.28
 pkgrel=1
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
 license=('AGPL3')
-depends=('ffmpeg' 'libvdpau' 'vdr'  'xcb-util-wm')
+depends=('ffmpeg' 'libvdpau' "vdr-api=${_vdrapi}"  'xcb-util-wm')
 optdepends=('nvidia: Required for VDPAU acceleration')
 makedepends=('mesa' 'libxdamage' 'libxxf86vm' 'xcb-util' 'xcb-util-keysyms')
 conflicts=()
@@ -31,5 +32,5 @@ package() {
        LIBDIR=$pkgdir/usr/lib/vdr/plugins \
        LOCALEDIR=$pkgdir/usr/share/locale
   install -Dm644 AGPL-3.0.txt "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+  pkgver=${pkgver}_${_vdrapi}
 }

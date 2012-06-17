@@ -1,12 +1,13 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-remote
 pkgver=0.4.0
+_vdrapi=1.7.28
 pkgrel=1
 pkgdesc="This plugin extends the remote control capabilities of vdr"
 url="http://www.escape-edv.de/endriss/vdr/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('vdr')
+depends=("vdr-api=${_vdrapi}")
 optdepends=()
 makedepends=()
 conflicts=()
@@ -37,5 +38,5 @@ package() {
   install -Dm644 ${srcdir}/70-remote-device.rules "$pkgdir/usr/lib/udev/rules.d/70-remote-device.rules"
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+  pkgver=${pkgver}_${_vdrapi}
 }

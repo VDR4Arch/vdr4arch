@@ -1,12 +1,13 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-osdteletext
 pkgver=0.9.3
+_vdrapi=1.7.28
 pkgrel=1
 pkgdesc="A teletext viewer for VDR"
 url="http://projects.vdr-developer.org/projects/plg-osdteletext"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('vdr')
+depends=("vdr-api=${_vdrapi}")
 optdepends=()
 makedepends=()
 conflicts=()
@@ -30,5 +31,5 @@ package() {
        LOCALEDIR=$pkgdir/usr/share/locale
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+  pkgver=${pkgver}_${_vdrapi}
 }

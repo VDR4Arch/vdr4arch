@@ -2,12 +2,13 @@
 pkgname=vdr-plugin-live
 pkgver=20120325
 _gitver=94a0a21
+_vdrapi=1.7.28
 pkgrel=1
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
 url="http://projects.vdr-developer.org/projects/plg-extrecmenu"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('pcre' 'tntnet' 'vdr')
+depends=('pcre' 'tntnet' "vdr-api=${_vdrapi}")
 optdepends=()
 makedepends=()
 conflicts=()
@@ -34,5 +35,5 @@ package() {
   ln -s /usr/share/vdr/live $pkgdir/var/lib/vdr/plugins
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_$(grep 'define APIVERSION' /usr/include/vdr/config.h | cut -d'"' -f2)
+  pkgver=${pkgver}_${_vdrapi}
 }

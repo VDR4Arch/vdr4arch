@@ -8,6 +8,7 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('fontconfig' 'libjpeg-turbo' 'perl' 'ttf-dejavu')
 optdepends=('lirc: remote control support')
+provides=("vdr-api=$pkgver")
 backup=('var/lib/vdr/channels.conf'
         'var/lib/vdr/diseqc.conf'
         'var/lib/vdr/keymacros.conf'
