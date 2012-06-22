@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-softhddevice
-pkgver=20120608
-_gitver=da9886e
+pkgver=20120622
+_gitver=a231174
 _vdrapi=1.7.28
 pkgrel=1
 pkgdesc=""
@@ -17,7 +17,7 @@ backup=()
 install=''
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2"
         'softhddevice-Make.global.diff')
-md5sums=('efd0e6db409b4835dc4e956081baf190'
+md5sums=('8243881a403ce4a326d0a730f9874454'
          'e16e42028e972c74e90f8ae0147959ac')
 
 build() {
