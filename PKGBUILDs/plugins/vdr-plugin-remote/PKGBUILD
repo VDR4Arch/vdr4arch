@@ -16,11 +16,9 @@ backup=()
 install=''
 _plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
 source=("http://www.escape-edv.de/endriss/vdr/vdr-${_plugname}-${pkgver}.tgz"
-        'make.global.diff'
         'remote-0.4.0_remove_oldi18n.diff'
         '70-remote-device.rules')
 md5sums=('336fa829fc24100d47545094218141a6'
-         '3d4e416893a8f15e1e9d87b144dde43b'
          'd9969bd002e4c0b5289203c02a18f26b'
          '3e5fa190135b128a575dd90b14c4433a')
 
