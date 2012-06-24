@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-softhddevice
-pkgver=20120622
-_gitver=a231174
+pkgver=20120623
+_gitver=57af986
 _vdrapi=1.7.28
 pkgrel=1
 pkgdesc=""
