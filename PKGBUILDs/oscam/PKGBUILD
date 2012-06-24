@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=oscam
-pkgver=20120612
+pkgver=7069
 pkgrel=1
 pkgdesc=""
 url="http://www.oscam.to"
@@ -26,31 +26,47 @@ backup=('var/lib/oscam/oscam.ac'
         'var/lib/oscam/oscam.user'
         'var/lib/oscam/oscam.whitelist')
 install=''
-source=("${pkgname}-${pkgver}.tar.bz2"
+source=("${pkgname}-${pkgver}.zip::http://streamboard.gmc.to:8001/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
         'rc.oscam')
-md5sums=('d6080a4ed7b829457e9e88f7ee195223'
+noextract="${pkgname}-${pkgver}.zip"
+md5sums=('f8b04af36375718480e62532c913febf'
          '3696ac9fa61a8eafbfd0b5bac68b735e')
 
-package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  mkdir -p $pkgdir/usr/bin
+build() {
+  cd "$srcdir"
+  unzip "${pkgname}-${pkgver}.zip" -x "/"
+
+  cd "${srcdir}/trunk"
+  chmod +x config.sh
+
   make CONF_DIR=/var/lib/oscam \
        USE_SSL=1 \
        USE_LIBUSB=1 \
-       OSCAM_BIN=$pkgdir/usr/bin/oscam \
-       LIST_SMARGO_BIN=$pkgdir/usr/bin/list_smargo
+       OSCAM_BIN=oscam \
+       LIST_SMARGO_BIN=list_smargo
+}
 
+package() {
+  cd "${srcdir}/trunk"
+
+  #Install binaries
+  install -Dm755 oscam "$pkgdir/usr/bin/oscam"
+  install -Dm755 list_smargo "$pkgdir/usr/bin/list_smargo"
+
+  #Install configs
   mkdir -p $pkgdir/var/lib/oscam
   install -Dm644 Distribution/doc/example/* "$pkgdir/var/lib/oscam"
 
+  #Install man-pages
   mkdir -p $pkgdir/usr/share/man/man1/
   mkdir -p $pkgdir/usr/share/man/man5/
   install -Dm644 Distribution/doc/man/*.1 "$pkgdir/usr/share/man/man1"
   install -Dm644 Distribution/doc/man/*.5 "$pkgdir/usr/share/man/man5"
 
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-
+  #Install rc script
   install -Dm755 ${srcdir}/rc.oscam "$pkgdir/etc/rc.d/oscam"
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
 
 # vim:set ts=2 sw=2 et:
