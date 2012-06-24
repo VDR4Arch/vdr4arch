@@ -14,7 +14,7 @@ conflicts=()
 replaces=()
 backup=()
 install=''
-source=("https://github.com/manio/$pkgname/tarball/v$pkgver")
+source=("$pkgname-$pkgver.tar.bz2::https://github.com/manio/$pkgname/tarball/v$pkgver")
 md5sums=('59b395c23f74b3bb1e253fd1eae5166e')
 
 package() {
