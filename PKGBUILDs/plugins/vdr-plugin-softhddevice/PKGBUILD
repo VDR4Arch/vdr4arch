@@ -17,7 +17,7 @@ backup=()
 install=''
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2"
         'softhddevice-Make.global.diff')
-md5sums=('8243881a403ce4a326d0a730f9874454'
+md5sums=('6d1ff42b2c0c5d3c3cabdf8648087686'
          'e16e42028e972c74e90f8ae0147959ac')
 
 build() {
