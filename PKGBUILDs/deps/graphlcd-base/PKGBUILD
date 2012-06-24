@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=graphlcd-base
-pkgver=20120616
-_gitver=433faa5
+pkgver=20120624
+_gitver=23f86ef
 pkgrel=1
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
