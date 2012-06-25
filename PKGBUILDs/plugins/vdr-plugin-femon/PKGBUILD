@@ -1,0 +1,33 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-plugin-femon
+pkgver=1.7.17
+_vdrapi=1.7.28
+pkgrel=1
+pkgdesc=""
+url="http://firefly.vdr-developer.org/skinelchi/index.html"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+optdepends=()
+makedepends=()
+conflicts=()
+replaces=()
+backup=()
+install=''
+_plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
+source=("http://www.saunalahti.fi/~rahrenbe/vdr/femon/files/vdr-$_plugname-$pkgver.tgz")
+md5sums=('ed52aaffd3ba9cecccd191fadf8d85c7')
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make CFLAGS="$CFLAGS -fPIC" \
+       CXXFLAGS="$CXXFLAGS -fPIC" \
+       VDRDIR=/usr/include/vdr \
+       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
+       LOCALEDIR=$pkgdir/usr/share/locale
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  pkgver=${pkgver}_${_vdrapi}
+}
