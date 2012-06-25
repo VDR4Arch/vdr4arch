@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=oscam
-pkgver=7069
+pkgver=7082
 pkgrel=1
 pkgdesc=""
 url="http://www.oscam.to"
@@ -29,7 +29,7 @@ install=''
 source=("${pkgname}-${pkgver}.zip::http://streamboard.gmc.to:8001/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
         'rc.oscam')
 noextract="${pkgname}-${pkgver}.zip"
-md5sums=('f8b04af36375718480e62532c913febf'
+md5sums=('795bf3568e7f9bcbfdbdb66d51f083d6'
          '3696ac9fa61a8eafbfd0b5bac68b735e')
 
 build() {
