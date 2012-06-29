@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-softhddevice
-pkgver=20120627
-_gitver=6f1c4d6
+pkgver=20120629
+_gitver=73d6596
 _vdrapi=1.7.28
 pkgrel=1
 pkgdesc=""
@@ -15,15 +15,11 @@ conflicts=()
 replaces=()
 backup=()
 install=''
-source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2"
-        'softhddevice-Make.global.diff')
-md5sums=('ea3f4b3c8ad5e9cd9bd7cfe79c76014a'
-         'e16e42028e972c74e90f8ae0147959ac')
+source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
+md5sums=('8e25b131edea03b5cb47a48ab299b998')
 
 build() {
   cd "${srcdir}/${pkgname}-${_gitver}"
-
-  patch -i ${srcdir}/softhddevice-Make.global.diff
 
   sed -i '/DAV_INFO/d' Makefile
   sed -i '/DUSE_OSS/d' Makefile
