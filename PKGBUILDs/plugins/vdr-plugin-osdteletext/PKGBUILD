@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-osdteletext
 pkgver=0.9.3
-_vdrapi=1.7.28
+_vdrapi=1.7.29
 pkgrel=1
 pkgdesc="A teletext viewer for VDR"
 url="http://projects.vdr-developer.org/projects/plg-osdteletext"

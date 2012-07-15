@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-femon
 pkgver=1.7.17
-_vdrapi=1.7.28
+_vdrapi=1.7.29
 pkgrel=1
 pkgdesc=""
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
