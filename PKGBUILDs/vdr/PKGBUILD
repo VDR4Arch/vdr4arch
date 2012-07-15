@@ -23,14 +23,16 @@ source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
         'MainMenuHooks-v1_0_2.diff'
         'setwakeup.function'
         'shutdown.sh'
-        'shutdown-wrapper.c')
+        'shutdown-wrapper.c'
+        'vdr-1.7.29-sortrectopmenu.diff')
 md5sums=('a3f0ae42ba456aa1865c9ed065a64d80'
          '32dcab4ce46f8164977ab3abdeccec57'
          '180249e83f867e11a9c0c73e9b4805c8'
          '301c9b9766ed5182b07f1debc79abc21'
          '7cb3224f7b60d5afe8a5b1abaed61c40'
          '8d69ab549639fa41190cdf1a5bc898c8'
-         '7cad811b4ac5ee6c0b5496d006f1e0ee')
+         '7cad811b4ac5ee6c0b5496d006f1e0ee'
+         '7e2003b26201f8320c4a1585a52ae8a9')
 
 build() {
   cd "${srcdir}"
@@ -48,6 +50,7 @@ VDR_USER     = vdr
 EOF
 
   patch -p1 -i ${srcdir}/MainMenuHooks-v1_0_2.diff
+  patch -i ${srcdir}/vdr-1.7.29-sortrectopmenu.diff
 
   make plugins
 
