@@ -1,0 +1,32 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-plugin-play
+pkgver=0.0.10
+_vdrapi=1.7.29
+pkgrel=1
+pkgdesc=""
+url="http://projects.vdr-developer.org/projects/plg-play"
+arch=('x86_64' 'i686')
+license=('AGPL3')
+depends=('gcc-libs' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
+optdepends=()
+makedepends=()
+conflicts=()
+replaces=()
+backup=()
+install=''
+_plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
+source=("http://projects.vdr-developer.org/attachments/download/1010/vdr-$_plugname-$pkgver.tgz")
+md5sums=('a6866f512b880740c557542fd42fff05')
+
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make CFLAGS="$CFLAGS -fPIC" \
+       CXXFLAGS="$CXXFLAGS -fPIC" \
+       VDRDIR=/usr/include/vdr \
+       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
+       LOCALEDIR=$pkgdir/usr/share/locale
+  install -Dm644 AGPL-3.0.txt "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  pkgver=${pkgver}_${_vdrapi}
+}
