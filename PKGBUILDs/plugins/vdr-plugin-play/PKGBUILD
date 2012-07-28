@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-play
-pkgver=0.0.10
+pkgver=0.0.11
 _vdrapi=1.7.29
 pkgrel=1
 pkgdesc=""
@@ -15,8 +15,8 @@ replaces=()
 backup=()
 install=''
 _plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1010/vdr-$_plugname-$pkgver.tgz")
-md5sums=('a6866f512b880740c557542fd42fff05')
+source=("http://projects.vdr-developer.org/attachments/download/1013/vdr-$_plugname-$pkgver.tgz")
+md5sums=('72a3bc148856129cb1541c52d986f074')
 
 
 package() {
