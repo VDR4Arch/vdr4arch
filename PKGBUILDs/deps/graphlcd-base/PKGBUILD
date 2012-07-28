@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=graphlcd-base
-pkgver=20120713
+pkgver=20120721
 _gitver=da8cde9
 pkgrel=1
 pkgdesc=""
