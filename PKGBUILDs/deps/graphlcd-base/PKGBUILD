@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=graphlcd-base
 pkgver=20120713
-_gitver=3592f06
+_gitver=da8cde9
 pkgrel=1
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
@@ -15,7 +15,7 @@ replaces=()
 backup=(etc/graphlcd.conf)
 install=''
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
-md5sums=('df4121d358ea984c741c207107f969b9')
+md5sums=('828d332d80371d6b86174955a6fbcae1')
 
 build() {
   cd "${srcdir}/${pkgname}-${_gitver}"
