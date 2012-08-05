@@ -18,13 +18,6 @@ install=''
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
 md5sums=('8e8fc6bf8b6099aa1f438371c89b3d31')
 
-build() {
-  cd "${srcdir}/${pkgname}-${_gitver}"
-
-  sed -i '/DAV_INFO/d' Makefile
-  sed -i '/DUSE_OSS/d' Makefile
-}
-
 package() {
   cd "${srcdir}/${pkgname}-${_gitver}"
   mkdir -p $pkgdir/usr/lib/vdr/plugins
