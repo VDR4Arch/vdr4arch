@@ -6,7 +6,7 @@ post_install() {
   #Create needed dirs and fix permissions
   mkdir -p /var/lib/vdr
   chown -R vdr:vdr /var/lib/vdr
-  mkdir -p /srv/vdr
+  mkdir -p /srv/vdr/video0
   chown -R vdr:vdr /srv/vdr
   chgrp vdr /usr/lib/vdr/bin/shutdown-wrapper
   chmod u+s /usr/lib/vdr/bin/shutdown-wrapper
