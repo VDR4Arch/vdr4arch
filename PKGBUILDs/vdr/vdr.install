@@ -27,5 +27,9 @@ post_remove() {
 }
 
 post_upgrade() {
+  #Remove syslog-ng rule
+  sed -i '/d_vdr/d' /etc/syslog-ng/syslog-ng.conf
+  sed -i '/f_vdr/d' /etc/syslog-ng/syslog-ng.conf
+
   post_install
 }
