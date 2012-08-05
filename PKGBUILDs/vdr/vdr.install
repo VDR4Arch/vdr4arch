@@ -27,6 +27,5 @@ post_remove() {
 }
 
 post_upgrade() {
-  post_remove
   post_install
 }
