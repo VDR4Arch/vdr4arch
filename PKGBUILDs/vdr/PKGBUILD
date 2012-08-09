@@ -23,14 +23,16 @@ source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
         'setwakeup.function'
         'shutdown.sh'
         'shutdown-wrapper.c'
-        'vdr-1.7.29-sortrectopmenu.diff')
+        'vdr-1.7.29-sortrectopmenu.diff'
+        'vdr.logrotate')
 md5sums=('a3f0ae42ba456aa1865c9ed065a64d80'
          '32dcab4ce46f8164977ab3abdeccec57'
          '301c9b9766ed5182b07f1debc79abc21'
          '7cb3224f7b60d5afe8a5b1abaed61c40'
          '8d69ab549639fa41190cdf1a5bc898c8'
          '7cad811b4ac5ee6c0b5496d006f1e0ee'
-         '7e2003b26201f8320c4a1585a52ae8a9')
+         '7e2003b26201f8320c4a1585a52ae8a9'
+         '4779390621b11766b94d6a60403b20d7')
 
 build() {
   cd "${srcdir}"
@@ -65,6 +67,7 @@ package() {
   install -Dm755 shutdown.sh "$pkgdir/usr/lib/vdr/bin/shutdown.sh"
   install -Dm644 setwakeup.function "$pkgdir/etc/rc.d/functions.d/setwakeup"
   install -Dm644 60-vdr-tty.rules "$pkgdir/usr/lib/udev/rules.d/60-vdr-tty.rules"
+  install -Dm644 vdr.logrotate "$pkgdir/etc/logrotate.d/vdr"
 
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
