@@ -26,7 +26,8 @@ package() {
        CXXFLAGS="$CXXFLAGS -fPIC" \
        VDRDIR=/usr/include/vdr \
        LIBDIR=$pkgdir/usr/lib/vdr/plugins \
-       LOCALEDIR=$pkgdir/usr/share/locale
+       LOCALEDIR=$pkgdir/usr/share/locale \
+       GIT_REV=''
   install -Dm644 AGPL-3.0.txt "$pkgdir/usr/share/licenses/$pkgname/COPYING"
   pkgver=${pkgver}_${_vdrapi}
 }
