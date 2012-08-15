@@ -37,5 +37,4 @@ package() {
   ln -s /usr/share/vdr/graphlcd/skins $pkgdir/var/lib/vdr/plugins/graphlcd
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_${_vdrapi}
 }

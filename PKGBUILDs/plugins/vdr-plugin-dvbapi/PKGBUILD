@@ -29,5 +29,4 @@ package() {
        PARALLEL=PARALLEL_128_SSE2 \
        CSAFLAGS="-O3 -fexpensive-optimizations -fPIC -funroll-loops -mmmx -msse -msse2"
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_$_vdrapi
 }

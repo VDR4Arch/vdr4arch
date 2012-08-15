@@ -37,5 +37,4 @@ package() {
   ln -s /usr/share/vdr/live $pkgdir/var/lib/vdr/plugins
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_${_vdrapi}
 }

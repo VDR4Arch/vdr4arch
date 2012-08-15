@@ -33,5 +33,4 @@ package() {
        LOCALEDIR=$pkgdir/usr/share/locale
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_${_vdrapi}
 }

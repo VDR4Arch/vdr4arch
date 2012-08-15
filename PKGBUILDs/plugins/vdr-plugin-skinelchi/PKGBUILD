@@ -35,5 +35,4 @@ package() {
   install -Dm644 themes/*.theme "$pkgdir/var/lib/vdr/themes"
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  pkgver=${pkgver}_${_vdrapi}
 }
