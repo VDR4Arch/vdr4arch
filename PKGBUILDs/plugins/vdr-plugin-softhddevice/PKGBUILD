@@ -22,6 +22,7 @@ md5sums=('af82be6709a8b456591f372144af963c')
 package() {
   cd "${srcdir}/${pkgname}-${_gitver}"
   mkdir -p $pkgdir/usr/lib/vdr/plugins
+#  sed -i 's/#-DDEBUG/-DDEBUG/g' Makefile
   make CFLAGS="$CFLAGS -fPIC" \
        CXXFLAGS="$CXXFLAGS -fPIC" \
        VDRDIR=/usr/include/vdr \
