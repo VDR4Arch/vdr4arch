@@ -7,7 +7,7 @@ pkgdesc=""
 url="http://projects.vdr-developer.org/projects/plg-play"
 arch=('x86_64' 'i686')
 license=('AGPL3')
-depends=('gcc-libs' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
+depends=('gcc-libs' 'mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
 optdepends=()
 makedepends=()
 conflicts=()
