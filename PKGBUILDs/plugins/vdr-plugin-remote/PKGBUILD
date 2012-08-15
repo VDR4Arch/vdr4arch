@@ -37,7 +37,7 @@ package() {
        LOCALEDIR=$pkgdir/usr/share/locale
 
   install -Dm644 ${srcdir}/70-remote-device.rules "$pkgdir/usr/lib/udev/rules.d/70-remote-device.rules"
-  install -Dm644 av7110_ir_vdr_perms.conf "$pkgdir/usr/lib/modprobe.d/av7110_ir_vdr_perms.conf"
+  install -Dm644 ${srcdir}/av7110_ir_vdr_perms.conf "$pkgdir/usr/lib/modprobe.d/av7110_ir_vdr_perms.conf"
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
   pkgver=${pkgver}_${_vdrapi}
