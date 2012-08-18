@@ -1,7 +1,7 @@
 post_install() {
   #Add vdr user
-  groupadd -g 666 vdr
-  useradd -m -g vdr -u 666 -G audio,lp,optical,storage,video,power vdr > /dev/null
+  groupadd -g 666 vdr 2> /dev/null
+  useradd -m -g vdr -u 666 -G audio,lp,optical,storage,video,power vdr 2> /dev/null
 
   #Create configdir
   mkdir -p /var/lib/vdr
