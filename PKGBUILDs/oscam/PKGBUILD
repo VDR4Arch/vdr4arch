@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=oscam
-pkgver=7255
+pkgver=7270
 pkgrel=1
 pkgdesc=""
 url="http://www.oscam.to"
@@ -11,7 +11,8 @@ optdepends=()
 makedepends=('unzip')
 conflicts=()
 replaces=()
-backup=('var/lib/oscam/oscam.ac'
+backup=('etc/logrotate.d/oscam'
+        'var/lib/oscam/oscam.ac'
         'var/lib/oscam/oscam.cacheex'
         'var/lib/oscam/oscam.cert'
         'var/lib/oscam/oscam.conf'
@@ -27,9 +28,11 @@ backup=('var/lib/oscam/oscam.ac'
         'var/lib/oscam/oscam.whitelist')
 install=''
 source=("${pkgname}-${pkgver}.zip::http://streamboard.de.vu:8001/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
+        'oscam.logrotate'
         'rc.oscam')
 noextract="${pkgname}-${pkgver}.zip"
-md5sums=('967f55c4dcecf63dbb41acee22be605b'
+md5sums=('c2b8cc75af514e53afc6da14a5d2ea89'
+         '1fadb043e8bf28f3a5fed8732dad39a3'
          '3696ac9fa61a8eafbfd0b5bac68b735e')
 
 
@@ -67,6 +70,9 @@ package() {
 
   #Install rc script
   install -Dm755 ${srcdir}/rc.oscam "$pkgdir/etc/rc.d/oscam"
+
+  #Install logrotate rule
+  install -Dm644 ${srcdir}/oscam.logrotate "$pkgdir/etc/logrotate.d/oscam"
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
