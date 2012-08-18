@@ -3,11 +3,14 @@ post_install() {
   groupadd -g 666 vdr
   useradd -m -g vdr -u 666 -G audio,lp,optical,storage,video,power vdr > /dev/null
 
-  #Create needed dirs and fix permissions
+  #Create configdir
   mkdir -p /var/lib/vdr
   chown -R vdr:vdr /var/lib/vdr
+
+  #Create videodir
   mkdir -p /srv/vdr/video0
   chown -R vdr:vdr /srv/vdr
+
   chgrp vdr /usr/lib/vdr/bin/shutdown-wrapper
   chmod u+s /usr/lib/vdr/bin/shutdown-wrapper
 
