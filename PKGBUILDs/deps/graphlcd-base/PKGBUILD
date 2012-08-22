@@ -2,13 +2,13 @@
 pkgname=graphlcd-base
 pkgver=20120721
 _gitver=da8cde9
-pkgrel=1
+pkgrel=2
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('fontconfig' 'gcc-libs')
-optdepends=()
+optdepends=(serdisplib: Add support for more serial displays)
 makedepends=()
 conflicts=()
 replaces=()
