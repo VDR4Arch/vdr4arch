@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=runvdr-extreme
 pkgver=0.4.2
-pkgrel=1
+pkgrel=2
 pkgdesc=""
 url="http://www.udo-richter.de/vdr/scripts.html"
 arch=('any')
@@ -17,21 +17,27 @@ source=("http://www.udo-richter.de/vdr/files/${pkgname}-${pkgver}.tgz"
         'runvdr.conf'
         'runvdr-extreme-0.4.2-bash-4.2-fix.diff'
         'runvdr-extreme-0.4.2-charset-override.diff'
-        'rc.runvdr')
+        'rc.vdr'
+        'vdr.service')
 md5sums=('ca95ce455fc6e66fcaa4b3476ecdcffc'
-         '9316bb5166f288cffcfa7e0b7e81cfce'
+         '54a08b446787d8e885b301e1ee324662'
          '0004d23d3719abe9ce54ce47c32d27d3'
          '5ca14709ba9064a745d6162c04e73630'
-         '34569440e13c1b1ffedc006cd0917e7d')
+         '34569440e13c1b1ffedc006cd0917e7d'
+         '3c5d38859db8f40ab6508fd020b1860b')
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  
+
   patch -i ${srcdir}/runvdr-extreme-0.4.2-bash-4.2-fix.diff
   patch -i ${srcdir}/runvdr-extreme-0.4.2-charset-override.diff #By Manuel Reimer
 
   install -Dm755 runvdr "$pkgdir/usr/bin/runvdr"
-  install -Dm755 ${srcdir}/rc.runvdr "$pkgdir/etc/rc.d/runvdr"
+
+  install -Dm755 ${srcdir}/rc.vdr "$pkgdir/etc/rc.d/vdr"
+  ln -s /etc/rc.d/vdr "$pkgdir/etc/rc.d/runvdr"
+
+  install -Dm755 ${srcdir}/vdr.service "$pkgdir/usr/lib/systemd/system/vdr.service"
   install -Dm644 ${srcdir}/runvdr.conf "$pkgdir/etc/runvdr.conf"
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

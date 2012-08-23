@@ -1,0 +1,9 @@
+[Unit]
+Description=Open Source Conditional Access Module
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/oscam -b
+
+[Install]
+WantedBy=multi-user.target
