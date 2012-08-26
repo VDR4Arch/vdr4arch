@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr
 pkgver=1.7.29
-pkgrel=3
+pkgrel=4
 pkgdesc=""
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
