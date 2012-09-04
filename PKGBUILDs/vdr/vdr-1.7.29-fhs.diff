@@ -1,0 +1,564 @@
+diff -u -b -r2.13 ./INSTALL
+--- ./INSTALL	2012/06/03 09:24:21	2.13
++++ ./INSTALL	2012/09/01 10:35:08
+@@ -386,6 +386,15 @@
+ VDR archive into your video directory (or into your config directory,
+ respectively, in case you have redirected it with the -c option).
+ 
++If you prefer to have your system set up according to the FHS
++("File system Hierarchy Standard") and thus have your files spread
++all over the place ;-), you can do this by copying the file Make.config.template
++to Make.config in the VDR source directory, and activating the line
++
++#USEFHS = 1
++
++in that file.
++
+ Setting up DiSEqC:
+ ------------------
+ 
+diff -u -b -r2.8 ./Make.config.template
+--- ./Make.config.template	2012/03/20 11:20:13	2.8
++++ ./Make.config.template	2012/09/01 10:31:33
+@@ -28,11 +28,22 @@
+ MANDIR   = $(PREFIX)/man
+ BINDIR   = $(PREFIX)/bin
+ 
++# By default locale and plugin files are built under the source directory:
+ LOCDIR       = ./locale
+ PLUGINDIR    = ./PLUGINS
+ PLUGINLIBDIR = $(PLUGINDIR)/lib
++# By default VDR requires only one single directory to operate:
+ VIDEODIR     = /video
+-CONFDIR      = $(VIDEODIR)
++# Activate the following line to build VDR according to the FHS ("File system Hierarchy Standard"):
++#USEFHS = 1
++ifdef USEFHS
++VIDEODIR     = /srv/vdr/video
++CONFDIR      = /var/lib/vdr
++CACHEDIR     = /var/cache/vdr
++RESDIR       = $(PREFIX)/share/vdr
++LOCDIR       = $(PREFIX)/share/locale
++PLUGINLIBDIR = $(PREFIX)/lib/vdr
++endif
+ 
+ ### The remote control:
+ 
+diff -u -b -r2.27 ./Makefile
+--- ./Makefile	2012/04/15 13:21:31	2.27
++++ ./Makefile	2012/09/01 13:22:33
+@@ -27,8 +27,9 @@
+ PLUGINDIR= ./PLUGINS
+ PLUGINLIBDIR= $(PLUGINDIR)/lib
+ 
++# By default VDR requires only one single directory to operate:
+ VIDEODIR = /video
+-CONFDIR  = $(VIDEODIR)
++# See Make.config.template if you want to build VDR according to the FHS ("File system Hierarchy Standard")
+ 
+ DOXYGEN ?= /usr/bin/doxygen
+ DOXYFILE = Doxyfile
+@@ -70,6 +71,8 @@
+ 
+ DEFINES += -DVIDEODIR=\"$(VIDEODIR)\"
+ DEFINES += -DCONFDIR=\"$(CONFDIR)\"
++DEFINES += -DCACHEDIR=\"$(CACHEDIR)\"
++DEFINES += -DRESDIR=\"$(RESDIR)\"
+ DEFINES += -DPLUGINDIR=\"$(PLUGINLIBDIR)\"
+ DEFINES += -DLOCDIR=\"$(LOCDIR)\"
+ 
+@@ -111,6 +114,8 @@
+ 	@echo "includedir=$(INCDIR)" >> $@
+ 	@echo "configdir=$(CONFDIR)" >> $@
+ 	@echo "videodir=$(VIDEODIR)" >> $@
++	@echo "cachedir=$(CACHEDIR)" >> $@
++	@echo "resdir=$(RESDIR)" >> $@
+ 	@echo "plugindir=$(PLUGINLIBDIR)" >> $@
+ 	@echo "localedir=$(LOCDIR)" >> $@
+ 	@echo "apiversion=$(APIVERSION)" >> $@
+@@ -183,7 +188,7 @@
+ 
+ # Install the files:
+ 
+-install: install-bin install-conf install-doc install-plugins install-i18n install-includes install-pc
++install: install-bin install-dirs install-conf install-doc install-plugins install-i18n install-includes install-pc
+ 
+ # VDR binary:
+ 
+@@ -193,12 +198,15 @@
+ 
+ # Configuration files:
+ 
+-install-conf:
++install-dirs:
+ 	@mkdir -p $(DESTDIR)$(VIDEODIR)
+-	@if [ ! -d $(DESTDIR)$(CONFDIR) ]; then\
+-	    mkdir -p $(DESTDIR)$(CONFDIR);\
+-	    cp *.conf $(DESTDIR)$(CONFDIR);\
+-	    fi
++	@mkdir -p $(DESTDIR)$(CONFDIR)
++	@mkdir -p $(DESTDIR)$(CACHEDIR)
++	@mkdir -p $(DESTDIR)$(RESDIR)
++
++install-conf:
++	@cp *.conf $(DESTDIR)$(CONFDIR)
++
+ 
+ # Documentation:
+ 
+diff -u -b -r2.15 ./PLUGINS.html
+--- ./PLUGINS.html	2012/08/26 13:09:01	2.15
++++ ./PLUGINS.html	2012/08/31 12:46:07
+@@ -82,7 +82,7 @@
+ <li><a href="#Wakeup">Wakeup</a>
+ <li><a href="#Setup parameters">Setup parameters</a>
+ <li><a href="#The Setup menu">The Setup menu</a>
+-<li><a href="#Configuration files">Configuration files</a>
++<li><modified><a href="#Additional files">Additional files</modified></a>
+ <li><a href="#Internationalization">Internationalization</a>
+ <li><a href="#Custom services">Custom services</a>
+ <li><a href="#SVDRP commands">SVDRP commands</a>
+@@ -885,39 +885,70 @@
+ your setup parameters and use that one to copy all parameters with one single statement
+ (like VDR does with its cSetup class).
+ 
+-<hr><h2><a name="Configuration files">Configuration files</a></h2>
++<hr><h2><modified><a name="Additional files">Additional files</a></modified></h2>
+ 
+ <div class="blurb">I want my own stuff!</div><p>
+ 
+-There may be situations where a plugin requires configuration files of its own, maybe
+-for data that can't be stored in the simple <a href="#Setup parameters">setup parameters</a>
+-of VDR, or maybe because it needs to launch other programs that simply need a separate
+-configuration file. While the plugin is free to store such files anywhere it
+-sees fit, it might be a good idea to put them in a common place, preferably
+-where other configuration data already exists. VDR provides the function
++<modified>
++There may be situations where a plugin requires files of its own. While the plugin is
++free to store such files anywhere it sees fit, it might be a good idea to put them in a common
++place, preferably where such data already exists.
++</modified>
++<p>
++<modified>
++<i>configuration files</i>, maybe for data that can't be stored in the simple
++<a href="#Setup parameters">setup parameters</a> of VDR, or maybe because it needs to
++launch other programs that simply need a separate configuration file.
++</modified>
++<p>
++<modified>
++<i>cache files</i>, to store data so that future requests for that data can be served faster. The data
++that is stored within a cache might be values that have been computed earlier or duplicates of
++original values that are stored elsewhere.
++</modified>
++<p>
++<modified>
++<i>resource files</i>, for providing additional files, like pictures, movie clips or channel logos.
++</modified>
++<p>
++<modified>
++Threfore VDR provides the functions
+ 
+ <p><table><tr><td class="code"><pre>
++<modified>
+ const char *ConfigDirectory(const char *PluginName = NULL);
++const char *CacheDirectory(const char *PluginName = NULL);
++const char *ResourceDirectory(const char *PluginName = NULL);
++</modified>
+ </pre></td></tr></table><p>
+ 
+-which returns a string containing the directory that VDR uses for its own configuration
+-files (defined through the <tt><b>-c</b></tt> option in the call to VDR), extended by
++<modified>
++each of which returns a string containing the directory that VDR uses for its own
++files (defined through the options in the call to VDR), extended by
++</modified>
+ <tt>"/plugins"</tt>. So assuming the VDR configuration directory is <tt>/video</tt>
+ (the default if no <tt><b>-c</b></tt> or <tt><b>-v</b></tt> option is given),
+ a call to <tt>ConfigDirectory()</tt> will return <tt>/video/plugins</tt>. The first
+ call to <tt>ConfigDirectory()</tt> will automatically make sure that the <tt>plugins</tt>
+ subdirectory will exist. If, for some reason, this cannot be achieved, <tt>NULL</tt>
+ will be returned.
++<modified>
++The behavoir of <tt>CacheDirectory()</tt> and <tt>ResourceDirectory()</tt> is similar.
++</modified>
+ <p>
+ The additional <tt>plugins</tt> directory is used to keep files from plugins apart
+ from those of VDR itself, making sure there will be no name clashes. If a plugin
+-needs only one extra configuration file, it is suggested that this file be named
+-<tt>name.conf</tt>, where <i>name</i> shall be the name of the plugin.
++<modified>
++needs only one extra file, it is suggested that this file be named <tt>name.*</tt>,
++where <i>name</i> shall be the name of the plugin.
++</modified>
+ <p>
+ If a plugin needs more than one such file, it is suggested that the plugin stores
+ these in a subdirectory of its own, named after the plugin. To easily get such a name
+-the <tt>ConfigDirectory()</tt> function can be given an additional string that will
+-be appended to the returned directory name, as in
++<modified>
++the functions can be given an additional string that will be appended to the returned
++directory name, as in
++</modified>
+ 
+ <p><table><tr><td class="code"><pre>
+ const char *MyConfigDir = ConfigDirectory(Name());
+@@ -928,13 +959,16 @@
+ (or return <tt>NULL</tt> in case of an error).
+ <p>
+ <b>
+-The returned string is statically allocated and will be overwritten by subsequent
+-calls to ConfigDirectory()!
++<modified>
++The returned strings are statically allocated and will be overwritten by subsequent calls!
++</modified>
+ </b>
+ <p>
+-The <tt>ConfigDirectory()</tt> function is a static member function of the <tt>cPlugin</tt>
+-class. This allows it to be called even from outside any member function of the derived
+-plugin class, by writing
++<modified>
++The <tt>ConfigDirectory()</tt>, <tt>CacheDirectory()</tt> and <tt>ResourceDirectory()</tt>
++functions are static member functions of the <tt>cPlugin</tt> class. This allows them to be
++called even from outside any member function of the derived plugin class, by writing
++</modified>
+ 
+ <p><table><tr><td class="code"><pre>
+ const char *MyConfigDir = cPlugin::ConfigDirectory();
+diff -u -b -r2.4 ./i18n.c
+--- ./i18n.c	2011/08/15 10:01:45	2.4
++++ ./i18n.c	2012/09/01 10:53:43
+@@ -63,7 +63,7 @@
+   NULL
+   };
+ 
+-static const char *I18nLocaleDir = LOCDIR;
++static cString I18nLocaleDir;
+ 
+ static cStringList LanguageLocales;
+ static cStringList LanguageNames;
+@@ -102,7 +102,6 @@
+ 
+ void I18nInitialize(const char *LocaleDir)
+ {
+-  if (LocaleDir)
+      I18nLocaleDir = LocaleDir;
+   LanguageLocales.Append(strdup(I18N_DEFAULT_LOCALE));
+   LanguageNames.Append(strdup(SkipContext(LanguageName)));
+@@ -113,7 +112,7 @@
+   if (Locales.Size() > 0) {
+      char *OldLocale = strdup(setlocale(LC_MESSAGES, NULL));
+      for (int i = 0; i < Locales.Size(); i++) {
+-         cString FileName = cString::sprintf("%s/%s/LC_MESSAGES/vdr.mo", I18nLocaleDir, Locales[i]);
++         cString FileName = cString::sprintf("%s/%s/LC_MESSAGES/vdr.mo", *I18nLocaleDir, Locales[i]);
+          if (access(FileName, F_OK) == 0) { // found a locale with VDR texts
+             if (NumLocales < I18N_MAX_LANGUAGES - 1) {
+                SetEnvLanguage(Locales[i]);
+@@ -142,7 +141,7 @@
+          }
+      SetEnvLanguage(LanguageLocales[CurrentLanguage]);
+      free(OldLocale);
+-     dsyslog("found %d locales in %s", NumLocales - 1, I18nLocaleDir);
++     dsyslog("found %d locales in %s", NumLocales - 1, *I18nLocaleDir);
+      }
+   // Prepare any known language codes for which there was no locale:
+   for (const char **lc = LanguageCodeList; *lc; lc++) {
+diff -u -b -r2.3 ./plugin.c
+--- ./plugin.c	2012/03/11 13:56:02	2.3
++++ ./plugin.c	2012/09/01 13:10:27
+@@ -25,7 +25,9 @@
+ 
+ // --- cPlugin ---------------------------------------------------------------
+ 
+-char *cPlugin::configDirectory = NULL;
++cString cPlugin::configDirectory;
++cString cPlugin::cacheDirectory;
++cString cPlugin::resourceDirectory;
+ 
+ cPlugin::cPlugin(void)
+ {
+@@ -132,8 +134,7 @@
+ 
+ void cPlugin::SetConfigDirectory(const char *Dir)
+ {
+-  free(configDirectory);
+-  configDirectory = strdup(Dir);
++  configDirectory = Dir;
+ }
+ 
+ const char *cPlugin::ConfigDirectory(const char *PluginName)
+@@ -141,7 +142,35 @@
+   static cString buffer;
+   if (!cThread::IsMainThread())
+      esyslog("ERROR: plugin '%s' called cPlugin::ConfigDirectory(), which is not thread safe!", PluginName ? PluginName : "<no name given>");
+-  buffer = cString::sprintf("%s/plugins%s%s", configDirectory, PluginName ? "/" : "", PluginName ? PluginName : "");
++  buffer = cString::sprintf("%s/plugins%s%s", *configDirectory, PluginName ? "/" : "", PluginName ? PluginName : "");
++  return MakeDirs(buffer, true) ? *buffer : NULL;
++}
++
++void cPlugin::SetCacheDirectory(const char *Dir)
++{
++  cacheDirectory = Dir;
++}
++
++const char *cPlugin::CacheDirectory(const char *PluginName)
++{
++  static cString buffer;
++  if (!cThread::IsMainThread())
++     esyslog("ERROR: plugin '%s' called cPlugin::CacheDirectory(), which is not thread safe!", PluginName ? PluginName : "<no name given>");
++  buffer = cString::sprintf("%s/plugins%s%s", *cacheDirectory, PluginName ? "/" : "", PluginName ? PluginName : "");
++  return MakeDirs(buffer, true) ? *buffer : NULL;
++}
++
++void cPlugin::SetResourceDirectory(const char *Dir)
++{
++  resourceDirectory = Dir;
++}
++
++const char *cPlugin::ResourceDirectory(const char *PluginName)
++{
++  static cString buffer;
++  if (!cThread::IsMainThread())
++     esyslog("ERROR: plugin '%s' called cPlugin::ResourceDirectory(), which is not thread safe!", PluginName ? PluginName : "<no name given>");
++  buffer = cString::sprintf("%s/plugins%s%s", *resourceDirectory, PluginName ? "/" : "", PluginName ? PluginName : "");
+   return MakeDirs(buffer, true) ? *buffer : NULL;
+ }
+ 
+diff -u -b -r2.1 ./plugin.h
+--- ./plugin.h	2012/03/11 13:55:56	2.1
++++ ./plugin.h	2012/09/01 13:08:54
+@@ -21,7 +21,9 @@
+   friend class cDll;
+   friend class cPluginManager;
+ private:
+-  static char *configDirectory;
++  static cString configDirectory;
++  static cString cacheDirectory;
++  static cString resourceDirectory;
+   const char *name;
+   bool started;
+   void SetName(const char *s);
+@@ -57,6 +59,10 @@
+ 
+   static void SetConfigDirectory(const char *Dir);
+   static const char *ConfigDirectory(const char *PluginName = NULL);
++  static void SetCacheDirectory(const char *Dir);
++  static const char *CacheDirectory(const char *PluginName = NULL);
++  static void SetResourceDirectory(const char *Dir);
++  static const char *ResourceDirectory(const char *PluginName = NULL);
+   };
+ 
+ class cDll : public cListObject {
+diff -u -b -r2.8 ./vdr.1
+--- ./vdr.1	2012/02/27 11:01:17	2.8
++++ ./vdr.1	2012/09/01 13:40:49
+@@ -42,6 +42,10 @@
+ .BI \-a\  cmd ,\ \-\-audio= cmd
+ Send Dolby Digital audio to stdin of command \fIcmd\fR.
+ .TP
++.BI \-\-cachedir= dir
++save cache files in \fIdir\fR
++(default is to save them in the video directory).
++.TP
+ .BI \-c\  dir ,\ \-\-config= dir
+ Read config files from directory \fIdir\fR
+ (default is to read them from the video directory).
+@@ -157,6 +161,10 @@
+ Call \fIcmd\fR before and after a recording. See the file \fIINSTALL\fR for
+ more information.
+ .TP
++.BI \-\-resdir= dir
++read resource files from \fIdir\fR
++(default is to read them from the config directory).
++.TP
+ .BI \-s\  cmd ,\ \-\-shutdown= cmd
+ Call \fIcmd\fR to shutdown the computer. See the file \fIINSTALL\fR for more
+ information.
+diff -u -b -r2.37 ./vdr.c
+--- ./vdr.c	2012/06/13 11:28:41	2.37
++++ ./vdr.c	2012/09/01 13:30:19
+@@ -178,10 +178,15 @@
+ 
+   // Command line options:
+ 
++#define dd(a, b) (*a ? a : b)
+ #define DEFAULTSVDRPPORT 6419
+ #define DEFAULTWATCHDOG     0 // seconds
+-#define DEFAULTCONFDIR CONFDIR
++#define DEFAULTVIDEODIR VIDEODIR
++#define DEFAULTCONFDIR dd(CONFDIR, VideoDirectory)
++#define DEFAULTCACHEDIR dd(CACHEDIR, VideoDirectory)
++#define DEFAULTRESDIR dd(RESDIR, ConfigDirectory)
+ #define DEFAULTPLUGINDIR PLUGINDIR
++#define DEFAULTLOCDIR LOCDIR
+ #define DEFAULTEPGDATAFILENAME "epg.data"
+ 
+   bool StartedAsRoot = false;
+@@ -189,7 +194,11 @@
+   bool UserDump = false;
+   int SVDRPport = DEFAULTSVDRPPORT;
+   const char *AudioCommand = NULL;
++  const char *VideoDirectory = DEFAULTVIDEODIR;
+   const char *ConfigDirectory = NULL;
++  const char *CacheDirectory = NULL;
++  const char *ResourceDirectory = NULL;
++  const char *LocaleDirectory = DEFAULTLOCDIR;
+   const char *EpgDataFileName = DEFAULTEPGDATAFILENAME;
+   bool DisplayHelp = false;
+   bool DisplayVersion = false;
+@@ -198,7 +207,6 @@
+   bool MuteAudio = false;
+   int WatchdogTimeout = DEFAULTWATCHDOG;
+   const char *Terminal = NULL;
+-  const char *LocaleDir = NULL;
+ 
+   bool UseKbd = true;
+   const char *LircDevice = NULL;
+@@ -216,6 +224,7 @@
+ 
+   static struct option long_options[] = {
+       { "audio",    required_argument, NULL, 'a' },
++      { "cachedir", required_argument, NULL, 'c' | 0x100 },
+       { "config",   required_argument, NULL, 'c' },
+       { "daemon",   no_argument,       NULL, 'd' },
+       { "device",   required_argument, NULL, 'D' },
+@@ -235,6 +244,7 @@
+       { "plugin",   required_argument, NULL, 'P' },
+       { "port",     required_argument, NULL, 'p' },
+       { "record",   required_argument, NULL, 'r' },
++      { "resdir",   required_argument, NULL, 'r' | 0x100 },
+       { "shutdown", required_argument, NULL, 's' },
+       { "split",    no_argument,       NULL, 's' | 0x100 },
+       { "terminal", required_argument, NULL, 't' },
+@@ -252,6 +262,9 @@
+         switch (c) {
+           case 'a': AudioCommand = optarg;
+                     break;
++          case 'c' | 0x100:
++                    CacheDirectory = optarg;
++                    break;
+           case 'c': ConfigDirectory = optarg;
+                     break;
+           case 'd': DaemonMode = true; break;
+@@ -327,7 +340,7 @@
+                     break;
+           case 'l' | 0x200:
+                     if (access(optarg, R_OK | X_OK) == 0)
+-                       LocaleDir = optarg;
++                       LocaleDirectory = optarg;
+                     else {
+                        fprintf(stderr, "vdr: can't access locale directory: %s\n", optarg);
+                        return 2;
+@@ -349,6 +362,9 @@
+                     break;
+           case 'r': cRecordingUserCommand::SetCommand(optarg);
+                     break;
++          case 'r' | 0x100:
++                    ResourceDirectory = optarg;
++                    break;
+           case 's': ShutdownHandler.SetShutdownCommand(optarg);
+                     break;
+           case 's' | 0x100:
+@@ -414,6 +430,7 @@
+      if (DisplayHelp) {
+         printf("Usage: vdr [OPTIONS]\n\n"          // for easier orientation, this is column 80|
+                "  -a CMD,   --audio=CMD    send Dolby Digital audio to stdin of command CMD\n"
++               "            --cachedir=DIR save cache files in DIR (default: %s)\n"
+                "  -c DIR,   --config=DIR   read config files from DIR (default: %s)\n"
+                "  -d,       --daemon       run in daemon mode\n"
+                "  -D NUM,   --device=NUM   use only the given DVB device (NUM = 0, 1, 2...)\n"
+@@ -450,6 +467,7 @@
+                "                           0 turns off SVDRP\n"
+                "  -P OPT,   --plugin=OPT   load a plugin defined by the given options\n"
+                "  -r CMD,   --record=CMD   call CMD before and after a recording\n"
++               "            --resdir=DIR   read resource files from DIR (default: %s)\n"
+                "  -s CMD,   --shutdown=CMD call CMD to shutdown the computer\n"
+                "            --split        split edited files at the editing marks (only\n"
+                "                           useful in conjunction with --edit)\n"
+@@ -464,14 +482,16 @@
+                "  -w SEC,   --watchdog=SEC activate the watchdog timer with a timeout of SEC\n"
+                "                           seconds (default: %d); '0' disables the watchdog\n"
+                "\n",
++               DEFAULTCACHEDIR,
+                DEFAULTCONFDIR,
+                DEFAULTEPGDATAFILENAME,
+                MAXVIDEOFILESIZEDEFAULT,
+                DEFAULTPLUGINDIR,
+                LIRC_DEVICE,
+-               LOCDIR,
++               DEFAULTLOCDIR,
+                DEFAULTSVDRPPORT,
+-               VideoDirectory,
++               DEFAULTRESDIR,
++               DEFAULTVIDEODIR,
+                DEFAULTWATCHDOG
+                );
+         }
+@@ -555,7 +575,7 @@
+ 
+   // Initialize internationalization:
+ 
+-  I18nInitialize(LocaleDir);
++  I18nInitialize(LocaleDirectory);
+ 
+   // Main program loop variables - need to be here to have them initialized before any EXIT():
+ 
+@@ -577,14 +597,22 @@
+   if (!PluginManager.LoadPlugins(true))
+      EXIT(2);
+ 
+-  // Configuration data:
++  // Directories:
+ 
++  SetVideoDirectory(VideoDirectory);
+   if (!ConfigDirectory)
+      ConfigDirectory = DEFAULTCONFDIR;
+-
+   cPlugin::SetConfigDirectory(ConfigDirectory);
++  if (!CacheDirectory)
++     CacheDirectory = DEFAULTCACHEDIR;
++  cPlugin::SetCacheDirectory(CacheDirectory);
++  if (!ResourceDirectory)
++     ResourceDirectory = DEFAULTRESDIR;
++  cPlugin::SetResourceDirectory(ResourceDirectory);
+   cThemes::SetThemesDirectory(AddDirectory(ConfigDirectory, "themes"));
+ 
++  // Configuration data:
++
+   Setup.Load(AddDirectory(ConfigDirectory, "setup.conf"));
+   Sources.Load(AddDirectory(ConfigDirectory, "sources.conf"), true, true);
+   Diseqcs.Load(AddDirectory(ConfigDirectory, "diseqc.conf"), true, Setup.DiSEqC);
+@@ -618,7 +646,7 @@
+         EpgDataFileName = DEFAULTEPGDATAFILENAME;
+         }
+      else if (*EpgDataFileName != '/' && *EpgDataFileName != '.')
+-        EpgDirectory = VideoDirectory;
++        EpgDirectory = CacheDirectory;
+      if (EpgDirectory)
+         cSchedules::SetEpgDataFileName(AddDirectory(EpgDirectory, EpgDataFileName));
+      else
+diff -u -b -r2.2 ./videodir.c
+--- ./videodir.c	2012/06/10 13:45:21	2.2
++++ ./videodir.c	2012/09/01 10:57:44
+@@ -21,6 +21,11 @@
+ 
+ const char *VideoDirectory = VIDEODIR;
+ 
++void SetVideoDirectory(const char *Directory)
++{
++  VideoDirectory = strdup(Directory);
++}
++
+ class cVideoDirectory {
+ private:
+   char *name, *stored, *adjusted;
+diff -u -b -r2.1 ./videodir.h
+--- ./videodir.h	2012/04/22 15:07:56	2.1
++++ ./videodir.h	2012/09/01 10:57:07
+@@ -15,6 +15,7 @@
+ 
+ extern const char *VideoDirectory;
+ 
++void SetVideoDirectory(const char *Directory);
+ cUnbufferedFile *OpenVideoFile(const char *FileName, int Flags);
+ int CloseVideoFile(cUnbufferedFile *File);
+ bool RenameVideoFile(const char *OldName, const char *NewName);

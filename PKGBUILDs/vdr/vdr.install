@@ -3,12 +3,16 @@ post_install() {
   groupadd -g 666 vdr 2> /dev/null
   useradd -m -g vdr -u 666 -G audio,lp,optical,storage,video,power,uucp vdr 2> /dev/null
 
+  #Create cachedir
+  mkdir -p /var/cache/vdr
+  chown -R vdr:vdr /var/cache/vdr
+
   #Create configdir
   mkdir -p /var/lib/vdr
   chown -R vdr:vdr /var/lib/vdr
 
   #Create videodir
-  mkdir -p /srv/vdr/video0
+  mkdir -p /srv/vdr/video
   chown -R vdr:vdr /srv/vdr
 
   chgrp vdr /usr/lib/vdr/bin/shutdown-wrapper
@@ -30,9 +34,28 @@ post_remove() {
 }
 
 post_upgrade() {
-  #Remove syslog-ng rule
-  sed -i '/d_vdr/d' /etc/syslog-ng/syslog-ng.conf
-  sed -i '/f_vdr/d' /etc/syslog-ng/syslog-ng.conf
+  #Add vdr to group uucp to fix permission problems with SDC Megtron displays
+  if ! groups vdr | grep uucp > /dev/null; then
+    gpasswd -a vdr uucp
+  fi
 
-  post_install
+  #Move videodir to match new FHS standards
+  if [ -d /srv/vdr/video0 ] && [ ! -L /srv/vdr/video ]; then
+    echo 'WARNING! Due to FHS changes the video dir moved from /srv/vdr/video0 to /srv/vdr/video'
+    ln -s /srv/vdr/video0 /srv/vdr/video
+    chown -R vdr:vdr /srv/vdr
+    echo 'A symlink was created to allow updating without manual intervention'
+  fi
+
+  #Move epg.data to match new FHS standards
+  if [ -e /srv/vdr/video/epg.data ]; then
+    echo 'WARNING! Due to FHS changes the epg.data file moved from /srv/vdr/video0 to /var/cache/vdr'
+    mkdir -p /var/cache/vdr
+    mv /srv/vdr/video/epg.data /var/cache/vdr/epg.data
+    chown -R vdr:vdr /var/cache/vdr
+    echo 'The epg.data file was moved to its new place'
+  fi
+
+  chgrp vdr /usr/lib/vdr/bin/shutdown-wrapper
+  chmod u+s /usr/lib/vdr/bin/shutdown-wrapper
 }
