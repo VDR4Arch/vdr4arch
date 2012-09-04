@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=oscam
-pkgver=7270
-pkgrel=2
+pkgver=7316
+pkgrel=1
 pkgdesc=""
-url="http://www.oscam.to"
+url="http://www.oscam.cc"
 arch=('x86_64' 'i686')
 license=('GPL3')
 depends=('bash' 'libusb' 'openssl')
@@ -27,12 +27,12 @@ backup=('etc/logrotate.d/oscam'
         'var/lib/oscam/oscam.user'
         'var/lib/oscam/oscam.whitelist')
 install=''
-source=("${pkgname}-${pkgver}.zip::http://streamboard.de.vu:8001/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
+source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
         'oscam.logrotate'
         'oscam.service'
         'rc.oscam')
 noextract="${pkgname}-${pkgver}.zip"
-md5sums=('c2b8cc75af514e53afc6da14a5d2ea89'
+md5sums=('4eed46efd4e90af5a2ebb008784f1aeb'
          '1fadb043e8bf28f3a5fed8732dad39a3'
          '5aff1b9db0027133f3f104fb19d5820c'
          '3696ac9fa61a8eafbfd0b5bac68b735e')
