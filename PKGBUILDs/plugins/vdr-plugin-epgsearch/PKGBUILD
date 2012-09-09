@@ -2,7 +2,7 @@
 pkgname=vdr-plugin-epgsearch
 pkgver=1.0.1.beta2
 _vdrapi=1.7.29
-pkgrel=1
+pkgrel=2
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686')
@@ -22,11 +22,11 @@ package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make CFLAGS="$CFLAGS -fPIC" \
-       CXXFLAGS="$CXXFLAGS -fPIC" \
-       VDRDIR=/usr/include/vdr \
-       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
-       LOCALEDIR=$pkgdir/usr/share/locale \
+  make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       VDRDIR="$(pkg-config vdr --variable=includedir)/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
        MANDIR=$pkgdir/usr/share/man \
        all install-doc
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"

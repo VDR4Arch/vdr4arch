@@ -2,7 +2,7 @@
 pkgname=vdr-plugin-remote
 pkgver=0.4.0
 _vdrapi=1.7.29
-pkgrel=1
+pkgrel=2
 pkgdesc="This plugin extends the remote control capabilities of vdr"
 url="http://www.escape-edv.de/endriss/vdr/"
 arch=('x86_64' 'i686')
@@ -21,7 +21,7 @@ source=("http://www.escape-edv.de/endriss/vdr/vdr-${_plugname}-${pkgver}.tgz"
         '70-remote-device.rules')
 md5sums=('336fa829fc24100d47545094218141a6'
          'd9969bd002e4c0b5289203c02a18f26b'
-         '180249e83f867e11a9c0c73e9b4805c8'
+         'bc604e2dff886fb683048590fc5f63c8'
          '3e5fa190135b128a575dd90b14c4433a')
 
 package() {
@@ -30,11 +30,11 @@ package() {
   patch -p1 -i ${srcdir}/remote-0.4.0_remove_oldi18n.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make CFLAGS="$CFLAGS -fPIC" \
-       CXXFLAGS="$CXXFLAGS -fPIC" \
-       VDRDIR=/usr/include/vdr \
-       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
-       LOCALEDIR=$pkgdir/usr/share/locale
+  make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       VDRDIR="$(pkg-config vdr --variable=includedir)/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
 
   install -Dm644 ${srcdir}/70-remote-device.rules "$pkgdir/usr/lib/udev/rules.d/70-remote-device.rules"
   install -Dm644 ${srcdir}/av7110_ir_vdr_perms.conf "$pkgdir/usr/lib/modprobe.d/av7110_ir_vdr_perms.conf"

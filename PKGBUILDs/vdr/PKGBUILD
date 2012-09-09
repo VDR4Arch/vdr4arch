@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr
 pkgver=1.7.29
-pkgrel=5
+pkgrel=6
 pkgdesc=""
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -56,8 +56,6 @@ EOF
   patch -p1 -i ${srcdir}/MainMenuHooks-v1_0_2.diff
   patch -i ${srcdir}/vdr-1.7.29-fhs.diff
   patch -i ${srcdir}/vdr-1.7.29-sortrectopmenu.diff
-
-  make plugins
 
   ## Build core VDR with recommended optimization level
   CFLAGS=$(echo "$CFLAGS" | sed 's/-O2/-O3/g')

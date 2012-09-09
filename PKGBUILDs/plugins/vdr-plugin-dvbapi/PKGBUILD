@@ -2,7 +2,7 @@
 pkgname=vdr-plugin-dvbapi
 pkgver=1.0.2
 _vdrapi=1.7.29
-pkgrel=2
+pkgrel=3
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
@@ -24,14 +24,20 @@ package() {
 
   patch -i ${srcdir}/match_oscam_dvbapi_changes.diff
 
+  if [ "${CARCH}" = "x86_64" ]; then
+    CPUOPT='x86-64'
+  else
+    CPUOPT="${CARCH}"
+  fi
+
   mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make CFLAGS="$CFLAGS -fPIC" \
-       CXXFLAGS="$CXXFLAGS -fPIC" \
-       VDRDIR=/usr/include/vdr \
-       LIBDIR=$pkgdir/usr/lib/vdr/plugins \
-       LOCALEDIR=$pkgdir/usr/share/locale \
-       CPUOPT=native \
+  make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       VDRDIR="$(pkg-config vdr --variable=includedir)/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
+       CPUOPT="$CPUOPT" \
        PARALLEL=PARALLEL_128_SSE2 \
-       CSAFLAGS="-O3 -fexpensive-optimizations -fPIC -funroll-loops -mmmx -msse -msse2"
+       CSAFLAGS="$(pkg-config vdr --variable=plugincflags) -funroll-loops"
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
