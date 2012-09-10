@@ -2,8 +2,8 @@
 pkgname=vdr-plugin-graphlcd
 pkgver=20120327
 _gitver=f0c1141
-_vdrapi=1.7.29
-pkgrel=2
+_vdrapi=1.7.30
+pkgrel=3
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
