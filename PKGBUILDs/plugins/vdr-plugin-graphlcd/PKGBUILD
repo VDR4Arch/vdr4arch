@@ -14,12 +14,16 @@ makedepends=()
 conflicts=()
 replaces=()
 backup=()
-install='vdr-plugin-graphlcd.install'
-source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
-md5sums=('347a8132ef2545ef187902f418aa0d2c')
+install=''
+source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2"
+        'graphlcd-1.7.30-fhs.diff')
+md5sums=('347a8132ef2545ef187902f418aa0d2c'
+         'f79593b7c2db7cbc4682ed34af848fd9')
 
 package() {
   cd "${srcdir}/${pkgname}-${_gitver}"
+
+  patch -i ${srcdir}/graphlcd-1.7.30-fhs.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
@@ -28,13 +32,8 @@ package() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)"
 
-  install -Dm644 graphlcd/channels.alias $pkgdir/var/lib/vdr/plugins/graphlcd/channels.alias
-
-  mkdir -p $pkgdir/usr/share/vdr/graphlcd/fonts
-  cp -r graphlcd/fonts graphlcd/logos graphlcd/skins $pkgdir/usr/share/vdr/graphlcd
-  ln -s /usr/share/vdr/graphlcd/fonts $pkgdir/var/lib/vdr/plugins/graphlcd
-  ln -s /usr/share/vdr/graphlcd/logos $pkgdir/var/lib/vdr/plugins/graphlcd
-  ln -s /usr/share/vdr/graphlcd/skins $pkgdir/var/lib/vdr/plugins/graphlcd
+  mkdir -p $pkgdir/usr/share/vdr/plugins
+  cp -r graphlcd $pkgdir/usr/share/vdr/plugins/
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

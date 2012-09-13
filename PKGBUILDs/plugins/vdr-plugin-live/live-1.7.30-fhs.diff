@@ -1,0 +1,257 @@
+diff -ruN vdr-plugin-live-94a0a21/live.cpp vdr-plugin-live-94a0a21.patched/live.cpp
+--- vdr-plugin-live-94a0a21/live.cpp	2012-03-25 16:42:12.000000000 +0200
++++ vdr-plugin-live-94a0a21.patched/live.cpp	2012-09-12 01:10:11.314032385 +0200
+@@ -4,6 +4,7 @@
+  * See the README file for copyright information and how to reach the author.
+  */
+ 
++#include <vdr/config.h>
+ #include <vdr/plugin.h>
+ #include "i18n.h"
+ #include "live.h"
+@@ -23,6 +24,9 @@
+ const char *Plugin::DESCRIPTION    = LIVESUMMARY;
+ 
+ std::string Plugin::m_configDirectory;
++#if APIVERSNUM > 10729
++std::string Plugin::m_resourceDirectory;
++#endif
+ 
+ cUsers Users;
+ 
+@@ -43,6 +47,9 @@
+ bool Plugin::Start(void)
+ {
+ 	m_configDirectory = canonicalize_file_name(cPlugin::ConfigDirectory( PLUGIN_NAME_I18N ));
++#if APIVERSNUM > 10729
++	m_resourceDirectory = canonicalize_file_name(cPlugin::ResourceDirectory( PLUGIN_NAME_I18N ));
++#endif
+ 
+ #if VDRVERSNUM < 10507
+ 	RegisterI18n( vdrlive::Phrases );
+@@ -51,7 +58,11 @@
+ 	LiveStatusMonitor();
+ 
+ 	// preload files into file Cache
++#if APIVERSNUM > 10729
++	PreLoadFileCache(m_resourceDirectory);
++#else
+ 	PreLoadFileCache(m_configDirectory);
++#endif
+ 
+ 	// load users
+ 	Users.Load(AddDirectory(m_configDirectory.c_str(), "users.conf"), true);
+diff -ruN vdr-plugin-live-94a0a21/live.h vdr-plugin-live-94a0a21.patched/live.h
+--- vdr-plugin-live-94a0a21/live.h	2012-03-25 16:42:12.000000000 +0200
++++ vdr-plugin-live-94a0a21.patched/live.h	2012-09-12 01:08:54.402009350 +0200
+@@ -3,6 +3,7 @@
+ 
+ #include <memory>
+ #include <string>
++#include <vdr/config.h>
+ #include <vdr/plugin.h>
+ #include "thread.h"
+ 
+@@ -23,12 +24,18 @@
+ 	virtual bool SetupParse(const char *Name, const char *Value);
+ 
+ 	static std::string const& GetConfigDirectory() { return m_configDirectory; }
++#if APIVERSNUM > 10729
++	static std::string const& GetResourceDirectory() { return m_resourceDirectory; }
++#endif
+ 
+ private:
+ 	static const char *VERSION;
+ 	static const char *DESCRIPTION;
+ 
+ 	static std::string m_configDirectory;
++#if APIVERSNUM > 10729
++	static std::string m_resourceDirectory;
++#endif
+ 
+ 	std::auto_ptr< ServerThread > m_thread;
+ };
+diff -ruN vdr-plugin-live-94a0a21/tntconfig.cpp vdr-plugin-live-94a0a21.patched/tntconfig.cpp
+--- vdr-plugin-live-94a0a21/tntconfig.cpp	2012-03-25 16:42:12.000000000 +0200
++++ vdr-plugin-live-94a0a21.patched/tntconfig.cpp	2012-09-12 01:08:54.402009350 +0200
+@@ -31,6 +31,9 @@
+ 		WriteProperties();
+ 
+ 		string const configDir(Plugin::GetConfigDirectory());
++#if APIVERSNUM > 10729
++		string const resourceDir(Plugin::GetResourceDirectory());
++#endif
+ 
+ 		ostringstream builder;
+ 		builder << configDir << "/httpd.config";
+@@ -72,7 +75,11 @@
+ 
+ 		// the following selects the theme specific 'theme.css' file
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
++#if APIVERSNUM > 10729
++		file << "MapUrl ^/themes/([^/]*)/css.*/(.+\\.css) content@ " << resourceDir << "/themes/$1/css/$2 text/css" << endl;
++#else
+ 		file << "MapUrl ^/themes/([^/]*)/css.*/(.+\\.css) content@ " << configDir << "/themes/$1/css/$2 text/css" << endl;
++#endif
+ 
+ 		// the following rules provide a search scheme for images. The first
+ 		// rule where a image is found, terminates the search.
+@@ -80,8 +87,13 @@
+ 		// 2. /img/<imgname>.<ext>
+ 		// deprecated: 3. <imgname>.<ext> (builtin images)
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
++#if APIVERSNUM > 10729
++		file << "MapUrl ^/themes/([^/]*)/img.*/(.+)\\.(.+) content@ " << resourceDir << "/themes/$1/img/$2.$3 image/$3" << endl;
++		file << "MapUrl ^/themes/([^/]*)/img.*/(.+)\\.(.+) content@ " << resourceDir << "/img/$2.$3 image/$3" << endl;
++#else
+ 		file << "MapUrl ^/themes/([^/]*)/img.*/(.+)\\.(.+) content@ " << configDir << "/themes/$1/img/$2.$3 image/$3" << endl;
+ 		file << "MapUrl ^/themes/([^/]*)/img.*/(.+)\\.(.+) content@ " << configDir << "/img/$2.$3 image/$3" << endl;
++#endif
+ 		// deprecated: file << "MapUrl ^/themes/([^/]*)/img.*/(.+)\\.(.+) $2@" << endl;
+ 
+ 		// Epg images
+@@ -98,18 +110,34 @@
+ 		// WARNING: no path components with '.' in the name are allowed. Only
+ 		// the basename may contain dots and must end with '.js'
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
++#if APIVERSNUM > 10729
++		file << "MapUrl ^/js(/[^.]*)([^/]*\\.js) content@ " << resourceDir << "/js$1$2 text/javascript" << endl;
++#else
+ 		file << "MapUrl ^/js(/[^.]*)([^/]*\\.js) content@ " << configDir << "/js$1$2 text/javascript" << endl;
++#endif
+ 
+ 		// map to 'css/basename(uri)'
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
++#if APIVERSNUM > 10729
++		file << "MapUrl ^/css.*/(.+) content@ " << resourceDir << "/css/$1 text/css" << endl;
++#else
+ 		file << "MapUrl ^/css.*/(.+) content@ " << configDir << "/css/$1 text/css" << endl;
++#endif
+ 
+ 		// map to 'img/basename(uri)'
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
++#if APIVERSNUM > 10729
++		file << "MapUrl ^/img.*/(.+)\\.([^.]+) content@ " << resourceDir << "/img/$1.$2 image/$2" << endl;
++#else
+ 		file << "MapUrl ^/img.*/(.+)\\.([^.]+) content@ " << configDir << "/img/$1.$2 image/$2" << endl;
++#endif
+ 
+ 		// Map favicon.ico into img directory
++#if APIVERSNUM > 10729
++		file << "MapUrl ^/favicon.ico$ content@ " << resourceDir << "/img/favicon.ico image/x-icon" << endl;
++#else
+ 		file << "MapUrl ^/favicon.ico$ content@ " << configDir << "/img/favicon.ico image/x-icon" << endl;
++#endif
+ 
+ 		// insecure by default: DO NOT UNKOMMENT!!!
+ 		// file << "MapUrl /([^/]+/.+) content@ $1" << endl;
+@@ -156,6 +184,9 @@
+ 	void TntConfig::Configure(tnt::Tntnet& app) const
+ 	{
+ 		string const configDir(Plugin::GetConfigDirectory());
++#if APIVERSNUM > 10729
++		string const resourceDir(Plugin::GetResourceDirectory());
++#endif
+ 
+ 		std::istringstream logConf(
+ 			"rootLogger=" + LiveSetup().GetTntnetLogLevel() + "\n"
+@@ -199,7 +230,11 @@
+ 		// the following selects the theme specific 'theme.css' file
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
+ 		app.mapUrl("^/themes/([^/]*)/css.*/(.+\\.css)", "content")
++#if APIVERSNUM > 10729
++			.setPathInfo(resourceDir + "/themes/$1/css/$2")
++#else
+ 			.setPathInfo(configDir + "/themes/$1/css/$2")
++#endif
+ 			.pushArg("text/css");
+ 
+ 		// the following rules provide a search scheme for images. The first
+@@ -209,10 +244,18 @@
+ 		// deprecated: 3. <imgname>.<ext> (builtin images)
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
+ 		app.mapUrl("^/themes/([^/]*)/img.*/(.+)\\.(.+)", "content")
++#if APIVERSNUM > 10729
++			.setPathInfo(resourceDir + "/themes/$1/img/$2.$3")
++#else
+ 			.setPathInfo(configDir + "/themes/$1/img/$2.$3")
++#endif
+ 			.pushArg("image/$3");
+ 		app.mapUrl("^/themes/([^/]*)/img.*/(.+)\\.(.+)", "content")
++#if APIVERSNUM > 10729
++			.setPathInfo(resourceDir + "/img/$2.$3")
++#else
+ 			.setPathInfo(configDir + "/img/$2.$3")
++#endif
+ 			.pushArg("image/$3");
+ 		// deprecated: file << "MapUrl ^/themes/([^/]*)/img.*/(.+)\\.(.+) $2@" << endl;
+ 
+@@ -230,24 +273,40 @@
+ 		// the basename may contain dots and must end with '.js'
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
+ 		app.mapUrl("^/js(/[^.]*)([^/]*\\.js)", "content")
++#if APIVERSNUM > 10729
++			.setPathInfo(resourceDir + "/js$1$2")
++#else
+ 			.setPathInfo(configDir + "/js$1$2")
++#endif
+ 			.pushArg("text/javascript");
+ 
+ 		// map to 'css/basename(uri)'
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
+ 		app.mapUrl("^/css.*/(.+)", "content")
++#if APIVERSNUM > 10729
++			.setPathInfo(resourceDir + "/css/$1")
++#else
+ 			.setPathInfo(configDir + "/css/$1")
++#endif
+ 			.pushArg("text/css");
+ 
+ 		// map to 'img/basename(uri)'
+ 		// inserted by 'tadi' -- verified with above, but not counterchecked yet!
+ 		app.mapUrl("^/img.*/(.+)\\.([^.]+)", "content")
++#if APIVERSNUM > 10729
++			.setPathInfo(resourceDir + "/img/$1.$2")
++#else
+ 			.setPathInfo(configDir + "/img/$1.$2")
++#endif
+ 			.pushArg("image/$2");
+ 
+ 		// Map favicon.ico into img directory
+ 		app.mapUrl("^/favicon.ico$", "content")
++#if APIVERSNUM > 10729
++			.setPathInfo(resourceDir + "/img/favicon.ico")
++#else
+ 			.setPathInfo(configDir + "/img/favicon.ico")
++#endif
+ 			.pushArg("image/x-icon");
+ 
+ 		// takes first path components without 'extension' when it does not
+diff -ruN vdr-plugin-live-94a0a21/tntconfig.h vdr-plugin-live-94a0a21.patched/tntconfig.h
+--- vdr-plugin-live-94a0a21/tntconfig.h	2012-03-25 16:42:12.000000000 +0200
++++ vdr-plugin-live-94a0a21.patched/tntconfig.h	2012-09-12 01:08:54.402009350 +0200
+@@ -3,6 +3,7 @@
+ 
+ #include <string>
+ #include <tnt/tntnet.h>
++#include <vdr/config.h>
+ #include "tntfeatures.h"
+ 
+ namespace vdrlive {
+@@ -26,10 +27,16 @@
+ 			static TntConfig const& Get();
+ 
+ 			std::string const& GetConfigPath() const { return m_configPath; }
++#if APIVERSNUM > 10729
++			std::string const& GetResourcePath() const { return m_resourcePath; }
++#endif
+ 
+ 		private:
+ 			std::string m_propertiesPath;
+ 			std::string m_configPath;
++#if APIVERSNUM > 10729
++			std::string m_resourcePath;
++#endif
+ 
+ 			TntConfig();
+ 			TntConfig( TntConfig const& );
