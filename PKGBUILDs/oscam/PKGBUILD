@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=oscam
-pkgver=7316
+pkgver=7442
 pkgrel=1
 pkgdesc=""
 url="http://www.oscam.cc"
@@ -32,7 +32,7 @@ source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${p
         'oscam.service'
         'rc.oscam')
 noextract="${pkgname}-${pkgver}.zip"
-md5sums=('4eed46efd4e90af5a2ebb008784f1aeb'
+md5sums=('ab87147e68762ab197e5a8e85ccf85d9'
          '1fadb043e8bf28f3a5fed8732dad39a3'
          '5aff1b9db0027133f3f104fb19d5820c'
          '3696ac9fa61a8eafbfd0b5bac68b735e')
@@ -40,7 +40,7 @@ md5sums=('4eed46efd4e90af5a2ebb008784f1aeb'
 
 build() {
   cd "$srcdir"
-  unzip "${pkgname}-${pkgver}.zip" -x "/"
+  cat "${pkgname}-${pkgver}.zip" | bsdtar -xf -
 
   cd "${srcdir}/trunk"
   chmod +x config.sh

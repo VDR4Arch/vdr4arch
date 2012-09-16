@@ -1,13 +1,13 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-play
-pkgver=0.0.11
+pkgver=0.0.12
 _vdrapi=1.7.30
-pkgrel=3
+pkgrel=1
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/plg-play"
 arch=('x86_64' 'i686')
 license=('AGPL3')
-depends=('gcc-libs' 'mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
+depends=('mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
 optdepends=()
 makedepends=()
 conflicts=()
@@ -15,8 +15,8 @@ replaces=()
 backup=()
 install=''
 _plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1013/vdr-$_plugname-$pkgver.tgz")
-md5sums=('72a3bc148856129cb1541c52d986f074')
+source=("http://projects.vdr-developer.org/attachments/download/1043/vdr-$_plugname-$pkgver.tgz")
+md5sums=('c32adb96ccfedbc26f4170f2526ae73c')
 
 
 package() {

@@ -15,15 +15,11 @@ replaces=()
 backup=()
 install='vdr-plugin-osdteletext.install'
 _plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
-source=("http://projects.vdr-developer.org/attachments/download/912/vdr-$_plugname-$pkgver.tgz"
-        'osdteletext-0.9.3-allow-cxx-override.diff')
-md5sums=('e6a19d075fa99a3d81f29826d01ad9ba'
-         '0a5913b42173bae39f33ebea0e9856b1')
+source=("http://projects.vdr-developer.org/attachments/download/912/vdr-$_plugname-$pkgver.tgz")
+md5sums=('e6a19d075fa99a3d81f29826d01ad9ba')
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
-  patch -i ${srcdir}/osdteletext-0.9.3-allow-cxx-override.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \

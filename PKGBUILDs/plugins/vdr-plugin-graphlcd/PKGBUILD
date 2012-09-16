@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-graphlcd
-pkgver=20120327
-_gitver=f0c1141
+pkgver=20120913
+_gitver=4bda8284
 _vdrapi=1.7.30
-pkgrel=3
+pkgrel=1
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
@@ -15,15 +15,11 @@ conflicts=()
 replaces=()
 backup=()
 install=''
-source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2"
-        'graphlcd-1.7.30-fhs.diff')
-md5sums=('347a8132ef2545ef187902f418aa0d2c'
-         'f79593b7c2db7cbc4682ed34af848fd9')
+source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
+md5sums=('5240d5d3d35bac343b623bc698bd7146')
 
 package() {
   cd "${srcdir}/${pkgname}-${_gitver}"
-
-  patch -i ${srcdir}/graphlcd-1.7.30-fhs.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
