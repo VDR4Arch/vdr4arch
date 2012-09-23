@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr
 pkgver=1.7.30
-pkgrel=1
+pkgrel=2
 pkgdesc=""
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -38,24 +38,21 @@ build() {
 
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-cat > Make.config <<EOF
-PREFIX       = /usr
-LOCDIR       = /usr/share/locale
-PLUGINLIBDIR = /usr/lib/vdr/plugins
-VIDEODIR     = /srv/vdr/video
-CONFDIR      = /var/lib/vdr
-CACHEDIR     = /var/cache/vdr
-RESDIR       = /usr/share/vdr
-VDR_USER     = vdr
-EOF
-
   patch -p1 -i ${srcdir}/MainMenuHooks-v1_0_2.diff
 
   ## Build core VDR with recommended optimization level
   CFLAGS=$(echo "$CFLAGS" | sed 's/-O2/-O3/g')
   CXXFLAGS=$(echo "$CXXFLAGS" | sed 's/-O2/-O3/g')
 
-  make
+  make PREFIX="/usr" \
+       LOCDIR="/usr/share/locale" \
+       PLUGINLIBDIR="/usr/lib/vdr/plugins" \
+       VIDEODIR="/srv/vdr/video" \
+       CONFDIR="/var/lib/vdr" \
+       CACHEDIR="/var/cache/vdr" \
+       RESDIR="/usr/share/vdr" \
+       VDR_USER="vdr" \
+       all plugins
 }
 
 package() {
