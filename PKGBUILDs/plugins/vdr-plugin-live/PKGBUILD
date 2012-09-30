@@ -2,8 +2,8 @@
 pkgname=vdr-plugin-live
 pkgver=20120325
 _gitver=94a0a21
-_vdrapi=1.7.30
-pkgrel=3
+_vdrapi=1.7.31
+pkgrel=4
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
 url="http://projects.vdr-developer.org/projects/plg-extrecmenu"
 arch=('x86_64' 'i686')

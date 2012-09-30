@@ -2,8 +2,8 @@
 pkgname=vdr-plugin-softhddevice
 pkgver=20120915
 _gitver=0cf4598f
-_vdrapi=1.7.30
-pkgrel=1
+_vdrapi=1.7.31
+pkgrel=2
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')

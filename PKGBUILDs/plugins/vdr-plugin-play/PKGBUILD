@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-play
 pkgver=0.0.12
-_vdrapi=1.7.30
-pkgrel=1
+_vdrapi=1.7.31
+pkgrel=2
 pkgdesc=""
 url="http://projects.vdr-developer.org/projects/plg-play"
 arch=('x86_64' 'i686')

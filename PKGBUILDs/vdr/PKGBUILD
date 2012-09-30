@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr
-pkgver=1.7.30
-pkgrel=2
+pkgver=1.7.31
+pkgrel=1
 pkgdesc=""
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -25,7 +25,7 @@ source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
         'shutdown.sh'
         'shutdown-wrapper.c'
         'vdr.logrotate')
-md5sums=('c6d75f2962bc3e22d9313c0ee4fa113a'
+md5sums=('a3edd18a352465dd26c97c1990f7bcfd'
          '32dcab4ce46f8164977ab3abdeccec57'
          '301c9b9766ed5182b07f1debc79abc21'
          'ef8e11062f58a9eb4016dfbf66bb9044'
@@ -38,21 +38,24 @@ build() {
 
   cd "${srcdir}/${pkgname}-${pkgver}"
 
+cat > Make.config <<EOF
+PREFIX       = /usr
+LOCDIR       = /usr/share/locale
+PLUGINLIBDIR = /usr/lib/vdr/plugins
+VIDEODIR     = /srv/vdr/video
+CONFDIR      = /var/lib/vdr
+CACHEDIR     = /var/cache/vdr
+RESDIR       = /usr/share/vdr
+VDR_USER     = vdr
+EOF
+
   patch -p1 -i ${srcdir}/MainMenuHooks-v1_0_2.diff
 
   ## Build core VDR with recommended optimization level
   CFLAGS=$(echo "$CFLAGS" | sed 's/-O2/-O3/g')
   CXXFLAGS=$(echo "$CXXFLAGS" | sed 's/-O2/-O3/g')
 
-  make PREFIX="/usr" \
-       LOCDIR="/usr/share/locale" \
-       PLUGINLIBDIR="/usr/lib/vdr/plugins" \
-       VIDEODIR="/srv/vdr/video" \
-       CONFDIR="/var/lib/vdr" \
-       CACHEDIR="/var/cache/vdr" \
-       RESDIR="/usr/share/vdr" \
-       VDR_USER="vdr" \
-       all plugins
+  make all plugins
 }
 
 package() {
