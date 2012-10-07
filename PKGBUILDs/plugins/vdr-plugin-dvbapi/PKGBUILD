@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-dvbapi
-pkgver=1.0.2
+pkgver=1.0.3
 _vdrapi=1.7.31
-pkgrel=5
+pkgrel=1
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
@@ -14,15 +14,11 @@ conflicts=()
 replaces=()
 backup=()
 install=''
-source=("$pkgname-$pkgver.tar.bz2::https://github.com/manio/$pkgname/tarball/v$pkgver"
-        'match_oscam_dvbapi_changes.diff')
-md5sums=('59b395c23f74b3bb1e253fd1eae5166e'
-         'ccfe482ad5a3647e6beac9f3e5abc54a')
+source=("$pkgname-$pkgver.tar.bz2::https://github.com/manio/$pkgname/tarball/v$pkgver")
+md5sums=('cf6ea2cc668d55ad94fb587cc787ee25')
 
 package() {
   cd "${srcdir}/manio-${pkgname}-"*
-
-  patch -i ${srcdir}/match_oscam_dvbapi_changes.diff
 
   if [ "${CARCH}" = "x86_64" ]; then
     CPUOPT='x86-64'
