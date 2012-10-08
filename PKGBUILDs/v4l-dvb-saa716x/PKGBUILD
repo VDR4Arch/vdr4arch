@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=v4l-dvb-saa716x
 pkgver=20120304
-_gitver=f9ecf4091afc
-_extramodules=extramodules-3.4-ARCH
+_hgver=f9ecf4091afc
+_extramodules=extramodules-3.5-ARCH
 pkgrel=1
 pkgdesc=""
 url=""
@@ -15,14 +15,14 @@ conflicts=()
 replaces=()
 backup=()
 install="${pkgname}.install"
-source=("http://powarman.dyndns.org/hgwebdir.cgi/$pkgname/archive/$_gitver.tar.bz2"
+source=("https://bitbucket.org/powARman/$pkgname/get/$_hgver.tar.bz2"
         "compat.diff")
-md5sums=('a9071254bc2cf6e69075c26a008cb763'                                                                         
+md5sums=('a7b48b4ecfd5cf4e2ca7e2574043015b'
          '7e683b6855bbe1984d6aaf725366903b')
 
 build() {
   _kernver="$(cat /lib/modules/${_extramodules}/version)"
-  cd "${srcdir}/${pkgname}-${_gitver}"/linux/drivers/media/common/saa716x
+  cd "${srcdir}/powARman-${pkgname}-${_hgver}"/linux/drivers/media/common/saa716x
 
   patch -i ${srcdir}/compat.diff
 
@@ -30,7 +30,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${_gitver}"
+  cd "${srcdir}/powARman-${pkgname}-${_hgver}"
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
   cd linux/drivers/media/common/saa716x
 
