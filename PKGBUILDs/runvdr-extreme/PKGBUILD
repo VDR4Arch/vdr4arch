@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=runvdr-extreme
 pkgver=0.4.2
-pkgrel=2
+pkgrel=3
 pkgdesc=""
 url="http://www.udo-richter.de/vdr/scripts.html"
 arch=('any')
@@ -24,7 +24,7 @@ md5sums=('ca95ce455fc6e66fcaa4b3476ecdcffc'
          '0004d23d3719abe9ce54ce47c32d27d3'
          '5ca14709ba9064a745d6162c04e73630'
          '34569440e13c1b1ffedc006cd0917e7d'
-         '3c5d38859db8f40ab6508fd020b1860b')
+         'cf3d1eedc6e7ac90900de7ad47f8fc68')
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"

@@ -1,6 +1,6 @@
 [Unit]
 Description=Klaus Schmidinger's Video Disk Recorder
-After=lircd.service
+After=lirc.service
 After=oscam.service
 
 [Service]
