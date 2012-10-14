@@ -5,8 +5,8 @@ After=oscam.service
 
 [Service]
 ExecStart=/usr/bin/runvdr
+ExecReload=/usr/bin/runvdr --restart
 ExecStop=/usr/bin/runvdr --terminate --wait=30
-PIDFile=/var/run/runvdr.pid
 
 [Install]
 WantedBy=multi-user.target
