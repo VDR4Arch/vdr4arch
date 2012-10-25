@@ -15,22 +15,19 @@ backup=('var/lib/vdr/channels.conf'
         'var/lib/vdr/keymacros.conf'
         'var/lib/vdr/scr.conf'
         'var/lib/vdr/sources.conf'
-        'var/lib/vdr/svdrphosts.conf'
-        'etc/logrotate.d/vdr')
+        'var/lib/vdr/svdrphosts.conf')
 options='!emptydirs'
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
         '60-vdr-tty.rules'
-        'MainMenuHooks-v1_0_2.diff'
+        'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
         'shutdown.sh'
-        'shutdown-wrapper.c'
-        'vdr.logrotate')
+        'shutdown-wrapper.c')
 md5sums=('a3edd18a352465dd26c97c1990f7bcfd'
          '32dcab4ce46f8164977ab3abdeccec57'
          '301c9b9766ed5182b07f1debc79abc21'
          'ef8e11062f58a9eb4016dfbf66bb9044'
-         '7cad811b4ac5ee6c0b5496d006f1e0ee'
-         '4779390621b11766b94d6a60403b20d7')
+         '7cad811b4ac5ee6c0b5496d006f1e0ee')
 
 build() {
   cd "${srcdir}"
@@ -64,9 +61,9 @@ package() {
   install -Dm755 shutdown.sh "$pkgdir/usr/lib/vdr/bin/shutdown.sh"
 
   install -Dm644 60-vdr-tty.rules "$pkgdir/usr/lib/udev/rules.d/60-vdr-tty.rules"
-  install -Dm644 vdr.logrotate "$pkgdir/etc/logrotate.d/vdr"
 
   cd "${srcdir}/${pkgname}-${pkgver}"
+
   make DESTDIR="${pkgdir}" install
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

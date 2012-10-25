@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=runvdr-extreme
 pkgver=0.4.2
-pkgrel=3
+pkgrel=4
 pkgdesc=""
 url="http://www.udo-richter.de/vdr/scripts.html"
 arch=('any')
@@ -17,14 +17,12 @@ source=("http://www.udo-richter.de/vdr/files/${pkgname}-${pkgver}.tgz"
         'runvdr.conf'
         'runvdr-extreme-0.4.2-bash-4.2-fix.diff'
         'runvdr-extreme-0.4.2-charset-override.diff'
-        'rc.vdr'
         'vdr.service')
 md5sums=('ca95ce455fc6e66fcaa4b3476ecdcffc'
-         '54a08b446787d8e885b301e1ee324662'
+         'c7e16952058ad5497c7af48313e1fce1'
          '0004d23d3719abe9ce54ce47c32d27d3'
          '5ca14709ba9064a745d6162c04e73630'
-         '34569440e13c1b1ffedc006cd0917e7d'
-         'cf3d1eedc6e7ac90900de7ad47f8fc68')
+         'a87b3399675a5493637a7f115475b3f2')
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -32,10 +30,9 @@ package() {
   patch -i ${srcdir}/runvdr-extreme-0.4.2-bash-4.2-fix.diff
   patch -i ${srcdir}/runvdr-extreme-0.4.2-charset-override.diff #By Manuel Reimer
 
-  install -Dm755 runvdr "$pkgdir/usr/bin/runvdr"
+  sed -i -e 's/VDRPRG=$/VDRPRG=vdr/g' runvdr
 
-  install -Dm755 ${srcdir}/rc.vdr "$pkgdir/etc/rc.d/vdr"
-  ln -s /etc/rc.d/vdr "$pkgdir/etc/rc.d/runvdr"
+  install -Dm755 runvdr "$pkgdir/usr/bin/runvdr"
 
   install -Dm755 ${srcdir}/vdr.service "$pkgdir/usr/lib/systemd/system/vdr.service"
   install -Dm644 ${srcdir}/runvdr.conf "$pkgdir/etc/runvdr.conf"

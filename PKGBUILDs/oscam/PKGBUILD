@@ -1,14 +1,13 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=oscam
-pkgver=7488
+pkgver=7805
 pkgrel=1
 pkgdesc=""
 url="http://www.oscam.cc"
 arch=('x86_64' 'i686')
 license=('GPL3')
-depends=('bash' 'libusb' 'openssl')
+depends=('libusb' 'openssl')
 optdepends=()
-makedepends=('unzip')
 conflicts=()
 replaces=()
 backup=('etc/logrotate.d/oscam'
@@ -29,14 +28,11 @@ backup=('etc/logrotate.d/oscam'
 install=''
 source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
         'oscam.logrotate'
-        'oscam.service'
-        'rc.oscam')
+        'oscam.service')
 noextract="${pkgname}-${pkgver}.zip"
-md5sums=('b8d0cdaf1f67880de1b2d49b331da635'
+md5sums=('8f6409faa63a78b67e12fbe9c3badb03'
          '1fadb043e8bf28f3a5fed8732dad39a3'
-         '5aff1b9db0027133f3f104fb19d5820c'
-         '3696ac9fa61a8eafbfd0b5bac68b735e')
-
+         '5aff1b9db0027133f3f104fb19d5820c')
 
 build() {
   cd "$srcdir"
@@ -70,8 +66,7 @@ package() {
   install -Dm644 Distribution/doc/man/*.1 "$pkgdir/usr/share/man/man1"
   install -Dm644 Distribution/doc/man/*.5 "$pkgdir/usr/share/man/man5"
 
-  #Install rc script
-  install -Dm755 ${srcdir}/rc.oscam "$pkgdir/etc/rc.d/oscam"
+  #Install service file
   install -Dm755 ${srcdir}/oscam.service "$pkgdir/usr/lib/systemd/system/oscam.service"
 
   #Install logrotate rule

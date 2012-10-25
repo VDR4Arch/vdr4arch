@@ -1,12 +1,11 @@
 [Unit]
-Description=Klaus Schmidinger's Video Disk Recorder
+Description=Video Disk Recorder
 After=lirc.service
 After=oscam.service
 
 [Service]
 ExecStart=/usr/bin/runvdr
-ExecReload=/usr/bin/runvdr --restart
-ExecStop=/usr/bin/runvdr --terminate --wait=30
+KillMode=process
 
 [Install]
 WantedBy=multi-user.target

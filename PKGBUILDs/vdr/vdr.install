@@ -18,19 +18,11 @@ post_install() {
   chgrp vdr /usr/lib/vdr/bin/shutdown-wrapper
   chmod u+s /usr/lib/vdr/bin/shutdown-wrapper
 
-  #Add syslog-ng rule
-  echo 'destination d_vdr { file("/var/log/vdr.log"); };' >> /etc/syslog-ng/syslog-ng.conf
-  echo 'filter f_vdr { program("vdr"); };' >> /etc/syslog-ng/syslog-ng.conf
-  echo 'log { source(src); filter(f_vdr); destination(d_vdr); };' >> /etc/syslog-ng/syslog-ng.conf
 }
 
 post_remove() {
   #Remove vdr user
   userdel vdr
-
-  #Remove syslog-ng rule
-  sed -i '/d_vdr/d' /etc/syslog-ng/syslog-ng.conf
-  sed -i '/f_vdr/d' /etc/syslog-ng/syslog-ng.conf
 }
 
 post_upgrade() {
