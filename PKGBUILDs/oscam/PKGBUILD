@@ -2,14 +2,11 @@
 pkgname=oscam
 pkgver=7805
 pkgrel=1
-pkgdesc=""
+pkgdesc="Open Source Conditional Access Module software"
 url="http://www.oscam.cc"
 arch=('x86_64' 'i686')
 license=('GPL3')
 depends=('libusb' 'openssl')
-optdepends=()
-conflicts=()
-replaces=()
 backup=('etc/logrotate.d/oscam'
         'var/lib/oscam/oscam.ac'
         'var/lib/oscam/oscam.cacheex'
@@ -25,7 +22,6 @@ backup=('etc/logrotate.d/oscam'
         'var/lib/oscam/oscam.tiers'
         'var/lib/oscam/oscam.user'
         'var/lib/oscam/oscam.whitelist')
-install=''
 source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
         'oscam.logrotate'
         'oscam.service')
@@ -35,7 +31,6 @@ md5sums=('8f6409faa63a78b67e12fbe9c3badb03'
          '5aff1b9db0027133f3f104fb19d5820c')
 
 build() {
-  cd "$srcdir"
   cat "${pkgname}-${pkgver}.zip" | bsdtar -xf -
 
   cd "${srcdir}/trunk"
@@ -74,5 +69,3 @@ package() {
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
-
-# vim:set ts=2 sw=2 et:

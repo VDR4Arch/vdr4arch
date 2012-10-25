@@ -3,16 +3,11 @@ pkgname=vdr-plugin-osdteletext
 pkgver=0.9.3
 _vdrapi=1.7.31
 pkgrel=4
-pkgdesc="A teletext viewer for VDR"
+pkgdesc="Displays teletext pages directly on VDR's OSD"
 url="http://projects.vdr-developer.org/projects/plg-osdteletext"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
-optdepends=()
-makedepends=()
-conflicts=()
-replaces=()
-backup=()
 install='vdr-plugin-osdteletext.install'
 _plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
 source=("http://projects.vdr-developer.org/attachments/download/912/vdr-$_plugname-$pkgver.tgz")

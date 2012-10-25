@@ -4,17 +4,12 @@ pkgver=20120913
 _gitver=4bda8284
 _vdrapi=1.7.31
 pkgrel=2
-pkgdesc=""
+pkgdesc="Plugin for the Video Disc Recorder to display its information"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('graphlcd-base' "vdr-api=${_vdrapi}")
 optdepends=('serdisplib: Support more modern LCDs')
-makedepends=()
-conflicts=()
-replaces=()
-backup=()
-install=''
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
 md5sums=('5240d5d3d35bac343b623bc698bd7146')
 

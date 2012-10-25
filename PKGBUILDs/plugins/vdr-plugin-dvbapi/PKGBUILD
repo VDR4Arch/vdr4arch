@@ -8,12 +8,6 @@ url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
-optdepends=()
-makedepends=()
-conflicts=()
-replaces=()
-backup=()
-install=''
 source=("$pkgname-$pkgver.tar.bz2::https://github.com/manio/$pkgname/tarball/v$pkgver")
 md5sums=('cf6ea2cc668d55ad94fb587cc787ee25')
 

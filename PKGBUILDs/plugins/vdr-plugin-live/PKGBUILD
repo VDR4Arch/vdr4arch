@@ -5,15 +5,10 @@ _gitver=94a0a21
 _vdrapi=1.7.31
 pkgrel=4
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
-url="http://projects.vdr-developer.org/projects/plg-extrecmenu"
+url="http://projects.vdr-developer.org/projects/plg-live"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('pcre' 'tntnet' "vdr-api=${_vdrapi}")
-optdepends=()
-makedepends=()
-conflicts=()
-replaces=()
-backup=()
 install='vdr-plugin-live.install'
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2"
         'live_1.7.28_fix.diff'

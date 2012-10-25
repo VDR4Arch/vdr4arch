@@ -3,21 +3,14 @@ pkgname=vdr-plugin-play
 pkgver=0.0.12
 _vdrapi=1.7.31
 pkgrel=2
-pkgdesc=""
+pkgdesc="Mediaplayer plugin for VDR and X11"
 url="http://projects.vdr-developer.org/projects/plg-play"
 arch=('x86_64' 'i686')
 license=('AGPL3')
 depends=('mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
-optdepends=()
-makedepends=()
-conflicts=()
-replaces=()
-backup=()
-install=''
 _plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1043/vdr-$_plugname-$pkgver.tgz")
 md5sums=('c32adb96ccfedbc26f4170f2526ae73c')
-
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"

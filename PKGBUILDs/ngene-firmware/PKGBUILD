@@ -12,5 +12,3 @@ md5sums=('d798d5a757121174f0dbc5f2833c0c85')
 package() {
   install -Dm644 $srcdir/ngene_$pkgver.fw "$pkgdir/usr/lib/firmware/ngene_$pkgver.fw"
 }
-
-# vim:set ts=2 sw=2 et:

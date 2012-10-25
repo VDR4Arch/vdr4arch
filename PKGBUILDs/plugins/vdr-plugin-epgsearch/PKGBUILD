@@ -8,12 +8,6 @@ url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('pcre' "vdr-api=${_vdrapi}")
-optdepends=()
-makedepends=()
-conflicts=()
-replaces=()
-backup=()
-install=''
 _plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
 source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/vdr-$_plugname-$pkgver.tgz")
 md5sums=('8ad2bd6a6557532b388adbf70d87d59a')

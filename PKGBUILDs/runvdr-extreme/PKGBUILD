@@ -2,17 +2,13 @@
 pkgname=runvdr-extreme
 pkgver=0.4.2
 pkgrel=4
-pkgdesc=""
+pkgdesc="Runvdr script, just like the runvdr script included in the VDR distribution"
 url="http://www.udo-richter.de/vdr/scripts.html"
 arch=('any')
 license=('GPL2')
 depends=('bash' 'vdr')
 optdepends=('xorg-xinit: For fireing up a X session')
-makedepends=()
-conflicts=()
-replaces=()
 backup=(etc/runvdr.conf)
-install=''
 source=("http://www.udo-richter.de/vdr/files/${pkgname}-${pkgver}.tgz"
         'runvdr.conf'
         'runvdr-extreme-0.4.2-bash-4.2-fix.diff'
@@ -38,5 +34,3 @@ package() {
   install -Dm644 ${srcdir}/runvdr.conf "$pkgdir/etc/runvdr.conf"
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
-
-# vim:set ts=2 sw=2 et:

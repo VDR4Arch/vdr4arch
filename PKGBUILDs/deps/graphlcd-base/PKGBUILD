@@ -3,17 +3,13 @@ pkgname=graphlcd-base
 pkgver=20120923
 _gitver=6bbc07ed
 pkgrel=1
-pkgdesc=""
+pkgdesc="Project to support graphical LC displays connected to the PC"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('fontconfig' 'gcc-libs')
 optdepends='serdisplib: Add support for more serial displays'
-makedepends=()
-conflicts=()
-replaces=()
 backup=(etc/graphlcd.conf)
-install=''
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
 md5sums=('f029f146d08e76d7b017b9f816a21d17')
 
@@ -39,5 +35,3 @@ package() {
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
-
-# vim:set ts=2 sw=2 et:

@@ -2,17 +2,11 @@
 pkgname=serdisplib
 pkgver=1.97.9
 pkgrel=3
-pkgdesc=""
+pkgdesc="Library to drive displays with built-in controllers"
 url="http://serdisplib.sourceforge.net/"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gd' 'libusb-compat')
-optdepends=()
-makedepends=()
-conflicts=()
-replaces=()
-backup=()
-install=''
 source=("http://sourceforge.net/projects/serdisplib/files/serdisplib/$pkgver/$pkgname-$pkgver.tar.gz"
         'libusb_fix.diff'
         '99-serdisplib.rules')
@@ -42,5 +36,3 @@ package() {
 
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
-
-# vim:set ts=2 sw=2 et:

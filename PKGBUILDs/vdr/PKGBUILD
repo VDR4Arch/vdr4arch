@@ -2,7 +2,7 @@
 pkgname=vdr
 pkgver=1.7.31
 pkgrel=1
-pkgdesc=""
+pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
 license=('GPL2')
@@ -67,4 +67,3 @@ package() {
   make DESTDIR="${pkgdir}" install
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
-
