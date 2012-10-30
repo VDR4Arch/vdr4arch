@@ -2,14 +2,18 @@
 pkgname=vdr-plugin-dvbapi
 pkgver=1.0.3
 _vdrapi=1.7.31
-pkgrel=1
+pkgrel=2
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
-source=("$pkgname-$pkgver.tar.bz2::https://github.com/manio/$pkgname/tarball/v$pkgver")
-md5sums=('cf6ea2cc668d55ad94fb587cc787ee25')
+source=("$pkgname-$pkgver.tar.bz2::https://github.com/manio/$pkgname/tarball/v$pkgver"
+        "fix_connection_timed_out_error.diff::https://github.com/manio/vdr-plugin-dvbapi/commit/a98ff1e8.diff"
+        "fix_segfault_on_exit.diff::https://github.com/manio/vdr-plugin-dvbapi/commit/24343f40.diff")
+md5sums=('cf6ea2cc668d55ad94fb587cc787ee25'
+         'd7aa9ffca09527ab1477913556498a63'
+         '383aed9b58520f6a3d56bc48038b3e82')
 
 package() {
   cd "${srcdir}/manio-${pkgname}-"*
@@ -21,6 +25,9 @@ package() {
     CPUOPT="${CARCH}"
     PARALLEL=PARALLEL_32_INT
   fi
+
+  patch -i $srcdir/fix_connection_timed_out_error.diff
+  patch -i $srcdir/fix_segfault_on_exit.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
