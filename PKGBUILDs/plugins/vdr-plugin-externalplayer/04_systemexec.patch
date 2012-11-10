@@ -1,0 +1,11 @@
+--- a/externalplayer-player.c
++++ b/externalplayer-player.c
+@@ -43,7 +43,7 @@
+       }
+ 
+       isyslog("externalplayer-plugin: executing \"%s\"", config->playerCommand.c_str());
+-      execle("/bin/sh", "sh", "-c", config->playerCommand.c_str(), NULL, environ);
++      SystemExec(config->playerCommand.c_str(), true);
+       isyslog("externalplayer-plugin: execution (of /bin/sh) failed");
+       _exit(0);
+     }

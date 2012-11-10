@@ -1,0 +1,11 @@
+--- vdr-plugin-externalplayer/Makefile		2007-08-28 19:03:15.000000000 +0200
++++ vdr-plugin-externalplayer/Makefile.neu	2007-08-28 19:32:29.000000000 +0200
+@@ -16,7 +16,7 @@
+ ### The C++ compiler and options:
+ 
+ CXX      ?= g++
+-CXXFLAGS ?= -O2 -Wall -Woverloaded-virtual
++CXXFLAGS ?= -O2 -fPIC -Wall -Woverloaded-virtual
+ 
+ ### The directory environment:
+ 

@@ -1,0 +1,43 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-plugin-externalplayer
+pkgver=0.1.0
+_vdrapi=1.7.31
+pkgrel=4
+pkgdesc="use external players in VDR"
+url="http://sourceforge.net/projects/externalplayer/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
+source=("http://sourceforge.net/projects/${_plugname}/files/${_plugname}/${pkgver}/vdr-${_plugname}-${pkgver}.tar.gz"
+        '01_Makefile-fPIC-fix.patch'
+        '02_Makefile-API-fix.patch'
+        '03_remote-disable-fix.patch'
+        '04_systemexec.patch'
+        '05_i18n.patch')
+md5sums=('1a04d0bf2035159dbbcf1f3c28c17fd7'
+         '9f09d77d550225697aa776180bd19d46'
+         'c71b679e660515c4be48437d6b9d36e0'
+         '5a295baf94f4ed4f5b2ac59b65ddb1b4'
+         'eee910c04b48f54e75fede3a7e55831b'
+         '47e714e6b25c39baf05f9d5626d4c557')
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  patch -f -p1 -i $srcdir/01_Makefile-fPIC-fix.patch #By Roman Müllenschläder (yaVDR)
+  patch -f -p1 -i $srcdir/02_Makefile-API-fix.patch #By Roman Müllenschläder (yaVDR)
+  patch -f -p1 -i $srcdir/03_remote-disable-fix.patch #By ?? (yaVDR)
+  patch -f -p1 -i $srcdir/04_systemexec.patch #By Lars Hanisch (yaVDR)
+  patch -f -p1 -i $srcdir/05_i18n.patch #By Holger Schvestka (yaVDR)
+
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       VDRDIR="$(pkg-config vdr --variable=includedir)/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
+       libvdr-${_plugname}.so
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
