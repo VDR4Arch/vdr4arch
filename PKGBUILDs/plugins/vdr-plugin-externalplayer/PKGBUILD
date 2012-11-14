@@ -2,12 +2,14 @@
 pkgname=vdr-plugin-externalplayer
 pkgver=0.1.0
 _vdrapi=1.7.31
-pkgrel=5
+pkgrel=6
 pkgdesc="use external players in VDR"
 url="http://sourceforge.net/projects/externalplayer/"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
+backup=('var/lib/vdr/plugins/externalplayer.conf')
+install="${pkgname}.install"
 _plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
 source=("http://sourceforge.net/projects/${_plugname}/files/${_plugname}/${pkgver}/vdr-${_plugname}-${pkgver}.tar.gz"
         '01_Makefile-fPIC-fix.patch'
@@ -38,4 +40,6 @@ package() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
        libvdr-${_plugname}.so
+
+install -Dm644 examples/externalplayer.conf "$pkgdir/var/lib/vdr/plugins/externalplayer.conf"
 }
