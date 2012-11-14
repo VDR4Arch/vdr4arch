@@ -1,0 +1,12 @@
+diff --git a/device-tmpl.cpp b/device-tmpl.cpp
+index 5c4208f..158324b 100644
+--- a/device-tmpl.cpp
++++ b/device-tmpl.cpp
+@@ -110,6 +110,7 @@ class SCDEVICE : public DVBDEVICE
+ void SCDEVICE::EarlyShutdown(void)
+ {
+   DEBUGLOG("%s", __FUNCTION__);
++  DetachAllReceivers();
+   SetCamSlot(0);
+   if (sCCIAdapter)
+     delete sCCIAdapter;

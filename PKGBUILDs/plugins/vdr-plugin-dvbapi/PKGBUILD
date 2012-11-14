@@ -7,7 +7,7 @@ pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('gcc-libs' "vdr-api=${_vdrapi}")
+depends=('gcc-libs' 'oscam' "vdr-api=${_vdrapi}")
 source=("$pkgname-$pkgver.tar.bz2::https://github.com/manio/$pkgname/tarball/v$pkgver"
         "fix_connection_timed_out_error.diff::https://github.com/manio/vdr-plugin-dvbapi/commit/a98ff1e8.diff"
         "fix_segfault_on_exit.diff::https://github.com/manio/vdr-plugin-dvbapi/commit/24343f40.diff")
