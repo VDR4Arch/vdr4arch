@@ -2,7 +2,7 @@
 pkgname=graphlcd-base
 pkgver=20120923
 _gitver=6bbc07ed
-pkgrel=1
+pkgrel=2
 pkgdesc="Project to support graphical LC displays connected to the PC"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
@@ -32,6 +32,4 @@ package() {
        UDEVRULESDIR=${pkgdir}/usr/lib/udev/rules.d \
        install
   install -Dm644 graphlcd.conf "$pkgdir/etc/graphlcd.conf"
-
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

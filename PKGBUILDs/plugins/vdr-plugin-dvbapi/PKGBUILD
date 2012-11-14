@@ -2,7 +2,7 @@
 pkgname=vdr-plugin-dvbapi
 pkgver=1.0.3
 _vdrapi=1.7.31
-pkgrel=2
+pkgrel=3
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
@@ -38,5 +38,4 @@ package() {
        CPUOPT="$CPUOPT" \
        PARALLEL="$PARALLEL" \
        CSAFLAGS="$(pkg-config vdr --variable=plugincflags) -funroll-loops"
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

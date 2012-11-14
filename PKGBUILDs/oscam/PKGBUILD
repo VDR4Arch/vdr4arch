@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=oscam
 pkgver=7805
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.oscam.cc"
 arch=('x86_64' 'i686')
@@ -66,6 +66,4 @@ package() {
 
   #Install logrotate rule
   install -Dm644 ${srcdir}/oscam.logrotate "$pkgdir/etc/logrotate.d/oscam"
-
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=cxxtools
 pkgver=2.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Collection of general-purpose C++ classes"
 url="http://www.tntnet.org"
 arch=('x86_64' 'i686')
@@ -22,5 +22,4 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

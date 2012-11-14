@@ -3,7 +3,7 @@ pkgname=vdr-plugin-softhddevice
 pkgver=20121105
 _gitver=10075aa5
 _vdrapi=1.7.31
-pkgrel=1
+pkgrel=2
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
@@ -24,5 +24,4 @@ package() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
        GIT_REV=$_gitver
-  install -Dm644 AGPL-3.0.txt "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

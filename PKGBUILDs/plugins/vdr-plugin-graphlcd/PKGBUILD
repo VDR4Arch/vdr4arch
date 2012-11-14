@@ -3,7 +3,7 @@ pkgname=vdr-plugin-graphlcd
 pkgver=20120913
 _gitver=4bda8284
 _vdrapi=1.7.31
-pkgrel=2
+pkgrel=3
 pkgdesc="Plugin for the Video Disc Recorder to display its information"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
@@ -25,6 +25,4 @@ package() {
 
   mkdir -p $pkgdir/usr/share/vdr/plugins
   cp -r graphlcd $pkgdir/usr/share/vdr/plugins/
-
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

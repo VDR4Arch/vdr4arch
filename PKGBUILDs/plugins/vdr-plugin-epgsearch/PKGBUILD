@@ -2,7 +2,7 @@
 pkgname=vdr-plugin-epgsearch
 pkgver=1.0.1.beta2
 _vdrapi=1.7.31
-pkgrel=4
+pkgrel=5
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686')
@@ -23,5 +23,4 @@ package() {
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
        MANDIR=$pkgdir/usr/share/man \
        all install-doc
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

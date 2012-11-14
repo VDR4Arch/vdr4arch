@@ -3,7 +3,7 @@ pkgname=vdr-plugin-live
 pkgver=20120325
 _gitver=94a0a21
 _vdrapi=1.7.31
-pkgrel=4
+pkgrel=5
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
 url="http://projects.vdr-developer.org/projects/plg-live"
 arch=('x86_64' 'i686')
@@ -32,6 +32,4 @@ package() {
 
   mkdir -p $pkgdir/usr/share/vdr/plugins
   cp -r live $pkgdir/usr/share/vdr/plugins
-
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

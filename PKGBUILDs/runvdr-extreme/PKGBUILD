@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=runvdr-extreme
 pkgver=0.4.2
-pkgrel=5
+pkgrel=6
 pkgdesc="Runvdr script, just like the runvdr script included in the VDR distribution"
 url="http://www.udo-richter.de/vdr/scripts.html"
 arch=('any')
@@ -35,6 +35,4 @@ package() {
   sed -i -e 's/VDRPRG=$/VDRPRG=vdr/g' runvdr
 
   install -Dm755 runvdr "$pkgdir/usr/bin/runvdr"
-
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

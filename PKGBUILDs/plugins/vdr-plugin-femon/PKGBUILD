@@ -2,7 +2,7 @@
 pkgname=vdr-plugin-femon
 pkgver=1.7.17
 _vdrapi=1.7.31
-pkgrel=4
+pkgrel=5
 pkgdesc="DVB Frontend Status Monitor plugin"
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
 arch=('x86_64' 'i686')
@@ -22,6 +22,4 @@ package() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
        GITTAG=''
-
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

@@ -2,7 +2,7 @@
 pkgname=vdr-plugin-remote
 pkgver=0.4.0
 _vdrapi=1.7.31
-pkgrel=4
+pkgrel=5
 pkgdesc="Extends the remote control capabilities of vdr"
 url="http://www.escape-edv.de/endriss/vdr/"
 arch=('x86_64' 'i686')
@@ -32,6 +32,4 @@ package() {
 
   install -Dm644 ${srcdir}/70-remote-device.rules "$pkgdir/usr/lib/udev/rules.d/70-remote-device.rules"
   install -Dm644 ${srcdir}/av7110_ir_vdr_perms.conf "$pkgdir/usr/lib/modprobe.d/av7110_ir_vdr_perms.conf"
-
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

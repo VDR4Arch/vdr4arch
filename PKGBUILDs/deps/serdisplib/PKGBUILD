@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=serdisplib
 pkgver=1.97.9
-pkgrel=3
+pkgrel=4
 pkgdesc="Library to drive displays with built-in controllers"
 url="http://serdisplib.sourceforge.net/"
 arch=('x86_64' 'i686')
@@ -33,6 +33,4 @@ package() {
        install
 
   install -Dm644 ${srcdir}/99-serdisplib.rules "$pkgdir/usr/lib/udev/rules.d/99-serdisplib.rules"
-
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
