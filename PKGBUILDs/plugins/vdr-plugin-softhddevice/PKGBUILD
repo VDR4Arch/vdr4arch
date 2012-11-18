@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-plugin-softhddevice
-pkgver=20121105
-_gitver=10075aa5
-_vdrapi=1.7.31
-pkgrel=2
+pkgver=20121115
+_gitver=9a2b6f86
+_vdrapi=1.7.32
+pkgrel=3
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
@@ -12,12 +12,13 @@ depends=('ffmpeg' 'libvdpau' "vdr-api=${_vdrapi}"  'xcb-util-wm')
 optdepends=('nvidia: Required for VDPAU acceleration')
 makedepends=('mesa' 'libxdamage' 'libxxf86vm' 'xcb-util' 'xcb-util-keysyms')
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
-md5sums=('ed2e4233acff98125cc7852ed9693783')
+md5sums=('ab1c06a37a168c134df4d931d3ddcfd3')
 
 package() {
   cd "${srcdir}/${pkgname}-${_gitver}"
   mkdir -p $pkgdir/usr/lib/vdr/plugins
 #  sed -i 's/#-DDEBUG/-DDEBUG/g' Makefile
+  sed -i 's/-DAV_INFO //g' Makefile
   make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=plugincflags)" \
        VDRDIR="$(pkg-config vdr --variable=includedir)/vdr" \
