@@ -6,7 +6,7 @@ pkgdesc="Library to drive displays with built-in controllers"
 url="http://serdisplib.sourceforge.net/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('gd' 'libusb-compat')
+depends=('gd' 'libusb-compat' 'sdl')
 source=("http://sourceforge.net/projects/serdisplib/files/serdisplib/$pkgver/$pkgname-$pkgver.tar.gz"
         'libusb_fix.diff'
         '99-serdisplib.rules')
@@ -23,7 +23,8 @@ build() {
               --includedir=${pkgdir}/usr/include \
               --bindir=${pkgdir}/usr/bin \
               --libdir=${pkgdir}/usr/lib \
-              --enable-libusb
+              --enable-libusb \
+              --enable-libSDL
   make
 }
 
