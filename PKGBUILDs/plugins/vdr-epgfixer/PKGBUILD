@@ -1,0 +1,37 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-epgfixer
+pkgver=0.3.0
+_vdrapi=1.7.32
+pkgrel=1
+pkgdesc=""
+url="http://projects.vdr-developer.org/projects/plg-epgfixer"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('pcre' "vdr-api=${_vdrapi}")
+backup=('var/lib/vdr/plugins/epgfixer/blacklist.conf'
+        'var/lib/vdr/plugins/epgfixer/charset.conf'
+        'var/lib/vdr/plugins/epgfixer/epgclone.conf'
+        'var/lib/vdr/plugins/epgfixer/regexp.conf')
+install='vdr-plugin-epgfixer.install'
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+replaces=("vdr-plugin-$_plugname")
+conflicts=("vdr-plugin-$_plugname")
+source=("http://projects.vdr-developer.org/attachments/download/1065/$pkgname-$pkgver.tgz")
+md5sums=('d3003df4c1ec0fa1d342cb566a3e4959')
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  sed -i '/Make.global/d' Makefile
+
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=plugincflags)" \
+       VDRDIR="$(pkg-config vdr --variable=includedir)/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
+       GITTAG=''
+
+  mkdir -p $pkgdir/var/lib/vdr/plugins/epgfixer
+  install -Dm644 epgfixer/*  $pkgdir/var/lib/vdr/plugins/epgfixer
+}
