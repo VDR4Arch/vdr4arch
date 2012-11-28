@@ -1,15 +1,17 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
-pkgname=vdr-plugin-epgsearch
+pkgname=vdr-epgsearch
 pkgver=1.0.1.beta2
 _vdrapi=1.7.32
-pkgrel=6
+pkgrel=1
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('pcre' "vdr-api=${_vdrapi}")
-_plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
-source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/vdr-$_plugname-$pkgver.tgz")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+replaces=("vdr-plugin-$_plugname")
+conflicts=("vdr-plugin-$_plugname")
+source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz")
 md5sums=('8ad2bd6a6557532b388adbf70d87d59a')
 
 package() {

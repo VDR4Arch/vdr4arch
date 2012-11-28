@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
-pkgname=vdr-plugin-externalplayer
+pkgname=vdr-externalplayer
 pkgver=0.1.0
 _vdrapi=1.7.32
-pkgrel=7
+pkgrel=1
 pkgdesc="use external players in VDR"
 url="http://sourceforge.net/projects/externalplayer/"
 arch=('x86_64' 'i686')
@@ -10,8 +10,10 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 backup=('var/lib/vdr/plugins/externalplayer.conf')
 install="${pkgname}.install"
-_plugname=$(echo $pkgname | sed 's/vdr-plugin-//g')
-source=("http://sourceforge.net/projects/${_plugname}/files/${_plugname}/${pkgver}/vdr-${_plugname}-${pkgver}.tar.gz"
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+replaces=("vdr-plugin-$_plugname")
+conflicts=("vdr-plugin-$_plugname")
+source=("http://sourceforge.net/projects/${_plugname}/files/${_plugname}/${pkgver}/${pkgname}-${pkgver}.tar.gz"
         '01_Makefile-fPIC-fix.patch'
         '02_Makefile-API-fix.patch'
         '03_remote-disable-fix.patch'

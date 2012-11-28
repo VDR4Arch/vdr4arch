@@ -1,19 +1,22 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
-pkgname=vdr-plugin-dvbapi
+pkgname=vdr-dvbapi
 pkgver=20121115
 _gitver=e87e15fc
 _vdrapi=1.7.32
-pkgrel=2
+pkgrel=1
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' 'oscam' "vdr-api=${_vdrapi}")
-source=("https://github.com/manio/$pkgname/archive/$_gitver.tar.gz")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+replaces=("vdr-plugin-$_plugname")
+conflicts=("vdr-plugin-$_plugname")
+source=("https://github.com/manio/$_plugname/archive/$_gitver.tar.gz")
 md5sums=('b3a1f375d7cc09cdac21c6617fe10614')
 
 package() {
-  cd "${srcdir}/${pkgname}-${_gitver}"*
+  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"*
 
   if [ "${CARCH}" = "x86_64" ]; then
     CPUOPT='x86-64'
