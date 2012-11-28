@@ -1,0 +1,22 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=naludump
+pkgver=0.1
+pkgrel=1
+pkgdesc=""
+url="http://www.udo-richter.de/vdr/naludump.html"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gcc-libs')
+source=("http://www.udo-richter.de/vdr/files/naludump-0.1.tgz")
+md5sums=('c8a689e637ddbae3d55eb6c678083dd5')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  install -Dm755 naludump "$pkgdir/usr/bin/naludump"
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
