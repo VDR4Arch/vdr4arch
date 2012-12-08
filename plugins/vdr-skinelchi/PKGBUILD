@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-skinelchi
 pkgver=0.2.7
-_vdrapi=1.7.32
-pkgrel=1
+_vdrapi=1.7.33
+pkgrel=2
 pkgdesc="adds the 'Elchi' skin to the VDR standard skins"
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
 arch=('x86_64' 'i686')
@@ -12,11 +12,15 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://firefly.vdr-developer.org/skinelchi/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('dc4686b95bc9fac2fb8255d3114f8689')
+source=("http://firefly.vdr-developer.org/skinelchi/${pkgname}-${pkgver}.tar.bz2"
+        'skinelchi-vdr-1.7.33.diff')
+md5sums=('dc4686b95bc9fac2fb8255d3114f8689'
+         '5226773790f19ae5af71e5a42af3085e')
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
+
+  patch -p1 -i $srcdir/skinelchi-vdr-1.7.33.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \

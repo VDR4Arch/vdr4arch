@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-skinnopacity
 pkgver=0.0.4
-_vdrapi=1.7.32
-pkgrel=1
+_vdrapi=1.7.33
+pkgrel=2
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url=""
 arch=('x86_64' 'i686')
@@ -12,8 +12,8 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://projects.vdr-developer.org/attachments/download/1145/$pkgname-$pkgver.tgz")
-md5sums=('e09d39560396b4397250ec1db1aa2d75')
+source=("http://projects.vdr-developer.org/attachments/download/1146/$pkgname-$pkgver.tgz")
+md5sums=('e0ca4ee6bbfd90ae50a10be879a2af0f')
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"

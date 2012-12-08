@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-epgsearch
 pkgver=1.0.1.beta2
-_vdrapi=1.7.32
-pkgrel=1
+_vdrapi=1.7.33
+pkgrel=2
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686')
@@ -11,11 +11,15 @@ depends=('pcre' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz")
-md5sums=('8ad2bd6a6557532b388adbf70d87d59a')
+source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz"
+        'epgsearch-vdr-1.7.33.diff')
+md5sums=('8ad2bd6a6557532b388adbf70d87d59a'
+         'a7e23a28af4d50ccbd27c725585a0962')
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
+
+  patch -p1 -i $srcdir/epgsearch-vdr-1.7.33.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
