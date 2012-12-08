@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-graphlcd
-pkgver=20120913
-_gitver=4bda8284
+pkgver=20121027
+_gitver=329c31bb
 _vdrapi=1.7.32
 pkgrel=1
 pkgdesc="Plugin for the Video Disc Recorder to display its information"
@@ -13,8 +13,8 @@ optdepends=('serdisplib: Support more modern LCDs')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('5240d5d3d35bac343b623bc698bd7146')
+source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
+md5sums=('42dd66e6211d84b5ea43d487450327c5')
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"

@@ -12,7 +12,7 @@ depends=('gcc-libs' 'oscam' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("https://github.com/manio/$_plugname/archive/$_gitver.tar.gz")
+source=("https://github.com/manio/vdr-plugin-$_plugname/archive/$_gitver.tar.gz")
 md5sums=('b3a1f375d7cc09cdac21c6617fe10614')
 
 package() {

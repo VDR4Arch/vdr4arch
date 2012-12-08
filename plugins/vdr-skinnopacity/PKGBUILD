@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-skinnopacity
-pkgver=0.0.3
+pkgver=0.0.4
 _vdrapi=1.7.32
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
@@ -12,13 +12,13 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://projects.vdr-developer.org/attachments/download/1117/$pkgname-$pkgver.tgz")
-md5sums=('9f707e89fe99f6115e790956f4664bdc')
+source=("http://projects.vdr-developer.org/attachments/download/1145/$pkgname-$pkgver.tgz")
+md5sums=('e09d39560396b4397250ec1db1aa2d75')
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
-sed -i '/Make\.global/d' Makefile
+  sed -i '/Make\.global/d' Makefile
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \

@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-softhddevice
-pkgver=20121115
-_gitver=9a2b6f86
+pkgver=20121130
+_gitver=932871de
 _vdrapi=1.7.32
 pkgrel=1
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
@@ -15,7 +15,7 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('ab1c06a37a168c134df4d931d3ddcfd3')
+md5sums=('fb5bf5fdc210ed15c888fa8dcccf30a0')
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
