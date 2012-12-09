@@ -12,9 +12,9 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
 source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz"
-        'epgsearch-vdr-1.7.33.diff')
+        'epgsearch-vdr-1.7.33.diff::http://projects.vdr-developer.org/git/vdr-plugin-epgsearch.git/patch/?id=1a055e2b')
 md5sums=('8ad2bd6a6557532b388adbf70d87d59a'
-         'a7e23a28af4d50ccbd27c725585a0962')
+         '4231ef21c9bad75f9af845dfa85cf1f5')
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
