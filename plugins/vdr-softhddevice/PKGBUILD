@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-softhddevice
-pkgver=20121214
-_gitver=943ee22a
-_vdrapi=1.7.33
+pkgver=20121224
+_gitver=9b69045a
+_vdrapi=1.7.34
 pkgrel=1
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
@@ -14,18 +14,23 @@ makedepends=('mesa' 'libxdamage' 'libxxf86vm' 'xcb-util' 'xcb-util-keysyms')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('3adf8db2c2617d7114913bcc291543c8')
+source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2"
+        'greater_sync_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=32360')
+md5sums=('d8be004a7d0f642e7d47863724c954e7'
+         '7b9c6aa1e2729f443baf59b38418660e')
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
+
+  patch -p1 -i ${srcdir}/greater_sync_2.diff
+
   mkdir -p $pkgdir/usr/lib/vdr/plugins
-#  sed -i 's/#-DDEBUG/-DDEBUG/g' Makefile
-  sed -i 's/-DAV_INFO //g' Makefile
-  make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=plugincflags)" \
-       VDRDIR="$(pkg-config vdr --variable=includedir)/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
+#   sed -i 's/#-DDEBUG/-DDEBUG/g' Makefile
+#   sed -i 's/-DAV_INFO //g' Makefile
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr/include/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        GIT_REV=$_gitver
 }

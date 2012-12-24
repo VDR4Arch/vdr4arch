@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-skinelchi
 pkgver=0.2.7
-_vdrapi=1.7.33
-pkgrel=2
+_vdrapi=1.7.34
+pkgrel=3
 pkgdesc="adds the 'Elchi' skin to the VDR standard skins"
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
 arch=('x86_64' 'i686')
@@ -23,11 +23,11 @@ package() {
   patch -p1 -i $srcdir/skinelchi-vdr-1.7.33.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make CFLAGS="$(pkg-config vdr --variable=plugincflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=plugincflags)" \
-       VDRDIR="$(pkg-config vdr --variable=includedir)/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=plugindir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=localedir)" \
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr/include/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
 
   mkdir -p $pkgdir/var/lib/vdr/themes
   install -Dm644 themes/*.theme "$pkgdir/var/lib/vdr/themes"

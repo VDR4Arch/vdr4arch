@@ -1,21 +1,24 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
-pkgname=vdr-femon
-pkgver=1.7.17
+# Contributor: crov
+pkgname=vdr-plugin-chanman
+pkgver=0.0.10
+_gitver=58463fd2
 _vdrapi=1.7.34
-pkgrel=3
-pkgdesc="DVB Frontend Status Monitor plugin"
-url="http://www.saunalahti.fi/rahrenbe/vdr/femon/"
+pkgrel=1
+pkgdesc="Change channel with a multi level choice"
+url="http://projects.vdr-developer.org/projects/plg-chanman"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('gcc-libs' "vdr-api=${_vdrapi}")
+depends=("vdr-api=${_vdrapi}")
+#install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://www.saunalahti.fi/~rahrenbe/vdr/femon/files/$pkgname-$pkgver.tgz")
-md5sums=('ed52aaffd3ba9cecccd191fadf8d85c7')
+source=("http://projects.vdr-developer.org/attachments/download/1004/$pkgname-$pkgver.tar.gz")
+md5sums=('ad5928dd686377e98b6de13017e8aaab')
 
 package() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
@@ -23,5 +26,6 @@ package() {
        VDRDIR="/usr/include/vdr" \
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       GITTAG=''
+       GIT_REV='' \
+       all
 }
