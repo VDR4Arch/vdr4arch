@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr
 pkgver=1.7.34
-pkgrel=1
+pkgrel=2
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -46,9 +46,13 @@ EOF
 
   patch -p1 -i ${srcdir}/MainMenuHooks-v1_0_2.diff
 
-  ## Build VDR with recommended optimization level
+  # Build VDR with recommended optimization level
   CFLAGS+=' -O3'
   CXXFLAGS+=' -O3'
+
+  # Workaround for missing include in plugin makefiles
+  CFLAGS+=" -I$(pwd)/include"
+  CXXFLAGS+=" -I$(pwd)/include"
 
   make
 }
