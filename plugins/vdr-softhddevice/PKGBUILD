@@ -3,7 +3,7 @@ pkgname=vdr-softhddevice
 pkgver=20121224
 _gitver=9b69045a
 _vdrapi=1.7.34
-pkgrel=1
+pkgrel=2
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
@@ -15,14 +15,17 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2"
-        'greater_sync_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=32360')
+        'greater_sync_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=32360'
+        'http://projects.vdr-developer.org/git/skin-nopacity.git/plain/patches/0003-softhddevice-video-scaling-without-YAEPG-vdr-1.7.33_v4.diff')
 md5sums=('d8be004a7d0f642e7d47863724c954e7'
-         '7b9c6aa1e2729f443baf59b38418660e')
+         '7b9c6aa1e2729f443baf59b38418660e'
+         'cee59f2e6941a4f6aefaef121ec09215')
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
 
   patch -p1 -i ${srcdir}/greater_sync_2.diff
+  patch -p1 -i ${srcdir}/0003-softhddevice-video-scaling-without-YAEPG-vdr-1.7.33_v4.diff
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
 #   sed -i 's/#-DDEBUG/-DDEBUG/g' Makefile

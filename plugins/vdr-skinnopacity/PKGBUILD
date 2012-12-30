@@ -1,10 +1,10 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-skinnopacity
-pkgver=0.0.4
+pkgver=0.0.5
 _vdrapi=1.7.34
-pkgrel=3
+pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
-url=""
+url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('imagemagick' "vdr-api=${_vdrapi}")
@@ -12,20 +12,19 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://projects.vdr-developer.org/attachments/download/1146/$pkgname-$pkgver.tgz")
-md5sums=('e0ca4ee6bbfd90ae50a10be879a2af0f')
+source=("http://projects.vdr-developer.org/attachments/download/1181/$pkgname-$pkgver.tgz")
+md5sums=('93d6d98adc874cfbd0ac7cdc51828c6d')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  make
+}
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
-  sed -i '/Make\.global/d' Makefile
-
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
+  make DESTDIR=${pkgdir} install
 
   mkdir -p $pkgdir/usr/share/vdr/plugins/$_plugname/icons
   cp -r icons/* $pkgdir/usr/share/vdr/plugins/$_plugname/icons

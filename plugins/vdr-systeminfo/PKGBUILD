@@ -1,0 +1,34 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-systeminfo
+pkgver=0.1.2
+_vdrapi=1.7.34
+pkgrel=1
+pkgdesc="displays system informations like CPU type and speed, disk and swap space etc."
+url="http://firefly.vdr-developer.org/systeminfo/index.html"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('iproute2' 'lm_sensors' 'hddtemp' "vdr-api=${_vdrapi}")
+#install="$pkgname.install"
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+replaces=("vdr-plugin-$_plugname")
+conflicts=("vdr-plugin-$_plugname")
+source=("http://firefly.vdr-developer.org/systeminfo/${pkgname}-${pkgver}.tar.bz2"
+        'systeminfo.sh')
+md5sums=('b3153fc41a93b3c42aefcfc775bda65c'
+         'ea31a11d19b78f30f389793ebc34c3cb')
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  sed -i 's/usr\/local/usr\/lib\/vdr/g' systeminfo.c
+
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr/include/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
+
+  install -Dm755 ${srcdir}/systeminfo.sh $pkgdir/usr/lib/vdr/bin/systeminfo.sh
+
+}
