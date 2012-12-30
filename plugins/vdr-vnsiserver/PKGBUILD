@@ -2,8 +2,8 @@
 pkgname=vdr-vnsiserver
 pkgver=20121125
 _gitver=cae425bd
-_vdrapi=1.7.34
-pkgrel=2
+_vdrapi=1.7.35
+pkgrel=3
 pkgdesc=""
 url=""
 arch=('x86_64' 'i686')

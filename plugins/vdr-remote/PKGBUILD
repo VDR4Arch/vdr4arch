@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-remote
 pkgver=0.5.0
-_vdrapi=1.7.34
-pkgrel=1
+_vdrapi=1.7.35
+pkgrel=2
 pkgdesc="Extends the remote control capabilities of vdr"
 url="http://www.escape-edv.de/endriss/vdr/"
 arch=('x86_64' 'i686')
@@ -21,16 +21,7 @@ md5sums=('5807e553ef11c8c9fdc0e84b1ee67fb3'
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
-#   patch -p1 -i ${srcdir}/remote-0.4.0_remove_oldi18n.diff
-
   make
-
-#   mkdir -p $pkgdir/usr/lib/vdr/plugins
-#   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-#        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-#        VDRDIR="/usr/include/vdr" \
-#        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-#        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
 }
 
 package() {

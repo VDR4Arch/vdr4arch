@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-tvguide
 pkgver=0.0.1
-_vdrapi=1.7.34
-pkgrel=1
+_vdrapi=1.7.35
+pkgrel=2
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
@@ -12,7 +12,7 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://projects.vdr-developer.org/attachments/download/1184/$pkgname-$pkgver.vdr-$_vdrapi.tgz")
+source=("http://projects.vdr-developer.org/attachments/download/1184/$pkgname-$pkgver.vdr-1.7.34.tgz")
 md5sums=('cfa6c767c2c17b2e3d418bc3b95b0ee0')
 
 build() {

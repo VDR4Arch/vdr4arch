@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr
-pkgver=1.7.34
-pkgrel=2
+pkgver=1.7.35
+pkgrel=1
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -22,7 +22,7 @@ source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
         'shutdown.sh'
         'shutdown-wrapper.c')
-md5sums=('55d9aba62563efe39ee040e987f7023c'
+md5sums=('3b9d0376325370afb464b6c5843591c7'
          '301c9b9766ed5182b07f1debc79abc21'
          'ef8e11062f58a9eb4016dfbf66bb9044'
          '7cad811b4ac5ee6c0b5496d006f1e0ee')
@@ -48,7 +48,8 @@ EOF
 
   # Build VDR with recommended optimization level
   CFLAGS+=' -O3'
-  CXXFLAGS+=' -O3'
+  CXXFLAGS+=' -O3 -fPIC'
+
 
   # Workaround for missing include in plugin makefiles
   CFLAGS+=" -I$(pwd)/include"
@@ -64,7 +65,7 @@ package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   CFLAGS+=' -O3'
-  CXXFLAGS+=' -O3'
+  CXXFLAGS+=' -O3 -fPIC'
 
   make DESTDIR="${pkgdir}" install
 }

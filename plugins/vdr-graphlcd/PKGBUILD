@@ -2,8 +2,8 @@
 pkgname=vdr-graphlcd
 pkgver=20121027
 _gitver=329c31bb
-_vdrapi=1.7.34
-pkgrel=3
+_vdrapi=1.7.35
+pkgrel=4
 pkgdesc="Plugin for the Video Disc Recorder to display its information"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')

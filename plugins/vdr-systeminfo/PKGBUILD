@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-systeminfo
 pkgver=0.1.2
-_vdrapi=1.7.34
-pkgrel=1
+_vdrapi=1.7.35
+pkgrel=2
 pkgdesc="displays system informations like CPU type and speed, disk and swap space etc."
 url="http://firefly.vdr-developer.org/systeminfo/index.html"
 arch=('x86_64' 'i686')
