@@ -9,7 +9,7 @@ pkgdesc="Change channel with a multi level choice"
 url="http://projects.vdr-developer.org/projects/plg-chanman"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 #install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")

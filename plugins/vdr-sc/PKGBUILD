@@ -1,0 +1,41 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-sc
+pkgver=20120710
+_hgver=29b7b5f2
+_vdrapi=1.7.35
+pkgrel=1
+pkgdesc="A bridge between VDR and OScam."
+url="https://github.com/manio/vdr-plugin-dvbapi"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('openssl' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+replaces=("vdr-plugin-$_plugname")
+conflicts=("vdr-plugin-$_plugname")
+source=("$pkgname-$pkgver.tar.bz2::http://85.17.209.13:6100/archive/$_hgver.tar.bz2")
+md5sums=('b42d7e59b09d79fea089a2c4de9b548b')
+
+package() {
+  cd "${srcdir}/$_plugname-$_hgver"
+
+  if [ "${CARCH}" = "x86_64" ]; then
+    CPUOPT='x86-64'
+    PARALLEL=PARALLEL_128_SSE2
+  else
+    CPUOPT="${CARCH}"
+    PARALLEL=PARALLEL_32_INT
+  fi
+
+  mkdir -p $pkgdir/usr/lib/vdr/plugins
+make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       CPUOPT="$CPUOPT" \
+       PARALLEL="$PARALLEL" \
+       MAXCAID=64 \
+       CSAFLAGS="$(pkg-config vdr --variable=cflags) -funroll-loops" \
+       i18n systems libvdr-$_plugname.so
+  install -Dm755 libvdr-$_plugname.so "$pkgdir/usr/lib/vdr/plugins/libvdr-$_plugname.so.$_vdrapi"
+}
