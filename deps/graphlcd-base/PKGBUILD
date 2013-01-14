@@ -1,8 +1,9 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Contributor: Ole Ernst <olebowle[at]gmx[dot]com
 pkgname=graphlcd-base
 pkgver=20120923
 _gitver=6bbc07ed
-pkgrel=2
+pkgrel=3
 pkgdesc="Project to support graphical LC displays connected to the PC"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
@@ -18,6 +19,7 @@ build() {
   sed -i '/CFLAGS/d' Make.config
   sed -i '/CXXFLAGS/d' Make.config
   sed -i '/LDFLAGS/d' Make.config
+  sed -i 's/#HAVE_AX206DPF_EXPERIMENTAL=1/HAVE_AX206DPF_EXPERIMENTAL=1/' Make.config
   make
 }
 
