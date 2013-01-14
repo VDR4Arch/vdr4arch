@@ -1,25 +1,26 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
-# Contributor: Ole Ernst <olebowle[at]gmx[dot]com
+# Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=graphlcd-base
-pkgver=20120923
-_gitver=6bbc07ed
+pkgver=20120106
+_gitver=c37e9b48
 pkgrel=3
 pkgdesc="Project to support graphical LC displays connected to the PC"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('fontconfig' 'gcc-libs')
+depends=('fontconfig' 'gcc-libs' 'libusb-compat')
 optdepends='serdisplib: Add support for more serial displays'
 backup=(etc/graphlcd.conf)
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
-md5sums=('f029f146d08e76d7b017b9f816a21d17')
+md5sums=('243b6f1d6bb56f9e0c93970166276145')
 
 build() {
   cd "${srcdir}/${pkgname}-${_gitver}"
   sed -i '/CFLAGS/d' Make.config
   sed -i '/CXXFLAGS/d' Make.config
   sed -i '/LDFLAGS/d' Make.config
-  sed -i 's/#HAVE_AX206DPF_EXPERIMENTAL=1/HAVE_AX206DPF_EXPERIMENTAL=1/' Make.config
+  sed -i 's/#HAVE_AX206DPF_EXPERIMENTAL/HAVE_AX206DPF_EXPERIMENTAL/' Make.config
+  sed -i 's/#HAVE_picoLCD_256x64_EXPERIMENTAL/HAVE_picoLCD_256x64_EXPERIMENTAL/' Make.config
   make
 }
 
