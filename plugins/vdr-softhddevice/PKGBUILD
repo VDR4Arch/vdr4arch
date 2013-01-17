@@ -23,6 +23,7 @@ package() {
   mkdir -p $pkgdir/usr/lib/vdr/plugins
 #   sed -i 's/#-DDEBUG/-DDEBUG/g' Makefile
 #   sed -i 's/-DAV_INFO //g' Makefile
+#  sed -i 's/#CONFIG += -DUSE_PIP/CONFIG += -DUSE_PIP/g' Makefile
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \
