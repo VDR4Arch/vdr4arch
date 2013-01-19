@@ -17,7 +17,7 @@ source=("http://www.udo-richter.de/vdr/files/${pkgname}-${pkgver}.tgz"
         'vdr.service')
 md5sums=('ca95ce455fc6e66fcaa4b3476ecdcffc'
          '32dcab4ce46f8164977ab3abdeccec57'
-         '16f65a6096c24f663562899e6c94e35d'
+         '64f49477357db1391b578dfb91b82fbc'
          '0004d23d3719abe9ce54ce47c32d27d3'
          '5ca14709ba9064a745d6162c04e73630'
          'a87b3399675a5493637a7f115475b3f2')
