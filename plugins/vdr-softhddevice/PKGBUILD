@@ -2,8 +2,8 @@
 pkgname=vdr-softhddevice
 pkgver=20130112
 _gitver=849ca7cf
-_vdrapi=1.7.35
-pkgrel=1
+_vdrapi=1.7.36
+pkgrel=2
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')

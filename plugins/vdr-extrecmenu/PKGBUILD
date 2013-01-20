@@ -2,8 +2,8 @@
 pkgname=vdr-extrecmenu
 pkgver=20121221
 _gitver=16da1f90
-_vdrapi=1.7.35
-pkgrel=2
+_vdrapi=1.7.36
+pkgrel=3
 pkgdesc="provides additional functions to VDR's recordings menu"
 url="http://projects.vdr-developer.org/projects/show/plg-extrecmenu"
 arch=('x86_64' 'i686')
