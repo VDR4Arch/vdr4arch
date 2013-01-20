@@ -1,4 +1,5 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=runvdr-extreme
 pkgver=0.4.2
 pkgrel=6
