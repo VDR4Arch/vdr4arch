@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-bgprocess
 pkgver=0.1.0
-_vdrapi=1.7.35
-pkgrel=1
+_vdrapi=1.7.36
+pkgrel=2
 pkgdesc="Displays information about background processes"
 url="http://projects.vdr-developer.org/projects/plg-undelete"
 arch=('x86_64' 'i686')
