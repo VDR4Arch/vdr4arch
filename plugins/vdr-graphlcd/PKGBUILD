@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-graphlcd
-pkgver=20121027
-_gitver=329c31bb
+pkgver=20130125
+_gitver=66b78434
 _vdrapi=1.7.36
-pkgrel=5
+pkgrel=1
 pkgdesc="Plugin for the Video Disc Recorder to display its information"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
@@ -14,18 +14,16 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('42dd66e6211d84b5ea43d487450327c5')
+md5sums=('f33e58136be165daa7520bc8adb0ddd9')
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
+
+  make
+}
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
 
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
-
-  mkdir -p $pkgdir/usr/share/vdr/plugins
-  cp -r graphlcd $pkgdir/usr/share/vdr/plugins/
+  make DESTDIR=${pkgdir} install
 }
