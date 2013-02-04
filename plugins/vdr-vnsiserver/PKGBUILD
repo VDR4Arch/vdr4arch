@@ -2,12 +2,14 @@
 pkgbase=xbmc-pvr-addons
 pkgname=('vdr-vnsiserver' 'xbmc-pvr-addons')
 pkgver=12.0
+_vdrapi=1.7.36
 _codename=Frodo
 epoch=1
 pkgrel=1
 url=""
 arch=('x86_64' 'i686')
 license=('GPL2')
+makedepends=("vdr-api=${_vdrapi}")
 source=("https://github.com/opdenkamp/xbmc-pvr-addons/archive/${pkgver}-${_codename}.tar.gz")
 md5sums=('4a1020b1a890e26505da7cc9afef1cea')
 
@@ -24,8 +26,7 @@ build() {
 
 package_vdr-vnsiserver() {
   pkgdesc=""
-  _vdrapi=1.7.36
-  depends=("vdr-api=${_vdrapi}")
+  depends=('gcc-libs' "vdr-api=${_vdrapi}")
   _plugname=$(echo $pkgname | sed 's/vdr-//g')
   replaces=("vdr-plugin-$_plugname")
   conflicts=("vdr-plugin-$_plugname")
@@ -40,7 +41,7 @@ package_vdr-vnsiserver() {
 
 package_xbmc-pvr-addons() {
   pkgdesc=""
-  depends=("vdr-api=${_vdrapi}" 'xbmc')
+  depends=('gcc-libs' 'xbmc')
 
   cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}
   make DESTDIR=${pkgdir} install
