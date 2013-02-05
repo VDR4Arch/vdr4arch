@@ -2,7 +2,7 @@
 pkgname=vdr-skinnopacity
 pkgver=0.0.5
 _vdrapi=1.7.36
-pkgrel=3
+pkgrel=4
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
@@ -18,6 +18,9 @@ md5sums=('93d6d98adc874cfbd0ac7cdc51828c6d')
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
+  #Fix compilation with newer Imagemagick versions
+  sed -i 's/lMagick++/lMagick++-Q16/g' Makefile
+  
   make
 }
 
