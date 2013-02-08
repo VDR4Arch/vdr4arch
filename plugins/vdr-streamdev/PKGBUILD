@@ -1,10 +1,10 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com
 pkgname=vdr-streamdev
-pkgver=20121216
+pkgver=20130203
 _gitver=9135cde7
 _vdrapi=1.7.36
-pkgrel=3
+pkgrel=1
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
 url="http://projects.vdr-developer.org/projects/show/plg-streamdev"
 arch=('x86_64' 'i686')
