@@ -1,0 +1,47 @@
+# Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
+pkgname=('dfatmo-driver' 'vdr-dfatmo')
+pkgver=20121128
+_gitver=8c3321a
+_vdrapi=1.7.36
+pkgrel=1
+url="https://github.com/durchflieger/DFAtmo"
+arch=('x86_64' 'i686')
+license=('GPL2')
+makedepends=('gcc-libs' "vdr-api=${_vdrapi}")
+source=("https://github.com/durchflieger/DFAtmo/tarball/${_gitver}"
+        'vdrplug.mk'
+        '45-df10ch.rules')
+md5sums=('bc5146a1562eca440b868b212231821f'
+         'a46855ae836105c728e7637b42958005'
+         'c5e0bf17e88febc7e86c7e435f5eea5f')
+
+build() {
+  cd "${srcdir}/durchflieger-DFAtmo-${_gitver}"
+  sed -i "s/python-config/python2-config/" Makefile
+  unset CFLAGS
+  make dfatmo
+#  make CFLAGS="$CFLAGS -fPIC" dfatmo
+  make -f ../vdrplug.mk
+}
+
+package_dfatmo-driver() {
+  pkgdesc="Output drivers to support VDR plugin dfatmo"
+  depends=('python2' 'libusbx')
+
+  cd "${srcdir}/durchflieger-DFAtmo-${_gitver}"
+  install -d "${pkgdir}/usr/local/include"
+  make DFATMOINSTDIR="${pkgdir}/usr/local" dfatmoinstall
+}
+
+package_vdr-dfatmo() {
+  pkgdesc="VDR plugin to drive a colored back lighting for TVs"
+  depends=('gcc-libs' 'dfatmo-driver' "vdr-api=${_vdrapi}")
+  _plugname=$(echo ${pkgname} | sed 's/vdr-//g')
+  replaces=("vdr-plugin-${_plugname}")
+  conflicts=("vdr-plugin-${_plugname}")
+
+  cd "${srcdir}/durchflieger-DFAtmo-${_gitver}"
+  make -f ../vdrplug.mk DESTDIR="${pkgdir}" install 
+  install -Dm644 ../45-df10ch.rules "${pkgdir}/etc/udev/rules.d/45-df10ch.rules"
+}
+# vim:set ts=2 sw=2 et:
