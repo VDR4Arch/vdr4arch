@@ -21,7 +21,7 @@ my $PLUGINSPATH = 'plugins';
   my ($vdrversion) = $pkgver_line =~ /=(.+)/;
 
   # Loop over the plugins
-  my $counter;
+  my $counter = 0;
   opendir(my $dhplugins, $PLUGINSPATH) or die("Can't open path $PLUGINSPATH\n");
   while (my $subdir = readdir($dhplugins)) {
     next if ($subdir =~ /^\./);
