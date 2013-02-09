@@ -8,7 +8,7 @@ pkgrel=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')
 license=('GPL2')
-makedepends=('gcc-libs' "vdr-api=${_vdrapi}")
+makedepends=("vdr-api=${_vdrapi}")
 source=("https://github.com/durchflieger/${pkgbase}/tarball/${_gitver}"
         'vdrplug.mk'
         '45-df10ch.rules')
@@ -34,7 +34,7 @@ package_dfatmo-driver() {
 
 package_vdr-dfatmo() {
   pkgdesc="VDR plugin to drive a colored back lighting for TVs"
-  depends=('gcc-libs' 'dfatmo-driver' "vdr-api=${_vdrapi}")
+  depends=('dfatmo-driver' "vdr-api=${_vdrapi}")
   _plugname=$(echo ${pkgname} | sed 's/vdr-//g')
   replaces=("vdr-plugin-${_plugname}")
   conflicts=("vdr-plugin-${_plugname}")
