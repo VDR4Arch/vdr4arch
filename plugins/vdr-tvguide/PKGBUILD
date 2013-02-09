@@ -2,8 +2,8 @@
 pkgname=vdr-tvguide
 pkgver=20130207
 _gitver=063094f4
-_vdrapi=1.7.36
-pkgrel=1
+_vdrapi=1.7.37
+pkgrel=2
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
