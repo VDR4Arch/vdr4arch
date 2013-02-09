@@ -5,7 +5,7 @@ _gitver=9899940
 _vdrapi=1.7.36
 pkgrel=1
 pkgdesc="conversion of the PearlHD-Skin written by mapovi to a native vdr-plugin"
-url="http://projects.vdr-developer.org/projects/show/plg-imonlcd"
+url="http://projects.vdr-developer.org/projects/show/plg-skinpearlhd"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('imagemagick' "vdr-api=${_vdrapi}")
