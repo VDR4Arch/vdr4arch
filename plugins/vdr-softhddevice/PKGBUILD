@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-softhddevice
-pkgver=20130112
-_gitver=849ca7cf
-_vdrapi=1.7.36
+pkgver=20130208
+_gitver=d31ff55b
+_vdrapi=1.7.37
 pkgrel=2
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
@@ -15,18 +15,16 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('94e98121caec28e30d4197d19ca2c3bf')
+md5sums=('eb590378da6ccf69e7674d1ca063493d')
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
+#   sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
+#   sed -i 's/-DAV_INFO //g' Makefile
+  make GIT_REV=$_gitver
+}
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
-
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
-#   sed -i 's/#-DDEBUG/-DDEBUG/g' Makefile
-#   sed -i 's/-DAV_INFO //g' Makefile
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       GIT_REV=$_gitver
+  make DESTDIR=${pkgdir} install
 }

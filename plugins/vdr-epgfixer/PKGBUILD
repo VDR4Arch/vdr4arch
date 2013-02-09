@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-epgfixer
 pkgver=0.3.1
-_vdrapi=1.7.36
-pkgrel=5
-pkgdesc=""
+_vdrapi=1.7.37
+pkgrel=6
+pkgdesc="VDR plugin for doing extra fixing of EPG data"
 url="http://projects.vdr-developer.org/projects/plg-epgfixer"
 arch=('x86_64' 'i686')
 license=('GPL2')

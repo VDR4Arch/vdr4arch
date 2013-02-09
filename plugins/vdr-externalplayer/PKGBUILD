@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-externalplayer
-pkgver=0.1.0
-_vdrapi=1.7.36
-pkgrel=5
+pkgver=0.2.0
+_vdrapi=1.7.37
+pkgrel=2
 pkgdesc="use external players in VDR"
 url="http://sourceforge.net/projects/externalplayer/"
 arch=('x86_64' 'i686')
@@ -13,35 +13,22 @@ install="${pkgname}.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://sourceforge.net/projects/${_plugname}/files/${_plugname}/${pkgver}/${pkgname}-${pkgver}.tar.gz"
-        '01_Makefile-fPIC-fix.patch'
-        '02_Makefile-API-fix.patch'
-        '03_remote-disable-fix.patch'
-        '04_systemexec.patch'
-        '05_i18n.patch')
-md5sums=('1a04d0bf2035159dbbcf1f3c28c17fd7'
-         '9f09d77d550225697aa776180bd19d46'
-         'c71b679e660515c4be48437d6b9d36e0'
-         '5a295baf94f4ed4f5b2ac59b65ddb1b4'
-         'eee910c04b48f54e75fede3a7e55831b'
-         '47e714e6b25c39baf05f9d5626d4c557')
+source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
+        'makefilefix.diff')
+md5sums=('0ad6ebeaedef66aac9564ba437c1f4e9'
+         '2170044e62b864e759c64ffe66f44f34')
 
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  patch -p1 -i ${srcdir}/makefilefix.diff
+
+  make
+}
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
-  patch -f -p1 -i $srcdir/01_Makefile-fPIC-fix.patch #By Roman Müllenschläder (yaVDR)
-  patch -f -p1 -i $srcdir/02_Makefile-API-fix.patch #By Roman Müllenschläder (yaVDR)
-  patch -f -p1 -i $srcdir/03_remote-disable-fix.patch #By ?? (yaVDR)
-  patch -f -p1 -i $srcdir/04_systemexec.patch #By Lars Hanisch (yaVDR)
-  patch -f -p1 -i $srcdir/05_i18n.patch #By Holger Schvestka (yaVDR)
+  make DESTDIR=${pkgdir} install
 
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       libvdr-${_plugname}.so
-
-install -Dm644 examples/externalplayer.conf "$pkgdir/var/lib/vdr/plugins/externalplayer.conf"
+  install -Dm644 examples/externalplayer.conf "$pkgdir/var/lib/vdr/plugins/externalplayer.conf"
 }

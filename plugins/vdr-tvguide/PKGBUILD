@@ -1,8 +1,9 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-tvguide
-pkgver=0.0.1
-_vdrapi=1.7.36
-pkgrel=3
+pkgver=20130207
+_gitver=063094f4
+_vdrapi=1.7.37
+pkgrel=2
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
@@ -12,17 +13,17 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://projects.vdr-developer.org/attachments/download/1184/$pkgname-$pkgver.vdr-1.7.34.tgz")
-md5sums=('cfa6c767c2c17b2e3d418bc3b95b0ee0')
+source=("http://projects.vdr-developer.org/git/vdr-plugin-${_plugname}.git/snapshot/vdr-plugin-${_plugname}-${_gitver}.tar.bz2")
+md5sums=('88c1e5c944d38a4fb5dda15377bcdc5a')
 
 build() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
 
   make
 }
 
 package() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
 
   make DESTDIR=${pkgdir} install
 }
