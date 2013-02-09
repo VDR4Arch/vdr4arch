@@ -1,0 +1,70 @@
+#!/usr/bin/perl
+# newvdr - Helper script to spread the VDR version number to plugin PKGBUILD's
+# Copyright (C) 2013 Manuel Reimer <manuel.reimer@gmx.de>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+use strict;
+use warnings;
+
+my $VDRPKGBUILD = 'vdr/PKGBUILD';
+my $PLUGINSPATH = 'plugins';
+
+{
+  # Read VDR's version
+  open(my $fh, '<', $VDRPKGBUILD) or die("Failed to read VDR PKGBUILD\n");
+  my ($pkgver_line) = grep(/^pkgver=/, <$fh>) or die("No pkgver for VDR?\n");
+  close($fh);
+  my ($vdrversion) = $pkgver_line =~ /=(.+)/;
+
+  # Loop over the plugins
+  my $counter;
+  opendir(my $dhplugins, $PLUGINSPATH) or die("Can't open path $PLUGINSPATH\n");
+  while (my $subdir = readdir($dhplugins)) {
+    next if ($subdir =~ /^\./);
+    my $plugindir = "$PLUGINSPATH/$subdir";
+    next unless (-d $plugindir);
+
+    # Read full plugin PKGBUILD content
+    open($fh, '<', "$plugindir/PKGBUILD")
+      or die("Can't read PKGBUILD in $plugindir\n");
+    my $pkgbuildcontent = join('', <$fh>);
+    close($fh);
+
+    # Parse out variables
+    my ($vdrapi) = $pkgbuildcontent =~ /^_vdrapi=(.+)/m
+      or die("Can't read _vdrapi for $plugindir\n");
+    my ($pkgrel) = $pkgbuildcontent =~ /^pkgrel=(\d+)/m
+      or die("Can't read pkgrel for $plugindir\n");
+
+    # Anything to do for us?
+    next if ($vdrapi eq $vdrversion);
+
+    # Count up pkgrel
+    $pkgrel++;
+
+    # Edit PKGBUILD content
+    $pkgbuildcontent =~ s/^_vdrapi=.+$/_vdrapi=$vdrversion/m;
+    $pkgbuildcontent =~ s/^pkgrel=.+$/pkgrel=$pkgrel/m;
+
+    # Write out changes
+    open($fh, '>', "$plugindir/PKGBUILD")
+      or die("Can't write PKGBUILD in $plugindir\n");
+    print $fh $pkgbuildcontent;
+    close($fh);
+
+    # Count up
+    $counter++;
+  }
+
+  if ($counter > 1) {
+    print "Successfully edited $counter PKGBUILD's\n";
+    print "Don't forget to review the automatic changes via 'git diff'!\n";
+  }
+  else {
+    print "Nothing to do!\n";
+  }
+}
