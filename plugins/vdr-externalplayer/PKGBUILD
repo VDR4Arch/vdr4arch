@@ -16,7 +16,7 @@ conflicts=("vdr-plugin-$_plugname")
 source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
         'makefilefix.diff')
 md5sums=('0ad6ebeaedef66aac9564ba437c1f4e9'
-         '2170044e62b864e759c64ffe66f44f34')
+         '032ee9fae4561abf6becdfbbb735d43f')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
