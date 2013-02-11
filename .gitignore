@@ -1,4 +1,5 @@
 *.fw
+*.log
 *.tar.bz2
 *.tar.gz
 *.tar.xz
