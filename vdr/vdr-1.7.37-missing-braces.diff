@@ -1,0 +1,14 @@
+--- lirc.c      2013/02/03 11:23:18     2.4
++++ lirc.c      2013/02/11 15:25:42
+@@ -114,9 +114,10 @@
+               repeat = true;
+               timeout = Delta * 10 / 9;
+               }
+-           if (pressed)
++           if (pressed) {
+               LastTime.Set();
+               Put(KeyName, repeat);
++              }
+            }
+         else if (pressed && repeat) { // the last one was a repeat, so let's generate a release
+            Put(LastKeyName, false, true);

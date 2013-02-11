@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr
 pkgver=1.7.37
-pkgrel=1
+pkgrel=2
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -19,10 +19,12 @@ backup=('var/lib/vdr/channels.conf'
 options='!emptydirs'
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
+        'vdr-1.7.37-missing-braces.diff'
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
         'shutdown.sh'
         'shutdown-wrapper.c')
 md5sums=('602dc7e678bcfcf075da36344a337562'
+         '4e1e7e7a76e628f36671df6248b969ac'
          '301c9b9766ed5182b07f1debc79abc21'
          'ef8e11062f58a9eb4016dfbf66bb9044'
          '7cad811b4ac5ee6c0b5496d006f1e0ee')
@@ -31,6 +33,8 @@ build() {
   gcc -o shutdown-wrapper shutdown-wrapper.c
 
   cd "${srcdir}/${pkgname}-${pkgver}"
+
+  patch -i ${srcdir}/vdr-1.7.37-missing-braces.diff
 
 cat > Make.config <<EOF
 CFLAGS      += -O3
