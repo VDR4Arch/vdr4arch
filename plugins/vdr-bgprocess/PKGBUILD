@@ -11,7 +11,7 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://www.reelbox.org/software/vdr/$pkgname-$pkgver.tgz"
+source=("http://ftp.uni-kl.de/pub/linux/gentoo/distfiles/$pkgname-$pkgver.tgz"
         'bgprocess-tlphrases-fix.diff'
         'bgprocess-osditem-fix.diff')
 md5sums=('46bc8626cf843110eedef74d2dc27c3d'
