@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-skinelchi
-pkgver=0.2.7
+pkgver=0.2.8
 _vdrapi=1.7.37
-pkgrel=7
+pkgrel=1
 pkgdesc="adds the 'Elchi' skin to the VDR standard skins"
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
 arch=('x86_64' 'i686')
@@ -12,25 +12,19 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://firefly.vdr-developer.org/skinelchi/${pkgname}-${pkgver}.tar.bz2"
-        'skinelchi-vdr-1.7.33.diff')
-md5sums=('dc4686b95bc9fac2fb8255d3114f8689'
-         '5226773790f19ae5af71e5a42af3085e')
+source=("http://firefly.vdr-developer.org/skinelchi/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('b4d3160033fa6541eab55bbf7ad41276')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  make
+}
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
-  patch -p1 -i $srcdir/skinelchi-vdr-1.7.33.diff
-
-  #Fix compilation with newer Imagemagick versions
-  sed -i 's/lMagick++/lMagick++-Q16/g' Makefile
-  
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
+  make DESTDIR=${pkgdir} install
 
   mkdir -p $pkgdir/var/lib/vdr/themes
   install -Dm644 themes/*.theme "$pkgdir/var/lib/vdr/themes"
