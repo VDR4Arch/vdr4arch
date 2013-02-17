@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-undelete
 pkgver=0.0.7
-_vdrapi=1.7.37
-pkgrel=3
+_vdrapi=1.7.38
+pkgrel=4
 pkgdesc="allows to undelete accidentally deleted VDR recordings"
 url="http://projects.vdr-developer.org/projects/plg-undelete"
 arch=('x86_64' 'i686')
