@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-dvbapi
-pkgver=20121225
-_gitver=b903b96e
+pkgver=20130217
+_gitver=555272d2
 _vdrapi=1.7.38
-pkgrel=5
+pkgrel=1
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
@@ -18,6 +18,7 @@ md5sums=('9c5204116e658141c43a199516f3fe8e')
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"*
 
+  #TODO: Use libdvbcsa
   if [ "${CARCH}" = "x86_64" ]; then
     make
   else
