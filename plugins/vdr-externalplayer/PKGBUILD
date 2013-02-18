@@ -2,7 +2,7 @@
 pkgname=vdr-externalplayer
 pkgver=0.2.0
 _vdrapi=1.7.38
-pkgrel=3
+pkgrel=4
 pkgdesc="use external players in VDR"
 url="http://sourceforge.net/projects/externalplayer/"
 arch=('x86_64' 'i686')
@@ -29,6 +29,4 @@ package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
   make DESTDIR=${pkgdir} install
-
-  install -Dm644 examples/externalplayer.conf "$pkgdir/var/lib/vdr/plugins/externalplayer.conf"
 }
