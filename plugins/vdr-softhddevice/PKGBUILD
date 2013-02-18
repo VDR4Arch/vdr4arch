@@ -17,7 +17,7 @@ conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2"
         'softhddevice-ffmpeg-1.1.2-fix.diff')
 md5sums=('e1572ef42e7a2023c42583838b2bc5b1'
-         '897030d818c26fb7bf3103cbcaa61a36')
+         'b61885d25937e8f517c890b80f84426b')
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
