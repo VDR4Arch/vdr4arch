@@ -13,7 +13,7 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
 source=("https://github.com/manio/vdr-plugin-$_plugname/archive/$_gitver.tar.gz")
-md5sums=('9c5204116e658141c43a199516f3fe8e')
+md5sums=('709e906159c4f05cc0c35b22f23b038d')
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"*
