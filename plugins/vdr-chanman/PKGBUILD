@@ -1,10 +1,10 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 # Contributor: crov
-pkgname=vdr-plugin-chanman
+pkgname=vdr-chanman
 pkgver=0.0.10
 _gitver=58463fd2
-_vdrapi=1.7.37
-pkgrel=4
+_vdrapi=1.7.38
+pkgrel=2
 pkgdesc="Change channel with a multi level choice"
 url="http://projects.vdr-developer.org/projects/plg-chanman"
 arch=('x86_64' 'i686')
@@ -14,11 +14,11 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-source=("http://projects.vdr-developer.org/attachments/download/1004/$pkgname-$pkgver.tar.gz")
+source=("http://projects.vdr-developer.org/attachments/download/1004/vdr-plugin-$_plugname-$pkgver.tar.gz")
 md5sums=('ad5928dd686377e98b6de13017e8aaab')
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \

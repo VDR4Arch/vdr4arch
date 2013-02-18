@@ -3,8 +3,8 @@
 pkgname=vdr-streamdev
 pkgver=20130203
 _gitver=9135cde7
-_vdrapi=1.7.37
-pkgrel=2
+_vdrapi=1.7.38
+pkgrel=3
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
 url="http://projects.vdr-developer.org/projects/show/plg-streamdev"
 arch=('x86_64' 'i686')
