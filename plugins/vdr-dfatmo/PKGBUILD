@@ -1,46 +1,48 @@
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgbase=DFAtmo
-pkgname=('dfatmo-driver' 'vdr-dfatmo')
-pkgver=20121128
-_gitver=8c3321a
+pkgname=('dfatmo' 'vdr-dfatmo')
+pkgver=0.3.3
 _vdrapi=1.7.38
-pkgrel=3
+pkgrel=1
+epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')
 license=('GPL2')
-makedepends=("vdr-api=${_vdrapi}")
-source=("https://github.com/durchflieger/${pkgbase}/tarball/${_gitver}"
-        'vdrplug.mk'
+makedepends=('python2' "vdr-api=${_vdrapi}")
+source=("https://github.com/durchflieger/${pkgbase}/archive/v${pkgver}.tar.gz"
         '45-df10ch.rules')
-md5sums=('bc5146a1562eca440b868b212231821f'
-         'a46855ae836105c728e7637b42958005'
+md5sums=('30960d8444e1e38815e9a442f519e323'
          'c5e0bf17e88febc7e86c7e435f5eea5f')
 
 build() {
-  cd "${srcdir}/durchflieger-${pkgbase}-${_gitver}"
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+
+  #Compile dfatmo
+  CFLAGS+=' -fPIC'
   sed -i "s/python-config/python2-config/" Makefile
-  make CFLAGS="$CFLAGS -fPIC" DFATMOINSTDIR='/usr' dfatmo
-  make -f ../vdrplug.mk DFATMOINSTDIR='/usr'
+  make dfatmo
+
+  #Compile vdr plugin
+  mkdir po #Workaround
+  make -f vdr2plug.mk
 }
 
-package_dfatmo-driver() {
-  pkgdesc="Output drivers to support VDR plugin dfatmo"
-  depends=('python2' 'libusbx')
+package_dfatmo() {
+  pkgdesc="Analyzes the video picture and generates output data for so called 'Atmolight' controllers"
+  replaces=('dfatmo-driver')
+  conflicts=('dfatmo-driver')
+  depends=('libusbx')
 
-  cd "${srcdir}/durchflieger-${pkgbase}-${_gitver}"
-  install -d "${pkgdir}/usr/include"
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+  install -d "${pkgdir}/usr/include" #Workaround
   make DFATMOINSTDIR="${pkgdir}/usr" dfatmoinstall
 }
 
 package_vdr-dfatmo() {
   pkgdesc="VDR plugin to drive a colored back lighting for TVs"
   depends=('dfatmo-driver' "vdr-api=${_vdrapi}")
-  _plugname=$(echo ${pkgname} | sed 's/vdr-//g')
-  replaces=("vdr-plugin-${_plugname}")
-  conflicts=("vdr-plugin-${_plugname}")
 
-  cd "${srcdir}/durchflieger-${pkgbase}-${_gitver}"
-  make -f ../vdrplug.mk DESTDIR="${pkgdir}" install 
-  install -Dm644 ../45-df10ch.rules "${pkgdir}/usr/lib/udev/rules.d/45-df10ch.rules"
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+  make -f vdr2plug.mk DESTDIR="${pkgdir}" install
+  install -Dm644 ${srcdir}/45-df10ch.rules "${pkgdir}/usr/lib/udev/rules.d/45-df10ch.rules"
 }
-# vim:set ts=2 sw=2 et:
