@@ -8,7 +8,7 @@ url="http://sourceforge.net/projects/externalplayer/"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
-backup=('var/lib/vdr/plugins/externalplayer.conf')
+backup=('var/lib/vdr/plugins/externalplayer/externalplayer.conf')
 install="${pkgname}.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
