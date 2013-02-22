@@ -9,8 +9,6 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://www.escape-edv.de/endriss/vdr/${pkgname}-${pkgver}.tgz"
         'av7110_ir_vdr_perms.conf'
         '70-remote-device.rules')

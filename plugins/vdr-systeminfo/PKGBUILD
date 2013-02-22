@@ -10,8 +10,6 @@ license=('GPL2')
 depends=('iproute2' 'lm_sensors' 'hddtemp' "vdr-api=${_vdrapi}")
 #install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://firefly.vdr-developer.org/systeminfo/${pkgname}-${pkgver}.tar.bz2"
         'systeminfo.sh')
 md5sums=('1fe264cf2059628103f134c9aba53529'

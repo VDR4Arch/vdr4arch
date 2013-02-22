@@ -10,8 +10,6 @@ license=('GPL2')
 depends=('imagemagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://firefly.vdr-developer.org/skinelchi/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('b4d3160033fa6541eab55bbf7ad41276')
 

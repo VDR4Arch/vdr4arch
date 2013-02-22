@@ -11,8 +11,6 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 backup=('var/lib/vdr/plugins/externalplayer/externalplayer.conf')
 install="${pkgname}.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
         'makefilefix.diff')
 md5sums=('0ad6ebeaedef66aac9564ba437c1f4e9'

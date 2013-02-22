@@ -12,8 +12,6 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 #install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/attachments/download/1004/vdr-plugin-$_plugname-$pkgver.tar.gz")
 md5sums=('ad5928dd686377e98b6de13017e8aaab')
 

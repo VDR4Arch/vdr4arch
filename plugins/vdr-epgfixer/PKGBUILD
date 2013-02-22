@@ -14,8 +14,6 @@ backup=('var/lib/vdr/plugins/epgfixer/blacklist.conf'
         'var/lib/vdr/plugins/epgfixer/regexp.conf')
 install='vdr-plugin-epgfixer.install'
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/attachments/download/1138/$pkgname-$pkgver.tgz")
 md5sums=('b9612533df73332d9c6305bf03d558dc')
 

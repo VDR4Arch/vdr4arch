@@ -10,8 +10,6 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('pcre' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/git/vdr-plugin-${_plugname}.git/snapshot/vdr-plugin-${_plugname}-${_gitver}.tar.bz2")
 md5sums=('11645f37a6075963cc6c817edb643c1f')
 

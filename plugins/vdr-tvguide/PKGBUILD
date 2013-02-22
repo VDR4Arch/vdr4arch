@@ -11,8 +11,6 @@ license=('GPL2')
 depends=('imagemagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/git/vdr-plugin-${_plugname}.git/snapshot/vdr-plugin-${_plugname}-${_gitver}.tar.bz2")
 md5sums=('88c1e5c944d38a4fb5dda15377bcdc5a')
 

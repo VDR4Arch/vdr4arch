@@ -28,8 +28,6 @@ package_vdr-vnsiserver() {
   pkgdesc="VDR plugin to handle XBMC clients"
   depends=('gcc-libs' "vdr-api=${_vdrapi}")
   _plugname=$(echo $pkgname | sed 's/vdr-//g')
-  replaces=("vdr-plugin-$_plugname")
-  conflicts=("vdr-plugin-$_plugname")
   install="$pkgname.install"
 
   cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver

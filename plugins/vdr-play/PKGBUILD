@@ -9,8 +9,6 @@ arch=('x86_64' 'i686')
 license=('AGPL3')
 depends=('ffmpeg' 'mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/attachments/download/1043/$pkgname-$pkgver.tgz")
 md5sums=('c32adb96ccfedbc26f4170f2526ae73c')
 
