@@ -16,6 +16,6 @@ md5sums=('2331231d7123cce76efa9117f9589787'
 
 package() {
   install -Dm644 "$srcdir/vdr4arch.gpg" "$pkgdir/usr/share/pacman/keyrings/vdr4arch.gpg"
-  install -Dm644 "$srcdir/vdr4arch.gpg" "$pkgdir/usr/share/pacman/keyrings/vdr4arch-trusted"
+  install -Dm644 "$srcdir/vdr4arch-trusted" "$pkgdir/usr/share/pacman/keyrings/vdr4arch-trusted"
   touch "$pkgdir/usr/share/pacman/keyrings/vdr4arch-revoked"
 }
