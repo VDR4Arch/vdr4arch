@@ -1,0 +1,35 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-cdplayer
+pkgver=1.1.7
+_vdrapi=1.7.38
+pkgrel=1
+pkgdesc="CD-Player plugin which supports CD-Text and CDDB-Database"
+url="http://uli-eckhardt.de/vdr/cdplayer.en.shtml"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('libcdio-paranoia' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+backup=("var/lib/vdr/plugins/$_plugname/cd.mpg")
+install="${pkgname}.install"
+source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
+        'cdplayer-fix-cdio-include.diff::http://hg.uli-eckhardt.de/cdplayer/raw-diff/33753eaee727/bufferedcdio.h'
+        'cdplayer-fix-destdir-handling.diff::http://hg.uli-eckhardt.de/cdplayer/raw-diff/33753eaee727/Makefile')
+md5sums=('a52a04896b9322bd00ca9ebc309f3d2f'
+         'baee0c840cd64773abec5c1c0dace3fd'
+         'b8310fab59bff8ed364197e2fc49132b')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  patch -p1 -i "$srcdir/cdplayer-fix-cdio-include.diff"
+  patch -p1 -i "$srcdir/cdplayer-fix-destdir-handling.diff"
+
+  make
+}
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 contrib/cd.mpg "$pkgdir/var/lib/vdr/plugins/$_plugname/cd.mpg"
+}

@@ -1,0 +1,19 @@
+
+diff -r 57ed0480bd78 -r 33753eaee727 Makefile
+--- a/Makefile	Tue Feb 12 14:34:26 2013 +0100
++++ b/Makefile	Sun Feb 17 16:24:59 2013 +0100
+@@ -19,8 +19,8 @@
+ 
+ # Use package data if installed...otherwise assume we're under the VDR source directory:
+ PKGCFG = $(if $(VDRDIR),$(shell pkg-config --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --variable=$(1) vdr || pkg-config --variable=$(1) ../../../vdr.pc))
+-LIBDIR = $(DESTDIR)$(call PKGCFG,libdir)
+-LOCDIR = $(DESTDIR)$(call PKGCFG,locdir)
++LIBDIR = $(call PKGCFG,libdir)
++LOCDIR = $(call PKGCFG,locdir)
+ CFGDIR = $(call PKGCFG,configdir)/plugins/$(PLUGIN)
+ PLGCFG = $(call PKGCFG,plgcfg)
+ #
+
+
+
+
