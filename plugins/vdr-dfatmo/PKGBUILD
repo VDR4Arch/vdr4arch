@@ -3,7 +3,7 @@ pkgbase=DFAtmo
 pkgname=('dfatmo' 'vdr-dfatmo')
 pkgver=0.3.3
 _vdrapi=1.7.38
-pkgrel=1
+pkgrel=2
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')
@@ -31,7 +31,7 @@ package_dfatmo() {
   pkgdesc="Analyzes the video picture and generates output data for so called 'Atmolight' controllers"
   replaces=('dfatmo-driver')
   conflicts=('dfatmo-driver')
-  depends=('libusbx')
+  depends=('libusbx' 'python2')
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
   install -d "${pkgdir}/usr/include" #Workaround
