@@ -25,5 +25,6 @@ build() {
 
 package() {
   cd "${srcdir}/media_build-bst-130126"
-  make KDIR26="${pkgdir}/usr/lib/modules/$(uname -r)/updates/kernel/drivers/media" media-install
+  make DESTDIR="${pkgdir}" KDIR26="/usr/lib/modules/$(uname -r)/updates/kernel/drivers/media" media-install
+  find "${pkgdir}" -name '*.ko' -exec gzip -9 {} \;
 }
