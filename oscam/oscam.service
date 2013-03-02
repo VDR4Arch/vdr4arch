@@ -4,6 +4,7 @@ Description=Open Source Conditional Access Module
 [Service]
 Type=forking
 ExecStart=/usr/bin/oscam -b
+TimeOutStopSec=30
 
 [Install]
 WantedBy=multi-user.target
