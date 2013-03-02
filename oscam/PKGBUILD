@@ -34,7 +34,7 @@ build() {
   cat "${pkgname}-${pkgver}.zip" | bsdtar -xf -
 
   cd "${srcdir}/trunk"
-  chmod +x config.sh
+  chmod +x config.sh webif/pages_mkdep
 
   make CONF_DIR=/var/lib/oscam \
        USE_SSL=1 \
