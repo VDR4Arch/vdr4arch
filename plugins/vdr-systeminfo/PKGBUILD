@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-systeminfo
 pkgver=0.1.3
-_vdrapi=1.7.38
-pkgrel=2
+_vdrapi=1.7.39
+pkgrel=3
 pkgdesc="displays system informations like CPU type and speed, disk and swap space etc."
 url="http://firefly.vdr-developer.org/systeminfo/index.html"
 arch=('x86_64' 'i686')
@@ -10,8 +10,6 @@ license=('GPL2')
 depends=('iproute2' 'lm_sensors' 'hddtemp' "vdr-api=${_vdrapi}")
 #install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://firefly.vdr-developer.org/systeminfo/${pkgname}-${pkgver}.tar.bz2"
         'systeminfo.sh')
 md5sums=('1fe264cf2059628103f134c9aba53529'

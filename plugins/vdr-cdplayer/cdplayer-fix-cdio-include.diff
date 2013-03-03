@@ -1,0 +1,25 @@
+
+diff -r 27380e464ebf -r 33753eaee727 bufferedcdio.h
+--- a/bufferedcdio.h	Sat Sep 08 13:01:05 2012 +0200
++++ b/bufferedcdio.h	Sun Feb 17 16:24:59 2013 +0100
+@@ -19,9 +19,15 @@
+ #include <string>
+ #include <stdio.h>
+ #include <stdint.h>
++#include <cdio/version.h>
++#if LIBCDIO_VERSION_NUM < 90
+ #include <cdio/cdda.h>
++#include <cdio/paranoia.h>
++#else
++#include <cdio/paranoia/cdda.h>
++#include <cdio/paranoia/paranoia.h>
++#endif
+ #include <cdio/cd_types.h>
+-#include <cdio/paranoia.h>
+ #include <cdio/mmc.h>
+ #include "cdioringbuf.h"
+ #include "cdinfo.h"
+
+
+
+

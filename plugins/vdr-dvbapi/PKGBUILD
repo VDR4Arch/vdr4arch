@@ -1,32 +1,26 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-dvbapi
-pkgver=20121225
-_gitver=b903b96e
-_vdrapi=1.7.38
-pkgrel=5
+pkgver=20130217
+_gitver=555272d2
+_vdrapi=1.7.39
+pkgrel=3
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('gcc-libs' 'oscam' "vdr-api=${_vdrapi}")
+depends=('gcc-libs' 'libdvbcsa' 'oscam' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("https://github.com/manio/vdr-plugin-$_plugname/archive/$_gitver.tar.gz")
-md5sums=('9c5204116e658141c43a199516f3fe8e')
+md5sums=('709e906159c4f05cc0c35b22f23b038d')
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"*
 
-  if [ "${CARCH}" = "x86_64" ]; then
-    make
-  else
-    make PARALLEL=PARALLEL_32_INT
-  fi
+  make LIBDVBCSA=1
 }
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"*
 
-  make DESTDIR=${pkgdir} install
+  make LIBDVBCSA=1 DESTDIR="$pkgdir" install
 }

@@ -2,10 +2,10 @@
 pkgbase=xbmc-pvr-addons
 pkgname=('vdr-vnsiserver' 'xbmc-pvr-addons')
 pkgver=12.0
-_vdrapi=1.7.38
+_vdrapi=1.7.39
 _codename=Frodo
 epoch=1
-pkgrel=3
+pkgrel=4
 url=""
 arch=('x86_64' 'i686')
 license=('GPL2')
@@ -28,8 +28,6 @@ package_vdr-vnsiserver() {
   pkgdesc="VDR plugin to handle XBMC clients"
   depends=('gcc-libs' "vdr-api=${_vdrapi}")
   _plugname=$(echo $pkgname | sed 's/vdr-//g')
-  replaces=("vdr-plugin-$_plugname")
-  conflicts=("vdr-plugin-$_plugname")
   install="$pkgname.install"
 
   cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver

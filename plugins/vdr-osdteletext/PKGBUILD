@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-osdteletext
 pkgver=0.9.3
-_vdrapi=1.7.38
-pkgrel=7
+_vdrapi=1.7.39
+pkgrel=8
 pkgdesc="Displays teletext pages directly on VDR's OSD"
 url="http://projects.vdr-developer.org/projects/plg-osdteletext"
 arch=('x86_64' 'i686')
@@ -10,8 +10,6 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://projects.vdr-developer.org/attachments/download/912/$pkgname-$pkgver.tgz")
 md5sums=('e6a19d075fa99a3d81f29826d01ad9ba')
 

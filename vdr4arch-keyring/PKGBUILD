@@ -1,0 +1,21 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+
+pkgname=vdr4arch-keyring
+pkgver=20130219
+pkgrel=1
+pkgdesc='VDR4Arch GPG key'
+arch=('any')
+groups=()
+url='https://github.com/CReimer/vdr4arch'
+license=('GPL2')
+install="${pkgname}.install"
+source=('vdr4arch.gpg'
+        'vdr4arch-trusted')
+md5sums=('2331231d7123cce76efa9117f9589787'
+         '52504aeec7f948cb02891a4dd620eced')
+
+package() {
+  install -Dm644 "$srcdir/vdr4arch.gpg" "$pkgdir/usr/share/pacman/keyrings/vdr4arch.gpg"
+  install -Dm644 "$srcdir/vdr4arch-trusted" "$pkgdir/usr/share/pacman/keyrings/vdr4arch-trusted"
+  touch "$pkgdir/usr/share/pacman/keyrings/vdr4arch-revoked"
+}

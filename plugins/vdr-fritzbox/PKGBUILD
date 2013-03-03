@@ -1,0 +1,24 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=vdr-fritzbox
+pkgver=1.5.2
+_vdrapi=1.7.39
+pkgrel=2
+pkgdesc="Connects to the Fritz!Box to inform you about incoming and outgoing calls"
+url="http://www.joachim-wilke.de/vdr-fritz.htm"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('commoncpp2' 'libgcrypt' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://www.joachim-wilke.de/downloads/vdr-fritz/$pkgname-$pkgver.tgz")
+md5sums=('3a3ac7a2012676ad129faf52616ec5f6')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  make
+}
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  make DESTDIR=${pkgdir} install
+}

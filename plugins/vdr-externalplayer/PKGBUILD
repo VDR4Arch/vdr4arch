@@ -1,34 +1,26 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-externalplayer
-pkgver=0.2.0
-_vdrapi=1.7.38
-pkgrel=3
+pkgver=0.3.0
+_vdrapi=1.7.39
+pkgrel=2
 pkgdesc="use external players in VDR"
 url="http://sourceforge.net/projects/externalplayer/"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
-backup=('var/lib/vdr/plugins/externalplayer.conf')
+backup=('var/lib/vdr/plugins/externalplayer/externalplayer.conf')
 install="${pkgname}.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
-source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
-        'makefilefix.diff')
-md5sums=('0ad6ebeaedef66aac9564ba437c1f4e9'
-         '032ee9fae4561abf6becdfbbb735d43f')
+source=("http://hg.uli-eckhardt.de/$_plugname/archive/V$pkgver.tar.bz2")
+md5sums=('a003d970199a3a634a075041ea0360b6')
 
 build() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
-
-  patch -p1 -i ${srcdir}/makefilefix.diff
+  cd "${srcdir}/${_plugname}-V${pkgver}"
 
   make
 }
 package() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
+  cd "${srcdir}/${_plugname}-V${pkgver}"
 
   make DESTDIR=${pkgdir} install
-
-  install -Dm644 examples/externalplayer.conf "$pkgdir/var/lib/vdr/plugins/externalplayer.conf"
 }

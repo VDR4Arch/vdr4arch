@@ -1,24 +1,25 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
-pkgname=vdr-play
-pkgver=0.0.12
+pkgname=vdr-vdrmanager
+pkgver=0.8
 _vdrapi=1.7.39
-pkgrel=8
-pkgdesc="Mediaplayer plugin for VDR and X11"
-url="http://projects.vdr-developer.org/projects/plg-play"
+pkgrel=2
+pkgdesc="Allows remote programming VDR using VDR-Manager running on Android devices"
+url="http://projects.vdr-developer.org/projects/vdr-manager"
 arch=('x86_64' 'i686')
-license=('AGPL3')
-depends=('ffmpeg' 'mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
+license=('GPL2')
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1043/$pkgname-$pkgver.tgz")
-md5sums=('c32adb96ccfedbc26f4170f2526ae73c')
+source=("http://projects.vdr-developer.org/attachments/download/1130/$pkgname-$pkgver.tar.gz")
+md5sums=('9538cd51a0b230f6a6fd92b3888318c2')
 
 package() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       GIT_REV=''
+       all
 }

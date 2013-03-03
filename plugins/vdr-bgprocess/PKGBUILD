@@ -1,16 +1,14 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-bgprocess
 pkgver=0.1.0
-_vdrapi=1.7.38
-pkgrel=4
+_vdrapi=1.7.39
+pkgrel=5
 pkgdesc="Displays information about background processes"
 url="http://projects.vdr-developer.org/projects/plg-undelete"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname")
-conflicts=("vdr-plugin-$_plugname")
 source=("http://ftp.uni-kl.de/pub/linux/gentoo/distfiles/$pkgname-$pkgver.tgz"
         'bgprocess-tlphrases-fix.diff'
         'bgprocess-osditem-fix.diff')
