@@ -2,8 +2,8 @@
 pkgname=vdr-sc
 pkgver=20120710
 _hgver=29b7b5f2
-_vdrapi=1.7.38
-pkgrel=4
+_vdrapi=1.7.39
+pkgrel=5
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')

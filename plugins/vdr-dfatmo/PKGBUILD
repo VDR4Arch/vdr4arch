@@ -2,8 +2,8 @@
 pkgbase=DFAtmo
 pkgname=('dfatmo' 'vdr-dfatmo')
 pkgver=0.3.3
-_vdrapi=1.7.38
-pkgrel=2
+_vdrapi=1.7.39
+pkgrel=3
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')
