@@ -1,11 +1,3 @@
-# This is an example PKGBUILD file. Use this as a start to creating your own,
-# and remove these comments. For more information, see 'man PKGBUILD'.
-# NOTE: Please fill out the license field for your package! If it is unknown,
-# then please put 'unknown'.
-
-# See http://wiki.archlinux.org/index.php/VCS_PKGBUILD_Guidelines
-# for more information on packaging from GIT sources.
-
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-restfulapi
 pkgver=0.1.1
@@ -15,7 +7,7 @@ pkgdesc="Restful-API Control for VDR"
 url="https://github.com/yavdr/vdr-plugin-restfulapi"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('gettext' "vdr-api=${_vdrapi}" "libcxx-svn" 'cxxtools')
+depends=('gettext' "vdr-api=${_vdrapi}" 'cxxtools')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname" "$_pkgname")
 conflicts=("vdr-plugin-$_plugname" "$_pkgname")
