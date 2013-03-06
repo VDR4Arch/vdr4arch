@@ -29,5 +29,3 @@ package() {
   install -m 644 web/osd.js     $pkgdir/var/lib/vdr/plugins/restfulapi/
   install -m 644 web/osd.css    $pkgdir/var/lib/vdr/plugins/restfulapi/
 }
-
-# vim:set ts=2 sw=2 et:
