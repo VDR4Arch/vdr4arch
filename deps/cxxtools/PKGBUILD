@@ -1,18 +1,20 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=cxxtools
 pkgver=2.1.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Collection of general-purpose C++ classes"
 url="http://www.tntnet.org"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('bash' 'gcc-libs')
 options=(!libtool)
-source=("http://www.tntnet.org/download/${pkgname}-${pkgver}.tar.gz")
-md5sums=('2026a2bb23b966f13893167b4dbc5d70')
+source=("http://www.tntnet.org/download/${pkgname}-${pkgver}.tar.gz" "fix-utf8.diff")
+md5sums=('2026a2bb23b966f13893167b4dbc5d70'
+         '5a23ef9da9b54da239ab8e89521c8239')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -p1 -i ${srcdir}/fix-utf8.diff
   ./configure --prefix=/usr \
               --disable-demos \
               --disable-unittest
