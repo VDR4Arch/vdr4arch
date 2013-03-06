@@ -7,12 +7,9 @@ pkgdesc="Restful-API Control for VDR"
 url="https://github.com/yavdr/vdr-plugin-restfulapi"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('gettext' "vdr-api=${_vdrapi}" 'cxxtools')
+depends=('cxxtools' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-replaces=("vdr-plugin-$_plugname" "$_pkgname")
-conflicts=("vdr-plugin-$_plugname" "$_pkgname")
-makedepends=('gettext' "vdr-api=${_vdrapi}" 'cxxtools')
-source=("https://github.com/yavdr/vdr-plugin-restfulapi/archive/0.1.1.tar.gz")
+source=("https://github.com/yavdr/vdr-plugin-$_plugname/archive/$pkgver.tar.gz")
 md5sums=('d83a949a6c9cbedee426cd2225e05938')
 
 build() {
