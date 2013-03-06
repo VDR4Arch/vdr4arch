@@ -1,0 +1,7 @@
+post_install() {
+    chown -R vdr:vdr /usr/share/vdr/markad
+}
+
+post_upgrade() {
+    post_install
+}
