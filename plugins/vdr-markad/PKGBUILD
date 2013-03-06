@@ -1,0 +1,25 @@
+# Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
+pkgname=vdr-markad
+pkgver=20130301
+_gitver=f68a8728b
+_vdrapi=1.7.39
+pkgrel=1
+pkgdesc="automatic advertisement detection"
+url="http://projects.vdr-developer.org/projects/plg-play"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('ffmpeg' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://projects.vdr-developer.org/git/vdr-plugin-markad.git/snapshot/vdr-plugin-${_plugname}-${_gitver}.tar.bz2" "Makefile-1.7.36.diff")
+md5sums=('c143d08dc94c5a7b2692513d62e29892'
+         '174bf909c0f1169bca1d7bf55481e85a')
+build() {
+ cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
+ patch -p1 -i ${srcdir}/Makefile-1.7.36.diff
+ sed -i -e 's/#define DEF_LOGODIR \"\/var\/lib\/markad\"/#define DEF_LOGODIR \"\/usr\/share\/vdr\/markad\"/' plugin/markad.cpp
+ make
+}
+package() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
+  make DESTDIR=${pkgdir} install
+}

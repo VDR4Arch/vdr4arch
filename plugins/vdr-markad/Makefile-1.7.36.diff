@@ -1,0 +1,421 @@
+diff -NurB vdr-plugin-markad-f68a8728b/command/Makefile b/command/Makefile
+--- vdr-plugin-markad-f68a8728b/command/Makefile	2013-01-02 16:00:48.000000000 +0100
++++ b/command/Makefile	2013-03-06 18:36:15.998045394 +0100
+@@ -1,50 +1,73 @@
+ #
+-# Makefile for a Video Disk Recorder addon
++# Makefile for a Video Disk Recorder add-on
++# Adapted to the new VDR makefile environment by Stefan Hofmann
+ #
++# $Id: $
+ 
+ # use this, if you use libavcodec51
+ #WITH_OLD_FFMPEG_HEADERS=1
+ 
+-### The version number of this plugin (taken from the main source file):
++# The official name of this add-on.
++# By default the main source file also carries this name.
+ 
+-VERSION = $(shell grep 'static const char \*VERSION *=' ../version.h | awk '{ print $$6 }' | sed -e 's/[";]//g')
++ADDON = markad
+ 
+-### The C++ compiler and options:
++### The version number of this addon (taken from the main source file):
+ 
+-CXX      ?= g++
+-CXXFLAGS ?= -g -rdynamic -O3 -funroll-loops -Wall -Wextra -Woverloaded-virtual -Wno-parentheses
+-PKG-CONFIG ?= pkg-config
+-STRIP ?= strip
++VERSION = $(shell grep 'static const char \*VERSION *=' version.h | awk '{ print $$6 }' | sed -e 's/[";]//g')
++
++### The directory environment:
++
++# Use package data if installed...otherwise assume we're under the VDR source directory:
++PKGCFG = $(if $(VDRDIR),$(shell pkg-config --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --variable=$(1) vdr || pkg-config --variable=$(1) ../../../../vdr.pc))
++BINDIR = $(call PKGCFG,bindir)
++LOCDIR = $(call PKGCFG,locdir)
++MANDIR = $(call PKGCFG,mandir)
++RESDIR = $(call PKGCFG,resdir)
++#
++TMPDIR ?= /tmp
++
++### The compiler options:
++
++export CFLAGS   = $(call PKGCFG,cflags)
++export CXXFLAGS = $(call PKGCFG,cxxflags)
++CXXFLAGS += -rdynamic -funroll-loops
++
++### The name of the executable file:
++
++BINFILE = $(ADDON)
++MANFILE = $(ADDON).1.gz
+ 
+ ### Includes and Defines (add further entries here):
+ 
+-PKG-LIBS += libavcodec libavutil
++PKG-CONFIG ?= pkg-config
+ PKG-INCLUDES += libavcodec libavutil
++INCLUDES += $(shell $(PKG-CONFIG) --cflags $(PKG-INCLUDES))
+ 
+-DEFINES += -D_GNU_SOURCE 
+-DEFINES += -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
+ DEFINES += -D__STDC_CONSTANT_MACROS -D__USE_XOPEN_EXTENDED
+ 
+ ifdef WITH_OLD_FFMPEG_HEADERS
+ 	DEFINES += -DUSE_OLD_FFMPEG_HEADERS
+ endif
+ 
+-
+-INCLUDES += $(shell $(PKG-CONFIG) --cflags $(PKG-INCLUDES))
+-LIBS     += $(shell $(PKG-CONFIG) --libs $(PKG-LIBS)) -pthread
+-
+ ### The object files (add further files here):
+ 
+ OBJS = markad-standalone.o decoder.o marks.o streaminfo.o video.o audio.o demux.o 
+ 
++PKG-LIBS += libavcodec libavutil
++LIBS += $(shell $(PKG-CONFIG) --libs $(PKG-LIBS)) -pthread
++
+ ### The main target:
+ 
+-all: markad i18n
++all: $(BINFILE) $(MANFILE) i18n
+ 
+ ### Implicit rules:
+ 
+ %.o: %.cpp
+-	$(CXX) $(CXXFLAGS) -c $(DEFINES) $(INCLUDES) $<
++	$(CXX) $(CXXFLAGS) -c $(DEFINES) $(INCLUDES) -o $@ $<
++
++%.1.gz: %.1
++	gzip -c $< > $@
+ 
+ ### Dependencies:
+ 
+@@ -58,46 +81,48 @@
+ ### Internationalization (I18N):
+ 
+ PODIR     = po
+-LOCALEDIR = $(DESTDIR)/usr/share/locale
+ I18Npo    = $(wildcard $(PODIR)/*.po)
+-I18Nmsgs  = $(addprefix $(LOCALEDIR)/, $(addsuffix /LC_MESSAGES/markad.mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
+-I18Npot   = $(PODIR)/markad.pot
++I18Nmo    = $(addsuffix .mo, $(foreach file, $(I18Npo), $(basename $(file))))
++I18Nmsgs  = $(addprefix $(DESTDIR)$(LOCDIR)/, $(addsuffix /LC_MESSAGES/$(ADDON).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
++I18Npot   = $(PODIR)/$(ADDON).pot
+ 
+ %.mo: %.po
+ 	msgfmt -c -o $@ $<
+ 
+ $(I18Npot): $(wildcard *.cpp *.h)
+-	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --msgid-bugs-address='<see README>' -o $@ $^
++	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --package-name=$(ADDON) --package-version=$(VERSION) --msgid-bugs-address='<vdr@dolze.de>' -o $@ `ls $^`
+ 
+ %.po: $(I18Npot)
+-	msgmerge -U --no-wrap --no-location --backup=none -q $@ $<
++	msgmerge -U --no-wrap --no-location --backup=none -q -N $@ $<
+ 	@touch $@
+ 
+-$(I18Nmsgs): $(LOCALEDIR)/%/LC_MESSAGES/markad.mo: $(PODIR)/%.mo
+-	@mkdir -p $(dir $@)
+-	cp $< $@
++$(I18Nmsgs): $(DESTDIR)$(LOCDIR)/%/LC_MESSAGES/$(ADDON).mo: $(PODIR)/%.mo
++	install -D -m644 $< $@
+ 
+ .PHONY: i18n
+-i18n: $(I18Npot)
++i18n: $(I18Nmo) $(I18Npot)
++
++install-i18n: $(I18Nmsgs)
+ 
+ ### Targets:
+ 
+-markad: $(OBJS)
++$(BINFILE): $(OBJS)
+ 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
+ 
++install-bin: $(BINFILE)
++	install -D $^ $(DESTDIR)$(BINDIR)/$^
++
++install-lib:
++
++install-doc: $(MANFILE)
++	install -D -m644 $(ADDON).1.gz $(DESTDIR)$(MANDIR)/man1/$(MANFILE)
++
++install-logos:
++	mkdir -p $(DESTDIR)$(RESDIR)/$(ADDON)
++	install -D -m644 logos/* $(DESTDIR)$(RESDIR)/$(ADDON)
+ 
+-MANDIR	= $(DESTDIR)/usr/share/man
+-install-doc:
+-	@mkdir -p $(MANDIR)/man1
+-	@gzip -c markad.1 > $(MANDIR)/man1/markad.1.gz
+-
+-install: install-doc markad $(I18Nmsgs)
+-	@mkdir -p $(DESTDIR)/usr/bin
+-	@cp --remove-destination markad $(DESTDIR)/usr/bin/markad
+-	@$(STRIP) $(DESTDIR)/usr/bin/markad
+-	@mkdir -p $(DESTDIR)/var/lib/markad
+-	@cp -a logos/* $(DESTDIR)/var/lib/markad
+-	@echo markad installed
++install: install-bin install-i18n install-logos install-doc
+ 
+ clean:
+-	@-rm -f $(OBJS) $(DEPFILE) markad *.so *.so.* *.tgz core* *~ $(PODIR)/*.mo $(PODIR)/*.pot
++	@-rm -f $(PODIR)/*.mo $(PODIR)/*.pot
++	@-rm -f $(OBJS) $(DEPFILE) *.so *.tgz core* *~
+diff -NurB vdr-plugin-markad-f68a8728b/.gitignore b/.gitignore
+--- vdr-plugin-markad-f68a8728b/.gitignore	2013-01-02 16:00:48.000000000 +0100
++++ b/.gitignore	1970-01-01 01:00:00.000000000 +0100
+@@ -1,15 +0,0 @@
+-.gitignore
+-
+-command/markad
+-command/.dependencies
+-command/*.o
+-command/*~
+-command/po/*.pot
+-command/po/*.mo
+-
+-plugin/.dependencies
+-plugin/*.o
+-plugin/*.so
+-plugin/*~
+-plugin/po/*.pot
+-plugin/po/*.mo
+diff -NurB vdr-plugin-markad-f68a8728b/Makefile b/Makefile
+--- vdr-plugin-markad-f68a8728b/Makefile	2013-01-02 16:00:48.000000000 +0100
++++ b/Makefile	2013-03-06 18:36:15.998045394 +0100
+@@ -1,24 +1,68 @@
+ #
+-# Makefile for a Video Disk Recorder plugin + program
++# Makefile for a Video Disk Recorder plugin
++# Adapted to the new VDR makefile environment by Stefan Hofmann
+ #
+-# dont remove the next line, its needed for the VDR Makefile
+-# $(LIBDIR)/$@.$(APIVERSION)
++# $Id: $
+ 
+-DIRS = command plugin
++# The official name of this plugin.
++# This name will be used in the '-P...' option of VDR to load the plugin.
++# By default the main source file also carries this name.
+ 
+-VERSION = $(shell grep 'static const char \*VERSION *=' version.h | awk '{ print $$6 }' | sed -e 's/[";]//g')
++PLUGIN = markad
+ 
+-TMPDIR = /tmp
+-ARCHIVE = markad-$(VERSION)
++### The version number of this plugin (taken from the version header file):
++
++VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ print $$6 }' | sed -e 's/[";]//g')
++
++### The directory environment:
++
++PLUGINDIRS = plugin
++COMMANDDIRS = command
++DIRS = $(PLUGINDIRS) $(COMMANDDIRS)
++
++# Use package data if installed...otherwise assume we're under the VDR source directory:
++PKGCFG = $(if $(VDRDIR),$(shell pkg-config --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --variable=$(1) vdr || pkg-config --variable=$(1) ../../../vdr.pc))
++LIBDIR = $(call PKGCFG,libdir)
++LOCDIR = $(call PKGCFG,locdir)
++#
++TMPDIR ?= /tmp
++
++### The compiler options:
++
++export CFLAGS   = $(call PKGCFG,cflags)
++export CXXFLAGS = $(call PKGCFG,cxxflags)
++
++### The version number of VDR's plugin API:
++
++APIVERSION = $(call PKGCFG,apiversion)
++
++### The name of the distribution archive:
++
++ARCHIVE = $(PLUGIN)-$(VERSION)
+ PACKAGE = vdr-$(ARCHIVE)
+ 
++### The main target:
++
+ all:
+-	for i in $(DIRS); do $(MAKE) -C $$i; done
++	for i in $(DIRS); do $(MAKE) -C $$i VDRDIR="$(shell realpath "$(VDRDIR)")" $@; done
++
++### Internationalization (I18N):
++
++install-i18n:
++	for i in $(PLUGINDIRS); do $(MAKE) -C $$i $@; done
++
++### Targets:
++
++install-lib:
++	# Fake install pattern to make VDR's Makefile happy
++	# install -D $^ $(LIBDIR)/$^.$(APIVERSION)
++	for i in $(PLUGINDIRS); do $(MAKE) -C $$i VDRDIR="$(shell realpath "$(VDRDIR)")" $@; done
+ 
+ install:
+-	for i in $(DIRS); do $(MAKE) -C $$i install; done
++	for i in $(PLUGINDIRS); do $(MAKE) -C $$i VDRDIR="$(shell realpath "$(VDRDIR)")" $@; done
++	for i in $(COMMANDDIRS); do $(MAKE) -C $$i VDRDIR="$(shell realpath "$(VDRDIR)")" $@; done
+ 
+-dist:	 
++dist: $(I18Npo) clean
+ 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
+ 	@mkdir $(TMPDIR)/$(ARCHIVE)
+ 	@mkdir $(TMPDIR)/$(ARCHIVE)/plugin
+@@ -39,5 +83,5 @@
+ 	@echo Distribution package created as $(PACKAGE).tgz
+ 
+ clean:
+-	for i in $(DIRS); do make -C $$i clean; done
++	for i in $(DIRS); do make -C $$i $@; done
+ 	@-rm -f $(PACKAGE).tgz
+diff -NurB vdr-plugin-markad-f68a8728b/plugin/Makefile b/plugin/Makefile
+--- vdr-plugin-markad-f68a8728b/plugin/Makefile	2013-01-02 16:00:48.000000000 +0100
++++ b/plugin/Makefile	2013-03-06 18:36:15.998045394 +0100
+@@ -1,53 +1,51 @@
+ #
+ # Makefile for a Video Disk Recorder plugin
++# Adapted to the new VDR makefile environment by Stefan Hofmann
+ #
++# $Id: $
+ 
+ # The official name of this plugin.
+ # This name will be used in the '-P...' option of VDR to load the plugin.
+ # By default the main source file also carries this name.
+-# IMPORTANT: the presence of this macro is important for the Make.config
+-# file. So it must be defined, even if it is not used here!
+-#
+-PLUGIN = markad
+-
+-### The version number of this plugin (taken from the main source file):
+ 
+-VERSION = $(shell grep 'static const char \*VERSION *=' ../version.h | awk '{ print $$6 }' | sed -e 's/[";]//g')
++PLUGIN = markad
+ 
+-### The C++ compiler and options:
++### The version number of this plugin (taken from the version header file):
+ 
+-CXX      ?= g++
+-CXXFLAGS ?= -fPIC -g -O2 -Wall -Wextra -Woverloaded-virtual -Wno-parentheses
++VERSION = $(shell grep 'static const char \*VERSION *=' version.h | awk '{ print $$6 }' | sed -e 's/[";]//g')
+ 
+ ### The directory environment:
+ 
+-VDRDIR ?= ../../../..
+-LIBDIR ?= ../../../lib
++# Use package data if installed...otherwise assume we're under the VDR source directory:
++PKGCFG = $(if $(VDRDIR),$(shell pkg-config --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --variable=$(1) vdr || pkg-config --variable=$(1) ../../../../vdr.pc))
++LIBDIR = $(call PKGCFG,libdir)
++LOCDIR = $(call PKGCFG,locdir)
++#
+ TMPDIR ?= /tmp
+ 
+-### Make sure that necessary options are included:
+-
+--include $(VDRDIR)/Make.global
++### The compiler options:
+ 
+-### Allow user defined options to overwrite defaults:
++export CFLAGS   = $(call PKGCFG,cflags)
++export CXXFLAGS = $(call PKGCFG,cxxflags)
+ 
+--include $(VDRDIR)/Make.config
++### The version number of VDR's plugin API:
+ 
+-### The version number of VDR's plugin API (taken from VDR's "config.h"):
+-
+-APIVERSION = $(shell sed -ne '/define APIVERSION/s/^.*"\(.*\)".*$$/\1/p' $(VDRDIR)/config.h)
++APIVERSION = $(call PKGCFG,apiversion)
+ 
+ ### The name of the distribution archive:
+ 
+ ARCHIVE = $(PLUGIN)-$(VERSION)
+ PACKAGE = vdr-$(ARCHIVE)
+ 
++### The name of the shared object file:
++
++SOFILE = libvdr-$(PLUGIN).so
++
+ ### Includes and Defines (add further entries here):
+ 
+-INCLUDES += -I$(VDRDIR)/include
++INCLUDES +=
+ 
+-DEFINES += -D_GNU_SOURCE -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
+-DEFINES += -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
++DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
+ 
+ ### The object files (add further files here):
+ 
+@@ -55,12 +53,12 @@
+ 
+ ### The main target:
+ 
+-all: libvdr-$(PLUGIN).so i18n
++all: $(SOFILE) i18n
+ 
+ ### Implicit rules:
+ 
+ %.o: %.cpp
+-	$(CXX) $(CXXFLAGS) -c $(DEFINES) $(INCLUDES) $<
++	$(CXX) $(CXXFLAGS) -c $(DEFINES) $(INCLUDES) -o $@ $<
+ 
+ ### Dependencies:
+ 
+@@ -74,36 +72,39 @@
+ ### Internationalization (I18N):
+ 
+ PODIR     = po
+-LOCALEDIR = $(VDRDIR)/locale
+ I18Npo    = $(wildcard $(PODIR)/*.po)
+-I18Nmsgs  = $(addprefix $(LOCALEDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLUGIN).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
++I18Nmo    = $(addsuffix .mo, $(foreach file, $(I18Npo), $(basename $(file))))
++I18Nmsgs  = $(addprefix $(DESTDIR)$(LOCDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLUGIN).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
+ I18Npot   = $(PODIR)/$(PLUGIN).pot
+ 
+ %.mo: %.po
+ 	msgfmt -c -o $@ $<
+ 
+ $(I18Npot): $(wildcard *.cpp *.h)
+-	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --msgid-bugs-address='<see README>' -o $@ $^
++	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --package-name=vdr-$(PLUGIN) --package-version=$(VERSION) --msgid-bugs-address='<vdr@dolze.de>' -o $@ `ls $^`
+ 
+ %.po: $(I18Npot)
+-	msgmerge -U --no-wrap --no-location --backup=none -q $@ $<
++	msgmerge -U --no-wrap --no-location --backup=none -q -N $@ $<
+ 	@touch $@
+ 
+-$(I18Nmsgs): $(LOCALEDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
+-	@mkdir -p $(dir $@)
+-	cp $< $@
++$(I18Nmsgs): $(DESTDIR)$(LOCDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
++	install -D -m644 $< $@
+ 
+ .PHONY: i18n
+-i18n: $(I18Nmsgs) $(I18Npot)
++i18n: $(I18Nmo) $(I18Npot)
++
++install-i18n: $(I18Nmsgs)
+ 
+ ### Targets:
+ 
+-install: all 
+-	cp --remove-destination libvdr-$(PLUGIN).so $(LIBDIR)/libvdr-$(PLUGIN).so.$(APIVERSION)
++$(SOFILE): $(OBJS)
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) -o $@
++
++install-lib: $(SOFILE)
++	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(APIVERSION)
+ 
+-libvdr-$(PLUGIN).so: $(OBJS)
+-	$(CXX) $(CXXFLAGS) -shared $(OBJS) $(LIBS) -o $@
+-	cp --remove-destination libvdr-$(PLUGIN).so $(LIBDIR)/libvdr-$(PLUGIN).so.$(APIVERSION)
++install: install-lib install-i18n
+ 
+ clean:
+-	@-rm -f $(OBJS) $(DEPFILE) *.so *.so.* *.tgz core* *~ $(PODIR)/*.mo $(PODIR)/*.pot
++	@-rm -f $(PODIR)/*.mo $(PODIR)/*.pot
++	@-rm -f $(OBJS) $(DEPFILE) *.so *.tgz core* *~
