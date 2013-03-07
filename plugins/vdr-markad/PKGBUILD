@@ -15,7 +15,6 @@ md5sums=('c143d08dc94c5a7b2692513d62e29892')
 
 package() {
  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
- sed -i -e 's/#define DEF_LOGODIR \"\/var\/lib\/markad\"/#define DEF_LOGODIR \"\/usr\/share\/vdr\/plugins\/markad\"/' plugin/markad.cpp
  mkdir -p $pkgdir/usr/lib/vdr/plugins
  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
@@ -23,6 +22,6 @@ package() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        all
-  mkdir -p $pkgdir/usr/share/vdr/plugins/markad/
-  install -m644 command/logos/* $pkgdir/usr/share/vdr/plugins/markad/
+  mkdir -p $pkgdir/var/lib/markad
+  install -m644 command/logos/* $pkgdir/var/lib/markad/
 }
