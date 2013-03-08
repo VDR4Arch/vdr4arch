@@ -13,7 +13,7 @@ optdepends=('nvidia: Required for VDPAU acceleration')
 makedepends=('mesa' 'libxdamage' 'libxxf86vm' 'xcb-util' 'xcb-util-keysyms')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('699b5feccd12064b89b751680e189082')
+md5sums=('1c755012c022f560c1fb17e263a26a4d')
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
