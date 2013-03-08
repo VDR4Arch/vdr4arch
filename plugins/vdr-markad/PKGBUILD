@@ -9,11 +9,9 @@ url="http://projects.vdr-developer.org/projects/plg-markad"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('ffmpeg' "vdr-api=${_vdrapi}")
-options=(emptydirs)
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/git/vdr-plugin-markad.git/snapshot/vdr-plugin-${_plugname}-${_gitver}.tar.bz2")
 md5sums=('c143d08dc94c5a7b2692513d62e29892')
-install='vdr-markad.install'
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
@@ -24,6 +22,4 @@ package() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        DESTDIR=$pkgdir install
-  mkdir -p $pkgdir/usr/share/markad
-  mv $pkgdir/var/lib/markad/* $pkgdir/usr/share/markad
   }
