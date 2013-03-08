@@ -5,7 +5,7 @@ _gitver=f68a8728b
 _vdrapi=1.7.39
 pkgrel=1
 pkgdesc="automatic advertisement detection"
-url="http://projects.vdr-developer.org/projects/plg-play"
+url="http://projects.vdr-developer.org/projects/plg-markad"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('ffmpeg' "vdr-api=${_vdrapi}")
