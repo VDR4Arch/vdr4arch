@@ -21,7 +21,5 @@ package() {
        VDRDIR="/usr/include/vdr" \
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       all
-  mkdir -p $pkgdir/var/lib/markad
-  install -m644 command/logos/* $pkgdir/var/lib/markad/
+       DESTDIR=$pkgdir install
 }
