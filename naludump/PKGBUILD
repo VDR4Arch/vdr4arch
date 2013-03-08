@@ -6,7 +6,7 @@ pkgdesc=""
 url="http://www.udo-richter.de/vdr/naludump.html"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('gcc-libs')
+depends=('gcc-libs' 'libjpeg-turbo')
 source=("http://www.udo-richter.de/vdr/files/naludump-0.1.tgz")
 md5sums=('c8a689e637ddbae3d55eb6c678083dd5')
 
