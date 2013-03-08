@@ -1,0 +1,12 @@
+post_install() {
+    cp -s -n /usr/share/markad/* /var/lib/markad/
+}
+
+post_upgrade() {
+    post_install
+}
+
+post_remove() {
+    find -L /var/lib/markad/ -type l -exec rm {} \; 
+    find /var/lib/markad -type d -empty -delete
+}
