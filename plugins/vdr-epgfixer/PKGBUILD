@@ -12,7 +12,7 @@ backup=('var/lib/vdr/plugins/epgfixer/blacklist.conf'
         'var/lib/vdr/plugins/epgfixer/charset.conf'
         'var/lib/vdr/plugins/epgfixer/epgclone.conf'
         'var/lib/vdr/plugins/epgfixer/regexp.conf')
-install='vdr-plugin-epgfixer.install'
+install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1138/$pkgname-$pkgver.tgz")
 md5sums=('b9612533df73332d9c6305bf03d558dc')
