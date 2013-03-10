@@ -1,0 +1,33 @@
+# Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
+pkgname=vdr-filebrowser
+pkgver=0.2.1
+_vdrapi=1.7.39
+pkgrel=2
+pkgdesc="filebrowser with custom commands for vdr"
+url="http://opensource.holgerbrunn.net/vdr/filebrowser/"
+arch=('x86_64' 'i686')
+license=('GPL3')
+depends=("vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+replaces=("vdr-plugin-$_plugname")
+conflicts=("vdr-plugin-$_plugname")
+install=vdr-filebrowser.install
+backup=("var/lib/vdr/plugins/filebrowser/commands.conf"
+	"var/lib/vdr/plugins/filebrowser/order.conf"
+	"var/lib/vdr/plugins/filebrowser/othercommands.conf" 
+	"var/lib/vdr/plugins/filebrowser/sources.conf")
+source=("http://opensource.holgerbrunn.net/vdr/filebrowser/vdr-filebrowser-$pkgver.tgz")
+md5sums=('a1813fec39604b62c38c3ab44fe4aa5f')
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  mkdir -p $pkgdir/usr/lib/vdr/plugins/
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr/include/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       all
+  mkdir -p $pkgdir/var/lib/vdr/plugins/filebrowser/
+  install -m644 examples/filebrowser/*  $pkgdir/var/lib/vdr/plugins/filebrowser/
+}
