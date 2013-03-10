@@ -2,8 +2,8 @@
 pkgbase=DFAtmo
 pkgname=('dfatmo' 'vdr-dfatmo')
 pkgver=0.3.3
-_vdrapi=1.7.39
-pkgrel=3
+_vdrapi=1.7.40
+pkgrel=5
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')
@@ -20,11 +20,11 @@ build() {
   #Compile dfatmo
   CFLAGS+=' -fPIC'
   sed -i "s/python-config/python2-config/" Makefile
-  make dfatmo
+  make DFATMOINSTDIR='/usr' dfatmo
 
   #Compile vdr plugin
   mkdir po #Workaround
-  make -f vdr2plug.mk
+  make -f vdr2plug.mk DFATMOINSTDIR='/usr'
 }
 
 package_dfatmo() {
@@ -40,9 +40,9 @@ package_dfatmo() {
 
 package_vdr-dfatmo() {
   pkgdesc="VDR plugin to drive a colored back lighting for TVs"
-  depends=('dfatmo-driver' "vdr-api=${_vdrapi}")
+  depends=('dfatmo' "vdr-api=${_vdrapi}")
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
   make -f vdr2plug.mk DESTDIR="${pkgdir}" install
-  install -Dm644 ${srcdir}/45-df10ch.rules "${pkgdir}/usr/lib/udev/rules.d/45-df10ch.rules"
+  install -Dm644 "${srcdir}/45-df10ch.rules" "${pkgdir}/usr/lib/udev/rules.d/45-df10ch.rules"
 }

@@ -1,12 +1,12 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=naludump
 pkgver=0.1
-pkgrel=1
-pkgdesc=""
+pkgrel=2
+pkgdesc="Tool to delete NALU fill data from h.264 streams"
 url="http://www.udo-richter.de/vdr/naludump.html"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('gcc-libs')
+depends=('gcc-libs' 'libjpeg-turbo')
 source=("http://www.udo-richter.de/vdr/files/naludump-0.1.tgz")
 md5sums=('c8a689e637ddbae3d55eb6c678083dd5')
 

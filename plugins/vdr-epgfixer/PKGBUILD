@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-epgfixer
 pkgver=0.3.1
-_vdrapi=1.7.39
-pkgrel=8
+_vdrapi=1.7.40
+pkgrel=9
 pkgdesc="VDR plugin for doing extra fixing of EPG data"
 url="http://projects.vdr-developer.org/projects/plg-epgfixer"
 arch=('x86_64' 'i686')
@@ -12,7 +12,7 @@ backup=('var/lib/vdr/plugins/epgfixer/blacklist.conf'
         'var/lib/vdr/plugins/epgfixer/charset.conf'
         'var/lib/vdr/plugins/epgfixer/epgclone.conf'
         'var/lib/vdr/plugins/epgfixer/regexp.conf')
-install='vdr-plugin-epgfixer.install'
+install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1138/$pkgname-$pkgver.tgz")
 md5sums=('b9612533df73332d9c6305bf03d558dc')
