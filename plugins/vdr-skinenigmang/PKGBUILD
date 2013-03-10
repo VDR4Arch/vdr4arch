@@ -2,8 +2,8 @@
 pkgname=vdr-skinenigmang
 pkgver=20121217
 _gitver=1a4a5979
-_vdrapi=1.7.39
-pkgrel=6
+_vdrapi=1.7.40
+pkgrel=7
 pkgdesc="skin based on the Enigma text2skin addon"
 url="http://andreas.vdr-developer.org/enigmang/index.html"
 arch=('x86_64' 'i686')
