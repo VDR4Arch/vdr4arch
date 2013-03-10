@@ -1,7 +1,7 @@
 post_install() {
-  mkdir -p /var/cache/vdr/vtx
-  chown -R vdr:vdr /var/cache/vdr/vtx
-  chown -R vdr:vdr /var/lib/vdr
+  mkdir -p var/cache/vdr/vtx
+  chown -R vdr:vdr var/cache/vdr/vtx
+  chown -R vdr:vdr var/lib/vdr
 }
 
 post_upgrade() {
@@ -9,6 +9,5 @@ post_upgrade() {
 }
 
 post_remove() {
-  rm -r /var/cache/vdr/vtx
-  rmdir /var/cache/vdr > /dev/null #Remove if empty
+  rm -r var/cache/vdr/vtx
 }

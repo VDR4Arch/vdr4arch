@@ -1,5 +1,5 @@
 post_install() {
-  chown -R vdr:vdr /var/lib/vdr
+  chown -R vdr:vdr var/lib/vdr
 }
 
 post_upgrade() {
