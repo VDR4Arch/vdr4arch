@@ -1,7 +1,7 @@
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-restfulapi
-pkgver=0.1.1
-pkgrel=3
+pkgver=0.1.2
+pkgrel=4
 _vdrapi=1.7.40
 pkgdesc="Restful-API Control for VDR"
 url="https://github.com/yavdr/vdr-plugin-restfulapi"
@@ -16,7 +16,6 @@ md5sums=('d83a949a6c9cbedee426cd2225e05938')
 build() {
   cd "$srcdir/vdr-plugin-$_plugname-$pkgver"
   sed -i -e 's/var\/lib\/video\.00/srv\/vdr\/video/' tools.cpp
-  cp Makefile-1.7.36 Makefile
   make
 }
 
