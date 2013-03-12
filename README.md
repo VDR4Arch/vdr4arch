@@ -21,7 +21,7 @@ mount another partition to `/srv/vdr/video`
 Install VDR4Arch packages
 -------------------------
 
-Download vdr4arch-keyring and install it with `pacman -U`
+Download [vdr4arch-keyring](http://creimer.net/vdr4arch/repo/vdr4arch-keyring-20130219-1-any.pkg.tar.xz) and install it with `pacman -U`
 
 Open /etc/pacman.conf with your favorites editor and add the following
 
