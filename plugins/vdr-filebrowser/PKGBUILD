@@ -1,7 +1,7 @@
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-filebrowser
 pkgver=0.2.1
-_vdrapi=1.7.39
+_vdrapi=1.7.40
 pkgrel=1
 pkgdesc="filebrowser with custom commands for vdr"
 url="http://opensource.holgerbrunn.net/vdr/filebrowser/"
@@ -11,12 +11,12 @@ depends=("vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
-install=vdr-filebrowser.install
+install="$pkgname.install"
 backup=("var/lib/vdr/plugins/filebrowser/commands.conf"
 	"var/lib/vdr/plugins/filebrowser/order.conf"
 	"var/lib/vdr/plugins/filebrowser/othercommands.conf" 
 	"var/lib/vdr/plugins/filebrowser/sources.conf")
-source=("http://opensource.holgerbrunn.net/vdr/filebrowser/vdr-filebrowser-$pkgver.tgz")
+source=("http://opensource.holgerbrunn.net/vdr/filebrowser/$pkgname-$pkgver.tgz")
 md5sums=('a1813fec39604b62c38c3ab44fe4aa5f')
 
 package() {
