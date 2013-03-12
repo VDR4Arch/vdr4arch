@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
 pkgname=vdr-softhddevice
-pkgver=20130306
-_gitver=a7562eb2
+pkgver=20130311
+_gitver=1f0d5878
 _vdrapi=1.7.40
-pkgrel=3
+pkgrel=1
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
@@ -13,7 +13,7 @@ optdepends=('nvidia: Required for VDPAU acceleration')
 makedepends=('mesa' 'libxdamage' 'libxxf86vm' 'xcb-util' 'xcb-util-keysyms')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('1c755012c022f560c1fb17e263a26a4d')
+md5sums=('fb2154b747c4505e3b038f065f12bdd1')
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
