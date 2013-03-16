@@ -2,8 +2,8 @@
 pkgname=vdr-markad
 pkgver=20130301
 _gitver=f68a8728b
-_vdrapi=1.7.40
-pkgrel=2
+_vdrapi=1.7.41
+pkgrel=3
 pkgdesc="automatic advertisement detection"
 url="http://projects.vdr-developer.org/projects/plg-markad"
 arch=('x86_64' 'i686')

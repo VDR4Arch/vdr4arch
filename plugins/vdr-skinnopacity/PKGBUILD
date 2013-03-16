@@ -1,8 +1,8 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=0.0.6
-_vdrapi=1.7.40
-pkgrel=5
+pkgver=0.1.0
+_vdrapi=1.7.41
+pkgrel=2
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
@@ -10,23 +10,17 @@ license=('GPL2')
 depends=('imagemagick' 'libpng' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1234/$pkgname-$pkgver.tgz")
-md5sums=('01b9ba8604766d7dd6c8177ce94cda08')
+source=("http://projects.vdr-developer.org/attachments/download/1287/$pkgname-$pkgver.tgz")
+md5sums=('a98b58716c70ca40d6ebb859617cfcc1')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-  
+
   make
 }
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
-  make DESTDIR=${pkgdir} install
-
-  mkdir -p $pkgdir/usr/share/vdr/plugins/$_plugname/icons
-  cp -r icons/* $pkgdir/usr/share/vdr/plugins/$_plugname/icons
-
-  mkdir -p $pkgdir/var/lib/vdr/themes
-  cp -r themes/* $pkgdir/var/lib/vdr/themes
+  make DESTDIR="$pkgdir" install
 }

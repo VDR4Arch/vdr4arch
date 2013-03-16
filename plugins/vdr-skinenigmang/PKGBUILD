@@ -1,9 +1,9 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinenigmang
 pkgver=20121217
 _gitver=1a4a5979
-_vdrapi=1.7.40
-pkgrel=7
+_vdrapi=1.7.41
+pkgrel=8
 pkgdesc="skin based on the Enigma text2skin addon"
 url="http://andreas.vdr-developer.org/enigmang/index.html"
 arch=('x86_64' 'i686')
