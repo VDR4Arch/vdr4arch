@@ -1,9 +1,9 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-graphlcd
 pkgver=20130125
 _gitver=66b78434
-_vdrapi=1.7.40
-pkgrel=5
+_vdrapi=1.7.41
+pkgrel=6
 pkgdesc="Plugin for the Video Disc Recorder to display its information"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')

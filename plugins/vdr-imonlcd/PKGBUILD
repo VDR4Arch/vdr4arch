@@ -1,9 +1,9 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-imonlcd
 pkgver=20130203
 _gitver=e8e1361b
-_vdrapi=1.7.40
-pkgrel=5
+_vdrapi=1.7.41
+pkgrel=6
 pkgdesc="shows information about the current state of VDR on iMON LCD"
 url="http://projects.vdr-developer.org/projects/show/plg-imonlcd"
 arch=('x86_64' 'i686')

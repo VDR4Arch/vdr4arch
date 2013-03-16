@@ -1,8 +1,8 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-sleeptimer
 pkgver=0.8.2
-_vdrapi=1.7.40
-pkgrel=6
+_vdrapi=1.7.41
+pkgrel=7
 pkgdesc="Shutdown, mute or execute a custom command after a configurable timespan"
 url="http://projects.vdr-developer.org/projects/plg-sleeptimer"
 arch=('x86_64' 'i686')
