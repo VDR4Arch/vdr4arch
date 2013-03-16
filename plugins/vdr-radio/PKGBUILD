@@ -1,0 +1,29 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-radio
+pkgver=0.9.1
+_vdrapi=1.7.40
+pkgrel=1
+pkgdesc="Display an background image while the vdr is switched to radio channels"
+url="http://www.egal-vdr.de/plugins/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+install="${pkgname}.install"
+source=("http://egal-vdr.de/plugins/$pkgname-$pkgver.tgz")
+md5sums=('fca658383ecd9893403c02b5a7b0e8cd')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  make
+}
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  make DESTDIR=${pkgdir} install
+
+  #Install all stillpictures
+  mkdir -p "$pkgdir/var/lib/vdr/plugins/$_plugname"
+  install -Dm644 config/mpegstill/* "$pkgdir/var/lib/vdr/plugins/$_plugname"
+}
