@@ -39,7 +39,7 @@ Compile from source
 -------------------
 
 The easiest way? Follow the instuctions for the tool
-repo-make at repo-make.tuxfamily.org
+repo-make at http://repo-make.tuxfamily.org/
 
 Compatibility
 -------------
