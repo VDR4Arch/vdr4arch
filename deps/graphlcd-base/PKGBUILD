@@ -12,7 +12,7 @@ depends=('fontconfig' 'gcc-libs' 'imagemagick' 'libusb-compat')
 optdepends='serdisplib: Add support for more serial displays'
 backup=(etc/graphlcd.conf)
 source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
-md5sums=('243b6f1d6bb56f9e0c93970166276145')
+md5sums=('b9bf696f1c503e29ad16a4647a03f4c3')
 
 build() {
   cd "${srcdir}/${pkgname}-${_gitver}"
