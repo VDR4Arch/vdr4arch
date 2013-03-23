@@ -14,11 +14,14 @@ my $VDRPKGBUILD = 'vdr/PKGBUILD';
 my $PLUGINSPATH = 'plugins';
 
 {
-  # Read VDR's version
+  # Read VDR's API version
+  my $vdrversion;
   open(my $fh, '<', $VDRPKGBUILD) or die("Failed to read VDR PKGBUILD\n");
-  my ($pkgver_line) = grep(/^pkgver=/, <$fh>) or die("No pkgver for VDR?\n");
+  while (my $line = <$fh>) {
+    ($vdrversion) = $line =~ /^provides=.*vdr-api=(\d+\.\d+\.\d+)/ and last;
+  }
   close($fh);
-  my ($vdrversion) = $pkgver_line =~ /=(.+)/;
+  die ("Can't read vdr-api from '$VDRPKGBUILD'\n") unless ($vdrversion);
 
   # Loop over the plugins
   my $counter = 0;
