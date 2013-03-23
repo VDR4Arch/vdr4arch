@@ -3,7 +3,7 @@ pkgname=vdr-live
 pkgver=20121226
 _gitver=545739fe
 _vdrapi=1.7.41
-pkgrel=7
+pkgrel=8
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
 url="http://projects.vdr-developer.org/projects/plg-live"
 arch=('x86_64' 'i686')
@@ -11,11 +11,21 @@ license=('GPL2')
 depends=('pcre' 'tntnet' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('1ce83ca318a5507db84c76ee55275794')
+source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2"
+        "fix_interface_binding.diff::http://projects.vdr-developer.org/git/vdr-plugin-live.git/patch/setup.cpp?id=118c2aa7"
+        "regenerate_locale.diff::http://projects.vdr-developer.org/git/vdr-plugin-live.git/patch/setup.cpp?id=32571e15"
+        "use_bindv6only_status.diff::http://projects.vdr-developer.org/git/vdr-plugin-live.git/patch/setup.cpp?id=ea605530")
+md5sums=('1ce83ca318a5507db84c76ee55275794'
+         '6c45e8195fe4e2decf6cd863b56b6bec'
+         '03831bcf37c5fcc4e6ad7595c56c7482'
+         '87eac839c3680457023728bc9caeeda2')
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
+
+  patch -R -p1 -i "$srcdir/fix_interface_binding.diff"
+  patch -R -p1 -i "$srcdir/regenerate_locale.diff"
+  patch -R -p1 -i "$srcdir/use_bindv6only_status.diff"
 
   mkdir -p $pkgdir/usr/lib/vdr/plugins
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
@@ -24,6 +34,6 @@ package() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
 
-  mkdir -p $pkgdir/usr/share/vdr/plugins
-  cp -r live $pkgdir/usr/share/vdr/plugins
+  mkdir -p "$pkgdir/usr/share/vdr/plugins"
+  cp -r live "$pkgdir/usr/share/vdr/plugins"
 }
