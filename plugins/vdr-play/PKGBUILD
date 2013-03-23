@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-play
 pkgver=0.0.12
-_vdrapi=1.7.41
-pkgrel=10
+_vdrapi=1.7.42
+pkgrel=11
 pkgdesc="Mediaplayer plugin for VDR and X11"
 url="http://projects.vdr-developer.org/projects/plg-play"
 arch=('x86_64' 'i686')

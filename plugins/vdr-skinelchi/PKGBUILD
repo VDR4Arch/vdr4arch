@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinelchi
 pkgver=0.2.8
-_vdrapi=1.7.41
-pkgrel=6
+_vdrapi=1.7.42
+pkgrel=7
 pkgdesc="adds the 'Elchi' skin to the VDR standard skins"
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
 arch=('x86_64' 'i686')
