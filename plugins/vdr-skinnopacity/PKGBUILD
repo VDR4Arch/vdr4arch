@@ -2,7 +2,7 @@
 pkgname=vdr-skinnopacity
 pkgver=0.1.0
 _vdrapi=1.7.41
-pkgrel=2
+pkgrel=3
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
