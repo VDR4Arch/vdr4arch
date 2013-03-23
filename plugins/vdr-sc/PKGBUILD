@@ -2,8 +2,8 @@
 pkgname=vdr-sc
 pkgver=20120710
 _hgver=29b7b5f2
-_vdrapi=1.7.42
-pkgrel=9
+_vdrapi=1.7.41
+pkgrel=8
 pkgdesc="Software CAM emulation"
 url="http://207.44.152.197/"
 arch=('x86_64' 'i686')
