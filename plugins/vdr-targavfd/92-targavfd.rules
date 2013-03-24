@@ -1,0 +1,1 @@
+ACTION=="add", BUS=="usb", SYSFS{idVendor}=="19c2", SYSFS{idProduct}=="6a11", GROUP="vdr"
