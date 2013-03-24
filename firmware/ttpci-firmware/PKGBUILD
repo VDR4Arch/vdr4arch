@@ -1,0 +1,14 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=ttpci-firmware
+pkgver=20100227
+pkgrel=1
+pkgdesc="Firmware for Full Featured DVB cards"
+url="http://www.escape-edv.de/endriss/firmware/"
+arch=('any')
+license=('custom')
+source=('http://www.escape-edv.de/endriss/firmware/dvb-ttpci-01.fw-fb2624')
+md5sums=('a6be1ea04c04aa79567769b1f05e4201')
+
+package() {
+  install -Dm644 "$srcdir/dvb-ttpci-01.fw-fb2624" "$pkgdir/usr/lib/firmware/dvb-ttpci-01.fw"
+}

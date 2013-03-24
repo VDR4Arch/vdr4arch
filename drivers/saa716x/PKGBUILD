@@ -1,0 +1,35 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=saa716x
+pkgver=20130224
+_hgver=cfa4b4faab67
+_extramodules=extramodules-3.8-ARCH
+url='http://powarman.dyndns.org/hgwebdir.cgi/v4l-dvb-saa716x'
+pkgrel=1
+pkgdesc="Driver for Technotrend's S2-6400"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('linux>=3.8' 'linux<3.9')
+optdepends=()
+makedepends=('linux-headers>=3.8' 'linux-headers<3.9')
+install="${pkgname}.install"
+source=("http://powarman.dyndns.org/hgwebdir.cgi/v4l-dvb-$pkgname/archive/$_hgver.tar.bz2"
+        "compat.diff")
+md5sums=('b6db4c2853d4228b4182001aac380051'
+         'ed7d7a92bfafeef522df13c0468fc159')
+
+build() {
+  _kernver="$(cat /lib/modules/$_extramodules/version)"
+  cd "$srcdir/v4l-dvb-$pkgname-$_hgver"/linux/drivers/media/common/saa716x
+
+  patch -i $srcdir/compat.diff
+
+  make -C /lib/modules/$_kernver/build CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_FF=m M=$(pwd) modules -j1
+}
+
+package() {
+  cd "$srcdir/v4l-dvb-$pkgname-$_hgver"/linux/drivers/media/common/saa716x
+
+  gzip *.ko
+  install -Dm644 saa716x_core.ko.gz "$pkgdir/lib/modules/$_extramodules/saa716x_core.ko.gz"
+  install -Dm644 saa716x_ff.ko.gz "$pkgdir/lib/modules/$_extramodules/saa716x_ff.ko.gz"
+}

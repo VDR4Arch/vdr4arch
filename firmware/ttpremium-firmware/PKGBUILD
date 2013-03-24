@@ -1,0 +1,20 @@
+# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+pkgname=ttpremium-firmware
+pkgver=20130302
+pkgrel=1
+pkgdesc="Firmware for Technotrend S2-6400"
+url="http://www.aregel.de/"
+arch=('any')
+license=('custom')
+source=('http://www.aregel.de/file_download/7/dvb-ttpremium-loader-01_v1_03.zip'
+        'http://www.aregel.de/file_download/14/dvb-ttpremium-fpga-01_v1_09.zip'
+        'http://www.aregel.de/file_download/23/dvb-ttpremium-st7109-01_v0_4_0.zip')
+md5sums=('6b51c2dce350395dfafa4064777642bf'
+         '8817aa9ed241818f706370b8bf6ee257'
+         '7aa418f73a4d28a73d2bbba863296263')
+
+package() {
+  install -Dm644 "$srcdir/dvb-ttpremium-fpga-01.fw" "$pkgdir/usr/lib/firmware/dvb-ttpremium-fpga-01.fw"
+  install -Dm644 "$srcdir/dvb-ttpremium-loader-01.fw" "$pkgdir/usr/lib/firmware/dvb-ttpremium-loader-01.fw"
+  install -Dm644 "$srcdir/dvb-ttpremium-st7109-01.fw" "$pkgdir/usr/lib/firmware/dvb-ttpremium-st7109-01.fw"
+}
