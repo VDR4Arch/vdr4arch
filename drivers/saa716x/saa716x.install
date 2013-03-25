@@ -1,15 +1,12 @@
 post_install() {
-    EXTRAMODULES='extramodules-3.4-ARCH'
-    depmod $(cat /lib/modules/$EXTRAMODULES/version)
+    depmod -a
 }
 
 post_upgrade() {
-    EXTRAMODULES='extramodules-3.4-ARCH'
-    depmod $(cat /lib/modules/$EXTRAMODULES/version)
+    depmod -a
 }
 
 post_remove() {
-    EXTRAMODULES='extramodules-3.4-ARCH'
-    depmod $(cat /lib/modules/$EXTRAMODULES/version)
+    depmod -a
 }
 
