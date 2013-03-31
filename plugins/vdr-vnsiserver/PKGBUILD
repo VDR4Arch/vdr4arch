@@ -11,7 +11,7 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 makedepends=("vdr-api=${_vdrapi}")
 source=("https://github.com/opdenkamp/xbmc-pvr-addons/archive/${pkgver}-${_codename}.tar.gz")
-md5sums=('4411848a648597037daf97562dd0fcd2')
+md5sums=('4a1020b1a890e26505da7cc9afef1cea')
 
 build() {
   cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver
