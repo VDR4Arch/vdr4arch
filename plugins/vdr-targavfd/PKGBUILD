@@ -2,8 +2,8 @@
 pkgname=vdr-targavfd
 pkgver=0.2.0
 epoch=1
-_vdrapi=1.7.41
-pkgrel=1
+_vdrapi=2.0.0
+pkgrel=2
 pkgdesc="shows information about the current state of VDR on Targa USB Graphic Vacuum Fluorescent Display"
 url="http://projects.vdr-developer.org/projects/show/plg-targavfd"
 arch=('x86_64' 'i686')

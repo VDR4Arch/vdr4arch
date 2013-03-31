@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-remote
 pkgver=0.5.0
-_vdrapi=1.7.41
-pkgrel=8
+_vdrapi=2.0.0
+pkgrel=9
 pkgdesc="Extends the remote control capabilities of vdr"
 url="http://www.escape-edv.de/endriss/vdr/"
 arch=('x86_64' 'i686')

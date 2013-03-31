@@ -3,8 +3,8 @@
 pkgname=vdr-chanman
 pkgver=0.0.10
 _gitver=58463fd2
-_vdrapi=1.7.41
-pkgrel=5
+_vdrapi=2.0.0
+pkgrel=6
 pkgdesc="Change channel with a multi level choice"
 url="http://projects.vdr-developer.org/projects/plg-chanman"
 arch=('x86_64' 'i686')

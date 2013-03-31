@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-externalplayer
 pkgver=0.3.0
-_vdrapi=1.7.41
-pkgrel=4
+_vdrapi=2.0.0
+pkgrel=5
 pkgdesc="use external players in VDR"
 url="http://sourceforge.net/projects/externalplayer/"
 arch=('x86_64' 'i686')

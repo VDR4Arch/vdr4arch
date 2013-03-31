@@ -2,8 +2,8 @@
 pkgname=vdr-skinpearlhd
 pkgver=20130122
 _gitver=9899940
-_vdrapi=1.7.41
-pkgrel=7
+_vdrapi=2.0.0
+pkgrel=8
 pkgdesc="conversion of the PearlHD-Skin written by mapovi to a native vdr-plugin"
 url="http://projects.vdr-developer.org/projects/show/plg-skinpearlhd"
 arch=('x86_64' 'i686')
@@ -12,14 +12,16 @@ depends=('imagemagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 optdepends=()
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('0e011dab84289d54aa10ea83987f8ea6')
+source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2"
+        'pearlhd-imagemagick-fix.diff')
+md5sums=('0e011dab84289d54aa10ea83987f8ea6'
+         'f234856453da11e9aade57bfef7d27c2')
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
 
   # Fix compilation with newer Imagemagick versions
-  sed -i 's/lMagick++/lMagick++-Q16/g' Makefile
+  patch -p1 -i "$srcdir/pearlhd-imagemagick-fix.diff"
 
   make
 }

@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-epgsearch
 pkgver=1.0.1.beta3
-_vdrapi=1.7.41
+_vdrapi=2.0.0
 epoch=1
-pkgrel=4
+pkgrel=5
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686')

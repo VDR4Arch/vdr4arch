@@ -2,8 +2,8 @@
 pkgname=vdr-softhddevice
 pkgver=20130317
 _gitver=eab051f5
-_vdrapi=1.7.41
-pkgrel=1
+_vdrapi=2.0.0
+pkgrel=2
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
@@ -12,14 +12,21 @@ depends=('ffmpeg' 'libvdpau' "vdr-api=${_vdrapi}"  'xcb-util-wm')
 optdepends=('nvidia: Required for VDPAU acceleration')
 makedepends=('mesa' 'libxdamage' 'libxxf86vm' 'xcb-util' 'xcb-util-keysyms')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('690c9aaf01c5d3b14fe94569363f8e27')
+source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2"
+        'softhddevice-ffmpeg12.diff')
+md5sums=('690c9aaf01c5d3b14fe94569363f8e27'
+         '6126e3cb37826881f10d066e2aea35ba')
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
 
 #   sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
 #   sed -i 's/-DAV_INFO //g' Makefile
+  sed -i 's/#CONFIG += -DUSE_VDR_SPU/CONFIG += -DUSE_VDR_SPU/g' Makefile
+  sed -i 's/#CONFIG += -DUSE_MPEG_COMPLETE/CONFIG += -DUSE_MPEG_COMPLETE/g' Makefile
+
+  patch -p1 -i "$srcdir/softhddevice-ffmpeg12.diff"
+
   make GIT_REV=$_gitver
 }
 

@@ -2,10 +2,10 @@
 pkgbase=xbmc-pvr-addons
 pkgname=('vdr-vnsiserver' 'xbmc-pvr-addons')
 pkgver=12.0
-_vdrapi=1.7.41
+_vdrapi=2.0.0
 _codename=Frodo
 epoch=1
-pkgrel=6
+pkgrel=7
 url=""
 arch=('x86_64' 'i686')
 license=('GPL2')
