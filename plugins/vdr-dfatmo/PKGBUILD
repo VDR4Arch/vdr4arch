@@ -17,6 +17,7 @@ md5sums=('230009ceee0d078e98fcbc6fe7361182'
 prepare() {
   cd "${srcdir}/${pkgbase}-${pkgver}"
   mkdir vdrplug.po
+  sed -i "s/python-config/python2-config/"
 }
 
 build() {
@@ -27,7 +28,7 @@ build() {
   make DFATMOINSTDIR='/usr' dfatmo
 
   #Compile vdr plugin
-  make -f vdr2plug.mk DFATMOINSTDIR='/usr'
+  make DFATMOINSTDIR='/usr' vdrplugin
 }
 
 package_dfatmo() {
@@ -37,7 +38,6 @@ package_dfatmo() {
   depends=('libusbx' 'python2')
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
-  install -d "${pkgdir}/usr/include" #Workaround
   make DFATMOINSTDIR="${pkgdir}/usr" dfatmoinstall
 }
 
@@ -46,6 +46,6 @@ package_vdr-dfatmo() {
   depends=('dfatmo' "vdr-api=${_vdrapi}")
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
-  make -f vdr2plug.mk DESTDIR="${pkgdir}" install
+  make VDRDESTDIR="${pkgdir}" vdrinstall
   install -Dm644 "${srcdir}/45-df10ch.rules" "${pkgdir}/usr/lib/udev/rules.d/45-df10ch.rules"
 }
