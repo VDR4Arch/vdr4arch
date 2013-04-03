@@ -3,7 +3,7 @@ pkgname=vdr-graphlcd
 pkgver=20130125
 _gitver=66b78434
 _vdrapi=2.0.0
-pkgrel=8
+pkgrel=10
 pkgdesc="Plugin for the Video Disc Recorder to display its information"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
@@ -31,7 +31,9 @@ package() {
   cd "$pkgdir/usr/share/vdr/plugins/graphlcd/fonts"
   rm *.ttf
   ln -s /usr/share/fonts/TTF/DejaVuSans-Bold.ttf .
-  ln -s /usr/share/fonts/TTF/DejaVuSansCondensed.ttf .
-  ln -s /usr/share/fonts/TTF/DejaVuSans.ttf Vera.ttf
   ln -s /usr/share/fonts/TTF/DejaVuSans-Bold.ttf VeraBd.ttf
+  ln -s /usr/share/fonts/TTF/DejaVuSans.ttf .
+  ln -s /usr/share/fonts/TTF/DejaVuSans.ttf Vera.ttf
+  ln -s /usr/share/fonts/TTF/DejaVuSansCondensed.ttf .
+
 }
