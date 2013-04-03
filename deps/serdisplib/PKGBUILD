@@ -1,4 +1,4 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=serdisplib
 pkgver=1.97.9
 pkgrel=4
@@ -14,10 +14,13 @@ md5sums=('130552ec60d01e974712a60274f34de7'
          '6661faa31c7bff7fe5138604dc9fd3b9'
          'f32b8a39b91b7badf14c22f189327803')
 
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -p2 -i ${srcdir}/libusb_fix.diff
+}
+
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
-  patch -p2 -i ${srcdir}/libusb_fix.diff
 
   ./configure --prefix=/usr \
               --includedir=${pkgdir}/usr/include \

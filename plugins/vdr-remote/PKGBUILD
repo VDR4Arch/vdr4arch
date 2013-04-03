@@ -18,14 +18,12 @@ md5sums=('5807e553ef11c8c9fdc0e84b1ee67fb3'
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
   make
 }
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
-  make DESTDIR=${pkgdir} install
+  make DESTDIR="${pkgdir}" install
 
   install -Dm644 ${srcdir}/70-remote-device.rules "$pkgdir/usr/lib/udev/rules.d/70-remote-device.rules"
   install -Dm644 ${srcdir}/av7110_ir_vdr_perms.conf "$pkgdir/usr/lib/modprobe.d/av7110_ir_vdr_perms.conf"

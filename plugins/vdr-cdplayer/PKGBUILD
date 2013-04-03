@@ -18,18 +18,21 @@ md5sums=('a52a04896b9322bd00ca9ebc309f3d2f'
          'baee0c840cd64773abec5c1c0dace3fd'
          'b8310fab59bff8ed364197e2fc49132b')
 
-build() {
+prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
   patch -p1 -i "$srcdir/cdplayer-fix-cdio-include.diff"
   patch -p1 -i "$srcdir/cdplayer-fix-destdir-handling.diff"
+}
 
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
   make
 }
+
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
-  make DESTDIR=${pkgdir} install
+  make DESTDIR="${pkgdir}" install
 
   install -Dm644 contrib/cd.mpg "$pkgdir/var/lib/vdr/plugins/$_plugname/cd.mpg"
 }

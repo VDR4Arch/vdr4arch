@@ -17,7 +17,6 @@ build() {
   cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver
   make
 
-
   cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}
   autoreconf -vfi
   ./configure --prefix=/usr
@@ -31,10 +30,10 @@ package_vdr-vnsiserver() {
   install="$pkgname.install"
 
   cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver
-  make DESTDIR=${pkgdir} install
+  make DESTDIR="${pkgdir}" install
 
-  mkdir -p $pkgdir/var/lib/vdr/plugins
-  cp -r vnsiserver $pkgdir/var/lib/vdr/plugins
+  mkdir -p "$pkgdir/var/lib/vdr/plugins"
+  cp -r vnsiserver "$pkgdir/var/lib/vdr/plugins"
 }
 
 package_xbmc-pvr-addons() {
@@ -42,5 +41,5 @@ package_xbmc-pvr-addons() {
   depends=('gcc-libs' 'xbmc')
 
   cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}
-  make DESTDIR=${pkgdir} install
+  make DESTDIR="${pkgdir}" install
 }

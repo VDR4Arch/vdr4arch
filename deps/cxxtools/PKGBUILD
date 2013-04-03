@@ -1,4 +1,4 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=cxxtools
 pkgver=2.1.1
 pkgrel=3
@@ -12,9 +12,14 @@ source=("http://www.tntnet.org/download/${pkgname}-${pkgver}.tar.gz" "fix-utf8.d
 md5sums=('2026a2bb23b966f13893167b4dbc5d70'
          '5a23ef9da9b54da239ab8e89521c8239')
 
-build() {
+prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   patch -p1 -i ${srcdir}/fix-utf8.diff
+}
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
   ./configure --prefix=/usr \
               --disable-demos \
               --disable-unittest

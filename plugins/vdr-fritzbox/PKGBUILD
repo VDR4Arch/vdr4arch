@@ -14,11 +14,9 @@ md5sums=('3a3ac7a2012676ad129faf52616ec5f6')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
   make
 }
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
-  make DESTDIR=${pkgdir} install
+  make DESTDIR="${pkgdir}" install
 }

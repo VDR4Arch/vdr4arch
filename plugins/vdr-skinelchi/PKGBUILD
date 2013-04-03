@@ -15,15 +15,13 @@ md5sums=('b4d3160033fa6541eab55bbf7ad41276')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
   make
 }
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
 
-  make DESTDIR=${pkgdir} install
-
-  mkdir -p $pkgdir/var/lib/vdr/themes
+  mkdir -p "$pkgdir/var/lib/vdr/themes"
   install -Dm644 themes/*.theme "$pkgdir/var/lib/vdr/themes"
 }

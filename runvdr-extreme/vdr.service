@@ -2,6 +2,7 @@
 Description=Video Disk Recorder
 After=lirc.service
 After=oscam.service
+After=sundtek.service
 
 [Service]
 ExecStart=/usr/bin/runvdr

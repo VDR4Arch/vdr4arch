@@ -3,25 +3,35 @@ pkgname=vdr-graphlcd
 pkgver=20130125
 _gitver=66b78434
 _vdrapi=2.0.0
-pkgrel=7
+pkgrel=8
 pkgdesc="Plugin for the Video Disc Recorder to display its information"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('graphlcd-base' "vdr-api=${_vdrapi}")
+depends=('graphlcd-base' 'ttf-dejavu' "vdr-api=${_vdrapi}")
 optdepends=('serdisplib: Support more modern LCDs')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2")
-md5sums=('f33e58136be165daa7520bc8adb0ddd9')
+source=("git://projects.vdr-developer.org/vdr-plugin-graphlcd.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git log -1 --pretty=format:%ad --date=short | sed 's/-//g'
+}
 
 build() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
-
+  cd "${srcdir}/vdr-plugin-${_plugname}"
   make
 }
 
 package() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make DESTDIR="${pkgdir}" install
 
-  make DESTDIR=${pkgdir} install
+  cd "$pkgdir/usr/share/vdr/plugins/graphlcd/fonts"
+  rm *.ttf
+  ln -s /usr/share/fonts/TTF/DejaVuSans-Bold.ttf .
+  ln -s /usr/share/fonts/TTF/DejaVuSansCondensed.ttf .
+  ln -s /usr/share/fonts/TTF/DejaVuSans.ttf Vera.ttf
+  ln -s /usr/share/fonts/TTF/DejaVuSans-Bold.ttf VeraBd.ttf
 }

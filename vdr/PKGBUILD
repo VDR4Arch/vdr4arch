@@ -28,9 +28,7 @@ md5sums=('fd7f481b996e03fae3c00e80b6b0d301'
          'ef8e11062f58a9eb4016dfbf66bb9044'
          '7cad811b4ac5ee6c0b5496d006f1e0ee')
 
-build() {
-  gcc -o shutdown-wrapper shutdown-wrapper.c
-
+prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
 cat > Make.config <<EOF
@@ -42,7 +40,12 @@ VDR_USER     = vdr
 EOF
 
   patch -p1 -i ${srcdir}/MainMenuHooks-v1_0_2.diff
+}
 
+build() {
+  gcc -o shutdown-wrapper shutdown-wrapper.c
+
+  cd "${srcdir}/${pkgname}-${pkgver}"
   make
 }
 
@@ -51,6 +54,5 @@ package() {
   install -Dm755 shutdown.sh "$pkgdir/usr/lib/vdr/bin/shutdown.sh"
 
   cd "${srcdir}/${pkgname}-${pkgver}"
-
   make DESTDIR="${pkgdir}" install
 }

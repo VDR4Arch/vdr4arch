@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinpearlhd
-pkgver=20130122
+pkgver=0.0.1_28_g9899940
 _gitver=9899940
 _vdrapi=2.0.0
-pkgrel=8
+pkgrel=1
 pkgdesc="conversion of the PearlHD-Skin written by mapovi to a native vdr-plugin"
 url="http://projects.vdr-developer.org/projects/show/plg-skinpearlhd"
 arch=('x86_64' 'i686')
@@ -12,22 +12,29 @@ depends=('imagemagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 optdepends=()
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$_gitver.tar.bz2"
+source=("git://projects.vdr-developer.org/vdr-plugin-skinpearlhd.git#commit=$_gitver"
         'pearlhd-imagemagick-fix.diff')
-md5sums=('0e011dab84289d54aa10ea83987f8ea6'
+md5sums=('SKIP'
          'f234856453da11e9aade57bfef7d27c2')
 
-build() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
 
   # Fix compilation with newer Imagemagick versions
   patch -p1 -i "$srcdir/pearlhd-imagemagick-fix.diff"
+}
 
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
   make
 }
 
 package() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
-
-  make DESTDIR=${pkgdir} install
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make DESTDIR="${pkgdir}" install
 }

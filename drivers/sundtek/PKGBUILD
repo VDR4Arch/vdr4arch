@@ -1,0 +1,59 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# Most work done by mockfrog and webmeister at AUR
+pkgname=sundtek
+pkgver=130315.225747
+pkgrel=1
+pkgdesc="Driver for Sundtek MediaTV Pro"
+arch=('i686' 'x86_64' 'armv6h')
+url="http://www.sundtek.com/"
+license=('custom')
+backup=(etc/sundtek.conf)
+install=${pkgname}.install
+_filename="sundtek_installer_${pkgver}.sh"
+source=("http://www.sundtek.de/media/${_filename}"
+        'sundtek.conf'
+        'sundtek.service')
+md5sums=('a033b64a7be835a5e6922f1086631da2'
+         'd146fc4fe871e56ccb709109f4c5751d'
+         'f1aae82ee2602eb5380abbdfdc823ddf')
+
+prepare() {
+  cd "${srcdir}"
+
+  msg2 "extracting files stage 1"
+  sh ${_filename} -e
+
+  case "${CARCH}" in
+    i686)
+       msg2 "extracting files stage 2 (${CARCH})"
+       tar xzf "${srcdir}/32bit/installer.tar.gz"
+       ;;
+    x86_64)
+       msg2 "extracting files stage 2 (${CARCH})"
+       tar xzf "${srcdir}/64bit/installer.tar.gz"
+       ;;
+    armv6h)
+       msg2 "extracting files stage 2 (${CARCH})"
+       tar xzf "${srcdir}/armsysvhf/installer.tar.gz"
+       ;;
+    *)
+       msg2 "architecture ${CARCH} not supported"
+       exit 1
+       ;;
+  esac
+}
+
+package() {
+  cd "${srcdir}"
+
+  # fix broken access rights
+  chmod +r -R *
+
+  mkdir -p "${pkgdir}/opt/lib"
+  cp -pr opt/bin "${pkgdir}/opt/"
+  cp -pr opt/lib/*.so "${pkgdir}/opt/lib/"
+
+  install -D "sundtek.conf" "${pkgdir}/etc/sundtek.conf"
+  install -D "sundtek.service" "${pkgdir}/usr/lib/systemd/system/sundtek.service"
+  install -D "opt/doc/README" "${pkgdir}/usr/share/licenses/sundtek/README"
+}

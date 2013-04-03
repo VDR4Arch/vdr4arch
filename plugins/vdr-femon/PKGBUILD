@@ -14,13 +14,11 @@ md5sums=('af696220b9c58e5a2e43e0ad3accd064')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
   make GITTAG=''
 }
 
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
   make DESTDIR="$pkgdir" install
 }

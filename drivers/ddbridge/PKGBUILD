@@ -1,4 +1,4 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=ddbridge
 pkgver=20130307
 _hgver=406ffecccbec
@@ -9,30 +9,37 @@ pkgdesc="DDBridge driver for L4M Cine S2 cards"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('linux>=3.8' 'linux<3.9')
-makedepends=('linux-headers>=3.8' 'linux-headers<3.9')
+makedepends=('linux-headers>=3.8' 'linux-headers<3.9' 'mercurial')
 install="${pkgname}.install"
-source=("http://linuxtv.org/hg/~endriss/ngene-octopus-test/archive/$_hgver.tar.bz2")
-md5sums=('1faef71bef265c419531d0ff976c2f6a')
+source=("hg+http://linuxtv.org/hg/~endriss/ngene-octopus-test#revision=$_hgver")
+md5sums=('SKIP')
 
+pkgver() {
+  cd "$srcdir/ngene-octopus-test"
+  hg log -l1 --template "{shortdate(date)}" | sed 's/-//g'
+}
 
-build() {
-  _kernver="$(cat /lib/modules/$_extramodules/version)"
-
-  cd "$srcdir/ngene-octopus-test-$_hgver"/linux/drivers/media/dvb/ddbridge
+prepare() {
+  cd "$srcdir/ngene-octopus-test/linux/drivers/media/dvb/ddbridge"
 
   #Taken from saa716x driver
   echo 'EXTRA_CFLAGS = -Idrivers/media/dvb/dvb-core/ -Idrivers/media/dvb/frontends/ -Idrivers/media/dvb-core/ -Idrivers/media/dvb-frontends/' >> Makefile
 
   cp ../../../staging/cxd2099/cxd2099.h .
   cp ../frontends/{tda18212dd.h,stv0367dd.h} .
+}
+
+build() {
+  cd "$srcdir/ngene-octopus-test/linux/drivers/media/dvb/ddbridge"
+
+  _kernver="$(cat /lib/modules/$_extramodules/version)"
 
   make -C /lib/modules/$_kernver/build CONFIG_DVB_DDBRIDGE=m M=$(pwd) modules
 }
 
 package() {
-  cd "$srcdir/ngene-octopus-test-$_hgver"/linux/drivers/media/dvb/$pkgname
+  cd "$srcdir/ngene-octopus-test/linux/drivers/media/dvb/ddbridge"
 
   gzip *.ko
   install -Dm644 $pkgname.ko.gz "$pkgdir/lib/modules/$_extramodules/$pkgname.ko.gz"
-
 }

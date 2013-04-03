@@ -1,0 +1,32 @@
+pkgname=pearldpf-simple
+pkgver=20120306
+pkgrel=1
+pkgdesc="Graphlcd skin for Pearl Digital Picture Frames"
+arch=('any')
+url="http://www.vdr-portal.de/board18-vdr-hardware/board11-lcds/p1053917-pearl-display-yavdr-todo-install/#post1053917"
+depends=('ttf-ubuntu-font-family' 'vdr-graphlcd')
+license=('custom')
+source=('git+http://dl.dropbox.com/s/f4gc4243t4pgv98/pearldpf-simple.git')
+backup=('usr/share/vdr/plugins/graphlcd/skins/pearldpf-simple/settings.conf')
+md5sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/$pkgname"
+  git log -1 --pretty=format:%ad --date=short | sed 's/-//g'
+}
+
+prepare() {
+  cd "$srcdir/$pkgname"
+  sed -i 's/VDRSymbolsSans/DejaVuSans/g' $pkgname.skin
+}
+
+package() {
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/graphlcd/skins"
+  cp -r "$srcdir/$pkgname" "$pkgdir/usr/share/vdr/plugins/graphlcd/skins"
+
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/graphlcd/fonts"
+  cd "$pkgdir/usr/share/vdr/plugins/graphlcd/fonts"
+
+  ln -s /usr/share/fonts/TTF/Ubuntu-B.ttf .
+  ln -s /usr/share/fonts/TTF/Ubuntu-C.ttf .
+}

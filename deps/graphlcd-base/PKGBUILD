@@ -1,8 +1,8 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=graphlcd-base
-pkgver=20130321
-_gitver=60bdec72
+pkgver=20130323
+_gitver=54d0651c
 pkgrel=1
 pkgdesc="Project to support graphical LC displays connected to the PC"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
@@ -11,22 +11,31 @@ license=('GPL2')
 depends=('fontconfig' 'gcc-libs' 'imagemagick' 'libusb-compat')
 optdepends='serdisplib: Add support for more serial displays'
 backup=(etc/graphlcd.conf)
-source=("http://projects.vdr-developer.org/git/$pkgname.git/snapshot/$pkgname-$_gitver.tar.bz2")
-md5sums=('b9bf696f1c503e29ad16a4647a03f4c3')
+source=("git://projects.vdr-developer.org/graphlcd-base.git#commit=$_gitver")
+md5sums=('SKIP')
 
-build() {
-  cd "${srcdir}/${pkgname}-${_gitver}"
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  git log -1 --pretty=format:%ad --date=short | sed 's/-//g'
+}
+
+prepare() {
+  cd "${srcdir}/${pkgname}"
   sed -i '/CFLAGS/d' Make.config
   sed -i '/CXXFLAGS/d' Make.config
   sed -i '/LDFLAGS/d' Make.config
   sed -i 's/#HAVE_AX206DPF_EXPERIMENTAL/HAVE_AX206DPF_EXPERIMENTAL/' Make.config
   sed -i 's/#HAVE_picoLCD_256x64_EXPERIMENTAL/HAVE_picoLCD_256x64_EXPERIMENTAL/' Make.config
   sed -i 's/#HAVE_IMAGEMAGICK/HAVE_IMAGEMAGICK/' Make.config
+}
+
+build() {
+  cd "${srcdir}/${pkgname}"
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${_gitver}"
+  cd "${srcdir}/${pkgname}"
   mkdir -p ${pkgdir}/usr/lib/udev/rules.d
   make DESTDIR="${pkgdir}" \
        BINDIR=${pkgdir}/usr/bin \

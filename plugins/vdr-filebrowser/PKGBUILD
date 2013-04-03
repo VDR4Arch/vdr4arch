@@ -13,21 +13,23 @@ replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")
 install="$pkgname.install"
 backup=("var/lib/vdr/plugins/filebrowser/commands.conf"
-	"var/lib/vdr/plugins/filebrowser/order.conf"
-	"var/lib/vdr/plugins/filebrowser/othercommands.conf" 
-	"var/lib/vdr/plugins/filebrowser/sources.conf")
+        "var/lib/vdr/plugins/filebrowser/order.conf"
+        "var/lib/vdr/plugins/filebrowser/othercommands.conf"
+        "var/lib/vdr/plugins/filebrowser/sources.conf")
 source=("http://opensource.holgerbrunn.net/vdr/filebrowser/$pkgname-$pkgver.tgz")
 md5sums=('a1813fec39604b62c38c3ab44fe4aa5f')
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-  mkdir -p $pkgdir/usr/lib/vdr/plugins/
+
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        all
-  mkdir -p $pkgdir/var/lib/vdr/plugins/filebrowser/
-  install -m644 examples/filebrowser/*  $pkgdir/var/lib/vdr/plugins/filebrowser/
+
+  mkdir -p "$pkgdir/var/lib/vdr/plugins/filebrowser"
+  install -m644 examples/filebrowser/*  "$pkgdir/var/lib/vdr/plugins/filebrowser"
 }

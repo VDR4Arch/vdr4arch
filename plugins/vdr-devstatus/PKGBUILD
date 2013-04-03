@@ -14,12 +14,15 @@ source=("http://www.u32.de/download/$pkgname-$pkgver.tgz"
 md5sums=('503452532add3d4a37f2aa0b4a4488b7'
          'ba40b25c09cb365ff1e0d4a8db1507af')
 
+prepare() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  patch -i ${srcdir}/${_plugname}.diff
+}
+
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
-  patch -i ${srcdir}/${_plugname}.diff
-
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \

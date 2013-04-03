@@ -12,12 +12,15 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/652/vdr-plugin-$_plugname-$pkgver.tgz")
 md5sums=('cd7012d58d1350a6dc5597dd50a2cd40')
 
+prepare() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  sed -i 's/i18n\.o//g' Makefile
+}
+
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-  
-  sed -i 's/i18n\.o//g' Makefile
 
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \

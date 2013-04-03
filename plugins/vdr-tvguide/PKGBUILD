@@ -1,9 +1,10 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvguide
-pkgver=20130207
+pkgver=0.0.2_4_g063094f
+epoch=1
 _gitver=063094f4
 _vdrapi=2.0.0
-pkgrel=8
+pkgrel=1
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
@@ -11,17 +12,21 @@ license=('GPL2')
 depends=('imagemagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/git/vdr-plugin-${_plugname}.git/snapshot/vdr-plugin-${_plugname}-${_gitver}.tar.bz2")
-md5sums=('88c1e5c944d38a4fb5dda15377bcdc5a')
+source=("git://projects.vdr-developer.org/vdr-plugin-tvguide.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git tag -a v0.0.2 -m 'Added Tag' 1e92b7d3 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
 
 build() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
-
+  cd "${srcdir}/vdr-plugin-${_plugname}"
   make
 }
 
 package() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
-
-  make DESTDIR=${pkgdir} install
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make DESTDIR="${pkgdir}" install
 }

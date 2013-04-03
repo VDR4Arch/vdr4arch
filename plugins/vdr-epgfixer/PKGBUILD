@@ -17,12 +17,14 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1138/$pkgname-$pkgver.tgz")
 md5sums=('b9612533df73332d9c6305bf03d558dc')
 
+prepare() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  sed -i '/Make.global/d' Makefile
+}
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
-  sed -i '/Make.global/d' Makefile
-
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \
@@ -30,6 +32,6 @@ package() {
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        GITTAG=''
 
-  mkdir -p $pkgdir/var/lib/vdr/plugins/epgfixer
-  install -Dm644 epgfixer/*  $pkgdir/var/lib/vdr/plugins/epgfixer
+  mkdir -p "$pkgdir/var/lib/vdr/plugins/epgfixer"
+  install -Dm644 epgfixer/*  "$pkgdir/var/lib/vdr/plugins/epgfixer"
 }

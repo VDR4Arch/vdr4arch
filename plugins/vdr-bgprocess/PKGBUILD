@@ -16,13 +16,17 @@ md5sums=('46bc8626cf843110eedef74d2dc27c3d'
          'd2f7efb1ab40727298d4d17e1b07e37c'
          '1556e199ab90264a1f45838abbef0243')
 
-package() {
+prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
 
   patch -p1 -i ${srcdir}/bgprocess-tlphrases-fix.diff #By Holger Schvestka (yaVDR)
   patch -p1 -i ${srcdir}/bgprocess-osditem-fix.diff #By Holger Schestka (yaVDR)
+}
 
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \

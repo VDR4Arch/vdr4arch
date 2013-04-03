@@ -1,28 +1,34 @@
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-markad
-pkgver=20130301
+pkgver=0.1.4_22_gf68a872
+epoch=1
 _gitver=f68a8728b
 _vdrapi=2.0.0
-pkgrel=4
+pkgrel=1
 pkgdesc="automatic advertisement detection"
 url="http://projects.vdr-developer.org/projects/plg-markad"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('ffmpeg' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/git/vdr-plugin-markad.git/snapshot/vdr-plugin-${_plugname}-${_gitver}.tar.bz2")
-md5sums=('c143d08dc94c5a7b2692513d62e29892')
+source=("git://projects.vdr-developer.org/vdr-plugin-markad.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
 
 package() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${_gitver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}"
 
-  mkdir -p $pkgdir/usr/lib/vdr/plugins
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
   make CFLAGS="$(pkg-config vdr --variable=cflags)" \
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       DESTDIR=$pkgdir install
+       DESTDIR="$pkgdir" install
 
   #Move the logofiles to the right place and add a symlink to workaround patching.
   mkdir -p "$pkgdir/usr/share"

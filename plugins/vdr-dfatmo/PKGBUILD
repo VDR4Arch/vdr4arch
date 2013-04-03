@@ -1,9 +1,9 @@
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgbase=DFAtmo
 pkgname=('dfatmo' 'vdr-dfatmo')
-pkgver=0.3.3
+pkgver=0.3.4
 _vdrapi=2.0.0
-pkgrel=7
+pkgrel=1
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')
@@ -11,19 +11,22 @@ license=('GPL2')
 makedepends=('python2' "vdr-api=${_vdrapi}")
 source=("https://github.com/durchflieger/${pkgbase}/archive/v${pkgver}.tar.gz"
         '45-df10ch.rules')
-md5sums=('30960d8444e1e38815e9a442f519e323'
+md5sums=('230009ceee0d078e98fcbc6fe7361182'
          'c5e0bf17e88febc7e86c7e435f5eea5f')
+
+prepare() {
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+  mkdir vdrplug.po
+}
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}"
 
   #Compile dfatmo
   CFLAGS+=' -fPIC'
-  sed -i "s/python-config/python2-config/" Makefile
   make DFATMOINSTDIR='/usr' dfatmo
 
   #Compile vdr plugin
-  mkdir po #Workaround
   make -f vdr2plug.mk DFATMOINSTDIR='/usr'
 }
 

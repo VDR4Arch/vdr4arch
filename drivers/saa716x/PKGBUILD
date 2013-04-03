@@ -1,4 +1,4 @@
-# Maintainer: Christopher Reimer <c[dot]reimer[at]googlemail[dot]com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=saa716x
 pkgver=20130224
 _hgver=cfa4b4faab67
@@ -10,24 +10,34 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('linux>=3.8' 'linux<3.9')
 optdepends=()
-makedepends=('linux-headers>=3.8' 'linux-headers<3.9')
+makedepends=('linux-headers>=3.8' 'linux-headers<3.9' 'mercurial')
 install="${pkgname}.install"
-source=("http://powarman.dyndns.org/hgwebdir.cgi/v4l-dvb-$pkgname/archive/$_hgver.tar.bz2"
+source=("hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_hgver"
         "compat.diff")
-md5sums=('b6db4c2853d4228b4182001aac380051'
-         'ed7d7a92bfafeef522df13c0468fc159')
+md5sums=('SKIP'
+         '463dbc6891d8648d8ae213ac92203bdd')
+
+pkgver() {
+  cd "$srcdir/v4l-dvb-$pkgname"
+  hg log -l1 --template "{shortdate(date)}" | sed 's/-//g'
+}
+
+prepare() {
+  cd "$srcdir/v4l-dvb-$pkgname/linux/drivers/media/common/saa716x"
+  patch -i $srcdir/compat.diff
+
+}
 
 build() {
-  _kernver="$(cat /lib/modules/$_extramodules/version)"
-  cd "$srcdir/v4l-dvb-$pkgname-$_hgver"/linux/drivers/media/common/saa716x
+  cd "$srcdir/v4l-dvb-$pkgname/linux/drivers/media/common/saa716x"
 
-  patch -i $srcdir/compat.diff
+  _kernver="$(cat /lib/modules/$_extramodules/version)"
 
   make -C /lib/modules/$_kernver/build CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_FF=m M=$(pwd) modules -j1
 }
 
 package() {
-  cd "$srcdir/v4l-dvb-$pkgname-$_hgver"/linux/drivers/media/common/saa716x
+  cd "$srcdir/v4l-dvb-$pkgname/linux/drivers/media/common/saa716x"
 
   gzip *.ko
   install -Dm644 saa716x_core.ko.gz "$pkgdir/lib/modules/$_extramodules/saa716x_core.ko.gz"
