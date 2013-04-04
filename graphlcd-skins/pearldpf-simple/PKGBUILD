@@ -1,6 +1,6 @@
 pkgname=pearldpf-simple
 pkgver=20120306
-pkgrel=2
+pkgrel=3
 pkgdesc="Graphlcd skin for Pearl Digital Picture Frames"
 arch=('any')
 url="http://www.vdr-portal.de/board18-vdr-hardware/board11-lcds/p1053917-pearl-display-yavdr-todo-install/#post1053917"
@@ -21,13 +21,12 @@ prepare() {
 }
 
 package() {
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/graphlcd/skins"
-  cp -r "$srcdir/$pkgname" "$pkgdir/usr/share/vdr/plugins/graphlcd/skins"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/graphlcd/skins/$pkgname"
+  cp -r "$srcdir/$pkgname/"{$pkgname.skin,icons,inc,locale,styles,settings.conf} \
+    "$pkgdir/usr/share/vdr/plugins/graphlcd/skins/$pkgname"
 
   mkdir -p "$pkgdir/usr/share/vdr/plugins/graphlcd/fonts"
   cd "$pkgdir/usr/share/vdr/plugins/graphlcd/fonts"
 
-  ln -s /usr/share/fonts/TTF/Ubuntu-B.ttf .
-  ln -s /usr/share/fonts/TTF/Ubuntu-C.ttf .
-  ln -s /usr/share/fonts/TTF/UbuntuMono-B.ttf .
+  ln -s /usr/share/fonts/TTF/{Ubuntu-B.ttf,Ubuntu-C.ttf,UbuntuMono-B.ttf} .
 }
