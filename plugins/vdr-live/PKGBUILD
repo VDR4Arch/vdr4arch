@@ -1,36 +1,25 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-live
-pkgver=20121226
-_gitver=545739fe
+pkgver=0.3.0
+epoch=1
+_gitver=9f56065e62206700b5ab22a9af4d4a253a714d48
 _vdrapi=2.0.0
-pkgrel=9
+pkgrel=1
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
 url="http://projects.vdr-developer.org/projects/plg-live"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('pcre' 'tntnet' "vdr-api=${_vdrapi}")
+optdepends=('vdr-epgsearch: Manage searchtimers'
+            'vdr-streamdev: Stream live TV')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-live.git#commit=$_gitver"
-        "fix_interface_binding.diff::http://projects.vdr-developer.org/git/vdr-plugin-live.git/patch/setup.cpp?id=118c2aa7"
-        "regenerate_locale.diff::http://projects.vdr-developer.org/git/vdr-plugin-live.git/patch/setup.cpp?id=32571e15"
-        "use_bindv6only_status.diff::http://projects.vdr-developer.org/git/vdr-plugin-live.git/patch/setup.cpp?id=ea605530")
-md5sums=('SKIP'
-         '6c45e8195fe4e2decf6cd863b56b6bec'
-         '03831bcf37c5fcc4e6ad7595c56c7482'
-         '87eac839c3680457023728bc9caeeda2')
+source=("git://projects.vdr-developer.org/vdr-plugin-live.git#commit=$_gitver")
+md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-  git log -1 --pretty=format:%ad --date=short | sed 's/-//g'
-}
-
-prepare() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
-
-  patch -R -p1 -i "$srcdir/fix_interface_binding.diff"
-  patch -R -p1 -i "$srcdir/regenerate_locale.diff"
-  patch -R -p1 -i "$srcdir/use_bindv6only_status.diff"
+  git describe --tags | sed 's/-/\./g;s/release_//'
 }
 
 package() {
