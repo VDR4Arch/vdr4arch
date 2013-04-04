@@ -2,7 +2,6 @@
 # Contributor: crov
 pkgname=vdr-chanman
 pkgver=0.0.10
-_gitver=58463fd2
 _vdrapi=2.0.0
 pkgrel=6
 pkgdesc="Change channel with a multi level choice"
