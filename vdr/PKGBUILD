@@ -1,13 +1,13 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
 pkgver=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('libjpeg-turbo' 'perl' 'ttf-dejavu')
-optdepends=('lirc: remote control support'
+optdepends=('lirc-utils: remote control support'
             'ncurses: skinncurses plugin'
             'runvdr-extreme: startscript for vdr')
 provides=("vdr-api=2.0.0")
@@ -20,10 +20,12 @@ backup=('var/lib/vdr/channels.conf'
 options='!emptydirs'
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
+        'vdr-2.0.0-fixkeeptracksinit.diff::http://www.linuxtv.org/pipermail/vdr/attachments/20130405/eab78cb1/attachment.bin'
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
         'shutdown.sh'
         'shutdown-wrapper.c')
 md5sums=('fd7f481b996e03fae3c00e80b6b0d301'
+         'a949dc1210d1e69895f0b42224d9a6b4'
          '301c9b9766ed5182b07f1debc79abc21'
          'ef8e11062f58a9eb4016dfbf66bb9044'
          '7cad811b4ac5ee6c0b5496d006f1e0ee')
@@ -39,7 +41,8 @@ LIBDIR       = /usr/lib/vdr/plugins
 VDR_USER     = vdr
 EOF
 
-  patch -p1 -i ${srcdir}/MainMenuHooks-v1_0_2.diff
+  patch -i "$srcdir/vdr-2.0.0-fixkeeptracksinit.diff"
+  patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
 }
 
 build() {
