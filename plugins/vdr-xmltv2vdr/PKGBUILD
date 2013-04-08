@@ -1,0 +1,43 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-xmltv2vdr
+pkgver=0.1.1_47_g90c023f
+_gitver=90c023f6b6a665cf8a6a205acbc241f545043d74
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Add epg info from epg sources into vdr"
+url="http://projects.vdr-developer.org/projects/plg-xmltv2vdr"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('curl' 'enca' 'libxslt' 'libzip' 'pcre' 'sqlite' "vdr-api=${_vdrapi}")
+install="$pkgname.install"
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("git://projects.vdr-developer.org/vdr-plugin-xmltv2vdr.git#commit=$_gitver")
+backup=("var/lib/epgsources/epgdata2xmltv")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-$_plugname"/dist/epgdata2xmltv
+  make -j1
+}
+
+package() {
+  cd "${srcdir}/vdr-plugin-$_plugname"
+
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr/include/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       GIT_REV=''
+
+  cd dist/epgdata2xmltv
+  make epgdata2xmltv
+  install -Dm755 epgdata2xmltv "$pkgdir/usr/bin/epgdata2xmltv"
+  install -Dm644 epgdata2xmltv.dist "$pkgdir/var/lib/epgsources/epgdata2xmltv"
+}
