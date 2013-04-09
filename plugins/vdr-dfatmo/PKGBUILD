@@ -3,7 +3,7 @@ pkgbase=DFAtmo
 pkgname=('dfatmo' 'vdr-dfatmo')
 pkgver=0.3.4
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')
@@ -11,13 +11,12 @@ license=('GPL2')
 makedepends=('python2' "vdr-api=${_vdrapi}")
 source=("https://github.com/durchflieger/${pkgbase}/archive/v${pkgver}.tar.gz"
         '45-df10ch.rules')
-md5sums=('230009ceee0d078e98fcbc6fe7361182'
+md5sums=('f219c14904b800303565be29a607c52d'
          'c5e0bf17e88febc7e86c7e435f5eea5f')
 
 prepare() {
   cd "${srcdir}/${pkgbase}-${pkgver}"
-  mkdir vdrplug.po
-  sed -i "s/python-config/python2-config/"
+  sed -i "s/python-config/python2-config/" Makefile
 }
 
 build() {
