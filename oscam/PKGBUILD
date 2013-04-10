@@ -1,13 +1,12 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=oscam
-pkgver=8500
+pkgver=8600
 pkgrel=1
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.oscam.cc"
 arch=('x86_64' 'i686')
 license=('GPL3')
 depends=('libusb' 'openssl')
-makedepends=('svn')
 backup=('etc/logrotate.d/oscam'
         'var/lib/oscam/oscam.ac'
         'var/lib/oscam/oscam.cacheex'
@@ -23,20 +22,23 @@ backup=('etc/logrotate.d/oscam'
         'var/lib/oscam/oscam.tiers'
         'var/lib/oscam/oscam.user'
         'var/lib/oscam/oscam.whitelist')
-source=("oscam-$pkgver::svn+http://www.streamboard.tv/svn/oscam/trunk#revision=$pkgver"
+source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
         'oscam.logrotate'
         'oscam.service')
-md5sums=('SKIP'
+noextract="${pkgname}-${pkgver}.zip"
+md5sums=('d3e53c660c63e04aac45fde472a860f5'
          '1fadb043e8bf28f3a5fed8732dad39a3'
          'a20f9587d521ca1b65a760473cb740a8')
 
 prepare() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cat "${pkgname}-${pkgver}.zip" | bsdtar -xf -
+
+  cd "$srcdir/trunk"
   chmod +x config.sh webif/pages_mkdep
 }
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$srcdir/trunk"
 
   make CONF_DIR=/var/lib/oscam \
        USE_SSL=1 \
@@ -47,7 +49,7 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$srcdir/trunk"
 
   #Install binaries
   install -Dm755 oscam "$pkgdir/usr/bin/oscam"
