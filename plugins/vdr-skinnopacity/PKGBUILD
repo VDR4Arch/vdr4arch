@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=0.1.0_22_ge269a87
-_gitver=e269a87fc24964fbaac485d6a60f3c331ed321a6
+pkgver=0.1.1
+_gitver=1179c9f2245c9caa3988acb2dc25c23ad7cbaed6
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
@@ -17,7 +17,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/skin-nopacity"
-  git tag -a v0.1.0 -m 'Added Tag' 1e0423cd81945c4cd9f922e66822c93f396aeb2b 2> /dev/null
+  git tag -a v0.1.1 -m 'Added Tag' 1179c9f2245c9caa3988acb2dc25c23ad7cbaed6 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
