@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=runvdr-extreme
 pkgver=0.4.2
-pkgrel=6
+pkgrel=7
 pkgdesc="Runvdr script, just like the runvdr script included in the VDR distribution"
 url="http://www.udo-richter.de/vdr/scripts.html"
 arch=('any')
@@ -22,17 +22,20 @@ md5sums=('ca95ce455fc6e66fcaa4b3476ecdcffc'
          '5ca14709ba9064a745d6162c04e73630'
          '20df2336a103c1075a4667167097bff1')
 
-package() {
-  install -Dm644 60-vdr-tty.rules "$pkgdir/usr/lib/udev/rules.d/60-vdr-tty.rules"
-  install -Dm755 vdr.service "$pkgdir/usr/lib/systemd/system/vdr.service"
-  install -Dm644 runvdr.conf "$pkgdir/etc/runvdr.conf"
-
+prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   patch -i ${srcdir}/runvdr-extreme-0.4.2-bash-4.2-fix.diff
   patch -i ${srcdir}/runvdr-extreme-0.4.2-charset-override.diff #By Manuel Reimer
 
   sed -i -e 's/VDRPRG=$/VDRPRG=vdr/g' runvdr
+}
 
+package() {
+  install -Dm644 60-vdr-tty.rules "$pkgdir/usr/lib/udev/rules.d/60-vdr-tty.rules"
+  install -Dm644 vdr.service "$pkgdir/usr/lib/systemd/system/vdr.service"
+  install -Dm644 runvdr.conf "$pkgdir/etc/runvdr.conf"
+
+  cd "${srcdir}/${pkgname}-${pkgver}"
   install -Dm755 runvdr "$pkgdir/usr/bin/runvdr"
 }
