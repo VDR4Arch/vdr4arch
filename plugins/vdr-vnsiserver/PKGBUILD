@@ -1,45 +1,35 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
-pkgbase=xbmc-pvr-addons
-pkgname=('vdr-vnsiserver' 'xbmc-pvr-addons')
-pkgver=12.0
+pkgname=vdr-vnsiserver
+pkgver=12.0_Frodo
+_gitver=96774c4f775b156a46fb58151379dece3e773c96
 _vdrapi=2.0.0
-_codename=Frodo
 epoch=1
-pkgrel=7
-url=""
+pkgrel=1
+url="http://www.xbmc.org/pvr"
 arch=('x86_64' 'i686')
 license=('GPL2')
+pkgdesc="VDR plugin to handle XBMC clients"
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=("vdr-api=${_vdrapi}")
-source=("https://github.com/opdenkamp/xbmc-pvr-addons/archive/${pkgver}-${_codename}.tar.gz")
-md5sums=('4a1020b1a890e26505da7cc9afef1cea')
+source=("git://github.com/opdenkamp/xbmc-pvr-addons.git#commit=$_gitver")
+backup=('var/lib/vdr/plugins/vnsiserver/allowed_hosts.conf')
+install="$pkgname.install"
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/xbmc-pvr-addons"
+  git describe --tags | sed 's/-/_/g'
+}
 
 build() {
-  cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver
-  make
-
-  cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}
-  autoreconf -vfi
-  ./configure --prefix=/usr
+  cd "${srcdir}/xbmc-pvr-addons/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver"
   make
 }
 
-package_vdr-vnsiserver() {
-  pkgdesc="VDR plugin to handle XBMC clients"
-  depends=('gcc-libs' "vdr-api=${_vdrapi}")
-  _plugname=$(echo $pkgname | sed 's/vdr-//g')
-  install="$pkgname.install"
-
-  cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver
+package() {
+  cd "${srcdir}/xbmc-pvr-addons/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver"
   make DESTDIR="${pkgdir}" install
 
   mkdir -p "$pkgdir/var/lib/vdr/plugins"
   cp -r vnsiserver "$pkgdir/var/lib/vdr/plugins"
-}
-
-package_xbmc-pvr-addons() {
-  pkgdesc="XBMC PVR client addons"
-  depends=('gcc-libs' 'xbmc')
-
-  cd ${srcdir}/${pkgbase}-${pkgver}-${_codename}
-  make DESTDIR="${pkgdir}" install
 }
