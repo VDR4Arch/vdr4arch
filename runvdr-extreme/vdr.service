@@ -1,8 +1,11 @@
 [Unit]
 Description=Video Disk Recorder
+After=eventlircd.service
 After=lirc.service
 After=oscam.service
 After=sundtek.service
+Wants=systemd-udev-settle.service
+After=systemd-udev-settle.service
 
 [Service]
 ExecStart=/usr/bin/runvdr

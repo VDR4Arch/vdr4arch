@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=runvdr-extreme
 pkgver=0.4.2
-pkgrel=7
+pkgrel=8
 pkgdesc="Runvdr script, just like the runvdr script included in the VDR distribution"
 url="http://www.udo-richter.de/vdr/scripts.html"
 arch=('any')
@@ -20,7 +20,7 @@ md5sums=('ca95ce455fc6e66fcaa4b3476ecdcffc'
          '64f49477357db1391b578dfb91b82fbc'
          '0004d23d3719abe9ce54ce47c32d27d3'
          '5ca14709ba9064a745d6162c04e73630'
-         '20df2336a103c1075a4667167097bff1')
+         '70d587fe2ff6e6a966020f0b5b1ef51b')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
