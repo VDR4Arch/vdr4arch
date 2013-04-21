@@ -1,0 +1,32 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-vompserver
+pkgver=0.4.0
+_vdrapi=2.0.0
+pkgrel=2
+pkgdesc="Server side of VOMP"
+url="http://www.loggytronic.com/vomp.php"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+install="$pkgname.install"
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://www.loggytronic.com/dl/$pkgname-$pkgver.tgz")
+md5sums=('3220006cf7faf9536213887b23a9d366')
+
+prepare() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  sed -i '/VDRDIR =/d' Makefile
+}
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make
+}
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make DESTDIR="$pkgdir" install
+
+  install -Dm 644 vomp.conf.sample "$pkgdir/var/lib/vdr/plugins/vompserver/vomp.conf"
+}
+
