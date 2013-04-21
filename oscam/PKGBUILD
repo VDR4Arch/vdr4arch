@@ -22,13 +22,14 @@ backup=('etc/logrotate.d/oscam'
         'var/lib/oscam/oscam.tiers'
         'var/lib/oscam/oscam.user'
         'var/lib/oscam/oscam.whitelist')
+install='oscam.install'
 source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
         'oscam.logrotate'
         'oscam.service')
 noextract="${pkgname}-${pkgver}.zip"
 md5sums=('d3e53c660c63e04aac45fde472a860f5'
          '1fadb043e8bf28f3a5fed8732dad39a3'
-         'a20f9587d521ca1b65a760473cb740a8')
+         '2655fb6be9107cd16ea9b1595d169d78')
 
 prepare() {
   cat "${pkgname}-${pkgver}.zip" | bsdtar -xf -
