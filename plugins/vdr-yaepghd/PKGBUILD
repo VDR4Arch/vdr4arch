@@ -1,0 +1,33 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-yaepghd
+pkgver=0.0.4
+_gitver=2a08e4e54882a848975d1435e09dece58b7aa2de
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Complete rewrite of the original yaepg plugin"
+url="http://sourceforge.net/projects/vdryaepghd"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('imagemagick' "vdr-api=${_vdrapi}")
+install="$pkgname.install"
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("git://github.com/lucianm/vdr-plugin-yaepghd.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make
+}
+
+package() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make DESTDIR="${pkgdir}" install
+
+  mkdir -p "$pkgdir/var/lib/vdr/plugins/"
+  cp -r yaepghd "$pkgdir/var/lib/vdr/plugins"
+}
