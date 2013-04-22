@@ -1,24 +1,24 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-externalplayer
-pkgver=0.3.0
+pkgver=0.3.2
 _vdrapi=2.0.0
-pkgrel=5
+pkgrel=1
 pkgdesc="use external players in VDR"
-url="http://sourceforge.net/projects/externalplayer/"
+url="http://www.uli-eckhardt.de/vdr/external.en.shtml"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 backup=('var/lib/vdr/plugins/externalplayer/externalplayer.conf')
 install="${pkgname}.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://hg.uli-eckhardt.de/$_plugname/archive/V$pkgver.tar.bz2")
-md5sums=('a003d970199a3a634a075041ea0360b6')
+source=("http://www.uli-eckhardt.de/vdr/download/$pkgname-$pkgver.tgz")
+md5sums=('fe51ca255507db0ea4d4bc45ee43aee9')
 
 build() {
-  cd "${srcdir}/${_plugname}-V${pkgver}"
+  cd "${srcdir}/${_plugname}-${pkgver}"
   make
 }
 package() {
-  cd "${srcdir}/${_plugname}-V${pkgver}"
+  cd "${srcdir}/${_plugname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
 }
