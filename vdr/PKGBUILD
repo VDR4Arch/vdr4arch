@@ -21,7 +21,7 @@ options='!emptydirs'
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
-	'vdr-1.7.40-ttxtsubs.patch'
+	'vdr-1.7.40-ttxtsubs.patch::http://projects.vdr-developer.org/projects/plg-ttxtsubs/repository/revisions/master/raw/patches/vdr-1.7.40-ttxtsubs.patch'
         'shutdown.sh'
         'shutdown-wrapper.c')
 md5sums=('e1b7a76c57c96300829dccd39eb20e7d'
