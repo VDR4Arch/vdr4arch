@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=oscam
 pkgver=8600
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.oscam.cc"
 arch=('x86_64' 'i686')
