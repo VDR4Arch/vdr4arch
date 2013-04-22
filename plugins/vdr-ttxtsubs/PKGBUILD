@@ -1,0 +1,35 @@
+# Maintainer: George Kranis https://github.com/gkranis/vdr4arch
+pkgname=vdr-ttxtsubs
+pkgver=0.3.0_3_ge9fb269
+epoch=1
+_gitver=e9fb26901c9bc66cca4cd631b1bee4fb973541f2
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="VDR Teletext Subtitles plug-in"
+url="http://projects.vdr-developer.org/projects/plg-ttxtsubs"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=("vdr-api=${_vdrapi}")
+makedepends=('git')
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("git://projects.vdr-developer.org/vdr-plugin-ttxtsubs.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make
+}
+
+package() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make DESTDIR="${pkgdir}" install
+}
