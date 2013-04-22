@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-extrecmenu
-pkgver=1.2.2_10_g977c521
+pkgver=1.2.2_12_g2d64e54
 epoch=1
-_gitver=977c5213922f041010d980ae84244259e99c880b
+_gitver=2d64e54f0194b703029ab81353416393480002c0
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="provides additional functions to VDR's recordings menu"
@@ -10,6 +10,7 @@ url="http://projects.vdr-developer.org/projects/show/plg-extrecmenu"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
+makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-extrecmenu.git#commit=$_gitver")
 md5sums=('SKIP')
