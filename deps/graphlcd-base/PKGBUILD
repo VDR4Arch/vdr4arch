@@ -1,15 +1,16 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=graphlcd-base
-pkgver=20130323
-_gitver=54d0651c
+pkgver=20130419
+_gitver=c45745ea462ea3758daffc6302552993ba4c3be0
 pkgrel=1
 pkgdesc="Project to support graphical LC displays connected to the PC"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('fontconfig' 'gcc-libs' 'imagemagick' 'libusb-compat')
+depends=('fontconfig' 'gcc-libs' 'imagemagick' 'libusb-compat' 'libvncserver')
 optdepends='serdisplib: Add support for more serial displays'
+makedepends=('git')
 backup=(etc/graphlcd.conf)
 source=("git://projects.vdr-developer.org/graphlcd-base.git#commit=$_gitver")
 md5sums=('SKIP')
