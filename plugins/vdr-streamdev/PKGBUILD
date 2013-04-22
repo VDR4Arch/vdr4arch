@@ -3,7 +3,7 @@
 pkgname=vdr-streamdev
 pkgver=0.6.0_27_g329129d
 epoch=1
-_gitver=75ee90a9
+_gitver=329129d9c141a08a930e30b1f06e5d581c5858a2
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
@@ -11,7 +11,7 @@ url="http://projects.vdr-developer.org/projects/show/plg-streamdev"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
-optdepends=()
+makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 backup=('var/lib/vdr/plugins/streamdev-server/streamdevhosts.conf')
 source=("git://projects.vdr-developer.org/vdr-plugin-streamdev.git")
@@ -19,7 +19,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-  git tag -a v0.6.0 -m 'Added Tag' af48d11b 2> /dev/null
+  git tag -a v0.6.0 -m 'Added Tag' af48d11b1856f69da293ad7808771bd8f31f8ab3 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
