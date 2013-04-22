@@ -8,6 +8,7 @@ url="http://projects.vdr-developer.org/projects/plg-play"
 arch=('x86_64' 'i686')
 license=('AGPL3')
 depends=('ffmpeg' 'mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
+makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-play.git")
 md5sums=('SKIP')

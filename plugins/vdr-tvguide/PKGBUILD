@@ -10,6 +10,7 @@ url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('imagemagick' "vdr-api=${_vdrapi}")
+makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-tvguide.git#commit=$_gitver")

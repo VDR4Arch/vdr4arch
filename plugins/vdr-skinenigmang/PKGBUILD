@@ -10,8 +10,8 @@ url="http://andreas.vdr-developer.org/enigmang/index.html"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
+makedepends=('git')
 install="$pkgname.install"
-optdepends=()
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-skinenigmang.git#commit=$_gitver")
 md5sums=('SKIP')

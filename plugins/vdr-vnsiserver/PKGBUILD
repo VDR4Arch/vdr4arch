@@ -10,7 +10,7 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 pkgdesc="VDR plugin to handle XBMC clients"
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
-makedepends=("vdr-api=${_vdrapi}")
+makedepends=('git')
 source=("git://github.com/opdenkamp/xbmc-pvr-addons.git#commit=$_gitver")
 backup=('var/lib/vdr/plugins/vnsiserver/allowed_hosts.conf')
 install="$pkgname.install"

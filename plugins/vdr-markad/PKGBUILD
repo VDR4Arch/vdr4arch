@@ -10,6 +10,7 @@ url="http://projects.vdr-developer.org/projects/plg-markad"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('ffmpeg' "vdr-api=${_vdrapi}")
+makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-markad.git#commit=$_gitver")
 md5sums=('SKIP')

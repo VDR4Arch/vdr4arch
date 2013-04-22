@@ -9,6 +9,7 @@ url="http://sourceforge.net/projects/vdryaepghd"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('imagemagick' "vdr-api=${_vdrapi}")
+makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://github.com/lucianm/vdr-plugin-yaepghd.git#commit=$_gitver")

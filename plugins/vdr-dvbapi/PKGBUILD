@@ -10,6 +10,7 @@ url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' 'libdvbcsa' 'oscam' "vdr-api=${_vdrapi}")
+makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://github.com/manio/vdr-plugin-dvbapi.git#commit=$_gitver")
 sha256sums=('SKIP')
