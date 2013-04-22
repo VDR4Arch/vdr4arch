@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-live
-pkgver=0.3.0
+pkgver=0.3.0_1_g1a1f2e0
 epoch=1
-_gitver=9f56065e62206700b5ab22a9af4d4a253a714d48
+_gitver=1a1f2e0754b02c5597debbe82f27b759f23cd6fe
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
@@ -12,6 +12,7 @@ license=('GPL2')
 depends=('pcre' 'tntnet' "vdr-api=${_vdrapi}")
 optdepends=('vdr-epgsearch: Manage searchtimers'
             'vdr-streamdev: Stream live TV')
+makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-live.git#commit=$_gitver")
@@ -19,7 +20,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-  git describe --tags | sed 's/-/\./g;s/release_//'
+  git describe --tags | sed 's/release_//;s/-/\./;s/-/\./;s/-/_/g'
 }
 
 package() {
