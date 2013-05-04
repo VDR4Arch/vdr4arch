@@ -1,70 +1,7 @@
-diff --git a/Makefile b/Makefile
-index 94bc77e..974c897 100644
---- a/Makefile
-+++ b/Makefile
-@@ -76,12 +76,18 @@ OBJS = $(PLUGIN).o data.o filter.o system.o misc.o cam.o device.o version.o \
-        smartcard.o network.o crypto.o system-common.o parse.o log.o \
-        override.o
- 
-+ifndef LIBDVBCSA
- # FFdeCSA
- PARALLEL ?= PARALLEL_128_SSE2
- CSAFLAGS ?= -fexpensive-optimizations -funroll-loops -mmmx -msse -msse2 -msse3
- FFDECSADIR = FFdecsa
- FFDECSA = $(FFDECSADIR)/FFdecsa.o
- DECSALIB = $(FFDECSA)
-+else
-+# libdvbcsa
-+DECSALIB    = -ldvbcsa
-+DEFINES    += -DLIBDVBCSA
-+endif
- 
- ifdef WITH_PCSC
-   DEFINES  += -DWITH_PCSC
-@@ -91,7 +97,7 @@ endif
- HAVE_SD := $(wildcard ../dvbsddevice/dvbsddevice.c)
- ifneq ($(strip $(HAVE_SD)),)
-   DEFINES += -DWITH_SDDVB
--  DEVPLUGTARGETS += libdvbapi-dvbsddevice.so
-+  DEVPLUGTARGETS += libsc-dvbsddevice.so
-   DEVPLUGINSTALL += install-devplug-sddvb
- endif
- HAVE_HD := $(wildcard ../dvbhddevice/dvbhddevice.c)
-@@ -99,7 +105,7 @@ ifneq ($(strip $(HAVE_HD)),)
-   HDVERS := $(shell sed -ne '/*VERSION/ s/^.*=.*"\(.*\)".*$$/\1/p' ../dvbhddevice/dvbhddevice.c)
- ifeq ($(findstring dag,$(HDVERS)),)
-     DEFINES += -DWITH_HDDVB
--    DEVPLUGTARGETS += libdvbapi-dvbhddevice.so
-+    DEVPLUGTARGETS += libsc-dvbhddevice.so
-     DEVPLUGINSTALL += install-devplug-hddvb
- endif
- endif
-@@ -176,8 +182,10 @@ libsc-dvbsddevice.so: device-sd.o
- libsc-dvbhddevice.so: device-hd.o
- 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $< -o $@
- 
-+ifndef LIBDVBCSA
- $(FFDECSA): $(FFDECSADIR)/*.c $(FFDECSADIR)/*.h
- 	@$(MAKE) COMPILER="$(CXX)" FLAGS="$(CXXFLAGS) $(LDFLAGS) $(CSAFLAGS)" PARALLEL_MODE=$(PARALLEL) -C $(FFDECSADIR) all
-+endif
- 
- version.c: FORCE
- 	@echo >$@.new "/* generated file, do not edit */"; \
-@@ -217,7 +225,9 @@ clean-systems:
- clean-core:
- 	@$(MAKE) -C testing clean
- 	@$(MAKE) -C contrib clean
-+ifndef LIBDVBCSA
- 	@if test -d $(FFDECSADIR); then $(MAKE) -C $(FFDECSADIR) clean; fi
-+endif
- 	@-rm -f $(LIBDIR)/libsc-*-$(SCAPIVERS).so.$(APIVERSION)
- 	@-rm -f $(LIBDIR)/libvdr-$(PLUGIN).a $(LIBDIR)/libsc-*.a
- 	@-rm -f $(OBJS) $(DEVPLUGOBJS) $(DEPFILE) version.c *.so *.tar.gz core* *~
-diff --git a/cam.c b/cam.c
-index 0bdf95b..0f3538c 100644
---- a/cam.c
-+++ b/cam.c
-@@ -2799,10 +2799,19 @@ void cCam::RemHandler(cEcmHandler *handler)
+diff -ruN vdr-sc.orig/cam.c vdr-sc/cam.c
+--- vdr-sc.orig/cam.c	2013-05-04 22:47:03.338513750 +0200
++++ vdr-sc/cam.c	2013-05-04 22:49:16.315041313 +0200
+@@ -2799,10 +2799,19 @@
  :stall(MAX_STALL_MS)
  {
    devId=DevId;
@@ -84,7 +21,7 @@ index 0bdf95b..0f3538c 100644
    memset(pidmap,0,sizeof(pidmap));
    ResetState();
  }
-@@ -2810,8 +2819,19 @@ void cCam::RemHandler(cEcmHandler *handler)
+@@ -2810,8 +2819,19 @@
  cDeCSA::~cDeCSA()
  {
    for(int i=0; i<MAX_CSA_IDX; i++)
@@ -104,7 +41,7 @@ index 0bdf95b..0f3538c 100644
  }
  
  void cDeCSA::ResetState(void)
-@@ -2819,7 +2839,9 @@ void cDeCSA::ResetState(void)
+@@ -2819,7 +2839,9 @@
    PRINTF(L_CORE_CSA,"%s: reset state",devId);
    memset(even_odd,0,sizeof(even_odd));
    memset(flags,0,sizeof(flags));
@@ -114,7 +51,7 @@ index 0bdf95b..0f3538c 100644
  }
  
  void cDeCSA::SetActive(bool on)
-@@ -2831,8 +2853,16 @@ void cDeCSA::SetActive(bool on)
+@@ -2831,8 +2853,16 @@
  
  bool cDeCSA::GetKeyStruct(int idx)
  {
@@ -131,7 +68,7 @@ index 0bdf95b..0f3538c 100644
  }
  
  bool cDeCSA::SetDescr(ca_descr_t *ca_descr, bool initial)
-@@ -2850,13 +2880,21 @@ bool cDeCSA::SetDescr(ca_descr_t *ca_descr, bool initial)
+@@ -2850,13 +2880,21 @@
        }
      LDUMP(L_CORE_CSA,ca_descr->cw,8,"%s.%d: %4s key set",devId,idx,ca_descr->parity?"odd":"even");
      if(ca_descr->parity==0) {
@@ -153,7 +90,7 @@ index 0bdf95b..0f3538c 100644
        if(!CheckNull(ca_descr->cw,8)) flags[idx]|=FL_ODD_GOOD|FL_ACTIVITY;
        else PRINTF(L_CORE_CSA,"%s.%d: zero odd CW",devId,idx);
        wait.Broadcast();
-@@ -2875,24 +2913,80 @@ bool cDeCSA::SetCaPid(ca_pid_t *ca_pid)
+@@ -2875,24 +2913,80 @@
    return true;
  }
  
@@ -234,7 +171,7 @@ index 0bdf95b..0f3538c 100644
          currIdx=idx;
          if(ccs==0 && ev_od!=even_odd[idx]) {
            even_odd[idx]=ev_od;
-@@ -2917,20 +3011,38 @@ bool cDeCSA::Decrypt(unsigned char *data, int len, bool force)
+@@ -2917,20 +3011,38 @@
              else PRINTF(L_CORE_CSA,"%s.%d: not active. wait skipped",devId,idx);
              }
            }
@@ -273,7 +210,7 @@ index 0bdf95b..0f3538c 100644
    int scanTS=l/TS_SIZE;
    int stallP=ccs*100/scanTS;
  
-@@ -2977,6 +3089,26 @@ bool cDeCSA::Decrypt(unsigned char *data, int len, bool force)
+@@ -2977,6 +3089,26 @@
        }
      else PRINTF(L_CORE_CSAVERB,"%s.%d: incomplete ccs=%3d cs=%3d",devId,currIdx,ccs,cs);
      }
@@ -300,11 +237,10 @@ index 0bdf95b..0f3538c 100644
    return false;
  }
  
-diff --git a/cam.h b/cam.h
-index f66004a..f3fb7ed 100644
---- a/cam.h
-+++ b/cam.h
-@@ -235,15 +235,28 @@ class cCam : public cSimpleItem {
+diff -ruN vdr-sc.orig/cam.h vdr-sc/cam.h
+--- vdr-sc.orig/cam.h	2013-05-04 22:47:03.631830306 +0200
++++ vdr-sc/cam.h	2013-05-04 22:49:16.315041313 +0200
+@@ -235,15 +235,28 @@
  
  #ifndef SASC
  
@@ -334,10 +270,9 @@ index f66004a..f3fb7ed 100644
    unsigned int even_odd[MAX_CSA_IDX], flags[MAX_CSA_IDX];
    cMutex mutex;
    cCondVar wait;
-diff --git a/device.c b/device.c
-index 04bbef1..c7eef9a 100644
---- a/device.c
-+++ b/device.c
+diff -ruN vdr-sc.orig/device.c vdr-sc/device.c
+--- vdr-sc.orig/device.c	2013-05-04 22:47:03.338513750 +0200
++++ vdr-sc/device.c	2013-05-04 22:49:16.318374424 +0200
 @@ -52,7 +52,7 @@
    SetDescription("TS buffer on device %d", CardIndex);
    f=File; size=Size; cardIndex=CardIndex; decsa=DeCsa;
@@ -347,10 +282,9 @@ index 04bbef1..c7eef9a 100644
    ringBuffer->SetTimeouts(100,100);
    if(decsa) decsa->SetActive(true);
    SetActive(ScActive);
-diff --git a/device.h b/device.h
-index c251f5d..9058385 100644
---- a/device.h
-+++ b/device.h
+diff -ruN vdr-sc.orig/device.h vdr-sc/device.h
+--- vdr-sc.orig/device.h	2013-05-04 22:47:03.628497164 +0200
++++ vdr-sc/device.h	2013-05-04 22:49:16.318374424 +0200
 @@ -25,6 +25,12 @@
  #include <vdr/thread.h>
  #include "misc.h"
@@ -364,1118 +298,66 @@ index c251f5d..9058385 100644
  class cDeCSA;
  
  // ----------------------------------------------------------------
-diff --git a/po/de_DE.po b/po/de_DE.po
-index d3885f6..ebdf647 100644
---- a/po/de_DE.po
-+++ b/po/de_DE.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2007-08-27 12:45+0200\n"
- "Last-Translator: somebody\n"
- "Language-Team: somebody\n"
-@@ -179,65 +179,65 @@ msgstr "Ein Software emuliertes CAM"
- msgid "undisclosed key"
- msgstr "unbekannter Key"
- 
--msgid "Cardclient: connect immediately"
--msgstr "Cardclient: sofort verbinden"
-+#~ msgid "Cardclient: connect immediately"
-+#~ msgstr "Cardclient: sofort verbinden"
- 
--msgid "Cryptoworks: min. ECM processing time"
--msgstr "Cryptoworks: min. ECM Bearbeitungszeit"
-+#~ msgid "Cryptoworks: min. ECM processing time"
-+#~ msgstr "Cryptoworks: min. ECM Bearbeitungszeit"
- 
--msgid "Nagra: min. ECM processing time"
--msgstr "Nagra: min. ECM Bearbeitungszeit"
-+#~ msgid "Nagra: min. ECM processing time"
-+#~ msgstr "Nagra: min. ECM Bearbeitungszeit"
- 
--msgid "Nagra2: drop EMM-S packets"
--msgstr "Nagra2: EMM-S Pakete verwerfen"
-+#~ msgid "Nagra2: drop EMM-S packets"
-+#~ msgstr "Nagra2: EMM-S Pakete verwerfen"
- 
--msgid "Nagra2: Enable AUXserver"
--msgstr "Nagra2: AUXserver aktivieren"
-+#~ msgid "Nagra2: Enable AUXserver"
-+#~ msgstr "Nagra2: AUXserver aktivieren"
- 
--msgid "Nagra2: AUXserver hostname"
--msgstr "Nagra2: AUXserver Hostname"
-+#~ msgid "Nagra2: AUXserver hostname"
-+#~ msgstr "Nagra2: AUXserver Hostname"
- 
--msgid "Nagra2: AUXserver port"
--msgstr "Nagra2: AUXserver Port"
-+#~ msgid "Nagra2: AUXserver port"
-+#~ msgstr "Nagra2: AUXserver Port"
- 
--msgid "Nagra2: AUXserver password"
--msgstr "Nagra2: AUXserver Passwort"
-+#~ msgid "Nagra2: AUXserver password"
-+#~ msgstr "Nagra2: AUXserver Passwort"
- 
--msgid "don't touch"
--msgstr "nicht ‰ndern"
-+#~ msgid "don't touch"
-+#~ msgstr "nicht ‰ndern"
- 
--msgid "disable"
--msgstr "ausschalten"
-+#~ msgid "disable"
-+#~ msgstr "ausschalten"
- 
--msgid "SC-Cryptoworks: Parental rating"
--msgstr "SC-Cryptoworks: Altersbeschr‰nkung"
-+#~ msgid "SC-Cryptoworks: Parental rating"
-+#~ msgstr "SC-Cryptoworks: Altersbeschr‰nkung"
- 
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr "SC-Nagra: T14 Nagra Modus benutzen"
-+#~ msgid "SC-Nagra: use T14 Nagra mode"
-+#~ msgstr "SC-Nagra: T14 Nagra Modus benutzen"
- 
--msgid "allow ALL"
--msgstr "alle erlauben"
-+#~ msgid "allow ALL"
-+#~ msgstr "alle erlauben"
- 
--msgid "block UNIQUE"
--msgstr "UNIQUE blocken"
-+#~ msgid "block UNIQUE"
-+#~ msgstr "UNIQUE blocken"
- 
--msgid "block SHARED"
--msgstr "SHARED blocken"
-+#~ msgid "block SHARED"
-+#~ msgstr "SHARED blocken"
- 
--msgid "block ALL"
--msgstr "alle blocken"
-+#~ msgid "block ALL"
-+#~ msgstr "alle blocken"
- 
--msgid "SC-Seca: EMM updates"
--msgstr "SC-Seca: EMM updates"
-+#~ msgid "SC-Seca: EMM updates"
-+#~ msgstr "SC-Seca: EMM updates"
- 
--msgid "SC-Viaccess: Parental lock"
--msgstr "SC-Viaccess: Altersbeschr‰nkung"
-+#~ msgid "SC-Viaccess: Parental lock"
-+#~ msgstr "SC-Viaccess: Altersbeschr‰nkung"
- 
--msgid "stream"
--msgstr "Datenstrom"
-+#~ msgid "stream"
-+#~ msgstr "Datenstrom"
- 
--msgid "tps.bin"
--msgstr "tps.bin"
-+#~ msgid "tps.bin"
-+#~ msgstr "tps.bin"
- 
--msgid "Viaccess: TPS updates from"
--msgstr "Viaccess: TPS updates aus"
-+#~ msgid "Viaccess: TPS updates from"
-+#~ msgstr "Viaccess: TPS updates aus"
-diff --git a/po/fi_FI.po b/po/fi_FI.po
-index f9091dc..bc761c1 100644
---- a/po/fi_FI.po
-+++ b/po/fi_FI.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2008-11-19 13:45+0200\n"
- "Last-Translator: somebody\n"
- "Language-Team: somebody\n"
-@@ -179,65 +179,65 @@ msgstr "Ohjelmistopohjainen salauksenpurku"
- msgid "undisclosed key"
- msgstr "tuntematon avain"
- 
--msgid "Cardclient: connect immediately"
--msgstr "Korttiasiakas: Yhdist‰ v‰littˆm‰sti"
-+#~ msgid "Cardclient: connect immediately"
-+#~ msgstr "Korttiasiakas: Yhdist‰ v‰littˆm‰sti"
- 
--msgid "Cryptoworks: min. ECM processing time"
--msgstr "Cryptoworks: Min. ECM-prosessointiaika"
-+#~ msgid "Cryptoworks: min. ECM processing time"
-+#~ msgstr "Cryptoworks: Min. ECM-prosessointiaika"
- 
--msgid "Nagra: min. ECM processing time"
--msgstr "Nagra: Min. ECM-prosessointiaika"
-+#~ msgid "Nagra: min. ECM processing time"
-+#~ msgstr "Nagra: Min. ECM-prosessointiaika"
- 
--msgid "Nagra2: drop EMM-S packets"
--msgstr "Nagra2: Hylk‰‰ EMM-S-paketit"
-+#~ msgid "Nagra2: drop EMM-S packets"
-+#~ msgstr "Nagra2: Hylk‰‰ EMM-S-paketit"
- 
--msgid "Nagra2: Enable AUXserver"
--msgstr "Nagra2: K‰yt‰ AUX-palvelinta"
-+#~ msgid "Nagra2: Enable AUXserver"
-+#~ msgstr "Nagra2: K‰yt‰ AUX-palvelinta"
- 
--msgid "Nagra2: AUXserver hostname"
--msgstr "Nagra2: AUX-palvelimen osoite"
-+#~ msgid "Nagra2: AUXserver hostname"
-+#~ msgstr "Nagra2: AUX-palvelimen osoite"
- 
--msgid "Nagra2: AUXserver port"
--msgstr "Nagra2: AUX-palvelimen portti"
-+#~ msgid "Nagra2: AUXserver port"
-+#~ msgstr "Nagra2: AUX-palvelimen portti"
- 
--msgid "Nagra2: AUXserver password"
--msgstr "Nagra2: AUX-palvelimen salasana"
-+#~ msgid "Nagra2: AUXserver password"
-+#~ msgstr "Nagra2: AUX-palvelimen salasana"
- 
--msgid "don't touch"
--msgstr "‰l‰ koske"
-+#~ msgid "don't touch"
-+#~ msgstr "‰l‰ koske"
- 
--msgid "disable"
--msgstr "poista"
-+#~ msgid "disable"
-+#~ msgstr "poista"
- 
--msgid "SC-Cryptoworks: Parental rating"
--msgstr "SC-Cryptoworks: Ik‰raja"
-+#~ msgid "SC-Cryptoworks: Parental rating"
-+#~ msgstr "SC-Cryptoworks: Ik‰raja"
- 
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr "SC-Nagra: K‰yt‰ T14-moodia"
-+#~ msgid "SC-Nagra: use T14 Nagra mode"
-+#~ msgstr "SC-Nagra: K‰yt‰ T14-moodia"
- 
--msgid "allow ALL"
--msgstr "salli kaikki"
-+#~ msgid "allow ALL"
-+#~ msgstr "salli kaikki"
- 
--msgid "block UNIQUE"
--msgstr "est‰ uniikit"
-+#~ msgid "block UNIQUE"
-+#~ msgstr "est‰ uniikit"
- 
--msgid "block SHARED"
--msgstr "est‰ jaetut"
-+#~ msgid "block SHARED"
-+#~ msgstr "est‰ jaetut"
- 
--msgid "block ALL"
--msgstr "est‰ kaikki"
-+#~ msgid "block ALL"
-+#~ msgstr "est‰ kaikki"
- 
--msgid "SC-Seca: EMM updates"
--msgstr "SC-Seca: EMM-p‰ivitykset"
-+#~ msgid "SC-Seca: EMM updates"
-+#~ msgstr "SC-Seca: EMM-p‰ivitykset"
- 
--msgid "SC-Viaccess: Parental lock"
--msgstr "SC-Viaccess: Lapsilukko"
-+#~ msgid "SC-Viaccess: Parental lock"
-+#~ msgstr "SC-Viaccess: Lapsilukko"
- 
--msgid "stream"
--msgstr "l‰hete"
-+#~ msgid "stream"
-+#~ msgstr "l‰hete"
- 
--msgid "tps.bin"
--msgstr "tps.bin"
-+#~ msgid "tps.bin"
-+#~ msgstr "tps.bin"
- 
--msgid "Viaccess: TPS updates from"
--msgstr "Viaccess: TPS-p‰ivitysten l‰hde"
-+#~ msgid "Viaccess: TPS updates from"
-+#~ msgstr "Viaccess: TPS-p‰ivitysten l‰hde"
-diff --git a/po/fr_FR.po b/po/fr_FR.po
-index 92bd0f7..191693c 100644
---- a/po/fr_FR.po
-+++ b/po/fr_FR.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2007-08-27 12:45+0200\n"
- "Last-Translator: somebody\n"
- "Language-Team: somebody\n"
-@@ -179,65 +179,50 @@ msgstr "Un logiciel emulateur de CAM"
- msgid "undisclosed key"
- msgstr "clÈ non-rÈvÈlÈe"
- 
--msgid "Cardclient: connect immediately"
--msgstr "Cardclient: connecter immediatement"
-+#~ msgid "Cardclient: connect immediately"
-+#~ msgstr "Cardclient: connecter immediatement"
- 
--msgid "Cryptoworks: min. ECM processing time"
--msgstr "Cryptoworks: temps de traitement min. ECM"
-+#~ msgid "Cryptoworks: min. ECM processing time"
-+#~ msgstr "Cryptoworks: temps de traitement min. ECM"
- 
--msgid "Nagra: min. ECM processing time"
--msgstr "Nagra: temps de traitement min. ECM"
-+#~ msgid "Nagra: min. ECM processing time"
-+#~ msgstr "Nagra: temps de traitement min. ECM"
- 
--msgid "Nagra2: drop EMM-S packets"
--msgstr "Nagra2: ignorer les packets EMM-S"
-+#~ msgid "Nagra2: drop EMM-S packets"
-+#~ msgstr "Nagra2: ignorer les packets EMM-S"
- 
--msgid "Nagra2: Enable AUXserver"
--msgstr "Nagra2: Activer AUXserver"
-+#~ msgid "Nagra2: Enable AUXserver"
-+#~ msgstr "Nagra2: Activer AUXserver"
- 
--msgid "Nagra2: AUXserver hostname"
--msgstr "Nagra2: Hostname AUXserver"
-+#~ msgid "Nagra2: AUXserver hostname"
-+#~ msgstr "Nagra2: Hostname AUXserver"
- 
--msgid "Nagra2: AUXserver port"
--msgstr "Nagra2: Port AUXserver"
-+#~ msgid "Nagra2: AUXserver port"
-+#~ msgstr "Nagra2: Port AUXserver"
- 
--msgid "Nagra2: AUXserver password"
--msgstr "Nagra2: Mot de passe AUXserver"
-+#~ msgid "Nagra2: AUXserver password"
-+#~ msgstr "Nagra2: Mot de passe AUXserver"
- 
--msgid "don't touch"
--msgstr "ne pas modifier"
-+#~ msgid "don't touch"
-+#~ msgstr "ne pas modifier"
- 
--msgid "disable"
--msgstr "dÈsactiver"
-+#~ msgid "disable"
-+#~ msgstr "dÈsactiver"
- 
--msgid "SC-Cryptoworks: Parental rating"
--msgstr "SC-Cryptoworks: ContrÙle parentale"
-+#~ msgid "SC-Cryptoworks: Parental rating"
-+#~ msgstr "SC-Cryptoworks: ContrÙle parentale"
- 
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr ""
--
--msgid "allow ALL"
--msgstr "permettre TOUS"
--
--msgid "block UNIQUE"
--msgstr "bloquer UNIQUE"
--
--msgid "block SHARED"
--msgstr "bloquer PARTAGE"
--
--msgid "block ALL"
--msgstr "bloquer TOUS"
-+#~ msgid "allow ALL"
-+#~ msgstr "permettre TOUS"
- 
--msgid "SC-Seca: EMM updates"
--msgstr "SC-Seca: mise ‡ jour EMM"
-+#~ msgid "block UNIQUE"
-+#~ msgstr "bloquer UNIQUE"
- 
--msgid "SC-Viaccess: Parental lock"
--msgstr ""
-+#~ msgid "block SHARED"
-+#~ msgstr "bloquer PARTAGE"
- 
--msgid "stream"
--msgstr ""
-+#~ msgid "block ALL"
-+#~ msgstr "bloquer TOUS"
- 
--msgid "tps.bin"
--msgstr ""
--
--msgid "Viaccess: TPS updates from"
--msgstr ""
-+#~ msgid "SC-Seca: EMM updates"
-+#~ msgstr "SC-Seca: mise ‡ jour EMM"
-diff --git a/po/hu_HU.po b/po/hu_HU.po
-index a228b36..70d2463 100644
---- a/po/hu_HU.po
-+++ b/po/hu_HU.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2009-05-17 11:09+0800\n"
- "Last-Translator: jv\n"
- "Language-Team: somebody\n"
-@@ -179,65 +179,35 @@ msgstr "Szoftveresen emul
- msgid "undisclosed key"
- msgstr "rejtett kulcs"
- 
--msgid "Cardclient: connect immediately"
--msgstr "Kliens: csatlakozzon azonnal"
-+#~ msgid "Cardclient: connect immediately"
-+#~ msgstr "Kliens: csatlakozzon azonnal"
- 
--msgid "Cryptoworks: min. ECM processing time"
--msgstr "Cryptoworks: min. ECM feldolgoz·si ido"
-+#~ msgid "Cryptoworks: min. ECM processing time"
-+#~ msgstr "Cryptoworks: min. ECM feldolgoz·si ido"
- 
--msgid "Nagra: min. ECM processing time"
--msgstr "Nagra: min. ECM feldolgoz·si ido"
-+#~ msgid "Nagra: min. ECM processing time"
-+#~ msgstr "Nagra: min. ECM feldolgoz·si ido"
- 
--msgid "Nagra2: drop EMM-S packets"
--msgstr ""
--
--msgid "Nagra2: Enable AUXserver"
--msgstr ""
--
--msgid "Nagra2: AUXserver hostname"
--msgstr ""
--
--msgid "Nagra2: AUXserver port"
--msgstr ""
--
--msgid "Nagra2: AUXserver password"
--msgstr ""
--
--msgid "don't touch"
--msgstr "ne b·ntsd"
-+#~ msgid "don't touch"
-+#~ msgstr "ne b·ntsd"
- 
--msgid "disable"
--msgstr "kikapcsolva"
-+#~ msgid "disable"
-+#~ msgstr "kikapcsolva"
- 
--msgid "SC-Cryptoworks: Parental rating"
--msgstr "SC-Cryptoworks: Sz¸loi z·r"
-+#~ msgid "SC-Cryptoworks: Parental rating"
-+#~ msgstr "SC-Cryptoworks: Sz¸loi z·r"
- 
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr ""
--
--msgid "allow ALL"
--msgstr "engedÈlyezd MIND"
--
--msgid "block UNIQUE"
--msgstr "tiltsd az EGYEDIt"
--
--msgid "block SHARED"
--msgstr "tiltsd a MEGOSZTOTTat"
--
--msgid "block ALL"
--msgstr "tiltsd MINDET"
-+#~ msgid "allow ALL"
-+#~ msgstr "engedÈlyezd MIND"
- 
--msgid "SC-Seca: EMM updates"
--msgstr "SC-Seca: EMM frissÌtÈs"
-+#~ msgid "block UNIQUE"
-+#~ msgstr "tiltsd az EGYEDIt"
- 
--msgid "SC-Viaccess: Parental lock"
--msgstr ""
-+#~ msgid "block SHARED"
-+#~ msgstr "tiltsd a MEGOSZTOTTat"
- 
--msgid "stream"
--msgstr ""
-+#~ msgid "block ALL"
-+#~ msgstr "tiltsd MINDET"
- 
--msgid "tps.bin"
--msgstr ""
--
--msgid "Viaccess: TPS updates from"
--msgstr ""
-+#~ msgid "SC-Seca: EMM updates"
-+#~ msgstr "SC-Seca: EMM frissÌtÈs"
-diff --git a/po/it_IT.po b/po/it_IT.po
-index bfe8f48..68c3390 100644
---- a/po/it_IT.po
-+++ b/po/it_IT.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2008-11-19 12:23+0200\n"
- "Last-Translator: somebody\n"
- "Language-Team: somebody\n"
-@@ -179,65 +179,65 @@ msgstr "Un software di emulazione CAM"
- msgid "undisclosed key"
- msgstr "chiave nascosta"
- 
--msgid "Cardclient: connect immediately"
--msgstr "Cardclient: connetti subito"
-+#~ msgid "Cardclient: connect immediately"
-+#~ msgstr "Cardclient: connetti subito"
- 
--msgid "Cryptoworks: min. ECM processing time"
--msgstr "Cryptoworks: tempo min. esec. ECM"
-+#~ msgid "Cryptoworks: min. ECM processing time"
-+#~ msgstr "Cryptoworks: tempo min. esec. ECM"
- 
--msgid "Nagra: min. ECM processing time"
--msgstr "Nagra: tempo min. esec. ECM"
-+#~ msgid "Nagra: min. ECM processing time"
-+#~ msgstr "Nagra: tempo min. esec. ECM"
- 
--msgid "Nagra2: drop EMM-S packets"
--msgstr "Nagra2: elimina pacchetti EMM-S"
-+#~ msgid "Nagra2: drop EMM-S packets"
-+#~ msgstr "Nagra2: elimina pacchetti EMM-S"
- 
--msgid "Nagra2: Enable AUXserver"
--msgstr "Nagra2: abilita AUXserver"
-+#~ msgid "Nagra2: Enable AUXserver"
-+#~ msgstr "Nagra2: abilita AUXserver"
- 
--msgid "Nagra2: AUXserver hostname"
--msgstr "Nagra2: nome AUXserver"
-+#~ msgid "Nagra2: AUXserver hostname"
-+#~ msgstr "Nagra2: nome AUXserver"
- 
--msgid "Nagra2: AUXserver port"
--msgstr "Nagra2: porta AUXserver"
-+#~ msgid "Nagra2: AUXserver port"
-+#~ msgstr "Nagra2: porta AUXserver"
- 
--msgid "Nagra2: AUXserver password"
--msgstr "Nagra2: password AUXserver"
-+#~ msgid "Nagra2: AUXserver password"
-+#~ msgstr "Nagra2: password AUXserver"
- 
--msgid "don't touch"
--msgstr "non toccare"
-+#~ msgid "don't touch"
-+#~ msgstr "non toccare"
- 
--msgid "disable"
--msgstr "disabilita"
-+#~ msgid "disable"
-+#~ msgstr "disabilita"
- 
--msgid "SC-Cryptoworks: Parental rating"
--msgstr "SC-Cryptoworks: Filtro famiglia"
-+#~ msgid "SC-Cryptoworks: Parental rating"
-+#~ msgstr "SC-Cryptoworks: Filtro famiglia"
- 
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr "SC-Nagra: usa modalit‡ Nagra T14"
-+#~ msgid "SC-Nagra: use T14 Nagra mode"
-+#~ msgstr "SC-Nagra: usa modalit‡ Nagra T14"
- 
--msgid "allow ALL"
--msgstr "permetti TUTTI"
-+#~ msgid "allow ALL"
-+#~ msgstr "permetti TUTTI"
- 
--msgid "block UNIQUE"
--msgstr "blocca al SERIALE"
-+#~ msgid "block UNIQUE"
-+#~ msgstr "blocca al SERIALE"
- 
--msgid "block SHARED"
--msgstr "blocca al GRUPPO"
-+#~ msgid "block SHARED"
-+#~ msgstr "blocca al GRUPPO"
- 
--msgid "block ALL"
--msgstr "blocca TUTTO"
-+#~ msgid "block ALL"
-+#~ msgstr "blocca TUTTO"
- 
--msgid "SC-Seca: EMM updates"
--msgstr "SC-Seca: aggiornamenti EMM"
-+#~ msgid "SC-Seca: EMM updates"
-+#~ msgstr "SC-Seca: aggiornamenti EMM"
- 
--msgid "SC-Viaccess: Parental lock"
--msgstr "SC-Viaccess: Filtro famiglia"
-+#~ msgid "SC-Viaccess: Parental lock"
-+#~ msgstr "SC-Viaccess: Filtro famiglia"
- 
--msgid "stream"
--msgstr "flusso"
-+#~ msgid "stream"
-+#~ msgstr "flusso"
- 
--msgid "tps.bin"
--msgstr "tps.bin"
-+#~ msgid "tps.bin"
-+#~ msgstr "tps.bin"
- 
--msgid "Viaccess: TPS updates from"
--msgstr "Viaccess: aggiornamento TPS da"
-+#~ msgid "Viaccess: TPS updates from"
-+#~ msgstr "Viaccess: aggiornamento TPS da"
-diff --git a/po/lt_LT.po b/po/lt_LT.po
-index f9193af..e55e5fe 100644
---- a/po/lt_LT.po
-+++ b/po/lt_LT.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2007-08-27 12:45+0200\n"
- "Last-Translator: somebody\n"
- "Language-Team: somebody\n"
-@@ -179,65 +179,65 @@ msgstr "Programi≈°kai emuliuojamas dekodavimo modulis"
- msgid "undisclosed key"
- msgstr "ne≈æinomas raktas"
- 
--msgid "Cardclient: connect immediately"
--msgstr "Programinƒó kortelƒó: prisijungti tuƒçtuojau"
-+#~ msgid "Cardclient: connect immediately"
-+#~ msgstr "Programinƒó kortelƒó: prisijungti tuƒçtuojau"
- 
--msgid "Cryptoworks: min. ECM processing time"
--msgstr "Cryptoworks: min. ECM apdorojimo laikas"
-+#~ msgid "Cryptoworks: min. ECM processing time"
-+#~ msgstr "Cryptoworks: min. ECM apdorojimo laikas"
- 
--msgid "Nagra: min. ECM processing time"
--msgstr "Nagra: min. ECM apdorojimo laikas"
-+#~ msgid "Nagra: min. ECM processing time"
-+#~ msgstr "Nagra: min. ECM apdorojimo laikas"
- 
--msgid "Nagra2: drop EMM-S packets"
--msgstr "Nagra2: atmesti EMM-S paketus"
-+#~ msgid "Nagra2: drop EMM-S packets"
-+#~ msgstr "Nagra2: atmesti EMM-S paketus"
- 
--msgid "Nagra2: Enable AUXserver"
--msgstr "Nagra2: ƒÆjungti AUXserver'ƒØ"
-+#~ msgid "Nagra2: Enable AUXserver"
-+#~ msgstr "Nagra2: ƒÆjungti AUXserver'ƒØ"
- 
--msgid "Nagra2: AUXserver hostname"
--msgstr "Nagra2: AUXserver'io adresas"
-+#~ msgid "Nagra2: AUXserver hostname"
-+#~ msgstr "Nagra2: AUXserver'io adresas"
- 
--msgid "Nagra2: AUXserver port"
--msgstr "Nagra2: AUXserver'io portas"
-+#~ msgid "Nagra2: AUXserver port"
-+#~ msgstr "Nagra2: AUXserver'io portas"
- 
--msgid "Nagra2: AUXserver password"
--msgstr "Nagra2: AUXserver'io slapyvardis"
-+#~ msgid "Nagra2: AUXserver password"
-+#~ msgstr "Nagra2: AUXserver'io slapyvardis"
- 
--msgid "don't touch"
--msgstr "neliesti"
-+#~ msgid "don't touch"
-+#~ msgstr "neliesti"
- 
--msgid "disable"
--msgstr "i≈°jungti"
-+#~ msgid "disable"
-+#~ msgstr "i≈°jungti"
- 
--msgid "SC-Cryptoworks: Parental rating"
--msgstr "SC-Cryptoworks: Tƒóv≈≥ kodo reitingas"
-+#~ msgid "SC-Cryptoworks: Parental rating"
-+#~ msgstr "SC-Cryptoworks: Tƒóv≈≥ kodo reitingas"
- 
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr "SC-Nagra: naudoti Nagra T14 rƒô≈æimƒÖ"
-+#~ msgid "SC-Nagra: use T14 Nagra mode"
-+#~ msgstr "SC-Nagra: naudoti Nagra T14 rƒô≈æimƒÖ"
- 
--msgid "allow ALL"
--msgstr "leisti VISKƒÑ"
-+#~ msgid "allow ALL"
-+#~ msgstr "leisti VISKƒÑ"
- 
--msgid "block UNIQUE"
--msgstr "blokuoti UNIQUE"
-+#~ msgid "block UNIQUE"
-+#~ msgstr "blokuoti UNIQUE"
- 
--msgid "block SHARED"
--msgstr "blokuoti SHARED"
-+#~ msgid "block SHARED"
-+#~ msgstr "blokuoti SHARED"
- 
--msgid "block ALL"
--msgstr "blokuoti VISUS"
-+#~ msgid "block ALL"
-+#~ msgstr "blokuoti VISUS"
- 
--msgid "SC-Seca: EMM updates"
--msgstr "SC-Seca: EMM atnaujinimai"
-+#~ msgid "SC-Seca: EMM updates"
-+#~ msgstr "SC-Seca: EMM atnaujinimai"
- 
--msgid "SC-Viaccess: Parental lock"
--msgstr "SC-Viaccess: Tƒóv≈≥ u≈æraktas"
-+#~ msgid "SC-Viaccess: Parental lock"
-+#~ msgstr "SC-Viaccess: Tƒóv≈≥ u≈æraktas"
- 
--msgid "stream"
--msgstr "srautas"
-+#~ msgid "stream"
-+#~ msgstr "srautas"
- 
--msgid "tps.bin"
--msgstr "tps.bin"
-+#~ msgid "tps.bin"
-+#~ msgstr "tps.bin"
- 
--msgid "Viaccess: TPS updates from"
--msgstr "Viaccess: TPS atnaujinimai imami i≈°"
-+#~ msgid "Viaccess: TPS updates from"
-+#~ msgstr "Viaccess: TPS atnaujinimai imami i≈°"
-diff --git a/po/nl_NL.po b/po/nl_NL.po
-index 94d75e8..54cfff1 100644
---- a/po/nl_NL.po
-+++ b/po/nl_NL.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2007-08-27 12:45+0200\n"
- "Last-Translator: somebody\n"
- "Language-Team: somebody\n"
-@@ -179,65 +179,35 @@ msgstr "In software ge
- msgid "undisclosed key"
- msgstr "onbekende key"
- 
--msgid "Cardclient: connect immediately"
--msgstr "Cardclient: direct contact maken"
-+#~ msgid "Cardclient: connect immediately"
-+#~ msgstr "Cardclient: direct contact maken"
- 
--msgid "Cryptoworks: min. ECM processing time"
--msgstr "Cryptoworks: min. ECM bewerkingstijd"
-+#~ msgid "Cryptoworks: min. ECM processing time"
-+#~ msgstr "Cryptoworks: min. ECM bewerkingstijd"
- 
--msgid "Nagra: min. ECM processing time"
--msgstr "Nagra: min. ECM bewerkingstijd"
-+#~ msgid "Nagra: min. ECM processing time"
-+#~ msgstr "Nagra: min. ECM bewerkingstijd"
- 
--msgid "Nagra2: drop EMM-S packets"
--msgstr ""
--
--msgid "Nagra2: Enable AUXserver"
--msgstr ""
--
--msgid "Nagra2: AUXserver hostname"
--msgstr ""
--
--msgid "Nagra2: AUXserver port"
--msgstr ""
--
--msgid "Nagra2: AUXserver password"
--msgstr ""
--
--msgid "don't touch"
--msgstr "niet wijzigen"
-+#~ msgid "don't touch"
-+#~ msgstr "niet wijzigen"
- 
--msgid "disable"
--msgstr "uitschakelen"
-+#~ msgid "disable"
-+#~ msgstr "uitschakelen"
- 
--msgid "SC-Cryptoworks: Parental rating"
--msgstr "SC-Cryptoworks: Leeftijdsadvies"
-+#~ msgid "SC-Cryptoworks: Parental rating"
-+#~ msgstr "SC-Cryptoworks: Leeftijdsadvies"
- 
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr ""
--
--msgid "allow ALL"
--msgstr "ALLES toestaan"
--
--msgid "block UNIQUE"
--msgstr "UNIEKE blokkeren"
--
--msgid "block SHARED"
--msgstr "GEDEELDE blokkeren"
--
--msgid "block ALL"
--msgstr "ALLES blokkeren"
-+#~ msgid "allow ALL"
-+#~ msgstr "ALLES toestaan"
- 
--msgid "SC-Seca: EMM updates"
--msgstr "SC-Seca: EMM updates"
-+#~ msgid "block UNIQUE"
-+#~ msgstr "UNIEKE blokkeren"
- 
--msgid "SC-Viaccess: Parental lock"
--msgstr ""
-+#~ msgid "block SHARED"
-+#~ msgstr "GEDEELDE blokkeren"
- 
--msgid "stream"
--msgstr ""
-+#~ msgid "block ALL"
-+#~ msgstr "ALLES blokkeren"
- 
--msgid "tps.bin"
--msgstr ""
--
--msgid "Viaccess: TPS updates from"
--msgstr ""
-+#~ msgid "SC-Seca: EMM updates"
-+#~ msgstr "SC-Seca: EMM updates"
-diff --git a/po/pl_PL.po b/po/pl_PL.po
-index 2d768a5..90ab382 100644
---- a/po/pl_PL.po
-+++ b/po/pl_PL.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2007-08-27 12:45+0200\n"
- "Last-Translator: somebody\n"
- "Language-Team: somebody\n"
-@@ -179,65 +179,35 @@ msgstr "Programowo emulowany CAM"
- msgid "undisclosed key"
- msgstr "niejawny klucz"
- 
--msgid "Cardclient: connect immediately"
--msgstr "Klient karty: pod≥±cz natychmiast"
-+#~ msgid "Cardclient: connect immediately"
-+#~ msgstr "Klient karty: pod≥±cz natychmiast"
- 
--msgid "Cryptoworks: min. ECM processing time"
--msgstr "Cryptoworks: min. czas przetwarzania ECM"
-+#~ msgid "Cryptoworks: min. ECM processing time"
-+#~ msgstr "Cryptoworks: min. czas przetwarzania ECM"
- 
--msgid "Nagra: min. ECM processing time"
--msgstr "Nagra: min. czas przetwarzania ECM"
-+#~ msgid "Nagra: min. ECM processing time"
-+#~ msgstr "Nagra: min. czas przetwarzania ECM"
- 
--msgid "Nagra2: drop EMM-S packets"
--msgstr ""
--
--msgid "Nagra2: Enable AUXserver"
--msgstr ""
-+#~ msgid "don't touch"
-+#~ msgstr "nie dotykaj"
- 
--msgid "Nagra2: AUXserver hostname"
--msgstr ""
-+#~ msgid "disable"
-+#~ msgstr "wy≥±cz"
- 
--msgid "Nagra2: AUXserver port"
--msgstr ""
-+#~ msgid "SC-Cryptoworks: Parental rating"
-+#~ msgstr "SC-Cryptoworks: wskaºnik rodzica"
- 
--msgid "Nagra2: AUXserver password"
--msgstr ""
-+#~ msgid "allow ALL"
-+#~ msgstr "dopu∂Ê wszystkie"
- 
--msgid "don't touch"
--msgstr "nie dotykaj"
--
--msgid "disable"
--msgstr "wy≥±cz"
--
--msgid "SC-Cryptoworks: Parental rating"
--msgstr "SC-Cryptoworks: wskaºnik rodzica"
--
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr ""
-+#~ msgid "block UNIQUE"
-+#~ msgstr "blokuj unikaty"
- 
--msgid "allow ALL"
--msgstr "dopu∂Ê wszystkie"
-+#~ msgid "block SHARED"
-+#~ msgstr "blokuj dzielone"
- 
--msgid "block UNIQUE"
--msgstr "blokuj unikaty"
-+#~ msgid "block ALL"
-+#~ msgstr "blokuj wszystkie"
- 
--msgid "block SHARED"
--msgstr "blokuj dzielone"
--
--msgid "block ALL"
--msgstr "blokuj wszystkie"
--
--msgid "SC-Seca: EMM updates"
--msgstr "SC-Seca: aktualizacje EMM"
--
--msgid "SC-Viaccess: Parental lock"
--msgstr ""
--
--msgid "stream"
--msgstr ""
--
--msgid "tps.bin"
--msgstr ""
--
--msgid "Viaccess: TPS updates from"
--msgstr ""
-+#~ msgid "SC-Seca: EMM updates"
-+#~ msgstr "SC-Seca: aktualizacje EMM"
-diff --git a/po/ru_RU.po b/po/ru_RU.po
-index 3a286a0..e3918c1 100644
---- a/po/ru_RU.po
-+++ b/po/ru_RU.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2009-05-14 19:33+0100\n"
- "Last-Translator: somebody\n"
- "Language-Team: ru\n"
-@@ -180,65 +180,59 @@ msgstr "
- msgid "undisclosed key"
- msgstr "›’ÿ◊“’·‚›ÎŸ ⁄€ÓÁ"
- 
--msgid "Cardclient: connect immediately"
--msgstr "Cardclient: ·ﬁ’‘ÿ›ÿ‚Ï ›’‹’‘€’››ﬁ"
-+#~ msgid "Cardclient: connect immediately"
-+#~ msgstr "Cardclient: ·ﬁ’‘ÿ›ÿ‚Ï ›’‹’‘€’››ﬁ"
- 
--msgid "Cryptoworks: min. ECM processing time"
--msgstr "Cryptoworks: ‹ÿ›. “‡’‹Ô ﬁ—‡–—ﬁ‚⁄ÿ ECM"
-+#~ msgid "Cryptoworks: min. ECM processing time"
-+#~ msgstr "Cryptoworks: ‹ÿ›. “‡’‹Ô ﬁ—‡–—ﬁ‚⁄ÿ ECM"
- 
--msgid "Nagra: min. ECM processing time"
--msgstr "Nagra: ‹ÿ›. “‡’‹Ô ﬁ—‡–—ﬁ‚⁄ÿ ECM"
-+#~ msgid "Nagra: min. ECM processing time"
-+#~ msgstr "Nagra: ‹ÿ›. “‡’‹Ô ﬁ—‡–—ﬁ‚⁄ÿ ECM"
- 
--msgid "Nagra2: drop EMM-S packets"
--msgstr "Ω–”‡–2: ◊–ﬂ‡’‚ EMM-S ﬂ–⁄’‚ﬁ“"
-+#~ msgid "Nagra2: drop EMM-S packets"
-+#~ msgstr "Ω–”‡–2: ◊–ﬂ‡’‚ EMM-S ﬂ–⁄’‚ﬁ“"
- 
--msgid "Nagra2: Enable AUXserver"
--msgstr "Nagra2: ‡–◊‡’Ëÿ‚Ï AUXserver"
-+#~ msgid "Nagra2: Enable AUXserver"
-+#~ msgstr "Nagra2: ‡–◊‡’Ëÿ‚Ï AUXserver"
- 
--msgid "Nagra2: AUXserver hostname"
--msgstr "Nagra2: AUXserver ÿ‹Ô Âﬁ·‚–"
-+#~ msgid "Nagra2: AUXserver hostname"
-+#~ msgstr "Nagra2: AUXserver ÿ‹Ô Âﬁ·‚–"
- 
--msgid "Nagra2: AUXserver port"
--msgstr "Nagra2: AUXserver ﬂﬁ‡‚"
-+#~ msgid "Nagra2: AUXserver port"
-+#~ msgstr "Nagra2: AUXserver ﬂﬁ‡‚"
- 
--msgid "Nagra2: AUXserver password"
--msgstr "Nagra2: AUXserver ﬂ–‡ﬁ€Ï"
-+#~ msgid "Nagra2: AUXserver password"
-+#~ msgstr "Nagra2: AUXserver ﬂ–‡ﬁ€Ï"
- 
--msgid "don't touch"
--msgstr "›’ ÿ◊‹’›Ô‚Ï"
-+#~ msgid "don't touch"
-+#~ msgstr "›’ ÿ◊‹’›Ô‚Ï"
- 
--msgid "disable"
--msgstr "“Î⁄€ÓÁÿ‚Ï"
-+#~ msgid "disable"
-+#~ msgstr "“Î⁄€ÓÁÿ‚Ï"
- 
--msgid "SC-Cryptoworks: Parental rating"
--msgstr "SC-Cryptoworks: “ﬁ◊‡–·‚›ﬁ’ ﬁ”‡–›ÿÁ’›ÿ’"
-+#~ msgid "SC-Cryptoworks: Parental rating"
-+#~ msgstr "SC-Cryptoworks: “ﬁ◊‡–·‚›ﬁ’ ﬁ”‡–›ÿÁ’›ÿ’"
- 
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr ""
--
--msgid "allow ALL"
--msgstr "“·’ ‡–◊‡’Ëÿ‚Ï"
-+#~ msgid "allow ALL"
-+#~ msgstr "“·’ ‡–◊‡’Ëÿ‚Ï"
- 
--msgid "block UNIQUE"
--msgstr "—€ﬁ⁄ÿ‡ﬁ“–‚Ï UNIQUE"
-+#~ msgid "block UNIQUE"
-+#~ msgstr "—€ﬁ⁄ÿ‡ﬁ“–‚Ï UNIQUE"
- 
--msgid "block SHARED"
--msgstr "—€ﬁ⁄ÿ‡ﬁ“–‚Ï SHARED"
-+#~ msgid "block SHARED"
-+#~ msgstr "—€ﬁ⁄ÿ‡ﬁ“–‚Ï SHARED"
- 
--msgid "block ALL"
--msgstr "“·’ —€ﬁ⁄ÿ‡ﬁ“–‚Ï"
-+#~ msgid "block ALL"
-+#~ msgstr "“·’ —€ﬁ⁄ÿ‡ﬁ“–‚Ï"
- 
--msgid "SC-Seca: EMM updates"
--msgstr "SC-Seca: ﬁ—›ﬁ“€’›ÿÔ EMM"
--
--msgid "SC-Viaccess: Parental lock"
--msgstr ""
-+#~ msgid "SC-Seca: EMM updates"
-+#~ msgstr "SC-Seca: ﬁ—›ﬁ“€’›ÿÔ EMM"
- 
--msgid "stream"
--msgstr "ﬂﬁ‚ﬁ⁄–"
-+#~ msgid "stream"
-+#~ msgstr "ﬂﬁ‚ﬁ⁄–"
- 
--msgid "tps.bin"
--msgstr "tps.bin"
-+#~ msgid "tps.bin"
-+#~ msgstr "tps.bin"
- 
--msgid "Viaccess: TPS updates from"
--msgstr "Viaccess: TPS ﬁ—›ﬁ“€’›ÿÔ ÿ◊"
-+#~ msgid "Viaccess: TPS updates from"
-+#~ msgstr "Viaccess: TPS ﬁ—›ﬁ“€’›ÿÔ ÿ◊"
-diff --git a/po/sv_SE.po b/po/sv_SE.po
-index c0c023d..e6f924c 100644
---- a/po/sv_SE.po
-+++ b/po/sv_SE.po
-@@ -5,8 +5,8 @@
- msgid ""
- msgstr ""
- "Project-Id-Version: VDR-SC\n"
--"Report-Msgid-Bugs-To: <noone@nowhere.org>\n"
--"POT-Creation-Date: 2012-05-05 16:21+0200\n"
-+"Report-Msgid-Bugs-To: <see README>\n"
-+"POT-Creation-Date: 2013-05-01 10:29+0200\n"
- "PO-Revision-Date: 2007-08-27 12:45+0200\n"
- "Last-Translator: somebody\n"
- "Language-Team: somebody\n"
-@@ -178,66 +178,3 @@ msgstr "En mjukvaruemulerad CAM"
- 
- msgid "undisclosed key"
- msgstr "ej avslˆjad nyckel"
--
--msgid "Cardclient: connect immediately"
--msgstr ""
--
--msgid "Cryptoworks: min. ECM processing time"
--msgstr ""
--
--msgid "Nagra: min. ECM processing time"
--msgstr ""
--
--msgid "Nagra2: drop EMM-S packets"
--msgstr ""
--
--msgid "Nagra2: Enable AUXserver"
--msgstr ""
--
--msgid "Nagra2: AUXserver hostname"
--msgstr ""
--
--msgid "Nagra2: AUXserver port"
--msgstr ""
--
--msgid "Nagra2: AUXserver password"
--msgstr ""
--
--msgid "don't touch"
--msgstr ""
--
--msgid "disable"
--msgstr ""
--
--msgid "SC-Cryptoworks: Parental rating"
--msgstr ""
--
--msgid "SC-Nagra: use T14 Nagra mode"
--msgstr ""
--
--msgid "allow ALL"
--msgstr ""
--
--msgid "block UNIQUE"
--msgstr ""
--
--msgid "block SHARED"
--msgstr ""
--
--msgid "block ALL"
--msgstr ""
--
--msgid "SC-Seca: EMM updates"
--msgstr ""
--
--msgid "SC-Viaccess: Parental lock"
--msgstr ""
--
--msgid "stream"
--msgstr ""
--
--msgid "tps.bin"
--msgstr ""
--
--msgid "Viaccess: TPS updates from"
--msgstr ""
+diff -ruN vdr-sc.orig/Makefile vdr-sc/Makefile
+--- vdr-sc.orig/Makefile	2013-05-04 22:47:03.628497164 +0200
++++ vdr-sc/Makefile	2013-05-04 22:55:28.510416219 +0200
+@@ -143,19 +143,23 @@
+   DEFINES += -DVDR_MAXCAID=$(MAXCAID)
+ endif
+ 
++ifndef LIBDVBCSA
+ # FFdeCSA
+-CPUOPT     ?= pentium
+-PARALLEL   ?= PARALLEL_32_INT
+-CSAFLAGS   ?= -Wall -fPIC -g -O3 -mmmx -fomit-frame-pointer -fexpensive-optimizations -funroll-loops
++PARALLEL   ?= PARALLEL_128_SSE2
++CSAFLAGS   ?= -fexpensive-optimizations -funroll-loops -mmmx -msse -msse2 -msse3
+ FFDECSADIR  = FFdecsa
+ FFDECSA     = $(FFDECSADIR)/FFdecsa.o
+-FFDECSATEST = $(FFDECSADIR)/FFdecsa_test.done
++DECSALIB    = $(FFDECSA)
++else
++# libdvbcsa
++DECSALIB    = -ldvbcsa
++DEFINES    += -DLIBDVBCSA
++endif
+ 
+ # SASC
+ ifdef SASC
+ DEFINES += -DSASC
+ FFDECSA =
+-FFDECSATEST =
+ endif
+ 
+ # export for system makefiles
+@@ -175,7 +179,7 @@
+ else
+ BUILDTARGETS = $(LIBDIR)/libvdr-$(PLUGIN).so.$(APIVERSION) systems-pre $(DEVPLUGTARGETS)
+ endif
+-BUILDTARGETS += $(FFDECSATEST) systems i18n
++BUILDTARGETS += systems i18n
+ 
+ all: $(BUILDTARGETS)
+ .PHONY: i18n systems systems-pre contrib clean clean-core clean-systems clean-pre dist srcdist
+@@ -196,7 +200,7 @@
+ 	$(CXX) $(CXXFLAGS) -c $(DEFINES) $(SHAREDDEFINES) $(INCLUDES) $<
+ 
+ libvdr-$(PLUGIN).so: $(OBJS) $(FFDECSA)
+-	$(CXX) $(CXXFLAGS) -shared $(OBJS) $(FFDECSA) $(LIBS) $(SHAREDLIBS) -o $@
++	$(CXX) $(CXXFLAGS) -shared $(OBJS) $(DECSALIB) $(LIBS) $(SHAREDLIBS) -o $@
+ 
+ $(LIBDIR)/libvdr-$(PLUGIN).so.$(APIVERSION): libvdr-$(PLUGIN).so
+ 	@cp -p $< $@
+@@ -216,8 +220,10 @@
+ $(LIBDIR)/libsc-dvbhddevice-$(SCAPIVERS).so.$(APIVERSION): libsc-dvbhddevice.so
+ 	@cp -p $< $@
+ 
+-$(FFDECSA) $(FFDECSATEST): $(FFDECSADIR)/*.c $(FFDECSADIR)/*.h
+-	@$(MAKE) COMPILER="$(CXX)" FLAGS="$(CSAFLAGS) -march=$(CPUOPT)" PARALLEL_MODE=$(PARALLEL) -C $(FFDECSADIR) all
++ifndef LIBDVBCSA
++$(FFDECSA): $(FFDECSADIR)/*.c $(FFDECSADIR)/*.h
++	@$(MAKE) COMPILER="$(CXX)" FLAGS="$(CXXFLAGS) $(CSAFLAGS)" PARALLEL_MODE=$(PARALLEL) -C $(FFDECSADIR) all
++endif
+ 
+ $(I18Npot): $(shell grep -rl '\(tr\|trNOOP\)(\".*\")' *.c $(SYSDIR))
+ 	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --package-name=VDR-SC --package-version=$(VERSION) --msgid-bugs-address='<noone@nowhere.org>' -o $@ `ls $^`
