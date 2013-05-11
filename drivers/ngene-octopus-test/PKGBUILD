@@ -1,0 +1,65 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=ngene-octopus-test
+pkgver=20130307
+_hgver=406ffecccbec
+_extramodules=extramodules-3.8-ARCH
+url='http://linuxtv.org/hg/~endriss/ngene-octopus-test'
+pkgrel=1
+pkgdesc="All interesting modules of endriss' ngene-octopus-test repository"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('linux>=3.8' 'linux<3.9')
+makedepends=('linux-headers>=3.8' 'linux-headers<3.9' 'mercurial')
+install="${pkgname}.install"
+replaces=('ddbridge')
+conflicts=('ddbridge')
+source=("hg+http://linuxtv.org/hg/~endriss/$pkgname#revision=$_hgver")
+md5sums=('SKIP')
+_kernver="$(cat /lib/modules/$_extramodules/version)"
+
+pkgver() {
+  cd "$srcdir/$pkgname"
+  hg log -l1 --template "{shortdate(date)}" | sed 's/-//g'
+}
+
+build() {
+  cd "$srcdir/$pkgname/linux/drivers/staging/cxd2099"
+  echo 'ccflags-y = -Idrivers/media/dvb-core/' >> Makefile
+  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_DVB_CXD2099=m modules
+
+  cd "$srcdir/$pkgname/linux/drivers/media/dvb"
+
+  cd ddbridge
+  echo 'ccflags-y += -Idrivers/media/dvb-core/' >> Makefile
+  echo 'ccflags-y += -Idrivers/media/dvb-frontends/' >> Makefile
+  ln -sf "$srcdir/$pkgname/linux/drivers/staging/cxd2099/cxd2099.h" .
+  ln -sf ../frontends/{stv0367dd.h,tda18212dd.h} .
+  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_DVB_DDBRIDGE=m modules
+  cd ..
+
+  cd ngene
+  echo 'ccflags-y += -Iinclude/linux/' >> Makefile
+  echo 'ccflags-y += -Idrivers/media/dvb-core/' >> Makefile
+  echo 'ccflags-y += -Idrivers/media/dvb-frontends/' >> Makefile
+  echo 'ccflags-y += -Idrivers/media/tuners/' >> Makefile
+  ln -sf "$srcdir/$pkgname/linux/drivers/staging/cxd2099/cxd2099.h" .
+  ln -sf ../frontends/{stv0367dd.h,tda18212dd.h} .
+  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_DVB_NGENE=m modules
+  cd ..
+
+  cd frontends
+  echo 'obj-m += stv0367dd.o' > Makefile
+  echo 'obj-m += tda18212dd.o' >> Makefile
+  echo 'ccflags-y += -Iinclude/linux/' >> Makefile
+  echo 'ccflags-y += -Idrivers/media/dvb-core/' >> Makefile
+  make -C /lib/modules/$_kernver/build M=$(pwd) modules
+}
+
+
+package() {
+  cd "$srcdir"
+
+  mkdir -p "$pkgdir/usr/lib/modules/$_extramodules"
+  find -name *.ko -exec cp {} "$pkgdir/usr/lib/modules/$_extramodules" \;
+  gzip -9 "$pkgdir/usr/lib/modules/$_extramodules/"*
+}

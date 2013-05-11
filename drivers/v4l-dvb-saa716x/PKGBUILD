@@ -1,0 +1,45 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=v4l-dvb-saa716x
+pkgver=20130224
+_hgver=cfa4b4faab67
+_extramodules=extramodules-3.8-ARCH
+url='http://powarman.dyndns.org/hgwebdir.cgi/v4l-dvb-saa716x'
+pkgrel=1
+pkgdesc="All interesting modules of powarman's v4l-dvb-saa716x repository"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('linux>=3.8' 'linux<3.9')
+makedepends=('linux-headers>=3.8' 'linux-headers<3.9' 'mercurial')
+install="${pkgname}.install"
+replaces=('saa716x')
+conflicts=('saa716x')
+source=("hg+http://powarman.dyndns.org/hgwebdir.cgi/$pkgname#revision=$_hgver"
+        'compat.diff')
+md5sums=('SKIP'
+         '463dbc6891d8648d8ae213ac92203bdd')
+_kernver="$(cat /lib/modules/$_extramodules/version)"
+
+pkgver() {
+  cd "$srcdir/$pkgname"
+  hg log -l1 --template "{shortdate(date)}" | sed 's/-//g'
+}
+
+prepare() {
+  cd "$srcdir/$pkgname"
+  patch -p1 -i "$srcdir/compat.diff"
+}
+
+build() {
+  cd "$srcdir/$pkgname/linux/drivers/media/common/saa716x"
+  echo 'ccflags-y += -Idrivers/media/tuners/' >> Makefile
+  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_BUDGET=m CONFIG_DVB_SAA716X_HYBRID=m CONFIG_DVB_SAA716X_FF=m modules
+}
+
+
+package() {
+  cd "$srcdir"
+
+  mkdir -p "$pkgdir/usr/lib/modules/$_extramodules"
+  find -name *.ko -exec cp {} "$pkgdir/usr/lib/modules/$_extramodules" \;
+  gzip -9 "$pkgdir/usr/lib/modules/$_extramodules/"*
+}
