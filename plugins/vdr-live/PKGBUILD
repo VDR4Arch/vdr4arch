@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-live
-pkgver=0.3.0_3_g042724e
+pkgver=0.3.0_4_g69f84f9
 epoch=1
-_gitver=042724e30d5690ab67a6c04aea48a16b9a3b085b
+_gitver=69f84f95fa875c6f562294b1a6a1ea6f584d3f6c
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
