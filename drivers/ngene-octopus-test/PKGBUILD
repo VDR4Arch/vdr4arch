@@ -2,14 +2,14 @@
 pkgname=ngene-octopus-test
 pkgver=20130307
 _hgver=406ffecccbec
-_extramodules=extramodules-3.8-ARCH
+_extramodules=extramodules-3.9-ARCH
 url='http://linuxtv.org/hg/~endriss/ngene-octopus-test'
-pkgrel=1
+pkgrel=2
 pkgdesc="All interesting modules of endriss' ngene-octopus-test repository"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('linux>=3.8' 'linux<3.9')
-makedepends=('linux-headers>=3.8' 'linux-headers<3.9' 'mercurial')
+depends=('linux>=3.9' 'linux<3.10')
+makedepends=('linux-headers>=3.9' 'linux-headers<3.10' 'mercurial')
 install="${pkgname}.install"
 replaces=('ddbridge')
 conflicts=('ddbridge')
