@@ -13,11 +13,10 @@ makedepends=('linux-headers>=3.9' 'linux-headers<3.10' 'mercurial')
 install="${pkgname}.install"
 replaces=('saa716x')
 conflicts=('saa716x')
-source=("hg+http://powarman.dyndns.org/hgwebdir.cgi/$pkgname#revision=$_hgver"
+source=("hg+http://linuxtv.org/hg/~endriss/mirror-saa716x#revision=$_hgver"
         'compat.diff')
 md5sums=('SKIP'
          '463dbc6891d8648d8ae213ac92203bdd')
-_kernver="$(cat /lib/modules/$_extramodules/version)"
 
 pkgver() {
   cd "$srcdir/$pkgname"
@@ -30,9 +29,12 @@ prepare() {
 }
 
 build() {
+  _kernver="$(cat /lib/modules/$_extramodules/version)"
+
   cd "$srcdir/$pkgname/linux/drivers/media/common/saa716x"
   echo 'ccflags-y += -Idrivers/media/tuners/' >> Makefile
-  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_BUDGET=m CONFIG_DVB_SAA716X_HYBRID=m CONFIG_DVB_SAA716X_FF=m modules
+  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_BUDGET=m \
+    CONFIG_DVB_SAA716X_HYBRID=m CONFIG_DVB_SAA716X_FF=m modules
 }
 
 

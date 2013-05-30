@@ -15,7 +15,7 @@ replaces=('ddbridge')
 conflicts=('ddbridge')
 source=("hg+http://linuxtv.org/hg/~endriss/$pkgname#revision=$_hgver")
 md5sums=('SKIP')
-_kernver="$(cat /lib/modules/$_extramodules/version)"
+
 
 pkgver() {
   cd "$srcdir/$pkgname"
@@ -23,6 +23,8 @@ pkgver() {
 }
 
 build() {
+  _kernver="$(cat /lib/modules/$_extramodules/version)"
+
   cd "$srcdir/$pkgname/linux/drivers/staging/cxd2099"
   echo 'ccflags-y = -Idrivers/media/dvb-core/' >> Makefile
   make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_DVB_CXD2099=m modules
