@@ -1,7 +1,7 @@
 # Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
 pkgname=vdrpbd
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A daemon to handle ACPI power button event on VDR systems"
 url="http://projects.vdr-developer.org/projects/vdrpbd"
 arch=('any')
@@ -13,5 +13,5 @@ md5sums=('fa17ec0ad436acfcfdfc199ce65f5bf8')
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR=$pkgdir PREFIX=/usr install
+  make BINDIR=/usr/bin DESTDIR=$pkgdir PREFIX=/usr install
 }
