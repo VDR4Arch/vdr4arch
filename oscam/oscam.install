@@ -1,11 +1,12 @@
 post_install() {
   groupadd oscam 2> /dev/null
-  useradd -m -d /var/lib/oscam -g oscam -G uucp oscam 2> /dev/null
+  useradd -m -d /var/lib/oscam -g oscam -G uucp,video oscam 2> /dev/null
 
   chown -R oscam:oscam var/lib/oscam
-  chown oscam:oscam /tmp/camd.socket
 }
 
 post_upgrade() {
-  post_install
+  gpasswd -a oscam video > /dev/null
+  chown -R oscam:oscam var/lib/oscam
+  chown oscam:oscam /tmp/camd.socket
 }
