@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-dbus2vdr
 pkgver=12
-pkgrel=1
+pkgrel=2
 _vdrapi=2.0.0
 pkgdesc="Expose some methods via DBus to control the vdr"
 url="https://github.com/flensrocker/vdr-plugin-dbus2vdr"
@@ -25,7 +25,7 @@ package() {
   make DESTDIR="$pkgdir" install
 
   install -Dm755 "$pkgdir/usr/share/vdr-plugin-$_plugname/vdr-dbus-send.sh" \
-    "$pkgdir/usr/bin/vdr-dbus-send.sh"
+    "$pkgdir/usr/bin/vdr-dbus-send"
 
   rm -r "$pkgdir/usr/share/vdr-plugin-$_plugname"
   rm -r "$pkgdir/etc/init"
