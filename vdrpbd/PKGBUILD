@@ -1,7 +1,7 @@
 # Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
 pkgname=vdrpbd
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="A daemon to handle ACPI power button event on VDR systems"
 url="http://projects.vdr-developer.org/projects/vdrpbd"
 arch=('any')
