@@ -1,8 +1,0 @@
-[Unit]
-Description=VDR ACPI power button handling daemon
-
-[Service]
-ExecStart=/usr/bin/vdrpbd -f
-
-[Install]
-WantedBy=multi-user.target
