@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
 pkgver=2.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -21,6 +21,7 @@ options='!emptydirs'
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
+        'vdr-loglevel-fix.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=33745'
         'shutdown.sh'
         'shutdown-wrapper.c')
 md5sums=('5359cae7e14671cc9a3c690d45d8e0a2'
@@ -40,6 +41,7 @@ VDR_USER     = vdr
 EOF
 
   patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
+  patch -p1 -i "$srcdir/vdr-loglevel-fix.diff"
 }
 
 build() {
