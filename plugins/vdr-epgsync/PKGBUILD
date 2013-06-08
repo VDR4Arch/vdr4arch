@@ -1,0 +1,23 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-epgsync
+pkgver=1.0.0
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Import the EPG of a remote VDR"
+url="http://vdr.schmirler.de/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=("vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz")
+md5sums=('d98f557bd923c167a2dea0c53472f2dc')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make
+}
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}

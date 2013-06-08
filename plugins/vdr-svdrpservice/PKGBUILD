@@ -1,0 +1,23 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-svdrpservice
+pkgver=1.0.0
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Offers SVDRP connections as a service to other plugins"
+url="http://vdr.schmirler.de/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=("vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz")
+md5sums=('b4debde708ed897e1b77152d6f00c571')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make
+}
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
