@@ -6,7 +6,7 @@ diff -ruN vdr-plugin-skinpearlhd-9899940/Makefile vdr-plugin-skinpearlhd-9899940
  ### Includes and Defines (add further entries here):
  
 -INCLUDES += -I/usr/include/ImageMagick
-+INCLUDES += $(shell pkg-config --cflags-only-I Magick++)
++INCLUDES += $(shell pkg-config --cflags Magick++)
  
  DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
  
