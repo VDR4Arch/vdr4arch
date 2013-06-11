@@ -17,12 +17,12 @@ backup=("var/lib/vdr/plugins/$_plugname/rssfeeds.conf")
 md5sums=('4b4cf53fddf4de65ed2510d8d86d887d')
 
 build() {
-  cd "${srcdir}/skin-nopacity"
+  cd "${srcdir}/$_plugname-$pkgver"
   make
 }
 
 package() {
-  cd "${srcdir}/skin-nopacity"
+  cd "${srcdir}/$_plugname-$pkgver"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 conf/rssfeeds.conf "$pkgdir/var/lib/vdr/plugins/$_plugname/rssfeeds.conf"
