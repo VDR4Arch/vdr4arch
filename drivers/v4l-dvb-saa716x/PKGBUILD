@@ -19,19 +19,19 @@ md5sums=('SKIP'
          '463dbc6891d8648d8ae213ac92203bdd')
 
 pkgver() {
-  cd "$srcdir/$pkgname"
+  cd "$srcdir/mirror-saa716x"
   hg log -l1 --template "{shortdate(date)}" | sed 's/-//g'
 }
 
 prepare() {
-  cd "$srcdir/$pkgname"
+  cd "$srcdir/mirror-saa716x"
   patch -p1 -i "$srcdir/compat.diff"
 }
 
 build() {
   _kernver="$(cat /lib/modules/$_extramodules/version)"
 
-  cd "$srcdir/$pkgname/linux/drivers/media/common/saa716x"
+  cd "$srcdir/mirror-saa716x/linux/drivers/media/common/saa716x"
   echo 'ccflags-y += -Idrivers/media/tuners/' >> Makefile
   make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_BUDGET=m \
     CONFIG_DVB_SAA716X_HYBRID=m CONFIG_DVB_SAA716X_FF=m modules
