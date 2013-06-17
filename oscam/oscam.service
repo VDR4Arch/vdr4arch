@@ -1,10 +1,12 @@
 [Unit]
 Description=Open Source Conditional Access Module
+Wants=systemd-udev-settle.service
+After=systemd-udev-settle.service
 
 [Service]
 Type=forking
 ExecStart=/usr/bin/oscam -b
-TimeOutStopSec=30
+TimeoutStopSec=30
 User=oscam
 
 [Install]
