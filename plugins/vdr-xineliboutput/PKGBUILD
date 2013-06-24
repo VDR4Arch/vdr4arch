@@ -1,0 +1,33 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-xineliboutput
+pkgver=1.1.0pre1.1345.g5cfe6e5
+_gitver=5cfe6e530976a8557c9f316c5519823f78704780
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="X11 and Linux framebuffer front-end for VDR"
+url="http://www.sourceforge.net/projects/xineliboutput"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('a52dec' 'dbus-glib' 'glu' 'libextractor' "vdr-api=${_vdrapi}" 'xine-lib')
+optdepends=('nvidia: Required for VDPAU acceleration')
+makedepends=('git')
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("git://projects.vdr-developer.org/$_plugname.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/${_plugname}"
+  git describe --tags | sed "s/$_plugname.//g;s/_/./g;s/-/./g"
+}
+
+package() {
+  cd "${srcdir}/${_plugname}"
+
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr/include/vdr" \
+       LIBDIR="$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       DESTDIR="$pkgdir" \
+       install
+}
