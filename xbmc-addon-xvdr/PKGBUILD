@@ -1,0 +1,33 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=xbmc-addon-xvdr
+pkgver=0.9.8
+_gitver=956cb751a9b360332cd15ac5ea636b8f09d25e37
+_vdrapi=2.0.0
+pkgrel=1
+url="https://github.com/pipelka/xbmc-addon-xvdr"
+arch=('x86_64' 'i686')
+license=('GPL2')
+pkgdesc="PVR add-on for XBMC to add VDR as a TV/PVR Backend"
+depends=('gcc-libs' 'zlib')
+makedepends=('git')
+source=("git+https://github.com/pipelka/$pkgname.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  git describe --tags | sed 's/xvdr-//g;s/-/_/g'
+}
+
+build() {
+  cd "${srcdir}/${pkgname}"
+  ./autogen.sh
+
+  ./configure
+
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  make DESTDIR="${pkgdir}" install
+}

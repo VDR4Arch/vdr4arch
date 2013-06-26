@@ -1,0 +1,32 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-xvdr
+pkgver=0.9.9
+_gitver=22b556c960770e55f9d6e1412a54b26fd91f9c35
+_vdrapi=2.0.0
+pkgrel=1
+url="https://github.com/pipelka/vdr-plugin-xvdr"
+arch=('x86_64' 'i686')
+license=('GPL2')
+pkgdesc="VDR plugin to handle XBMC clients"
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+makedepends=('git')
+source=("git+https://github.com/pipelka/vdr-plugin-xvdr.git#commit=$_gitver")
+backup=('var/lib/vdr/plugins/xvdr/allowed_hosts.conf'
+        'var/lib/vdr/plugins/xvdr/xvdr.conf')
+install="$pkgname.install"
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-xvdr"
+  git describe --tags | sed 's/xvdr-//g;s/-/_/g'
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-xvdr"
+  make
+}
+
+package() {
+  cd "${srcdir}/vdr-plugin-xvdr"
+  make DESTDIR="${pkgdir}" install install-conf
+}
