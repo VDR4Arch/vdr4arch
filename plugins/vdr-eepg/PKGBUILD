@@ -1,6 +1,6 @@
 # Maintainer: George Kranis https://github.com/gkranis/vdr4arch
 pkgname=vdr-eepg
-pkgver=eepg_0.0.5_184_g07d7e7e
+pkgver=0.0.5_184_g07d7e7e
 epoch=1
 _gitver=07d7e7edfc182082af61756ac31171bf76298a8c
 _vdrapi=2.0.0
@@ -17,7 +17,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-  git describe --tags | sed 's/-/_/g;s/v//'
+  git describe --tags | sed 's/-/_/g;s/eepg_//g'
 }
 
 prepare() {
