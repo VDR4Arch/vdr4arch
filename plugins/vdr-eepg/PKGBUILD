@@ -1,7 +1,6 @@
 # Maintainer: George Kranis https://github.com/gkranis/vdr4arch
 pkgname=vdr-eepg
 pkgver=0.0.5_184_g07d7e7e
-epoch=1
 _gitver=07d7e7edfc182082af61756ac31171bf76298a8c
 _vdrapi=2.0.0
 pkgrel=1
