@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvguide
-pkgver=0.0.5
+pkgver=0.0.6
 epoch=1
 _vdrapi=2.0.0
 pkgrel=1
@@ -11,8 +11,8 @@ license=('GPL2')
 depends=('imagemagick' "vdr-api=$_vdrapi")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1381/$pkgname-$pkgver.tgz")
-md5sums=('5437401a2af7046e5f970d63dd33f763')
+source=("http://projects.vdr-developer.org/attachments/download/1393/$pkgname-$pkgver.tgz")
+md5sums=('aa4cc350909e9a5f695c23526d6ee94f')
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
