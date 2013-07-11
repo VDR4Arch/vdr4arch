@@ -3,7 +3,7 @@ pkgname=vdr-tvguide
 pkgver=0.0.6
 epoch=1
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
@@ -11,8 +11,15 @@ license=('GPL2')
 depends=('imagemagick' "vdr-api=$_vdrapi")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1393/$pkgname-$pkgver.tgz")
-md5sums=('aa4cc350909e9a5f695c23526d6ee94f')
+source=("http://projects.vdr-developer.org/attachments/download/1393/$pkgname-$pkgver.tgz"
+        'fix_bug_in_searchtimer_handling.diff::http://projects.vdr-developer.org/git/vdr-plugin-tvguide.git/patch/?id=4a45965fb39f509617cd9e25fa60b9863d7551b6')
+md5sums=('aa4cc350909e9a5f695c23526d6ee94f'
+         'c053356f4d11286f9bc492cc6363a837')
+
+prepare() {
+  cd "$srcdir/$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/fix_bug_in_searchtimer_handling.diff"
+}
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
