@@ -1,6 +1,14 @@
-diff -ruN v4l-dvb-saa716x-20120304/linux/drivers/media/common/saa716x/saa716x_ff_cmd.h v4l-dvb-saa716x-20120304.patched/linux/drivers/media/common/saa716x/saa716x_ff_cmd.h
---- v4l-dvb-saa716x-20120304/linux/drivers/media/common/saa716x/saa716x_ff_cmd.h	2012-03-04 18:01:07.000000000 +0100
-+++ v4l-dvb-saa716x-20120304.patched/linux/drivers/media/common/saa716x/saa716x_ff_cmd.h	2012-06-05 20:01:17.278360376 +0200
+diff -r cfa4b4faab67 linux/drivers/media/common/saa716x/Makefile
+--- a/linux/drivers/media/common/saa716x/Makefile	Sun Feb 24 14:01:09 2013 +0100
++++ b/linux/drivers/media/common/saa716x/Makefile	Fri Jul 26 13:38:44 2013 +0200
+@@ -24,3 +24,4 @@
+ obj-$(CONFIG_DVB_SAA716X_FF)	  += saa716x_ff.o
+ 
+ EXTRA_CFLAGS = -Idrivers/media/dvb/dvb-core/ -Idrivers/media/dvb/frontends/ -Idrivers/media/dvb-core/ -Idrivers/media/dvb-frontends/
++ccflags-y += -Idrivers/media/tuners/
+diff -r cfa4b4faab67 linux/drivers/media/common/saa716x/saa716x_ff_cmd.h
+--- a/linux/drivers/media/common/saa716x/saa716x_ff_cmd.h	Sun Feb 24 14:01:09 2013 +0100
++++ b/linux/drivers/media/common/saa716x/saa716x_ff_cmd.h	Fri Jul 26 13:38:44 2013 +0200
 @@ -1,6 +1,24 @@
  #ifndef __SAA716x_FF_CMD_H
  #define __SAA716x_FF_CMD_H
@@ -26,3 +34,14 @@ diff -ruN v4l-dvb-saa716x-20120304/linux/drivers/media/common/saa716x/saa716x_ff
  extern int sti7109_cmd_init(struct sti7109_dev *sti7109);
  extern int sti7109_raw_cmd(struct sti7109_dev * sti7109,
  			   osd_raw_cmd_t * cmd);
+diff -r cfa4b4faab67 linux/drivers/media/common/saa716x/saa716x_i2c.c
+--- a/linux/drivers/media/common/saa716x/saa716x_i2c.c	Sun Feb 24 14:01:09 2013 +0100
++++ b/linux/drivers/media/common/saa716x/saa716x_i2c.c	Fri Jul 26 13:38:44 2013 +0200
+@@ -721,7 +721,6 @@
+ 		saa716x_i2c_hwdeinit(i2c, SAA716x_I2C_BUS(i));
+ 		dprintk(SAA716x_DEBUG, 1, "Removing adapter (%d) %s", i, adapter->name);
+ 
+-		err = i2c_del_adapter(adapter);
+ 		if (err < 0) {
+ 			dprintk(SAA716x_ERROR, 1, "Adapter (%d) %s remove failed", i, adapter->name);
+ 			goto exit;

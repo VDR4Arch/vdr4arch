@@ -2,21 +2,21 @@
 pkgname=v4l-dvb-saa716x
 pkgver=20130224
 _hgver=cfa4b4faab67
-_extramodules=extramodules-3.9-ARCH
+_extramodules=extramodules-3.10-ARCH
 url='http://powarman.dyndns.org/hgwebdir.cgi/v4l-dvb-saa716x'
-pkgrel=3
+pkgrel=4
 pkgdesc="All interesting modules of powarman's v4l-dvb-saa716x repository"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('linux>=3.9' 'linux<3.10')
-makedepends=('linux-headers>=3.9' 'linux-headers<3.10' 'mercurial')
+depends=('linux>=3.10' 'linux<3.11')
+makedepends=('linux-headers>=3.10' 'linux-headers<3.11' 'mercurial')
 install="${pkgname}.install"
 replaces=('saa716x')
 conflicts=('saa716x')
 source=("hg+http://linuxtv.org/hg/~endriss/mirror-saa716x#revision=$_hgver"
         'compat.diff')
 md5sums=('SKIP'
-         '463dbc6891d8648d8ae213ac92203bdd')
+         'b4499f5e02f8d0378c3ac9836311de53')
 
 pkgver() {
   cd "$srcdir/mirror-saa716x"
@@ -32,7 +32,6 @@ build() {
   _kernver="$(cat /lib/modules/$_extramodules/version)"
 
   cd "$srcdir/mirror-saa716x/linux/drivers/media/common/saa716x"
-  echo 'ccflags-y += -Idrivers/media/tuners/' >> Makefile
   make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_BUDGET=m \
     CONFIG_DVB_SAA716X_HYBRID=m CONFIG_DVB_SAA716X_FF=m modules
 }
