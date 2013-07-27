@@ -1,5 +1,3 @@
-# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
-# Most work done by mockfrog and webmeister at AUR
 pkgname=sundtek
 pkgver=130315.225747
 pkgrel=1
@@ -10,14 +8,18 @@ license=('custom')
 backup=(etc/sundtek.conf)
 install=${pkgname}.install
 _filename="sundtek_installer_${pkgver}.sh"
-source=("http://www.sundtek.de/media/${_filename}"
-        'sundtek.conf'
-        'sundtek.service')
-md5sums=('a033b64a7be835a5e6922f1086631da2'
-         'd146fc4fe871e56ccb709109f4c5751d'
-         'f1aae82ee2602eb5380abbdfdc823ddf')
+source=(http://www.sundtek.de/media/${_filename}
+        sundtek.conf
+        sundtek.rules
+        sundtek.service
+        sundtek-restart.service)
+sha256sums=('ecfe3b7da3b333030c4c94a83067e96ce3cb2fe1346c08886731f91b392e9cba'
+            '9460c259a46b46787ca76a3e9b2fa9e3ca308d86c8bd19c73c63821e26f17f8a'
+            '25d285416ca8b050fdd6fb21b70d448500e402767f87ce19a85520eb005da589'
+            'c8c928d5ff8f1ee48ab2eb5c287c172e33c15b4a7d7ec7a0f993e701351c3f9d'
+            '5192c1283b2c117188d265d29f360ff99baeb87bfb703961f9d6d6e692c800db')
 
-prepare() {
+build() {
   cd "${srcdir}"
 
   msg2 "extracting files stage 1"
@@ -54,6 +56,8 @@ package() {
   cp -pr opt/lib/*.so "${pkgdir}/opt/lib/"
 
   install -D "sundtek.conf" "${pkgdir}/etc/sundtek.conf"
+  install -D "sundtek.rules" "${pkgdir}/etc/udev/rules.d/sundtek.rules"
   install -D "sundtek.service" "${pkgdir}/usr/lib/systemd/system/sundtek.service"
+  install -D "sundtek-restart.service" "${pkgdir}/usr/lib/systemd/system/sundtek-restart.service"
   install -D "opt/doc/README" "${pkgdir}/usr/share/licenses/sundtek/README"
 }

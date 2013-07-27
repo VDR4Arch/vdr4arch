@@ -3,7 +3,7 @@ Description=Sundtek MediaTV Pro driver
 
 [Service]
 Type=forking
-ExecStart=/opt/bin/mediasrv -d --pluginpath=/opt/bin --wait-for-devices
+ExecStart=/opt/bin/mediasrv -d --pluginpath=/opt/bin
 ExecStop=/opt/bin/mediaclient --shutdown
 
 [Install]
