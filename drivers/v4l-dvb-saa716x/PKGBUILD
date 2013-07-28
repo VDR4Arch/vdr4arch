@@ -4,7 +4,7 @@ pkgver=20130224
 _hgver=cfa4b4faab67
 _extramodules=extramodules-3.10-ARCH
 url='http://powarman.dyndns.org/hgwebdir.cgi/v4l-dvb-saa716x'
-pkgrel=4
+pkgrel=5
 pkgdesc="All interesting modules of powarman's v4l-dvb-saa716x repository"
 arch=('x86_64' 'i686')
 license=('GPL2')
@@ -16,7 +16,7 @@ conflicts=('saa716x')
 source=("hg+http://linuxtv.org/hg/~endriss/mirror-saa716x#revision=$_hgver"
         'compat.diff')
 md5sums=('SKIP'
-         'b4499f5e02f8d0378c3ac9836311de53')
+         'a99714ecdaaa849f7c3d4d93ebf1c81d')
 
 pkgver() {
   cd "$srcdir/mirror-saa716x"
