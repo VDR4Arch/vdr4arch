@@ -1,0 +1,24 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-skinflat
+pkgver=0.0.2
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Simple and slim skin for VDR"
+url="http://projects.vdr-developer.org/projects/plg-skinflat"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('imagemagick' 'libpng' "vdr-api=${_vdrapi}")
+install="$pkgname.install"
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://projects.vdr-developer.org/attachments/download/1421/$_plugname-$pkgver.tar.gz")
+md5sums=('c08e7bf8132231e766bd94860888425e')
+
+build() {
+  cd "${srcdir}/$_plugname-$pkgver"
+  make
+}
+
+package() {
+  cd "${srcdir}/$_plugname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}
