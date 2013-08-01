@@ -4,7 +4,7 @@ pkgver=0.1.4_23_gb952e63
 epoch=1
 _gitver=b952e638c6eb2c56a6873fcbf40c78b86e6bccfd
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="automatic advertisement detection"
 url="http://projects.vdr-developer.org/projects/plg-markad"
 arch=('x86_64' 'i686')
@@ -12,12 +12,19 @@ license=('GPL2')
 depends=('ffmpeg' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-markad.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-markad.git#commit=$_gitver"
+        'markad-ffmpeg2.0.diff')
+md5sums=('SKIP'
+         '3a22ec0e38299fdf0b7cdb307aa5066f')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  patch -p1 -i "$srcdir/markad-ffmpeg2.0.diff"
 }
 
 package() {
