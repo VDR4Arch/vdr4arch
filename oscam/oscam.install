@@ -3,10 +3,21 @@ post_install() {
   useradd -m -d /var/lib/oscam -g oscam -G uucp,video oscam 2> /dev/null
 
   chown -R oscam:oscam var/lib/oscam
+
+  echo "Default username: myusername"
+  echo "Default password: mypassword"
+  echo "Default webinterface port: 8080"
+  echo "WARNING! Webinterface is accessible for all IPs by default. Change that!"
 }
 
 post_upgrade() {
   gpasswd -a oscam video > /dev/null
   chown -R oscam:oscam var/lib/oscam
   chown oscam:oscam /tmp/camd.socket
+
+  cd var/lib/oscam
+  for file in *.pacsave; do
+    mv $file $(basename $file .pacsave)
+  done
+  echo 'Moved *.pacsave files back in place.'
 }
