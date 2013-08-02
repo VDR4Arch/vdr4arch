@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=oscam
-pkgver=8771
+pkgver=8800
 pkgrel=1
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.oscam.cc"
@@ -27,7 +27,7 @@ source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${p
         'oscam.logrotate'
         'oscam.service')
 noextract="${pkgname}-${pkgver}.zip"
-md5sums=('53a86ab48b97869427899efca0e6a4ce'
+md5sums=('b8b8fb16af47ca2cd60e558beb103dad'
          '1fadb043e8bf28f3a5fed8732dad39a3'
          '66f54fad241d521800d7529ad4e23e3a')
 
