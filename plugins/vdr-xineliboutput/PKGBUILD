@@ -3,13 +3,14 @@ pkgname=vdr-xineliboutput
 pkgver=1.1.0pre1.1345.g5cfe6e5
 _gitver=5cfe6e530976a8557c9f316c5519823f78704780
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 and Linux framebuffer front-end for VDR"
 url="http://www.sourceforge.net/projects/xineliboutput"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('a52dec' 'dbus-glib' 'glu' 'libextractor' "vdr-api=${_vdrapi}" 'xine-lib')
-optdepends=('nvidia: Required for VDPAU acceleration')
+optdepends=('nvidia: Required for VDPAU decoding'
+            'xorg-server: Required for software decoding')
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/$_plugname.git#commit=$_gitver")

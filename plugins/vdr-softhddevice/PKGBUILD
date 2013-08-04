@@ -4,13 +4,13 @@ pkgver=0.6.0_23_g93357fb
 epoch=1
 _gitver=93357fb1cd6095988721052185d70161d1fc2e79
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
 license=('AGPL3')
-depends=('ffmpeg' "vdr-api=${_vdrapi}" 'xcb-util-wm')
-optdepends=('nvidia: Required for VDPAU acceleration')
+depends=('ffmpeg' "vdr-api=${_vdrapi}" 'xcb-util-wm' 'xorg-server')
+optdepends=('nvidia: Required for VDPAU decoding')
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-softhddevice.git#commit=$_gitver")
