@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
 pkgver=2.0.2
-pkgrel=2
+pkgrel=3
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -27,7 +27,7 @@ source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
 md5sums=('5359cae7e14671cc9a3c690d45d8e0a2'
          '301c9b9766ed5182b07f1debc79abc21'
          '6877c9efd84261c4a0471e657edce52d'
-         'ef8e11062f58a9eb4016dfbf66bb9044'
+         'fb1f52d7decba2df9c5d00c70040984a'
          '7cad811b4ac5ee6c0b5496d006f1e0ee')
 
 prepare() {

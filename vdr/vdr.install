@@ -7,6 +7,9 @@ post_install() {
   mkdir -p var/cache/vdr
   chown -R vdr:vdr var/cache/vdr
 
+  #Create shutdown-hooks dir
+  mkdir -p usr/share/vdr/shutdown-hooks
+
   #Create videodir
   mkdir -p srv/vdr/video
   chown -R vdr:vdr srv/vdr
@@ -16,6 +19,8 @@ post_install() {
 
 post_upgrade() {
   chown -R vdr:vdr var/lib/vdr
+
+  mkdir -p usr/share/vdr/shutdown-hooks
 
   chgrp vdr usr/lib/vdr/bin/shutdown-wrapper
   chmod u+s usr/lib/vdr/bin/shutdown-wrapper
