@@ -8,7 +8,7 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('bash' 'gcc-libs')
 options=(!libtool)
-source=("http://www.tntnet.org/download/${pkgname}-${pkgver}.tar.gz")
+source=("http://sourceforge.net/projects/${pkgname}/files/${pkgname}-${pkgver}.tar.gz")
 md5sums=('9364b1221098c20f32fedf1338a56e56')
 
 build() {
