@@ -1,0 +1,32 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-upnp
+pkgver=1.0.0_14_g11a035a
+_gitver=11a035aa4ec2b55faaef1eaa48b7726a28422048
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="extends the VDR with the possibility to act as an UPnP/DLNA Media Server (DMS)"
+url="http://projects.vdr-developer.org/projects/plg-softhddevice"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('libupnp' 'tntdb' 'tntnet' "vdr-api=${_vdrapi}")
+makedepends=('boost' 'git')
+install="$pkgname.install"
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("git://projects.vdr-developer.org/vdr-plugin-$_plugname.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git tag -a v1.0.0 -m 'Added Tag' 529f178bd15a361baf1e83837b1e872be14795a6 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make
+}
+
+package() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make DESTDIR="${pkgdir}" install
+}
