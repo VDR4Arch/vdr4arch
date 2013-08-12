@@ -1,16 +1,18 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
-pkgname=vdr-remotetimers
-pkgver=1.0.0
+pkgname=vdr-peer
+pkgver=0.0.1
 _vdrapi=2.0.0
-pkgrel=2
-pkgdesc="Add/Edit/Remove timers on both, the local (client) VDR and a remote (server) VDR"
+pkgrel=1
+pkgdesc="Wrapper for the plugins remotetimers and remoteosd"
 url="http://vdr.schmirler.de/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}" 'vdr-svdrpservice')
+depends=("vdr-api=${_vdrapi}")
+optdepends=('remoteosd: Add/edit/remove timers on local and peer VDR or move timers between them'
+            'remotetimers: Access menu of peer')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz")
-md5sums=('db0a06a5901df5f1d6fa3973df3fe456')
+md5sums=('6a50045f82d3a5784cb26d7e6cf4fb39')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
