@@ -2,7 +2,7 @@
 pkgname=vdr-skinflat
 pkgver=0.1.0
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=3
 pkgdesc="Simple and slim skin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-skinflat"
 arch=('x86_64' 'i686')
@@ -13,6 +13,14 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1424/$_plugname-$pkgver.tar.gz")
 md5sums=('20f49c5c38af6a85de431c1642e42559')
 
+prepare() {
+  cd "${srcdir}/$_plugname-$pkgver"
+  sed -i 's/ConfigDirectory/ResourceDirectory/g' config.h
+  sed -i '/MAGICKCORE_HDRI_ENABLE/d' Makefile
+  sed -i '/MAGICKCORE_QUANTUM_DEPTH/d' Makefile
+  sed -i 's/cflags-only-I/cflags/g' Makefile
+}
+
 build() {
   cd "${srcdir}/$_plugname-$pkgver"
   make
@@ -21,4 +29,6 @@ build() {
 package() {
   cd "${srcdir}/$_plugname-$pkgver"
   make DESTDIR="$pkgdir" install
+  mkdir -p "$pkgdir/usr/share/vdr/plugins"
+  mv "$pkgdir/var/lib/vdr/plugins" "$pkgdir/usr/share/vdr"
 }

@@ -3,7 +3,7 @@ pkgname=vdr-tvguide
 pkgver=1.0.0
 epoch=1
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=3
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
@@ -13,6 +13,13 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1402/$pkgname-$pkgver.tgz")
 md5sums=('72679ad1d7764f886091615e5d5ee688')
+
+prepare() {
+  cd "${srcdir}/$_plugname-$pkgver"
+  sed -i '/MAGICKCORE_HDRI_ENABLE/d' Makefile
+  sed -i '/MAGICKCORE_QUANTUM_DEPTH/d' Makefile
+  sed -i 's/cflags-only-I/cflags/g' Makefile
+}
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"

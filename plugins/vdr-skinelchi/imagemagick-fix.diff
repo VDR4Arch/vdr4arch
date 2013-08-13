@@ -1,0 +1,13 @@
+diff --git a/Makefile b/Makefile
+index 7f38197..3dc41a6 100644
+--- a/Makefile
++++ b/Makefile
+@@ -108,6 +108,8 @@ DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
+ 
+ ifdef SKINELCHI_HAVE_IMAGEMAGICK
+ 	DEFINES += -DSKINELCHI_HAVE_IMAGEMAGICK
++	DEFINES += -DMAGICKCORE_HDRI_ENABLE=0
++	DEFINES += -DMAGICKCORE_QUANTUM_DEPTH=16
+ 	INCLUDES += $(shell pkg-config --cflags-only-I ImageMagick++)
+ endif
+ 

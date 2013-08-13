@@ -2,7 +2,7 @@
 pkgname=vdr-skinnopacity
 pkgver=0.1.2
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=3
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
@@ -13,6 +13,13 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1387/$pkgname-$pkgver.tgz")
 backup=("var/lib/vdr/plugins/$_plugname/rssfeeds.conf")
 md5sums=('4b4cf53fddf4de65ed2510d8d86d887d')
+
+prepare() {
+  cd "${srcdir}/$_plugname-$pkgver"
+  sed -i '/MAGICKCORE_HDRI_ENABLE/d' Makefile
+  sed -i '/MAGICKCORE_QUANTUM_DEPTH/d' Makefile
+  sed -i 's/cflags-only-I/cflags/g' Makefile
+}
 
 build() {
   cd "${srcdir}/$_plugname-$pkgver"

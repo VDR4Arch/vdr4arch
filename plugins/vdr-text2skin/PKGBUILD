@@ -3,7 +3,7 @@ pkgname=vdr-text2skin
 pkgver=1.3.2_11_g7bd88a0
 _gitver=7bd88a078d31f57e8fcfc0b93c45c3e8b13c5190
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Mediaplayer plugin for VDR and X11"
 url="http://projects.vdr-developer.org/projects/plg-play"
 arch=('x86_64' 'i686')
@@ -32,6 +32,5 @@ package() {
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       GIT_REV=''
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
 }
