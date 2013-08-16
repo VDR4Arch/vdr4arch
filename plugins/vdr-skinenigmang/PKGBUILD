@@ -13,12 +13,19 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-skinenigmang.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-skinenigmang.git#commit=$_gitver"
+        'skinenigmang-search_for_logos_in_resourcedir.diff')
+md5sums=('SKIP'
+         '6bfd86e7a92d969edd208401b65b20fe')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  patch -p1 -i "$srcdir/skinenigmang-search_for_logos_in_resourcedir.diff"
 }
 
 package() {
