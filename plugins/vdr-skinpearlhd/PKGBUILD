@@ -3,7 +3,7 @@ pkgname=vdr-skinpearlhd
 pkgver=0.0.1_28_g9899940
 _gitver=9899940a4920e77d1d6c14a3b1bb16be47f5045d
 _vdrapi=2.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="conversion of the PearlHD-Skin written by mapovi to a native vdr-plugin"
 url="http://projects.vdr-developer.org/projects/show/plg-skinpearlhd"
 arch=('x86_64' 'i686')
@@ -13,10 +13,12 @@ makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-skinpearlhd.git#commit=$_gitver"
-        'pearlhd-imagemagick-fix.diff'
+        'pearlhd-imagemagick_fix.diff'
+        'skinpearlhd-search_for_logos_in_resourcedir.diff'
         'http://projects.vdr-developer.org/attachments/download/1386/setup-page-fix.diff')
 md5sums=('SKIP'
          'fe16699af9b34813badb0592707848be'
+         'a3863c199b78f405a79b46b2e10c9dc9'
          '2a8bfca1077129fbcc0d777075336878')
 
 pkgver() {
@@ -28,10 +30,12 @@ prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
 
   # Fix compilation with newer Imagemagick versions
-  patch -p1 -i "$srcdir/pearlhd-imagemagick-fix.diff"
+  patch -p1 -i "$srcdir/pearlhd-imagemagick_fix.diff"
 
   # Bug 1379
   patch -p1 -i "$srcdir/setup-page-fix.diff"
+  
+  patch -p1 -i "$srcdir/skinpearlhd-search_for_logos_in_resourcedir.diff"
 }
 
 build() {
