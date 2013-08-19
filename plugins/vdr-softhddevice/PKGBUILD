@@ -4,7 +4,7 @@ pkgver=0.6.0_29_ga13c25d
 epoch=1
 _gitver=a13c25d30987a1b8e9f5af2e06344de60a3d4295
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
@@ -26,6 +26,7 @@ prepare() {
 #  sed -i 's/3000/500/g' Makefile
 #  sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
 #  sed -i 's/-DAV_INFO //g' Makefile
+  sed -i 's/#CONFIG += -DH264_EOS_TRICKSPEED/CONFIG += -DH264_EOS_TRICKSPEED/g' Makefile
 }
 
 build() {
