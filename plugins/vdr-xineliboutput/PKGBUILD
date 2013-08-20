@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-xineliboutput
-pkgver=1.1.0pre1.1345.g5cfe6e5
-_gitver=5cfe6e530976a8557c9f316c5519823f78704780
+pkgver=1.1.0
+_gitver=32bde0a1eb887de10e460fe12c32251b6a7f1114
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=1
 pkgdesc="X11 and Linux framebuffer front-end for VDR"
 url="http://www.sourceforge.net/projects/xineliboutput"
 arch=('x86_64' 'i686')
