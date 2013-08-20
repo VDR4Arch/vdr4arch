@@ -1,7 +1,9 @@
 #!/usr/bin/bash
 FILE=/etc/systemd/system/vdr.service.d/wait-for-devices.conf
 
-install -D /dev/null $FILE
+mkdir -p $(dirname $FILE)
+echo '[Unit]' > $FILE
+
 cd /dev
 for dev in dvb/adapter*/*; do
   stringpart=$(tr / - <<< $dev)
