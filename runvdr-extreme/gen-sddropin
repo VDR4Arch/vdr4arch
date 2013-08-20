@@ -8,3 +8,4 @@ for dev in dvb/adapter*/*; do
   echo Wants=dev-$stringpart.device >> $FILE
   echo After=dev-$stringpart.device >> $FILE
 done
+systemctl daemon-reload
