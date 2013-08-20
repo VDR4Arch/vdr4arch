@@ -4,12 +4,11 @@ After=eventlircd.service
 After=lirc.service
 After=oscam.service
 After=sundtek.service
-Wants=systemd-udev-settle.service
-After=systemd-udev-settle.service
 
 [Service]
 ExecStart=/usr/bin/runvdr
 KillMode=process
+ExecStopPost=/usr/lib/vdr/bin/gen-sddropin
 
 [Install]
 WantedBy=multi-user.target
