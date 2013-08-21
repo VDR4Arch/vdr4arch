@@ -1,0 +1,23 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-tvscrapper
+pkgver=0.0.1
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Runs in the background and collects metadata for all available EPG events"
+url="http://www.vdr-portal.de/board1-news/board2-vdr-news/119880-announce-tvscrapper-0-0-1/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('curl' 'jansson' 'libxml2' 'sqlite' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("$pkgname-$pkgver.tgz::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=34219")
+md5sums=('391b2b466b206c46d4f13fcf379a5475')
+
+build() {
+  cd "${srcdir}/$_plugname-$pkgver"
+  make
+}
+
+package() {
+  cd "${srcdir}/$_plugname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}
