@@ -17,7 +17,6 @@ post_upgrade() {
 
   cd var/lib/oscam
   for file in *.pacsave; do
-    mv $file $(basename $file .pacsave)
+    mv $file $(basename $file .pacsave) 2>&1 /dev/null
   done
-  echo 'Moved *.pacsave files back in place.'
 }
