@@ -4,7 +4,7 @@ pkgver=1.2.2_15_g2131477
 epoch=1
 _gitver=21314770e74d4d33d811b9a48097ff8d41ef8ae7
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="provides additional functions to VDR's recordings menu"
 url="http://projects.vdr-developer.org/projects/show/plg-extrecmenu"
 arch=('x86_64' 'i686')
@@ -28,5 +28,6 @@ package() {
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       EXTRECMENU_USE_VDR_CUTTER=1
 }
