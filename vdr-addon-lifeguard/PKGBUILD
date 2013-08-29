@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-addon-lifeguard
 pkgver=0.0.4
-pkgrel=1
+pkgrel=2
 pkgdesc="check whether vdr should shutdown the machine"
 url="http://e-tobi.net/vdr-experimental/pool-squeeze/source/addons"
 arch=('any')
@@ -22,7 +22,7 @@ prepare() {
 
 package() {
   cd "$srcdir/$pkgname-$pkgver"
-  install -Dm755 "lifeguard.conf" "${pkgdir}/etc/vdr/lifeguard.conf"
-  install -Dm644 "S91.lifeguard" "${pkgdir}/usr/share/vdr/shutdown-hooks/S91.lifeguard"
+  install -Dm755 "S91.lifeguard" "${pkgdir}/usr/share/vdr/shutdown-hooks/S91.lifeguard"
+  install -Dm644 "lifeguard.conf" "${pkgdir}/etc/vdr/lifeguard.conf"
   install -Dm644 "vdr-addon-lifeguard.1" "${pkgdir}/usr/share/man/man1/vdr-addon-lifeguard.1"
 }
