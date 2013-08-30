@@ -2,8 +2,8 @@
 pkgname=vdr-skinnopacity
 pkgver=0.9.0
 _gitver=1aa2f6ace2419406b305f9fe238d9d341f761c73
-_vdrapi=2.0.0
-pkgrel=1
+_vdrapi=2.1.2
+pkgrel=2
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')

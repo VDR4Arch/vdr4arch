@@ -2,9 +2,9 @@
 pkgname=vdr-vnsiserver
 pkgver=12.0_Frodo
 _gitver=96774c4f775b156a46fb58151379dece3e773c96
-_vdrapi=2.0.0
+_vdrapi=2.1.2
 epoch=1
-pkgrel=1
+pkgrel=3
 url="http://www.xbmc.org/pvr"
 arch=('x86_64' 'i686')
 license=('GPL2')

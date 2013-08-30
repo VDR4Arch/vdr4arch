@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
-pkgver=2.0.4
-pkgrel=1
+pkgver=2.1.2
+pkgrel=2
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -10,7 +10,7 @@ depends=('libjpeg-turbo' 'perl' 'ttf-font')
 optdepends=('lirc-utils: remote control support'
             'ncurses: skinncurses plugin'
             'runvdr-extreme: startscript for vdr')
-provides=("vdr-api=2.0.0")
+provides=("vdr-api=2.1.2")
 backup=('var/lib/vdr/channels.conf'
         'var/lib/vdr/diseqc.conf'
         'var/lib/vdr/keymacros.conf'
@@ -19,14 +19,12 @@ backup=('var/lib/vdr/channels.conf'
         'var/lib/vdr/svdrphosts.conf')
 options='!emptydirs'
 install='vdr.install'
-source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
+source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
-        'vdr-loglevel-fix.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=33745'
         'shutdown.sh'
         'shutdown-wrapper.c')
-md5sums=('8effb19fe09eb6c057ce354fe8f6be9f'
+md5sums=('4725e9cb26fea8fa3682dd30f5594a50'
          '301c9b9766ed5182b07f1debc79abc21'
-         '6877c9efd84261c4a0471e657edce52d'
          'fb1f52d7decba2df9c5d00c70040984a'
          '7cad811b4ac5ee6c0b5496d006f1e0ee')
 
@@ -43,7 +41,6 @@ EOF
 
   sed -i 's/NULL, 0, true/NULL, 0, OpenSubMenus/g' "$srcdir/MainMenuHooks-v1_0_2.diff"
   patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
-  patch -p1 -i "$srcdir/vdr-loglevel-fix.diff"
 }
 
 build() {

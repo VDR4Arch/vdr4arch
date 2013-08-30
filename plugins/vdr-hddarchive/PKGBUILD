@@ -2,8 +2,8 @@
 pkgname=vdr-hddarchive
 pkgver=20130922
 _gitver=e8d1ca5ff467ab26c94513ca671f7ea626d9a9c4
-_vdrapi=2.0.0
-pkgrel=1
+_vdrapi=2.1.2
+pkgrel=2
 pkgdesc="Brings the archive-hdd functionality to VDR."
 url="http://projects.vdr-developer.org/projects/show/plg-hddarchive"
 arch=('x86_64' 'i686')

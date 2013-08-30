@@ -4,8 +4,8 @@ pkgname=vdr-streamdev
 pkgver=0.6.0_37_g69b654d
 epoch=1
 _gitver=69b654d5393189c9c23dcc1241d8ab0588bae355
-_vdrapi=2.0.0
-pkgrel=1
+_vdrapi=2.1.2
+pkgrel=2
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
 url="http://projects.vdr-developer.org/projects/show/plg-streamdev"
 arch=('x86_64' 'i686')
@@ -28,7 +28,6 @@ build() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   make
 }
-
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
