@@ -4,7 +4,7 @@ pkgver=0.6.0_29_ga13c25d
 epoch=1
 _gitver=a13c25d30987a1b8e9f5af2e06344de60a3d4295
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
@@ -13,8 +13,10 @@ depends=('ffmpeg' "vdr-api=${_vdrapi}" 'xcb-util-wm' 'xorg-server')
 optdepends=('nvidia: Required for VDPAU decoding')
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-softhddevice.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-softhddevice.git#commit=$_gitver"
+        'av4_diff.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=34229')
+md5sums=('SKIP'
+         '3dfda96900e4571b7bfd45f418a898a2')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
@@ -27,6 +29,8 @@ prepare() {
 #  sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
 #  sed -i 's/-DAV_INFO //g' Makefile
   sed -i 's/#CONFIG += -DH264_EOS_TRICKSPEED/CONFIG += -DH264_EOS_TRICKSPEED/g' Makefile
+
+  patch -p1 -i "$srcdir/av4_diff.diff"
 }
 
 build() {
