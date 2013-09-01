@@ -1,27 +1,34 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-epgsearch
-pkgver=1.0.1.beta3
+pkgver=1.0.1.beta5
 _vdrapi=2.0.0
 epoch=1
-pkgrel=5
+pkgrel=1
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('pcre' "vdr-api=${_vdrapi}")
+optdepends=('ssmtp: Send notification mails (Select sendmail in epgsearch setting)')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz")
-md5sums=('f39e5ace38ea99f114425687057e4dbe')
+backup=('var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-epgdata'
+        'var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-tvm2vdr-hoerzu'
+        'var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-tvm2vdr-tvmovie'
+        'var/lib/vdr/plugins/epgsearch/epgsearchconflmail.templ'
+        'var/lib/vdr/plugins/epgsearch/epgsearchmenu.conf'
+        'var/lib/vdr/plugins/epgsearch/epgsearchupdmail-html.templ'
+        'var/lib/vdr/plugins/epgsearch/epgsearchupdmail.templ')
+options=('!emptydirs')
+md5sums=('6e63cc29df02f48fabf6e12e1e71b2fc')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make
+}
+
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
-  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       MANDIR="$pkgdir/usr/share/man" \
-       all install-doc
+  make DESTDIR="$pkgdir" install
 }
