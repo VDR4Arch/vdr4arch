@@ -1,6 +1,6 @@
 post_install() {
-  mkdir -p var/lib/vdr/plugins/live
-  cd var/lib/vdr/plugins/live
+  mkdir -p /var/lib/vdr/plugins/live
+  cd /var/lib/vdr/plugins/live
   if [ ! -e live.pem ] || [ ! -e live-key.pem ]; then
     openssl req -new -x509 -keyout live-key.pem -out live.pem -days 9999 -nodes -batch
     chown -R vdr:vdr var/lib/vdr
@@ -12,7 +12,7 @@ post_upgrade() {
 }
 
 post_remove() {
-  rm var/lib/vdr/plugins/live/live.pem
-  rm var/lib/vdr/plugins/live/live-key.pem
-  rmdir var/lib/vdr/plugins/live 2> /dev/null
+  rm /var/lib/vdr/plugins/live/live.pem
+  rm /var/lib/vdr/plugins/live/live-key.pem
+  rmdir /var/lib/vdr/plugins/live 2> /dev/null
 }
