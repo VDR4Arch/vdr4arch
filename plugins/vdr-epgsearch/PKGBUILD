@@ -3,13 +3,14 @@ pkgname=vdr-epgsearch
 pkgver=1.0.1.beta5
 _vdrapi=2.0.0
 epoch=1
-pkgrel=2
+pkgrel=3
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('pcre' "vdr-api=${_vdrapi}")
-optdepends=('ssmtp: Send notification mails (Select sendmail in epgsearch setting)')
+optdepends=('msmtp: To send notification mails (Simpler replacement for sendmail)'
+            'ssmtp: To send notification mails (Another simpler replacement for sendmail)')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz")
@@ -22,6 +23,10 @@ backup=('var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-epgdata'
         'var/lib/vdr/plugins/epgsearch/epgsearchupdmail.templ')
 options=('!emptydirs')
 md5sums=('6e63cc29df02f48fabf6e12e1e71b2fc')
+
+prepare() {
+  sed -i 's/^Menu/# Menu/g' "${srcdir}/${_plugname}-${pkgver}"/conf/epgsearchmenu.conf
+}
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
