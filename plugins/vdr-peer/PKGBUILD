@@ -2,12 +2,12 @@
 pkgname=vdr-peer
 pkgver=0.0.1
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Wrapper for the plugins remotetimers and remoteosd"
 url="http://vdr.schmirler.de/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 optdepends=('remoteosd: Add/edit/remove timers on local and peer VDR or move timers between them'
             'remotetimers: Access menu of peer')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')

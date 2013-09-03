@@ -4,7 +4,7 @@ pkgver=130709
 _extramodules=extramodules-3.10-ARCH
 url='http://www.dvbsky.net/Support.html'
 pkgrel=3
-pkgdesc="All interesting modules of dvbsky's media_build-bst package"
+pkgdesc="All interesting modules of dvbsky's driver package"
 arch=('x86_64')
 license=('GPL2')
 depends=('linux>=3.10' 'linux<3.11')

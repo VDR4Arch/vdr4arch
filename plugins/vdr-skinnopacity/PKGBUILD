@@ -8,6 +8,7 @@ url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('curl' 'imagemagick' 'libpng' 'libxml2' "vdr-api=${_vdrapi}")
+# libpng because we need imagemagick with libpng support. libpng is only an optdepend of imagemagick
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')

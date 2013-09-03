@@ -2,12 +2,12 @@
 pkgname=vdr-filebrowser
 pkgver=0.2.1
 _vdrapi=2.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="filebrowser with custom commands for vdr"
 url="http://opensource.holgerbrunn.net/vdr/filebrowser/"
 arch=('x86_64' 'i686')
 license=('GPL3')
-depends=("vdr-api=${_vdrapi}")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 replaces=("vdr-plugin-$_plugname")
 conflicts=("vdr-plugin-$_plugname")

@@ -4,7 +4,7 @@ pkgbase=DFAtmo
 pkgname=('dfatmo' 'vdr-dfatmo' 'xbmc-addon-dfatmo')
 pkgver=0.3.4
 _vdrapi=2.0.0
-pkgrel=4
+pkgrel=5
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')
@@ -45,7 +45,7 @@ package_dfatmo() {
 
 package_vdr-dfatmo() {
   pkgdesc="VDR plugin to drive a colored back lighting for TVs"
-  depends=('dfatmo' 'gcc-libs' "vdr-api=${_vdrapi}")
+  depends=('dfatmo' "vdr-api=${_vdrapi}")
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
   make VDRDESTDIR="${pkgdir}" vdrinstall
@@ -54,7 +54,7 @@ package_vdr-dfatmo() {
 
 package_xbmc-addon-dfatmo() {
   pkgdesc="VDR plugin to drive a colored back lighting for TVs"
-  depends=('xbmc')
+  depends=('dfatmo' 'xbmc')
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
   make XBMCDESTDIR="$pkgdir/usr/share/xbmc/addons/script.dfatmo" xbmcinstall

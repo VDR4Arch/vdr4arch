@@ -3,12 +3,12 @@ pkgname=vdr-eepg
 pkgver=0.0.5_184_g07d7e7e
 _gitver=07d7e7edfc182082af61756ac31171bf76298a8c
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Extended EPG (EEPG) plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-eepg"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-eepg.git#commit=$_gitver")

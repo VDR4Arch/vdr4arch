@@ -7,7 +7,7 @@ pkgdesc="Offers SVDRP connections as a service to other plugins"
 url="http://vdr.schmirler.de/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz")
 md5sums=('b4debde708ed897e1b77152d6f00c571')
