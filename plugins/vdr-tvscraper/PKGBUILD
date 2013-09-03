@@ -9,6 +9,7 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('curl' 'jansson' 'libxml2' 'sqlite' "vdr-api=${_vdrapi}")
 replaces=('vdr-tvscrapper')
+install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1454/$pkgname-$pkgver.tgz"
         'fix_null_pointer_access.diff::http://projects.vdr-developer.org/git/vdr-plugin-tvscraper.git/patch/?id=94a319d1a6ce1035a0d6187e414f2672a27b4ddf')
