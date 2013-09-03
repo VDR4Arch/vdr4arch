@@ -27,5 +27,7 @@ build() {
 
 package() {
   cd "${srcdir}/$_plugname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  make DESTDIR="$pkgdir" \
+       PLGCONFDIR="$pkgdir/var/lib/vdr/plugins/tvscraper" \
+       install
 }
