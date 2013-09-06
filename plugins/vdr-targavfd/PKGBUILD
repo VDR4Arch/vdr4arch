@@ -3,18 +3,25 @@ pkgname=vdr-targavfd
 pkgver=0.2.0
 epoch=1
 _vdrapi=2.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="shows information about the current state of VDR on Targa USB Graphic Vacuum Fluorescent Display"
 url="http://projects.vdr-developer.org/projects/show/plg-targavfd"
 arch=('x86_64' 'i686')
 license=('GPL3')
-depends=('gcc-libs' "vdr-api=${_vdrapi}")
+depends=('freetype2' 'libusbx' "vdr-api=${_vdrapi}")
 optdepends=()
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1326/$pkgname-$pkgver.tgz"
+        'fix_libusb_linking.diff::http://projects.vdr-developer.org/git/vdr-plugin-targavfd.git/patch/?id=a0e3e4ee900ed3f664ac9313b049611a9440d11a'
         '92-targavfd.rules')
 md5sums=('b30bba07837b6179c4e43759bd3b082d'
+         '610a4a0feba45e170849681af883cfa6'
          '4601c1f9481dbce9812a4dba1e7e4ab0')
+
+prepare() {
+  cd "$srcdir/$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/fix_libusb_linking.diff"
+}
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
