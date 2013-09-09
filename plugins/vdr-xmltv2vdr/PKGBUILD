@@ -28,8 +28,8 @@ pkgver() {
 
 build() {
   cd "${srcdir}/vdr-plugin-$_plugname"
-  make -C dist/epgdata2xmltv
-#   make -C dist/tvm2xmltv
+  make -j1 -C dist/epgdata2xmltv
+#   make -j1 -C dist/tvm2xmltv
 }
 
 package() {
