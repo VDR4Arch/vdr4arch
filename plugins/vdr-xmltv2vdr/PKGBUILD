@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-xmltv2vdr
-pkgver=0.1.1_55_g26fc826
-_gitver=26fc8262a7e4b24d9d56b0cc5f941d181f26661b
+pkgver=0.1.1_58_g6e749ad
+_gitver=6e749ad33a7bf006ab6146cdf6b7cce6502770c5
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=1
 pkgdesc="Add epg info from epg sources into vdr"
 url="http://projects.vdr-developer.org/projects/plg-xmltv2vdr"
 arch=('x86_64' 'i686')
@@ -21,9 +21,15 @@ pkgver() {
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
+
+# prepare() {
+#   cp "$srcdir"/{Makefile,tvm2xmltv.cpp,tvm2xmltv.h} "${srcdir}/vdr-plugin-$_plugname"/dist/tvm2xmltv
+# }
+
 build() {
-  cd "${srcdir}/vdr-plugin-$_plugname"/dist/epgdata2xmltv
-  make -j1
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  make -C dist/epgdata2xmltv
+#   make -C dist/tvm2xmltv
 }
 
 package() {
@@ -34,11 +40,12 @@ package() {
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       GIT_REV=''
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
 
-  cd dist/epgdata2xmltv
-  make epgdata2xmltv
-  install -Dm755 epgdata2xmltv "$pkgdir/usr/bin/epgdata2xmltv"
-  install -Dm644 epgdata2xmltv.dist "$pkgdir/var/lib/epgsources/epgdata2xmltv"
+  install -Dm755 dist/epgdata2xmltv/epgdata2xmltv "$pkgdir/usr/bin/epgdata2xmltv"
+  install -Dm644 dist/epgdata2xmltv/epgdata2xmltv.dist "$pkgdir/var/lib/epgsources/epgdata2xmltv"
+#   install -Dm755 dist/tvm2xmltv/tvm2xmltv "$pkgdir/usr/bin/tvm2xmltv"
+#   install -Dm644 dist/tvm2xmltv/tvm2xmltv.dist "$pkgdir/var/lib/epgsources/tvm2xmltv"
+  grep pipe dist/tvm2xmltv/tvm2xmltv.dist > "$pkgdir/var/lib/epgsources/tvm2xmltv"
+  grep -v pipe dist/tvm2xmltv/tvm2xmltv.dist >> "$pkgdir/var/lib/epgsources/tvm2xmltv"
 }
