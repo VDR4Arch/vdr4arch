@@ -1,8 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-play
-pkgver=0.0.14_20_gafa480c
+pkgver=0.0.14_21_g8035264
+_gitver=8035264d471f75407222a48f2fa707795e25d461
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=1
 pkgdesc="Mediaplayer plugin for VDR and X11"
 url="http://projects.vdr-developer.org/projects/plg-play"
 arch=('x86_64' 'i686')
@@ -10,7 +11,7 @@ license=('AGPL3')
 depends=('mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-play.git")
+source=("git://projects.vdr-developer.org/vdr-plugin-play.git#commit=$_gitver")
 md5sums=('SKIP')
 
 pkgver() {
