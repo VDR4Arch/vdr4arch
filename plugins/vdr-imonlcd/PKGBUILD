@@ -3,16 +3,25 @@ pkgname=vdr-imonlcd
 pkgver=1.0.1
 epoch=1
 _vdrapi=2.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="shows information about the current state of VDR on iMON LCD"
 url="http://projects.vdr-developer.org/projects/show/plg-imonlcd"
 arch=('x86_64' 'i686')
 license=('GPL3')
-depends=('gcc-libs' "vdr-api=$_vdrapi")
+depends=('freetype2' 'gcc-libs' "vdr-api=$_vdrapi")
 optdepends=()
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1327/$pkgname-$pkgver.tgz")
-md5sums=('a7f2d49355758d2ccc33ea21dbadc3de')
+source=("http://projects.vdr-developer.org/attachments/download/1327/$pkgname-$pkgver.tgz"
+        'linker_fix.diff::http://projects.vdr-developer.org/git/vdr-plugin-targavfd.git/patch/?id=a0e3e4ee900ed3f664ac9313b049611a9440d11a'
+        '92-imonlcd.rules')
+md5sums=('a7f2d49355758d2ccc33ea21dbadc3de'
+         '610a4a0feba45e170849681af883cfa6'
+         '3db56608a62ee7d01693b8fd30829db4')
+
+prepare() {
+  cd "$srcdir/$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/linker_fix.diff"
+}
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
@@ -21,4 +30,6 @@ build() {
 package() {
   cd "$srcdir/$_plugname-$pkgver"
   make DESTDIR="$pkgdir" install
+
+  install -Dm644 "$srcdir/92-imonlcd.rules" "$pkgdir/usr/lib/udev/rules.d/92-imonlcd.rules"
 }
