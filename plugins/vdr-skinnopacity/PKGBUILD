@@ -1,6 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=0.1.4
+pkgver=0.1.4_21_g3591b4d
+_gitver=3591b4db506f405705451a439083ad63a87c249f
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
@@ -12,29 +13,31 @@ depends=('curl' 'imagemagick' 'libpng' 'libxml2' "vdr-api=${_vdrapi}")
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1445/$pkgname-$pkgver.tgz"
+source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver"
         'skinnopacity-fix_im_gradient_with_hdri.diff')
 backup=("var/lib/vdr/plugins/$_plugname/rssfeeds.conf")
 options=('!emptydirs')
-md5sums=('ed1535a30c01741cad7ff3b280e93c33'
+md5sums=('SKIP'
          '40a16c14ee9a86f80f1b1906d7dcae09')
 
-prepare() {
-  cd "${srcdir}/$_plugname-$pkgver"
-  sed -i '/MAGICKCORE_HDRI_ENABLE/d' Makefile
-  sed -i '/MAGICKCORE_QUANTUM_DEPTH/d' Makefile
-  sed -i 's/cflags-only-I/cflags/g' Makefile
+pkgver() {
+  cd "${srcdir}/skin-nopacity"
+  git tag -a v0.1.4 -m 'Added Tag' 7da4695ec136b0ddada153a47ec5d0252f00a214 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
 
+prepare() {
+  cd "${srcdir}/skin-nopacity"
   patch -p1 -i "$srcdir/skinnopacity-fix_im_gradient_with_hdri.diff"
 }
 
 build() {
-  cd "${srcdir}/$_plugname-$pkgver"
+  cd "${srcdir}/skin-nopacity"
   make
 }
 
 package() {
-  cd "${srcdir}/$_plugname-$pkgver"
+  cd "${srcdir}/skin-nopacity"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 conf/rssfeeds.conf "$pkgdir/var/lib/vdr/plugins/$_plugname/rssfeeds.conf"
