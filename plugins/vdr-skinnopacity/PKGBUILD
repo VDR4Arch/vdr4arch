@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=0.1.4_21_g3591b4d
-_gitver=3591b4db506f405705451a439083ad63a87c249f
+pkgver=0.1.4_26_g5f7c132
+_gitver=5f7c1322d1b379b3434ade772081e4a86849c96c
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
