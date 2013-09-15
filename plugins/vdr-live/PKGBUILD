@@ -4,7 +4,7 @@ pkgver=0.3.0_4_g69f84f9
 epoch=1
 _gitver=69f84f95fa875c6f562294b1a6a1ea6f584d3f6c
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
 url="http://projects.vdr-developer.org/projects/plg-live"
 arch=('x86_64' 'i686')
@@ -15,8 +15,15 @@ optdepends=('vdr-epgsearch: Manage searchtimers'
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-live.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-live.git#commit=$_gitver"
+        'live-folderstatecookie-v2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=34407')
+md5sums=('SKIP'
+         '6abb3d1724057e765e98e1a9b5326fe3')
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  patch -p1 -i "$srcdir/live-folderstatecookie-v2.diff"
+}
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
