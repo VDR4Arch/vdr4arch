@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvscraper
-pkgver=0.0.5
+pkgver=0.1.0
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=1
 pkgdesc="Runs in the background and collects metadata for all available EPG events"
 url="http://www.vdr-portal.de/board1-news/board2-vdr-news/119880-announce-tvscrapper-0-0-1/"
 arch=('x86_64' 'i686')
@@ -11,18 +11,8 @@ depends=('curl' 'jansson' 'libxml2' 'sqlite' "vdr-api=${_vdrapi}")
 replaces=('vdr-tvscrapper')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1454/$pkgname-$pkgver.tgz"
-        'fix_null_pointer_access.diff::http://projects.vdr-developer.org/git/vdr-plugin-tvscraper.git/patch/?id=94a319d1a6ce1035a0d6187e414f2672a27b4ddf'
-        'fix_crash_if_epg_is_empty.diff::http://projects.vdr-developer.org/git/vdr-plugin-tvscraper.git/patch/?id=a12491ff265f0128939dbbbceae11461410c8a43')
-md5sums=('74a6c9ce0c9f9a517c9283691e5130d6'
-         'a468a0fc49e31cffc6310587746fde28'
-         '9a6fc29e222574ab97f75ef22751ed29')
-
-prepare() {
-  cd "${srcdir}/$_plugname-$pkgver"
-  patch -p1 -i "$srcdir/fix_null_pointer_access.diff"
-  patch -p1 -i "$srcdir/fix_crash_if_epg_is_empty.diff"
-}
+source=("http://projects.vdr-developer.org/attachments/download/1469/$pkgname-$pkgver.tgz")
+md5sums=('e7941e0b1e1594aeeb51587bd596eb95')
 
 build() {
   cd "${srcdir}/$_plugname-$pkgver"
@@ -31,7 +21,5 @@ build() {
 
 package() {
   cd "${srcdir}/$_plugname-$pkgver"
-  make DESTDIR="$pkgdir" \
-       PLGCONFDIR="$pkgdir/var/lib/vdr/plugins/tvscraper" \
-       install
+  make DESTDIR="$pkgdir" install
 }
