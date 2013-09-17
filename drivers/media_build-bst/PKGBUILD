@@ -1,18 +1,18 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=media_build-bst
-pkgver=130709
-_extramodules=extramodules-3.10-ARCH
+pkgver=130806
+_extramodules=extramodules-3.11-ARCH
 url='http://www.dvbsky.net/Support.html'
-pkgrel=3
+pkgrel=1
 pkgdesc="All interesting modules of dvbsky's driver package"
 arch=('x86_64')
 license=('GPL2')
-depends=('linux>=3.10' 'linux<3.11')
-makedepends=('linux-headers>=3.10' 'linux-headers<3.11')
+depends=('linux=3.11.1')
+makedepends=('linux-headers=3.11.1')
 install="${pkgname}.install"
 source=("http://www.dvbsky.net/download/linux/$pkgname-$pkgver.tar.gz"
         'compat.diff')
-md5sums=('212b031f5b8f66f95716aca3e4ed23ef'
+md5sums=('591b4d4697d5a65f4065cf2f7735b872'
          '9a4126e3219473a1408b25f02f092316')
 
 #sever doesn't like curl's user agent

@@ -2,14 +2,14 @@
 pkgname=v4l-dvb-saa716x
 pkgver=20130802
 _hgver=0dab24906ff0
-_extramodules=extramodules-3.10-ARCH
+_extramodules=extramodules-3.11-ARCH
 url='http://powarman.dyndns.org/hgwebdir.cgi/v4l-dvb-saa716x'
-pkgrel=2
+pkgrel=3
 pkgdesc="All interesting modules of powarman's repository"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('linux>=3.10' 'linux<3.11')
-makedepends=('linux-headers>=3.10' 'linux-headers<3.11' 'mercurial')
+depends=('linux=3.11.1')
+makedepends=('linux-headers=3.11.1' 'mercurial')
 install="${pkgname}.install"
 replaces=('saa716x')
 conflicts=('saa716x')
