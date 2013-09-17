@@ -1,12 +1,16 @@
+_depmod() {
+  EXTRAMODULES=extramodules-3.11-ARCH
+  depmod $(cat /usr/lib/modules/$EXTRAMODULES/version)
+}
+
 post_install() {
-    depmod -a
+  _depmod
 }
 
 post_upgrade() {
-    depmod -a
+  _depmod
 }
 
 post_remove() {
-    depmod -a
+  _depmod
 }
-
