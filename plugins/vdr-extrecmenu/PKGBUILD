@@ -12,12 +12,19 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-extrecmenu.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-extrecmenu.git#commit=$_gitver"
+        'fix_wrong_foldernames_with_nopacity.diff')
+md5sums=('SKIP'
+         'd00cdbf1bf9ef393f67f98775121f630')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  patch -p1 -i "$srcdir/fix_wrong_foldernames_with_nopacity.diff"
 }
 
 package() {
