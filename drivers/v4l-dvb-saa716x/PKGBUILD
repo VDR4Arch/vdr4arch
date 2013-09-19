@@ -2,14 +2,14 @@
 pkgname=v4l-dvb-saa716x
 pkgver=20130802
 _hgver=0dab24906ff0
-_extramodules=extramodules-3.11-ARCH
+_kernver=3.11.1
 url='http://powarman.dyndns.org/hgwebdir.cgi/v4l-dvb-saa716x'
 pkgrel=3
 pkgdesc="All interesting modules of powarman's repository"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('linux=3.11.1')
-makedepends=('linux-headers=3.11.1' 'mercurial')
+depends=("linux=$_kernver")
+makedepends=("linux-headers=$_kernver" 'mercurial')
 install="${pkgname}.install"
 replaces=('saa716x')
 conflicts=('saa716x')
@@ -29,18 +29,14 @@ prepare() {
 }
 
 build() {
-  _kernver="$(cat /lib/modules/$_extramodules/version)"
-
   cd "$srcdir/$pkgname/linux/drivers/media/common/saa716x"
-  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_BUDGET=m \
+  make -C /usr/src/linux-$_kernver-*-ARCH M=$(pwd) CONFIG_SAA716X_CORE=m CONFIG_DVB_SAA716X_BUDGET=m \
     CONFIG_DVB_SAA716X_HYBRID=m CONFIG_DVB_SAA716X_FF=m modules
 }
 
 
 package() {
-  cd "$srcdir"
-
-  mkdir -p "$pkgdir/usr/lib/modules/$_extramodules"
-  find -name *.ko -exec cp {} "$pkgdir/usr/lib/modules/$_extramodules" \;
-  gzip -9 "$pkgdir/usr/lib/modules/$_extramodules/"*
+  mkdir -p "$pkgdir/usr/lib/modules/extramodules-${_kernver%.*}-ARCH"
+  find "$srcdir" -name *.ko -exec cp {} "$pkgdir/usr/lib/modules/extramodules-${_kernver%.*}-ARCH" \;
+  gzip -9 "$pkgdir/usr/lib/modules/extramodules-${_kernver%.*}-ARCH/"*
 }

@@ -2,19 +2,21 @@
 pkgname=ngene-octopus-test
 pkgver=20130307
 _hgver=406ffecccbec
-_extramodules=extramodules-3.11-ARCH
+_kernver=3.11.1
+pkgrel=8
 url='http://linuxtv.org/hg/~endriss/ngene-octopus-test'
-pkgrel=7
 pkgdesc="All interesting modules of endriss' driver repository"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('linux=3.11.1')
-makedepends=('linux-headers=3.11.1' 'mercurial')
+depends=("linux=$_kernver")
+makedepends=("linux-headers=$_kernver" 'mercurial')
 install="${pkgname}.install"
 replaces=('ddbridge')
 conflicts=('ddbridge')
-source=("hg+http://linuxtv.org/hg/~endriss/$pkgname#revision=$_hgver")
-md5sums=('SKIP')
+source=("hg+http://linuxtv.org/hg/~endriss/$pkgname#revision=$_hgver"
+        "cxd2099.h::https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/plain/drivers/staging/media/cxd2099/cxd2099.h?id=v$_kerver")
+md5sums=('SKIP'
+         'b7903ec3ca22610123249dbc11c50026')
 
 
 pkgver() {
@@ -23,45 +25,35 @@ pkgver() {
 }
 
 build() {
-  _kernver="$(cat /lib/modules/$_extramodules/version)"
-
-  cd "$srcdir/$pkgname/linux/drivers/staging/cxd2099"
-  echo 'ccflags-y = -Idrivers/media/dvb-core/' >> Makefile
-  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_DVB_CXD2099=m modules
-
   cd "$srcdir/$pkgname/linux/drivers/media/dvb"
 
-  cd ddbridge
-  echo 'ccflags-y += -Idrivers/media/dvb-core/' >> Makefile
-  echo 'ccflags-y += -Idrivers/media/dvb-frontends/' >> Makefile
-  ln -sf "$srcdir/$pkgname/linux/drivers/staging/cxd2099/cxd2099.h" .
-  ln -sf ../frontends/{stv0367dd.h,tda18212dd.h} .
-  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_DVB_DDBRIDGE=m modules
-  cd ..
+  pushd ddbridge
+  sed -i 's/dvb\///g' Makefile
+  sed -i 's/frontends/dvb-frontends/g' Makefile
+  sed -i 's/common\///g' Makefile
+  ln -sf "$srcdir/cxd2099.h" ../frontends/{stv0367dd.h,tda18212dd.h} .
+  make -C /usr/src/linux-$_kernver-*-ARCH M=$(pwd) CONFIG_DVB_DDBRIDGE=m modules
+  popd
 
-  cd ngene
+  pushd ngene
   echo 'ccflags-y += -Iinclude/linux/' >> Makefile
-  echo 'ccflags-y += -Idrivers/media/dvb-core/' >> Makefile
-  echo 'ccflags-y += -Idrivers/media/dvb-frontends/' >> Makefile
-  echo 'ccflags-y += -Idrivers/media/tuners/' >> Makefile
-  ln -sf "$srcdir/$pkgname/linux/drivers/staging/cxd2099/cxd2099.h" .
-  ln -sf ../frontends/{stv0367dd.h,tda18212dd.h} .
-  make -C /lib/modules/$_kernver/build M=$(pwd) CONFIG_DVB_NGENE=m modules
-  cd ..
+  sed -i 's/dvb\///g' Makefile
+  sed -i 's/frontends/dvb-frontends/g' Makefile
+  sed -i 's/common\///g' Makefile
+  ln -sf "$srcdir/cxd2099.h" ../frontends/{stv0367dd.h,tda18212dd.h} .
+  make -C /usr/src/linux-$_kernver-*-ARCH M=$(pwd) CONFIG_DVB_NGENE=m modules
+  popd
 
-  cd frontends
+  pushd frontends
   echo 'obj-m += stv0367dd.o' > Makefile
   echo 'obj-m += tda18212dd.o' >> Makefile
   echo 'ccflags-y += -Iinclude/linux/' >> Makefile
   echo 'ccflags-y += -Idrivers/media/dvb-core/' >> Makefile
-  make -C /lib/modules/$_kernver/build M=$(pwd) modules
+  make -C /usr/src/linux-$_kernver-*-ARCH M=$(pwd) modules
 }
 
-
 package() {
-  cd "$srcdir"
-
-  mkdir -p "$pkgdir/usr/lib/modules/$_extramodules"
-  find -name *.ko -exec cp {} "$pkgdir/usr/lib/modules/$_extramodules" \;
-  gzip -9 "$pkgdir/usr/lib/modules/$_extramodules/"*
+  mkdir -p "$pkgdir/usr/lib/modules/extramodules-${_kernver%.*}-ARCH"
+  find "$srcdir" -name *.ko -exec cp {} "$pkgdir/usr/lib/modules/extramodules-${_kernver%.*}-ARCH" \;
+  gzip -9 "$pkgdir/usr/lib/modules/extramodules-${_kernver%.*}-ARCH/"*
 }
