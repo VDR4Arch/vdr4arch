@@ -2,12 +2,12 @@
 pkgname=vdr-skinflat
 pkgver=0.1.0
 _vdrapi=2.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Simple and slim skin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-skinflat"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick' 'libpng' "vdr-api=${_vdrapi}")
+depends=('imagemagick=6.8.6.10' 'libpng' "vdr-api=${_vdrapi}")
 # libpng because we need imagemagick with libpng support. libpng is only an optdepend of imagemagick
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')

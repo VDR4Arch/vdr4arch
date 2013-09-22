@@ -3,12 +3,12 @@ pkgname=vdr-yaepghd
 pkgver=0.0.4
 _gitver=2a08e4e54882a848975d1435e09dece58b7aa2de
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Complete rewrite of the original yaepg plugin"
 url="http://sourceforge.net/projects/vdryaepghd"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick' "vdr-api=${_vdrapi}")
+depends=('imagemagick=6.8.6.10' "vdr-api=${_vdrapi}")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
