@@ -14,7 +14,7 @@ install="${pkgname}.install"
 replaces=('ddbridge')
 conflicts=('ddbridge')
 source=("hg+http://linuxtv.org/hg/~endriss/$pkgname#revision=$_hgver"
-        "cxd2099.h::https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/plain/drivers/staging/media/cxd2099/cxd2099.h?id=v$_kerver")
+        "cxd2099.h::https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/plain/drivers/staging/media/cxd2099/cxd2099.h?id=v${_kernver}")
 md5sums=('SKIP'
          'b7903ec3ca22610123249dbc11c50026')
 
