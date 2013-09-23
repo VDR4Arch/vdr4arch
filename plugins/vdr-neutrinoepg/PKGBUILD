@@ -1,16 +1,16 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-neutrinoepg
-pkgver=0.3.5
+pkgver=0.3.6
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=1
 pkgdesc="Neat EPG-Viewer for VDR"
 url="http://projects.vdr-developer.org/projects/plg-neutrinoepg"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=$_vdrapi")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1407/$_plugname-$pkgver.tar.gz")
-md5sums=('0c77287a5bad5a62d4084025065fb7ec')
+source=("http://projects.vdr-developer.org/attachments/download/1475/$_plugname-$pkgver.tar.gz")
+md5sums=('881426478efc94111c3f11c6b68f25c4')
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
