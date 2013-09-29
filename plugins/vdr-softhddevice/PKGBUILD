@@ -4,7 +4,7 @@ pkgver=0.6.0_29_ga13c25d
 epoch=1
 _gitver=a13c25d30987a1b8e9f5af2e06344de60a3d4295
 _vdrapi=2.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
@@ -25,12 +25,24 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-#  sed -i 's/3000/500/g' Makefile
-#  sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
-#  sed -i 's/-DAV_INFO //g' Makefile
+
+  # Disable OSS. Arch Linux doesn't ship OSS
+  sed -i '/OSS /d' Makefile
+
+  # Enable EOS_TRICKSPEED to fix rewind on 1080i channels
   sed -i 's/#CONFIG += -DH264_EOS_TRICKSPEED/CONFIG += -DH264_EOS_TRICKSPEED/g' Makefile
 
+  # Add johns' av4_diff to workaround framedrops on single-core machines.
   patch -p1 -i "$srcdir/av4_diff.diff"
+
+  # Disable AV_INFO because it's flooding the log in combination with av4_diff
+  sed -i '/AV_INFO/d' Makefile
+
+  # Enable this to increase AV_INFO logging
+  #sed -i 's/3000/500/g' Makefile
+
+  # Enable this to compile with debug logging
+  #sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
 }
 
 build() {
