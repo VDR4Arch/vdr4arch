@@ -2,8 +2,8 @@
 pkgname=ngene-octopus-test
 pkgver=20130307
 _hgver=406ffecccbec
-_kernver=3.11.3
-pkgrel=10
+_kernver=3.11.4
+pkgrel=11
 url='http://linuxtv.org/hg/~endriss/ngene-octopus-test'
 pkgdesc="All interesting modules of endriss' driver repository"
 arch=('x86_64' 'i686')
