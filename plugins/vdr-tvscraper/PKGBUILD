@@ -2,7 +2,7 @@
 pkgname=vdr-tvscraper
 pkgver=0.1.0
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Runs in the background and collects metadata for all available EPG events"
 url="http://www.vdr-portal.de/board1-news/board2-vdr-news/119880-announce-tvscrapper-0-0-1/"
 arch=('x86_64' 'i686')
@@ -11,8 +11,16 @@ depends=('curl' 'jansson' 'libxml2' 'sqlite' "vdr-api=${_vdrapi}")
 replaces=('vdr-tvscrapper')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1469/$pkgname-$pkgver.tgz")
-md5sums=('e7941e0b1e1594aeeb51587bd596eb95')
+source=("http://projects.vdr-developer.org/attachments/download/1469/$pkgname-$pkgver.tgz"
+        'git-1af52dd.diff::http://projects.vdr-developer.org/git/vdr-plugin-tvscraper.git/patch/?id=1af52dd83848d4f576f84dbf3871f7e670feb787')
+md5sums=('e7941e0b1e1594aeeb51587bd596eb95'
+         'b821915dc7009554420789c684fee647')
+
+
+prepare() {
+  cd "${srcdir}/$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/git-1af52dd.diff"
+}
 
 build() {
   cd "${srcdir}/$_plugname-$pkgver"
