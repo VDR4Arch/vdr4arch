@@ -1,30 +1,35 @@
-# Maintainer : Marco Franceschetti <vonfritz1 at gmail dot com>
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# Contributor: Marco Franceschetti <vonfritz1 at gmail dot com>
 
-_pluginname=loadepg
-pkgname=vdr-plugin-$_pluginname
+pkgname=vdr-loadepg
 pkgver=0.2.6
 pkgrel=1
-arch=(i686 x86_64)
-pkgdesc="VDR-Plugin display Canal+ group (Mediahighway) and Sky EPG Data"
+_vdrapi=2.0.0
+arch=('x86_64' 'i686')
+pkgdesc="Displays Canal+ group (Mediahighway) and Sky EPG Data"
 url="http://lukkinosat.altervista.org/"
-license="GPL"
-makedepends=('vdr')
-depends=('vdr')
-backup=()
+license=("GPL2")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
 install="${pkgname}.install"
-source=(http://lukkinosat.altervista.org/vdr-$_pluginname-$pkgver.tgz)
+source=("http://lukkinosat.altervista.org/$pkgname-$pkgver.tgz")
+backup=("var/lib/vdr/plugins/${_plugname}/loadepg.conf"
+        "var/lib/vdr/plugins/${_plugname}/loadepg.equiv"
+        "var/lib/vdr/plugins/${_plugname}/sky_it.dict"
+        "var/lib/vdr/plugins/${_plugname}/sky_it.themes"
+        "var/lib/vdr/plugins/${_plugname}/sky_uk.dict"
+        "var/lib/vdr/plugins/${_plugname}/sky_uk.themes")
 md5sums=('601c345941cd6d181ff6f5546fd02aee')
 
-
 build() {
-  cd "${srcdir}/${_pluginname}-${pkgver}"
+  cd "${srcdir}/${_plugname}-${pkgver}"
   make
 }
 
 package() {
-  cd "${srcdir}/${_pluginname}-${pkgver}"
+  cd "${srcdir}/${_plugname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
-  mkdir -p $pkgdir/var/lib/vdr/plugins/${_pluginname}/
-  install -Dm644 ${srcdir}/$_pluginname-${pkgver}/conf/*    $pkgdir/var/lib/vdr/plugins/${_pluginname}
+  mkdir -p "$pkgdir/var/lib/vdr/plugins/${_plugname}"
+  install -Dm644 "${srcdir}/$_plugname-${pkgver}"/conf/* "$pkgdir/var/lib/vdr/plugins/${_plugname}"
 }
