@@ -1,0 +1,30 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-hddarchive
+pkgver=20130922
+_gitver=e8d1ca5ff467ab26c94513ca671f7ea626d9a9c4
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Brings the archive-hdd functionality to VDR."
+url="http://projects.vdr-developer.org/projects/show/plg-hddarchive"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+makedepends=('git')
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("git://projects.vdr-developer.org/vdr-plugin-hddarchive.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git log -1 --pretty=format:%ad --date=short | sed 's/-//g'
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make
+}
+
+package() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make DESTDIR="${pkgdir}" install
+}
