@@ -1,0 +1,48 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgbase=vdr-mp3
+# Disable vdr-mplayer for now. mplayer.sh is not working and I don't know how to fix it.
+# pkgname=('vdr-mp3' 'vdr-mplayer')
+pkgname=vdr-mp3
+pkgver=0.10.2
+_vdrapi=2.0.0
+pkgrel=1
+url="http://www.muempf.de/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gcc-libs' 'libid3tag' 'libmad' 'libsndfile' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgbase | sed 's/vdr-//g')
+source=("http://www.muempf.de/down/$pkgbase-$pkgver.tar.gz")
+backup=('var/lib/vdr/mp3sources.conf')
+md5sums=('66fd37827326776c223a0fdd0ad3811e')
+
+prepare() {
+  cd "$srcdir/$_plugname-$pkgver"
+}
+
+package_vdr-mp3() {
+  pkgdesc="Allows playback of MP3 and other audio files."
+  cd "$srcdir/$_plugname-$pkgver"
+
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       WITHOUT_MPLAYER=1
+  install -Dm644 examples/mp3sources.conf.example "$pkgdir/var/lib/vdr/mp3sources.conf"
+}
+
+package_vdr-mplayer() {
+  pkgdesc="Call MPlayer for playback of video"
+  cd "$srcdir/$_plugname-$pkgver"
+
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       WITHOUT_MP3=1
+  install -Dm644 examples/mp3sources.conf.example "$pkgdir/var/lib/vdr/mplayersources.conf"
+}
