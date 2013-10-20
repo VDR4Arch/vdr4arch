@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=runvdr-extreme
-pkgver=0.4.2
-pkgrel=11
+pkgver=0.5.0
+pkgrel=1
 pkgdesc="Runvdr script, just like the runvdr script included in the VDR distribution"
 url="http://www.udo-richter.de/vdr/scripts.html"
 arch=('any')
@@ -9,31 +9,18 @@ license=('GPL2')
 depends=('bash' 'vdr')
 optdepends=('xorg-xinit: For fireing up a X session')
 backup=(etc/runvdr.conf)
-source=("http://www.udo-richter.de/vdr/files/${pkgname}-${pkgver}.tgz"
+source=("http://projects.vdr-developer.org/attachments/download/1536/$pkgname-$pkgver.tar.xz"
         '60-create-dvb-device-units.rules'
         '60-vdr-tty.rules'
         'runvdr.conf'
-        'runvdr-extreme-0.4.2-bash-4.2-fix.diff'
-        'runvdr-extreme-0.4.2-charset-override.diff'
         'gen-sddropin'
         'vdr.service')
-md5sums=('ca95ce455fc6e66fcaa4b3476ecdcffc'
+md5sums=('e993264e0ec439118b47689a27111128'
          '23d6e1ca0a36cfdbd35d3b1a61f0a105'
          '32dcab4ce46f8164977ab3abdeccec57'
          'a3bf66614daa536284e517855d2c9dab'
-         '0004d23d3719abe9ce54ce47c32d27d3'
-         '5ca14709ba9064a745d6162c04e73630'
          '5fe146509c84500bbf9b1be97b1d5a7d'
          '2613adf71de7e813c47b888352359d34')
-
-prepare() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-
-  patch -i ${srcdir}/runvdr-extreme-0.4.2-bash-4.2-fix.diff
-  patch -i ${srcdir}/runvdr-extreme-0.4.2-charset-override.diff #By Manuel Reimer
-
-  sed -i -e 's/VDRPRG=$/VDRPRG=vdr/g' runvdr
-}
 
 package() {
   install -Dm644 60-create-dvb-device-units.rules "$pkgdir/usr/lib/udev/rules.d/60-create-dvb-device-units.rules"
@@ -44,4 +31,7 @@ package() {
 
   cd "${srcdir}/${pkgname}-${pkgver}"
   install -Dm755 runvdr "$pkgdir/usr/bin/runvdr"
+
+  mkdir -p "$pkgdir/usr/share/man/man5"
+  pod2man -s 5 -c runvdr -r runvdr runvdr.conf.pod | gzip > "$pkgdir/usr/share/man/man5/runvdr.conf.5.gz"
 }
