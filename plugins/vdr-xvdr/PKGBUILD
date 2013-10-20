@@ -11,15 +11,22 @@ pkgdesc="VDR plugin to handle XBMC clients"
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 optdepends=('vdr-wirbelscan: Support channel searches with XBMC')
 makedepends=('git')
-source=("git+https://github.com/pipelka/vdr-plugin-xvdr.git#commit=$_gitver")
+source=("git+https://github.com/pipelka/vdr-plugin-xvdr.git#commit=$_gitver"
+        'xvdr-vdr2.1.2compat.diff')
 backup=('var/lib/vdr/plugins/xvdr/allowed_hosts.conf'
         'var/lib/vdr/plugins/xvdr/xvdr.conf')
 install="$pkgname.install"
-md5sums=('SKIP')
+md5sums=('SKIP'
+         '3b77572e50ba076be127c85a0158838d')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-xvdr"
   git describe --tags | sed 's/xvdr-//g;s/-/_/g'
+}
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-xvdr"
+  patch -p1 -i "$srcdir/xvdr-vdr2.1.2compat.diff"
 }
 
 build() {

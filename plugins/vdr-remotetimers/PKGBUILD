@@ -9,8 +9,15 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=("vdr-api=${_vdrapi}" 'vdr-svdrpservice')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz")
-md5sums=('db0a06a5901df5f1d6fa3973df3fe456')
+source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz"
+        'remotetimers-vdr2.1.2compat.diff')
+md5sums=('db0a06a5901df5f1d6fa3973df3fe456'
+         '50b30d5b0251ddf7da1c51d8aa69026a')
+
+prepare() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  patch -p1 -i "$srcdir/remotetimers-vdr2.1.2compat.diff"
+}
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"

@@ -12,13 +12,20 @@ depends=('libupnp' 'tntdb' 'tntnet' "vdr-api=${_vdrapi}")
 makedepends=('boost' 'git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-$_plugname.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-$_plugname.git#commit=$_gitver"
+        'upnp-vdr2.1.2compat.diff')
+md5sums=('SKIP'
+         '9aa486e95f113ac1791d5faffde27f5e')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   git tag -a v1.0.0 -m 'Added Tag' 529f178bd15a361baf1e83837b1e872be14795a6 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  patch -p1 -i "$srcdir/upnp-vdr2.1.2compat.diff"
 }
 
 build() {

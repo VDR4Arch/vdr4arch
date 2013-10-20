@@ -11,8 +11,10 @@ license=('GPL2')
 depends=('imagemagick' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-text2skin.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-text2skin.git#commit=$_gitver"
+        'text2skin-vdr2.1.2compat.diff')
+md5sums=('SKIP'
+         '5615fceb3b7597405402d1b817f8bc22')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
@@ -21,6 +23,7 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
+  patch -p1 -i "$srcdir/text2skin-vdr2.1.2compat.diff"
   sed -i 's/Config/Resource/g' common.c
 }
 

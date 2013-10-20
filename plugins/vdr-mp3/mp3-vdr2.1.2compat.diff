@@ -1,0 +1,15 @@
+diff -ruN mp3-0.10.2/decoder.c mp3-0.10.2.edit/decoder.c
+--- mp3-0.10.2/decoder.c	2009-11-29 04:09:45.000000000 +0100
++++ mp3-0.10.2.edit/decoder.c	2013-10-19 19:34:19.353254255 +0200
+@@ -632,7 +632,11 @@
+ 
+ char *cInfoCache::CacheFile(void)
+ {
++#if APIVERSNUM > 20101
++  return AddPath(cachedir?cachedir:cVideoDirectory::Name(),CACHEFILENAME);
++#else
+   return AddPath(cachedir?cachedir:VideoDirectory,CACHEFILENAME);
++#endif
+ }
+ 
+ void cInfoCache::Save(bool force)

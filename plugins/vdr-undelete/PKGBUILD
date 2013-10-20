@@ -9,8 +9,15 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1060/$pkgname-$pkgver.tgz")
-md5sums=('667493335e0b1629e72de86a4cc7e558')
+source=("http://projects.vdr-developer.org/attachments/download/1060/$pkgname-$pkgver.tgz"
+        'undelete-vdr2.1.2compat.diff')
+md5sums=('667493335e0b1629e72de86a4cc7e558'
+         '78999207fa6a1d3714d493d09cc096c2')
+
+prepare() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  patch -p1 -i "$srcdir/undelete-vdr2.1.2compat.diff"
+}
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"

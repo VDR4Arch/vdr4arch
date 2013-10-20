@@ -1,0 +1,16 @@
+diff --git a/mymenu.c b/mymenu.c
+index 78dca7c..9e9e588 100644
+--- a/mymenu.c
++++ b/mymenu.c
+@@ -112,7 +112,11 @@ void cMyMenuRecordings::Set(bool Refresh)
+ 
+ cString cMyMenuRecordings::DirectoryName(void)
+ {
++#if APIVERSNUM > 20101
++   cString d(cVideoDirectory::Name());
++#else
+    cString d(VideoDirectory);
++#endif
+    if (base) {
+       char *s = ExchangeChars(strdup(base), true);
+       d = AddDirectory(d, s);

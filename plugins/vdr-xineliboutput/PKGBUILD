@@ -13,12 +13,19 @@ optdepends=('nvidia: Required for VDPAU decoding'
             'xorg-server: Required for software decoding')
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/$_plugname.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/$_plugname.git#commit=$_gitver"
+        'xineliboutput-vdr2.1.2compat.diff')
+md5sums=('SKIP'
+         'd313b50c576ab17dfb2a08d50981bec8')
 
 pkgver() {
   cd "${srcdir}/${_plugname}"
   git describe --tags | sed "s/$_plugname.//g;s/_/./g;s/-/./g"
+}
+
+prepare() {
+  cd "${srcdir}/${_plugname}"
+  patch -p1 -i "$srcdir/xineliboutput-vdr2.1.2compat.diff"
 }
 
 package() {

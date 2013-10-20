@@ -10,11 +10,15 @@ license=('GPL2')
 depends=('cxxtools' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("https://github.com/yavdr/vdr-plugin-$_plugname/archive/$pkgver.tar.gz")
-md5sums=('ab76d58b84c6ff0a5c265dace890de20')
+source=("https://github.com/yavdr/vdr-plugin-$_plugname/archive/$pkgver.tar.gz"
+        'restfulapi-vdr2.1.2compat.diff')
+md5sums=('ab76d58b84c6ff0a5c265dace890de20'
+         'cfd2e3a393e89598afae97ae0c712925')
 
 prepare() {
   cd "$srcdir/vdr-plugin-$_plugname-$pkgver"
+
+  patch -p1 -i "$srcdir/restfulapi-vdr2.1.2compat.diff"
   sed -i -e 's/var\/lib\/video\.00/srv\/vdr\/video/' tools.cpp
 }
 

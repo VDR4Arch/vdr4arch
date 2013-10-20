@@ -1,0 +1,49 @@
+diff -ruN vdr-plugin-restfulapi-0.1.2/recordings.cpp vdr-plugin-restfulapi-0.1.2.edit/recordings.cpp
+--- vdr-plugin-restfulapi-0.1.2/recordings.cpp	2013-03-10 13:40:27.000000000 +0100
++++ vdr-plugin-restfulapi-0.1.2.edit/recordings.cpp	2013-10-19 14:24:29.817420646 +0200
+@@ -205,10 +205,18 @@
+   int rec_number = q.getParamAsInt(0);
+   if (rec_number >= 0 && rec_number < Recordings.Count()) {
+      cRecording* recording = Recordings.Get(rec_number);
++#if APIVERSNUM > 20101
++     if (RecordingsHandler.Active()) {
++#else
+      if (cCutter::Active()) {
++#endif
+         reply.httpReturn(504, "VDR Cutter currently busy.");
+      } else {
++#if APIVERSNUM > 20101
++        RecordingsHandler.Add(ruCut, recording->FileName());
++#else
+         cCutter::Start(recording->FileName());
++#endif
+      }
+      return;
+   }
+@@ -220,7 +228,11 @@
+   QueryHandler q("/recordings/cut", request);
+   StreamExtension s(&out);
+ 
++#if APIVERSNUM > 20101
++  bool active = RecordingsHandler.Active();
++#else
+   bool active = cCutter::Active();
++#endif
+ 
+   if (q.isFormat(".html")) {
+      reply.addHeader("Content-Type", "text/html; charset=utf-8");
+diff -ruN vdr-plugin-restfulapi-0.1.2/tools.cpp vdr-plugin-restfulapi-0.1.2.edit/tools.cpp
+--- vdr-plugin-restfulapi-0.1.2/tools.cpp	2013-10-19 14:22:31.304481234 +0200
++++ vdr-plugin-restfulapi-0.1.2.edit/tools.cpp	2013-10-19 14:17:10.526925375 +0200
+@@ -596,7 +596,11 @@
+ string VdrExtension::getRelativeVideoPath(cRecording* recording)
+ {
+   string path = (string)recording->FileName();
++#if APIVERSNUM > 20101
++  string VIDEODIR(cVideoDirectory::Name());
++#else
+   string VIDEODIR(VideoDirectory);
++#endif
+   return path.substr(VIDEODIR.length());
+ }
+ 

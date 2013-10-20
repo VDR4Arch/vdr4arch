@@ -11,12 +11,15 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' 'libid3tag' 'libmad' 'libsndfile' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgbase | sed 's/vdr-//g')
-source=("http://www.muempf.de/down/$pkgbase-$pkgver.tar.gz")
+source=("http://www.muempf.de/down/$pkgbase-$pkgver.tar.gz"
+        'mp3-vdr2.1.2compat.diff')
 backup=('var/lib/vdr/mp3sources.conf')
-md5sums=('66fd37827326776c223a0fdd0ad3811e')
+md5sums=('66fd37827326776c223a0fdd0ad3811e'
+         '1cd202b5a0c8980fd14d080719b780d3')
 
 prepare() {
   cd "$srcdir/$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/mp3-vdr2.1.2compat.diff"
 }
 
 package_vdr-mp3() {

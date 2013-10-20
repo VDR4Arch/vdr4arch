@@ -11,14 +11,21 @@ license=('GPL2')
 pkgdesc="VDR plugin to handle XBMC clients"
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
-source=("git://github.com/opdenkamp/xbmc-pvr-addons.git#commit=$_gitver")
+source=("git://github.com/opdenkamp/xbmc-pvr-addons.git#commit=$_gitver"
+        'vnsiserver-vdr2.1.2compat.diff')
 backup=('var/lib/vdr/plugins/vnsiserver/allowed_hosts.conf')
 install="$pkgname.install"
-md5sums=('SKIP')
+md5sums=('SKIP'
+         'd3748ed104553ad86bc7f052475f1225')
 
 pkgver() {
   cd "${srcdir}/xbmc-pvr-addons"
   git describe --tags | sed 's/-/_/g'
+}
+
+prepare() {
+  cd "${srcdir}/xbmc-pvr-addons"
+  patch -p1 -i "$srcdir/vnsiserver-vdr2.1.2compat.diff"
 }
 
 build() {

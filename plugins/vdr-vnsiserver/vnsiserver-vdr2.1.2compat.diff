@@ -1,0 +1,16 @@
+diff --git a/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver/vnsiclient.c b/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver/vnsiclient.c
+index 92bea63..f8ff710 100644
+--- a/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver/vnsiclient.c
++++ b/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver/vnsiclient.c
+@@ -1274,7 +1274,11 @@ bool cVNSIClient::processTIMER_Update() /* OPCODE 85 */
+ bool cVNSIClient::processRECORDINGS_GetDiskSpace() /* OPCODE 100 */
+ {
+   int FreeMB;
++#if APIVERSNUM > 20101
++  int Percent = cVideoDirectory::VideoDiskSpace(&FreeMB);
++#else
+   int Percent = VideoDiskSpace(&FreeMB);
++#endif
+   int Total   = (FreeMB / (100 - Percent)) * 100;
+ 
+   m_resp->add_U32(Total);

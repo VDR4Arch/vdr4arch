@@ -10,11 +10,15 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://www.loggytronic.com/dl/$pkgname-$pkgver.tgz")
-md5sums=('3220006cf7faf9536213887b23a9d366')
+source=("http://www.loggytronic.com/dl/$pkgname-$pkgver.tgz"
+        'vompserver-vdr2.1.2compat.diff')
+md5sums=('3220006cf7faf9536213887b23a9d366'
+         '2e98c9d26b56d17263cd58e7840d7aa6')
 
 prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
+
+  patch -p1 -i "$srcdir/vompserver-vdr2.1.2compat.diff"
   sed -i '/VDRDIR =/d' Makefile
 }
 

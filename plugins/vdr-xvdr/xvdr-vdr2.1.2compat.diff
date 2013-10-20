@@ -1,0 +1,32 @@
+diff --git a/src/config/config.c b/src/config/config.c
+index e058e96..1aaf9b8 100644
+--- a/src/config/config.c
++++ b/src/config/config.c
+@@ -45,7 +45,11 @@ cXVDRServerConfig::cXVDRServerConfig()
+ }
+ 
+ void cXVDRServerConfig::Load() {
++#if APIVERSNUM > 20101
++  cLiveQueue::SetTimeShiftDir(cVideoDirectory::Name());
++#else
+   cLiveQueue::SetTimeShiftDir(VideoDirectory);
++#endif
+   cRecordingsCache::GetInstance().LoadResumeData();
+ 
+   if(!cConfig<cSetupLine>::Load(AddDirectory(ConfigDirectory, GENERAL_CONFIG_FILE), true, false))
+diff --git a/src/xvdr/xvdrclient.c b/src/xvdr/xvdrclient.c
+index 7af9aa8..a138bb8 100644
+--- a/src/xvdr/xvdrclient.c
++++ b/src/xvdr/xvdrclient.c
+@@ -1380,7 +1380,11 @@ bool cXVDRClient::processTIMER_Update() /* OPCODE 85 */
+ bool cXVDRClient::processRECORDINGS_GetDiskSpace() /* OPCODE 100 */
+ {
+   int FreeMB;
++#if APIVERSNUM > 20101
++  int Percent = cVideoDirectory::VideoDiskSpace(&FreeMB);
++#else
+   int Percent = VideoDiskSpace(&FreeMB);
++#endif
+   int Total   = (FreeMB / (100 - Percent)) * 100;
+ 
+   m_resp->put_U32(Total);

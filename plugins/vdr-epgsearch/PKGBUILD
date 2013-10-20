@@ -13,7 +13,8 @@ optdepends=('msmtp: To send notification mails (Simpler replacement for sendmail
             'ssmtp: To send notification mails (Another simpler replacement for sendmail)')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz")
+source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz"
+        'epgsearch-vdr2.1.2compat.diff')
 backup=('var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-epgdata'
         'var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-tvm2vdr-hoerzu'
         'var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-tvm2vdr-tvmovie'
@@ -22,10 +23,14 @@ backup=('var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-epgdata'
         'var/lib/vdr/plugins/epgsearch/epgsearchupdmail-html.templ'
         'var/lib/vdr/plugins/epgsearch/epgsearchupdmail.templ')
 options=('!emptydirs')
-md5sums=('6e63cc29df02f48fabf6e12e1e71b2fc')
+md5sums=('6e63cc29df02f48fabf6e12e1e71b2fc'
+         '9086b9f570b62b9aa72f78f0c684883a')
 
 prepare() {
-  sed -i 's/^Menu/# Menu/g' "${srcdir}/${_plugname}-${pkgver}"/conf/epgsearchmenu.conf
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  patch -p1 -i "$srcdir/epgsearch-vdr2.1.2compat.diff"
+  sed -i 's/^Menu/# Menu/g' conf/epgsearchmenu.conf
 }
 
 build() {

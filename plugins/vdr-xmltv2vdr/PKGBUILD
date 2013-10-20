@@ -12,24 +12,25 @@ depends=('curl' 'enca' 'libxslt' 'libzip' 'sqlite' "vdr-api=${_vdrapi}")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-xmltv2vdr.git#commit=$_gitver")
+source=("git://projects.vdr-developer.org/vdr-plugin-xmltv2vdr.git#commit=$_gitver"
+        'xmltv2vdr-vdr2.1.2compat.diff')
 backup=("var/lib/epgsources/epgdata2xmltv")
-md5sums=('SKIP')
+md5sums=('SKIP'
+         'a1865ca3040ffc9bcc18e3bbfdf63cf8')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-$_plugname"
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
-
-# prepare() {
-#   cp "$srcdir"/{Makefile,tvm2xmltv.cpp,tvm2xmltv.h} "${srcdir}/vdr-plugin-$_plugname"/dist/tvm2xmltv
-# }
+prepare() {
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  patch -p1 -i "$srcdir/xmltv2vdr-vdr2.1.2compat.diff"
+}
 
 build() {
   cd "${srcdir}/vdr-plugin-$_plugname"
   make -j1 -C dist/epgdata2xmltv
-#   make -j1 -C dist/tvm2xmltv
 }
 
 package() {
@@ -44,8 +45,6 @@ package() {
 
   install -Dm755 dist/epgdata2xmltv/epgdata2xmltv "$pkgdir/usr/bin/epgdata2xmltv"
   install -Dm644 dist/epgdata2xmltv/epgdata2xmltv.dist "$pkgdir/var/lib/epgsources/epgdata2xmltv"
-#   install -Dm755 dist/tvm2xmltv/tvm2xmltv "$pkgdir/usr/bin/tvm2xmltv"
-#   install -Dm644 dist/tvm2xmltv/tvm2xmltv.dist "$pkgdir/var/lib/epgsources/tvm2xmltv"
   grep pipe dist/tvm2xmltv/tvm2xmltv.dist > "$pkgdir/var/lib/epgsources/tvm2xmltv"
   grep -v pipe dist/tvm2xmltv/tvm2xmltv.dist >> "$pkgdir/var/lib/epgsources/tvm2xmltv"
 }
