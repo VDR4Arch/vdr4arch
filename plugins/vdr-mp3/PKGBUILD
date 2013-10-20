@@ -15,7 +15,7 @@ source=("http://www.muempf.de/down/$pkgbase-$pkgver.tar.gz"
         'mp3-vdr2.1.2compat.diff')
 backup=('var/lib/vdr/mp3sources.conf')
 md5sums=('66fd37827326776c223a0fdd0ad3811e'
-         '1cd202b5a0c8980fd14d080719b780d3')
+         '094f1c238ba4b5c3600151e041462f54')
 
 prepare() {
   cd "$srcdir/$_plugname-$pkgver"
