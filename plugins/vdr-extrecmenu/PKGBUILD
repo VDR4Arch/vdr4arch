@@ -13,9 +13,11 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-extrecmenu.git#commit=$_gitver"
-        'fix_wrong_foldernames_with_nopacity.diff')
+        'fix_wrong_foldernames_with_nopacity.diff'
+        'extrecmenu-vdr2.1.2compat.diff')
 md5sums=('SKIP'
-         'd00cdbf1bf9ef393f67f98775121f630')
+         'd00cdbf1bf9ef393f67f98775121f630'
+         'f990b3a309cd647fd15ad44429dcad9f')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
@@ -24,6 +26,7 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
+  patch -p1 -i "$srcdir/extrecmenu-vdr2.1.2compat.diff"
   patch -p1 -i "$srcdir/fix_wrong_foldernames_with_nopacity.diff"
 }
 
