@@ -20,7 +20,7 @@ diff -ruN mp3-0.10.2/player-mplayer.c mp3-0.10.2.edit/player-mplayer.c
      if(MPlayerSetup.ResumeMode==1 || 
         (access(s,W_OK) && (errno==EACCES || errno==EROFS))) {
        global=true;
-+#if APIVERSION > 20101
++#if APIVERSNUM > 20101
 +      resfile=AddPath(globalResumeDir?globalResumeDir:cVideoDirectory::Name(),GLOBAL_RESUME_FILE);
 +#else
        resfile=AddPath(globalResumeDir?globalResumeDir:VideoDirectory,GLOBAL_RESUME_FILE);
