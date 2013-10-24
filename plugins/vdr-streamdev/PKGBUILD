@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com
 pkgname=vdr-streamdev
-pkgver=0.6.0_35_gdfc8339
+pkgver=0.6.0_37_g69b654d
 epoch=1
-_gitver=dfc8339c9e636112acbf52631dddd4b0dbf46087
+_gitver=69b654d5393189c9c23dcc1241d8ab0588bae355
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
