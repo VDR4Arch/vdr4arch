@@ -7,7 +7,6 @@ url="http://www.tntnet.org"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('cxxtools' 'sqlite')
-options=(!libtool)
 source=("http://sourceforge.net/projects/${pkgname}/files/${pkgname}-${pkgver}.tar.gz")
 md5sums=('31d16243566fe226119e40e194119b44')
 

@@ -8,7 +8,7 @@ arch=('any')
 license=('GPL2')
 depends=('bash' 'vdr')
 optdepends=('xorg-xinit: For fireing up a X session')
-backup=(etc/runvdr.conf)
+backup=('etc/runvdr.conf')
 source=("http://projects.vdr-developer.org/attachments/download/1536/$pkgname-$pkgver.tar.xz"
         '60-create-dvb-device-units.rules'
         '60-vdr-tty.rules'
@@ -33,5 +33,5 @@ package() {
   install -Dm755 runvdr "$pkgdir/usr/bin/runvdr"
 
   mkdir -p "$pkgdir/usr/share/man/man5"
-  pod2man -s 5 -c runvdr -r runvdr runvdr.conf.pod | gzip > "$pkgdir/usr/share/man/man5/runvdr.conf.5.gz"
+  pod2man -s 5 -c runvdr -r runvdr runvdr.conf.pod "$pkgdir/usr/share/man/man5/runvdr.conf.5.gz"
 }

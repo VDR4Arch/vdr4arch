@@ -9,8 +9,7 @@ arch=('i686' 'x86_64')
 url="http://www.videolan.org/developers/libdvbcsa.html"
 license=('GPL3')
 depends=('glibc')
-options=(!libtool)
-source=(http://download.videolan.org/pub/videolan/libdvbcsa/$pkgver/$pkgname-$pkgver.tar.gz)
+source=("http://download.videolan.org/pub/videolan/libdvbcsa/$pkgver/$pkgname-$pkgver.tar.gz")
 md5sums=('478ab1ca56ca58d2667da6ce22f74e39')
 
 build() {
