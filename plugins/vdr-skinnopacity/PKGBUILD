@@ -3,7 +3,7 @@ pkgname=vdr-skinnopacity
 pkgver=0.1.4_56_g0865889
 _gitver=086588958f25fcf065a947bd908e65c4a4c345bd
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
@@ -13,22 +13,15 @@ depends=('curl' 'imagemagick' 'libpng' 'libxml2' "vdr-api=${_vdrapi}")
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver"
-        'skinnopacity_display_first_osd.diff')
+source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver")
 backup=("var/lib/vdr/plugins/$_plugname/rssfeeds.conf")
 options=('!emptydirs')
-md5sums=('SKIP'
-         '443bfc6311dd3dd5bd42553205a9188b')
+md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/skin-nopacity"
   git tag -a v0.1.4 -m 'Added Tag' 7da4695ec136b0ddada153a47ec5d0252f00a214 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
-}
-
-prepare() {
-  cd "${srcdir}/skin-nopacity"
-  patch -p1 -i "$srcdir/skinnopacity_display_first_osd.diff"
 }
 
 build() {
