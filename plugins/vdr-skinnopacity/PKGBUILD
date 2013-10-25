@@ -1,27 +1,32 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=0.1.4_56_g0865889
-_gitver=086588958f25fcf065a947bd908e65c4a4c345bd
+pkgver=0.9.0
+_gitver=1aa2f6ace2419406b305f9fe238d9d341f761c73
 _vdrapi=2.0.0
-pkgrel=3
+pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('curl' 'imagemagick' 'libpng' 'libxml2' "vdr-api=${_vdrapi}")
+depends=('imagemagick' 'libpng' "vdr-api=${_vdrapi}")
 # libpng because we need imagemagick with libpng support. libpng is only an optdepend of imagemagick
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver")
-backup=("var/lib/vdr/plugins/$_plugname/rssfeeds.conf")
-options=('!emptydirs')
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver"
+        'skinnopacity-fix-install-themeconfigs.diff')
+md5sums=('SKIP'
+         '4de385e1a269ae1913d4b5df2077a56a')
 
 pkgver() {
   cd "${srcdir}/skin-nopacity"
-  git tag -a v0.1.4 -m 'Added Tag' 7da4695ec136b0ddada153a47ec5d0252f00a214 2> /dev/null
+  git tag -a v0.9.0 -m 'Added Tag' 1aa2f6ace2419406b305f9fe238d9d341f761c73 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+prepare() {
+  cd "${srcdir}/skin-nopacity"
+  patch -p1 -i "$srcdir/skinnopacity-fix-install-themeconfigs.diff"
 }
 
 build() {
@@ -32,6 +37,4 @@ build() {
 package() {
   cd "${srcdir}/skin-nopacity"
   make DESTDIR="$pkgdir" install
-
-  install -Dm644 conf/rssfeeds.conf "$pkgdir/var/lib/vdr/plugins/$_plugname/rssfeeds.conf"
 }

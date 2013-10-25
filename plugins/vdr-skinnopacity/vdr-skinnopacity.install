@@ -1,6 +1,5 @@
 post_install() {
   chown -R vdr:vdr var/lib/vdr
-  rm -f /var/lib/vdr/themes/nOpacity-default.theme
 }
 
 post_upgrade() {
