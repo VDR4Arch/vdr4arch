@@ -17,6 +17,6 @@ post_upgrade() {
 
   cd var/lib/oscam
   for file in *.pacsave; do
-    mv $file $(basename $file .pacsave) 2>&1 /dev/null
+    mv $file $(basename $file .pacsave) 2>/dev/null > /dev/null
   done
 }
