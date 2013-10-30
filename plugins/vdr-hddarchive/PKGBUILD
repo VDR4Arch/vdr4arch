@@ -1,6 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-hddarchive
-pkgver=20130922
+epoch=1
+pkgver=0.0.1
 _gitver=e8d1ca5ff467ab26c94513ca671f7ea626d9a9c4
 _vdrapi=2.0.0
 pkgrel=1
@@ -9,29 +10,29 @@ url="http://projects.vdr-developer.org/projects/show/plg-hddarchive"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
-makedepends=('git')
+install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-hddarchive.git#commit=$_gitver"
-        'hddarchive-vdr2.1.2compat.diff')
-md5sums=('SKIP'
-         'bd1de6f36b0a5dbe7ed287eb51a28c0a')
-
-pkgver() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
-  git log -1 --pretty=format:%ad --date=short | sed 's/-//g'
-}
+source=("http://projects.vdr-developer.org/attachments/download/1544/$pkgname-$pkgver.tar.gz"
+        'hddarchive-vdr2.0.0compat.diff'
+        'hddarchive-default_settings.diff')
+md5sums=('dc585fa3c7ac54830ffff10a7d85feb6'
+         '17f2bdb6afbcb4d150eb900824919a5e'
+         '9982fc924c8300567052b239b4535228')
 
 prepare() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
-  patch -p1 -i "$srcdir/hddarchive-vdr2.1.2compat.diff"
+  cd "$srcdir/$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/hddarchive-vdr2.0.0compat.diff"
+  patch -p1 -i "$srcdir/hddarchive-default_settings.diff"
 }
 
 build() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
+  cd "$srcdir/$_plugname-$pkgver"
   make
 }
 
 package() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
+  cd "$srcdir/$_plugname-$pkgver"
   make DESTDIR="${pkgdir}" install
+
+  install -Dm755 vdr_move_to_hdd.sh "$pkgdir/usr/lib/vdr/bin/vdr_move_to_hdd.sh"
 }
