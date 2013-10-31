@@ -1,0 +1,30 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-favorites
+pkgver=0.0.2
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Implements a favorite channels menu"
+url="http://www.vdr-portal.de/board1-news/board2-vdr-news/p1039565-announce-vdr-favorites-0-0-2/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("$pkgname-$pkgver.tgz::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=29502")
+md5sums=('b5e87d11102ff1d8923a64cd53694171')
+
+prepare() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  sed -i '/Make.global/d' Makefile
+}
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr/include/vdr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       all
+}
