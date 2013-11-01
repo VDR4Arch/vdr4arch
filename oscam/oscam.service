@@ -3,7 +3,7 @@ Description=Open Source Conditional Access Module
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/oscam
+ExecStart=/usr/bin/oscam --restart 2
 TimeoutStopSec=30
 User=oscam
 
