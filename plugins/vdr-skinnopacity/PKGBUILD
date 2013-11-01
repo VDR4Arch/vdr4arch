@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=0.9.0
-_gitver=1aa2f6ace2419406b305f9fe238d9d341f761c73
+pkgver=0.9.0_11_gc0d3345
+_gitver=c0d3345a116af273f4fb6f94c351566371a0dd40
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
@@ -13,20 +13,13 @@ depends=('imagemagick' 'libpng' "vdr-api=${_vdrapi}")
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver"
-        'skinnopacity-fix-install-themeconfigs.diff')
-md5sums=('SKIP'
-         '4de385e1a269ae1913d4b5df2077a56a')
+source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver")
+md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/skin-nopacity"
   git tag -a v0.9.0 -m 'Added Tag' 1aa2f6ace2419406b305f9fe238d9d341f761c73 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
-}
-
-prepare() {
-  cd "${srcdir}/skin-nopacity"
-  patch -p1 -i "$srcdir/skinnopacity-fix-install-themeconfigs.diff"
 }
 
 build() {
