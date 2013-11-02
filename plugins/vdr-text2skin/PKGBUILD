@@ -8,7 +8,7 @@ pkgdesc="Mediaplayer plugin for VDR and X11"
 url="http://projects.vdr-developer.org/projects/plg-play"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick' "vdr-api=${_vdrapi}")
+depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-text2skin.git#commit=$_gitver"
@@ -25,6 +25,7 @@ prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   patch -p1 -i "$srcdir/text2skin-vdr2.1.2compat.diff"
   sed -i 's/Config/Resource/g' common.c
+  sed -i '/^IMAGELIB/d' Makefile
 }
 
 package() {
@@ -35,5 +36,6 @@ package() {
        CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
        VDRDIR="/usr/include/vdr" \
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       IMAGELIB=graphicsmagick
 }

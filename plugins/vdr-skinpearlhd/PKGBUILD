@@ -8,7 +8,7 @@ pkgdesc="conversion of the PearlHD-Skin written by mapovi to a native vdr-plugin
 url="http://projects.vdr-developer.org/projects/show/plg-skinpearlhd"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick' "vdr-api=${_vdrapi}")
+depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
@@ -34,8 +34,10 @@ prepare() {
 
   # Bug 1379
   patch -p1 -i "$srcdir/setup-page-fix.diff"
-  
+
   patch -p1 -i "$srcdir/skinpearlhd-search_for_logos_in_resourcedir.diff"
+
+  sed -i 's/Magick++/GraphicsMagick++/g' Makefile
 }
 
 build() {

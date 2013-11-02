@@ -7,12 +7,17 @@ pkgdesc="Simple and slim skin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-skinflat"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick' 'libpng' "vdr-api=${_vdrapi}")
+depends=('graphicsmagick' 'libpng' "vdr-api=${_vdrapi}")
 # libpng because we need imagemagick with libpng support. libpng is only an optdepend of imagemagick
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1499/$_plugname-$pkgver.tar.gz")
 md5sums=('10e0fe84cfcdfe5574ecc923a008e611')
+
+prepare() {
+  cd "${srcdir}/$_plugname-$pkgver"
+  sed -i 's/Magick++/GraphicsMagick++/g' Makefile
+}
 
 build() {
   cd "${srcdir}/$_plugname-$pkgver"
