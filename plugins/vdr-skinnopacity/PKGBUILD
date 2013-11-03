@@ -3,12 +3,12 @@ pkgname=vdr-skinnopacity
 pkgver=0.9.0_11_gc0d3345
 _gitver=c0d3345a116af273f4fb6f94c351566371a0dd40
 _vdrapi=2.1.2
-pkgrel=2
+pkgrel=3
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick' 'libpng' "vdr-api=${_vdrapi}")
+depends=('imagemagick=6.8.7.4' 'libpng' "vdr-api=${_vdrapi}")
 # libpng because we need imagemagick with libpng support. libpng is only an optdepend of imagemagick
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
