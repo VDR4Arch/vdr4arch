@@ -3,12 +3,12 @@ pkgname=vdr-skinpearlhd
 pkgver=0.0.1_28_g9899940
 _gitver=9899940a4920e77d1d6c14a3b1bb16be47f5045d
 _vdrapi=2.0.0
-pkgrel=7
+pkgrel=8
 pkgdesc="conversion of the PearlHD-Skin written by mapovi to a native vdr-plugin"
 url="http://projects.vdr-developer.org/projects/show/plg-skinpearlhd"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick' "vdr-api=${_vdrapi}")
+depends=('imagemagick=6.8.7.4' "vdr-api=${_vdrapi}")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
