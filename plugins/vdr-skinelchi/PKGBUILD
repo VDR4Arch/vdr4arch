@@ -2,12 +2,12 @@
 pkgname=vdr-skinelchi
 pkgver=0.2.8
 _vdrapi=2.1.2
-pkgrel=15
+pkgrel=16
 pkgdesc="adds the 'Elchi' skin to the VDR standard skins"
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick=6.8.7.4' "vdr-api=${_vdrapi}")
+depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://firefly.vdr-developer.org/skinelchi/${pkgname}-${pkgver}.tar.bz2"
@@ -21,6 +21,7 @@ prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
   patch -p1 -i "$srcdir/skinelchi-imagemagick_fix.diff"
   patch -p1 -i "$srcdir/skinelchi-search_for_logos_in_resourcedir.diff"
+  sed -i 's/ImageMagick++/GraphicsMagick++/g' Makefile
 }
 
 build() {
