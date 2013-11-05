@@ -21,6 +21,7 @@ prepare() {
   sed -i '/MAGICKCORE_HDRI_ENABLE/d' Makefile
   sed -i '/MAGICKCORE_QUANTUM_DEPTH/d' Makefile
   sed -i 's/cflags-only-I/cflags/g' Makefile
+#   sed -i 's/Magick++/GraphicsMagick++/g' Makefile
   patch -p1 -i "$srcdir/tvguide-search_for_logos_in_resourcedir.diff"
 }
 
