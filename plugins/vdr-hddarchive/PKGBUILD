@@ -4,7 +4,7 @@ epoch=1
 pkgver=0.0.1
 _gitver=e8d1ca5ff467ab26c94513ca671f7ea626d9a9c4
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Brings the archive-hdd functionality to VDR."
 url="http://projects.vdr-developer.org/projects/show/plg-hddarchive"
 arch=('x86_64' 'i686')
@@ -13,10 +13,10 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1544/$pkgname-$pkgver.tar.gz"
-        'hddarchive-vdr2.0.0compat.diff'
+        'hddarchive-vdr2.0.0compat.diff::http://projects.vdr-developer.org/git/vdr-plugin-hddarchive.git/patch/?id=d23a34943ba61aef57f45f01109d74d093b011f8'
         'hddarchive-default_settings.diff')
 md5sums=('dc585fa3c7ac54830ffff10a7d85feb6'
-         '17f2bdb6afbcb4d150eb900824919a5e'
+         'ad8239a1b4a1ec6ac495460eb32933bf'
          '9982fc924c8300567052b239b4535228')
 
 prepare() {
