@@ -3,12 +3,12 @@ pkgname=vdr-tvguide
 pkgver=1.0.0
 epoch=1
 _vdrapi=2.0.0
-pkgrel=7
+pkgrel=8
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick=6.8.7.4' "vdr-api=$_vdrapi")
+depends=('imagemagick=6.8.7.5' "vdr-api=$_vdrapi")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1402/$pkgname-$pkgver.tgz"
