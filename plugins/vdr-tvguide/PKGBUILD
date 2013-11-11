@@ -3,12 +3,12 @@ pkgname=vdr-tvguide
 pkgver=1.0.0
 epoch=1
 _vdrapi=2.0.0
-pkgrel=8
+pkgrel=9
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('imagemagick=6.8.7.5' "vdr-api=$_vdrapi")
+depends=('graphicsmagick' 'libpng' "vdr-api=$_vdrapi")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1402/$pkgname-$pkgver.tgz"
@@ -21,7 +21,8 @@ prepare() {
   sed -i '/MAGICKCORE_HDRI_ENABLE/d' Makefile
   sed -i '/MAGICKCORE_QUANTUM_DEPTH/d' Makefile
   sed -i 's/cflags-only-I/cflags/g' Makefile
-#   sed -i 's/Magick++/GraphicsMagick++/g' Makefile
+  sed -i 's/Magick++/GraphicsMagick++/g' Makefile
+  sed -i '/BarycentricColorInterpolate/d' imageloader.c
   patch -p1 -i "$srcdir/tvguide-search_for_logos_in_resourcedir.diff"
 }
 
