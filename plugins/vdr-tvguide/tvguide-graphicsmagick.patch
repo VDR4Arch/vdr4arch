@@ -1,0 +1,67 @@
+commit e98a539808a58688cc34388ed922dea74d0951a2
+Author: Manuel Reimer <manuel.reimer@gmx.de>
+Date:   Mon Nov 11 20:51:21 2013 +0100
+
+    Made plugin compatible with GraphicsMagick
+
+diff --git a/imageloader.c b/imageloader.c
+index 292d183..4d5d70f 100644
+--- a/imageloader.c
++++ b/imageloader.c
+@@ -70,17 +70,35 @@ bool cImageLoader::LoadIcon(const char *cIcon, int size) {
+     return true;
+ }
+ 
++void cImageLoader::CreateGradient(tColor back, tColor blend, int width, int height, double wfactor, double hfactor) {
++    Color Back = Argb2Color(back);
++    Color Blend = Argb2Color(blend);
++    int maxw = MaxRGB * wfactor;
++    int maxh = MaxRGB * hfactor;
++
++    Image imgblend(Geometry(width, height), Blend);
++    imgblend.modifyImage();
++    imgblend.type(TrueColorMatteType);
++    PixelPacket *pixels = imgblend.getPixels(0, 0, width, height);
++    for (int x = 0; x < width; x++) {
++        for (int y = 0; y < height; y++) {
++            PixelPacket *pixel = pixels + y * width + x;
++            int opacity = (maxw / width * x + maxh - maxh / height * y) / 2;
++            pixel->opacity = (opacity <= MaxRGB) ? opacity : MaxRGB;
++        }
++    }
++    imgblend.syncPixels();
++
++    Image imgback(Geometry(width, height), Back);
++    imgback.composite(imgblend, 0, 0, OverCompositeOp);
++
++    buffer = imgback;
++}
++
+ bool cImageLoader::DrawBackground(tColor back, tColor blend, int width, int height) {
+     if ((width < 1) || (height < 1) || (width > 1920) || (height > 1080))
+         return false;
+-    Color Back = Argb2Color(back);
+-    Color Blend = Argb2Color(blend);
+-    Image tmp(Geometry(width, height), Blend);
+-    double arguments[9] = {0.0,(double)height,0.0,-1*(double)width,0.0,0.0,1.5*(double)width,0.0,1.0};
+-    tmp.sparseColor(MatteChannel, BarycentricColorInterpolate, 9, arguments);
+-    Image tmp2(Geometry(width, height), Back);
+-    tmp.composite(tmp2, 0, 0, OverlayCompositeOp);
+-    buffer = tmp;
++    CreateGradient(back, blend, width, height, 0.8, 0.8);
+     return true;
+ }
+ 
+diff --git a/imageloader.h b/imageloader.h
+index bc2b7dd..034247d 100644
+--- a/imageloader.h
++++ b/imageloader.h
+@@ -10,6 +10,8 @@
+ using namespace Magick;
+  
+ class cImageLoader {
++private:
++    void CreateGradient(tColor back, tColor blend, int width, int height, double wfactor, double hfactor);
+ public:
+     cImageLoader();
+     ~cImageLoader();
