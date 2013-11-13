@@ -45,5 +45,5 @@ package() {
 
   install -Dm755 dist/epgdata2xmltv/epgdata2xmltv "$pkgdir/usr/bin/epgdata2xmltv"
   install -Dm644 dist/epgdata2xmltv/epgdata2xmltv.dist "$pkgdir/var/lib/epgsources/epgdata2xmltv"
-  install -Dm644 dist/epgdata2xmltv/tvm2xmltv.dist "$pkgdir/var/lib/epgsources/tvm2xmltv"
+  install -Dm644 dist/tvm2xmltv/tvm2xmltv.dist "$pkgdir/var/lib/epgsources/tvm2xmltv"
 }
