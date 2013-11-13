@@ -1,15 +1,14 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinflatplus
 pkgver=0.0.1_4_geb54582
-_gitver=eb5458234d8e343f781fa4ed69749814af18384c
+_gitver=df0ef5f977678ca3dc2564cfb50457c5dc0e7b9d
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="Simple and slim skin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-skinflat"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('graphicsmagick' 'libpng' "vdr-api=${_vdrapi}")
-# libpng because we need graphicsmagick with libpng support. libpng is only an optdepend of graphicsmagick
+depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-skin//g')
 source=("git://projects.vdr-developer.org/skin-flatplus.git#commit=$_gitver")
