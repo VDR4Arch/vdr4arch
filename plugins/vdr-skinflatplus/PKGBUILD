@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinflatplus
-pkgver=0.0.1_4_geb54582
+pkgver=0.0.1_8_gdf0ef5f
 _gitver=df0ef5f977678ca3dc2564cfb50457c5dc0e7b9d
 _vdrapi=2.0.0
 pkgrel=1
