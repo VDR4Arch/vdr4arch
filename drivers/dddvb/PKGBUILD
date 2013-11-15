@@ -1,0 +1,29 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=dddvb
+pkgver=0.9.10
+_hgver=406ffecccbec
+_kernver=3.12.0
+pkgrel=1
+url='http://www.metzlerbros.de/dddvb/'
+pkgdesc="Newest driver package for Digital Devices DVB cards"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=("linux=${_kernver%.0}")
+makedepends=("linux-headers=${_kernver%.0}")
+install="${pkgname}.install"
+replaces=('ngene-octopus-test')
+conflicts=('ngene-octopus-test')
+source=("http://www.metzlerbros.de/dddvb/$pkgname-$pkgver.tar.bz2")
+md5sums=('171dde3271b15fd34350d79b237f2943')
+
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make
+}
+
+package() {
+  mkdir -p "$pkgdir/usr/lib/modules/extramodules-${_kernver%.*}-ARCH"
+  find "$srcdir" -name *.ko -exec cp {} "$pkgdir/usr/lib/modules/extramodules-${_kernver%.*}-ARCH" \;
+  gzip -9 "$pkgdir/usr/lib/modules/extramodules-${_kernver%.*}-ARCH/"*
+}
