@@ -1,22 +1,19 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=0.9.0_36_gc30c81a
-_gitver=c30c81a68219c33fade084300f77bc00c216f2cf
+pkgver=0.9.0_39_gf942b7b
+_gitver=f942b7ba3efd3ad94f685e23ca7f8cfaa29da8c1
 _vdrapi=2.1.2
-pkgrel=4
+pkgrel=2
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('graphicsmagick' 'libpng' "vdr-api=${_vdrapi}")
-# libpng because we need graphicsmagick with libpng support. libpng is only an optdepend of imagemagick
+depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver"
-        'nopacity-graphicsmagick.patch')
-md5sums=('SKIP'
-         'e5c3bf3393100e698e317c74526440a8')
+source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver")
+md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/skin-nopacity"
@@ -24,15 +21,9 @@ pkgver() {
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
-prepare() {
-  cd "${srcdir}/skin-nopacity"
-  sed -i 's/Magick++/GraphicsMagick++/g' Makefile
-  patch -p1 -i "$srcdir/nopacity-graphicsmagick.patch"
-}
-
 build() {
   cd "${srcdir}/skin-nopacity"
-  make
+  make IMAGELIB=graphicsmagick
 }
 
 package() {

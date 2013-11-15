@@ -11,7 +11,6 @@ depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://firefly.vdr-developer.org/skinelchi/${pkgname}-${pkgver}.tar.bz2"
-        'skinelchi-imagemagick_fix.diff'
         'skinelchi-search_for_logos_in_resourcedir.diff')
 md5sums=('b4d3160033fa6541eab55bbf7ad41276'
          '10b5f84b1566810a20d1542502716f2d'
@@ -19,9 +18,8 @@ md5sums=('b4d3160033fa6541eab55bbf7ad41276'
 
 prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-  patch -p1 -i "$srcdir/skinelchi-imagemagick_fix.diff"
   patch -p1 -i "$srcdir/skinelchi-search_for_logos_in_resourcedir.diff"
-  sed -i 's/ImageMagick++/GraphicsMagick++/g' Makefile
+  sed -i 's/ImageMagick/GraphicsMagick/g' Makefile
 }
 
 build() {
