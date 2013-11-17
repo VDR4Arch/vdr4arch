@@ -1,10 +1,10 @@
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-markad
-pkgver=0.1.4_25_g5178e0e
+pkgver=0.1.4_33_g09617a6
 epoch=1
-_gitver=5178e0ea9af99a09a309b5b43aa1c06bcfeeaa2b
+_gitver=09617a66e26cb5ccadd8762133a42f3ecaeeb3bf
 _vdrapi=2.1.2
-pkgrel=3
+pkgrel=2
 pkgdesc="automatic advertisement detection"
 url="http://projects.vdr-developer.org/projects/plg-markad"
 arch=('x86_64' 'i686')

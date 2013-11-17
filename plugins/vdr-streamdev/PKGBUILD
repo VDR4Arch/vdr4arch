@@ -3,7 +3,7 @@
 pkgname=vdr-streamdev
 pkgver=0.6.0_40_gf194ca2
 epoch=1
-_gitver=f194ca2074396beafd0620182ab42b582628c7ca
+_gitver=c18f7d47e72f0223f1ed3e94aaf94c553ff9846c
 _vdrapi=2.1.2
 pkgrel=2
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
