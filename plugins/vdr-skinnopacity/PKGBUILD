@@ -12,6 +12,9 @@ depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
+backup=("var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-light.conf"
+        "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-default.conf"
+        "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-iceblue.conf")
 source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver")
 md5sums=('SKIP')
 
