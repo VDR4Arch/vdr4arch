@@ -13,7 +13,7 @@ depends=('gcc-libs' 'libid3tag' 'libmad' 'libsndfile' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgbase | sed 's/vdr-//g')
 source=("http://www.muempf.de/down/$pkgbase-$pkgver.tar.gz"
         'mp3-vdr2.1.2compat.diff')
-backup=('var/lib/vdr/mp3sources.conf')
+backup=('var/lib/vdr/plugins/mp3sources.conf')
 md5sums=('66fd37827326776c223a0fdd0ad3811e'
          '8615c6b0f3c5eba39e8e2ce37c5c10a4')
 
