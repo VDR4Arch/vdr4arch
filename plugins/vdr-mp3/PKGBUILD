@@ -5,7 +5,7 @@ pkgbase=vdr-mp3
 pkgname=vdr-mp3
 pkgver=0.10.2
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 url="http://www.muempf.de/"
 arch=('x86_64' 'i686')
 license=('GPL2')
@@ -33,7 +33,7 @@ package_vdr-mp3() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        WITHOUT_MPLAYER=1
-  install -Dm644 examples/mp3sources.conf.example "$pkgdir/var/lib/vdr/mp3sources.conf"
+  install -Dm644 examples/mp3sources.conf.example "$pkgdir/var/lib/vdr/plugins/mp3sources.conf"
 }
 
 package_vdr-mplayer() {
@@ -47,5 +47,5 @@ package_vdr-mplayer() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        WITHOUT_MP3=1
-  install -Dm644 examples/mp3sources.conf.example "$pkgdir/var/lib/vdr/mplayersources.conf"
+  install -Dm644 examples/mp3sources.conf.example "$pkgdir/var/lib/vdr/plugins/mplayersources.conf"
 }
