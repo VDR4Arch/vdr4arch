@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-recsearch
-pkgver=0.0.2
+pkgver=0.0.6
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="Search your recordings and find the one you are looking for"
@@ -10,7 +10,7 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("https://github.com/flensrocker/vdr-plugin-$_plugname/archive/v$pkgver.tar.gz")
-md5sums=('286b049895f2f9fcdbfd68a29f1bc4fa')
+md5sums=('cad1a2a9afb2890560eb099e2126d41f')
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
