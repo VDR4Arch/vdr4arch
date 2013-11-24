@@ -1,0 +1,35 @@
+diff -ruN vdr-plugin-recsearch-0.0.6/menu_recordings.c vdr-plugin-recsearch-0.0.6.patched/menu_recordings.c
+--- vdr-plugin-recsearch-0.0.6/menu_recordings.c	2013-11-23 21:55:16.000000000 +0100
++++ vdr-plugin-recsearch-0.0.6.patched/menu_recordings.c	2013-11-24 11:36:51.059794571 +0100
+@@ -228,7 +228,11 @@
+ 
+ cString recsearch::cMenuRecordings::DirectoryName(void)
+ {
++#if APIVERSNUM > 20101
++  cString d(cVideoDirectory::Name());
++#else
+   cString d(VideoDirectory);
++#endif
+   if (base) {
+      char *s = ExchangeChars(strdup(base), true);
+      d = AddDirectory(d, s);
+@@ -307,9 +311,17 @@
+            }
+         cRecording *recording = ri->Recording();
+         cString FileName = recording->FileName();
++#if APIVERSNUM > 20101
++        if (RecordingsHandler.GetUsage(FileName)) {
++#else
+         if (cCutter::Active(ri->Recording()->FileName())) {
++#endif
+            if (Interface->Confirm(trVDR("Recording is being edited - really delete?"))) {
++#if APIVERSNUM > 20101
++              RecordingsHandler.Del(FileName);
++#else
+               cCutter::Stop();
++#endif
+               recording = Recordings.GetByName(FileName); // cCutter::Stop() might have deleted it if it was the edited version
+               // we continue with the code below even if recording is NULL,
+               // in order to have the menu updated etc.
+Binary files vdr-plugin-recsearch-0.0.6/search_menu.o and vdr-plugin-recsearch-0.0.6.patched/search_menu.o differ
+Binary files vdr-plugin-recsearch-0.0.6/search_parameter.o and vdr-plugin-recsearch-0.0.6.patched/search_parameter.o differ
