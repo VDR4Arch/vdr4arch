@@ -3,7 +3,7 @@ pkgname=vdr-tvguide
 pkgver=1.0.0
 epoch=1
 _vdrapi=2.0.0
-pkgrel=10
+pkgrel=11
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
@@ -36,4 +36,6 @@ build() {
 package() {
   cd "$srcdir/$_plugname-$pkgver"
   make DESTDIR="$pkgdir" install
+
+  find "$pkgdir" -name *.png -exec gm convert +profile icm {} {} \;
 }
