@@ -1,9 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com
 pkgname=vdr-streamdev
-pkgver=0.6.0_40_gf194ca2
+pkgver=0.6.1
 epoch=1
-_gitver=c18f7d47e72f0223f1ed3e94aaf94c553ff9846c
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
@@ -15,23 +14,16 @@ makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 backup=('var/lib/vdr/plugins/streamdev-server/streamdevhosts.conf')
 install="${pkgname}.install"
-source=("git://projects.vdr-developer.org/vdr-plugin-streamdev.git")
-md5sums=('SKIP')
-
-pkgver() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
-  git tag -a v0.6.0 -m 'Added Tag' af48d11b1856f69da293ad7808771bd8f31f8ab3 2> /dev/null
-  git describe --tags | sed 's/-/_/g;s/v//'
-}
+source=("http://projects.vdr-developer.org/attachments/download/1580/$pkgname-$pkgver.tgz")
+md5sums=('e611df2dd9fc75b21e068a8c0aabcc68')
 
 build() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
+  cd "$srcdir/$_plugname-$pkgver"
   make
 }
 
-
 package() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
+  cd "$srcdir/$_plugname-$pkgver"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 streamdev-server/streamdevhosts.conf "$pkgdir/var/lib/vdr/plugins/streamdev-server/streamdevhosts.conf"
