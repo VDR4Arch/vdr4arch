@@ -1,0 +1,16 @@
+pkgname=elchi-logos
+pkgver=20131201
+pkgrel=1
+pkgdesc="Channellogos for skin nOpacity"
+arch=('any')
+url="http://creimer.net/channellogos/"
+depends=('vdr-skinelchi')
+license=('GPL2')
+source=("http://creimer.net/channellogos/elchiHD-logos-$pkgver.tar.xz")
+md5sums=('bf9a38acdd9aff7e9d6eaa6acdd20db0')
+
+package() {
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinelchi/logos"
+  cd "$pkgdir/usr/share/vdr/plugins/skinelchi/logos"
+  cp -r "$srcdir"/elchilogos/* .
+}
