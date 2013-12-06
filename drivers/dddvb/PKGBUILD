@@ -2,8 +2,8 @@
 pkgname=dddvb
 pkgver=0.9.10
 _hgver=406ffecccbec
-_kernver=3.12.2
-pkgrel=3
+_kernver=3.12.3
+pkgrel=4
 url='http://www.metzlerbros.de/dddvb/'
 pkgdesc="Newest driver package for Digital Devices DVB cards"
 arch=('x86_64' 'i686')
