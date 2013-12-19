@@ -2,7 +2,7 @@
 pkgname=vdr-remotetimers
 pkgver=1.0.0
 _vdrapi=2.1.2
-pkgrel=4
+pkgrel=5
 pkgdesc="Add/Edit/Remove timers on both, the local (client) VDR and a remote (server) VDR"
 url="http://vdr.schmirler.de/"
 arch=('x86_64' 'i686')
