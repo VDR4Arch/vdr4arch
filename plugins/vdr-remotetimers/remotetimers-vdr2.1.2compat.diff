@@ -30,7 +30,7 @@ diff -ruN remotetimers-1.0.0/menu.c remotetimers-1.0.0.edit/menu.c
          bool remote = len == 0 || (strstr(name, RemoteTimersSetup.serverDir) == name && name[len] == FOLDERDELIMCHAR);
          if (!remote) {
 +#if APIVERSNUM > 20101
-+           if (!RecordingsHandler.Active()) {
++           if (RecordingsHandler.GetUsage(*fileName) == ruNone) {
 +              if (RecordingsHandler.Add(ruCut, *fileName))
 +#else
             if (!cCutter::Active()) {
@@ -68,13 +68,13 @@ diff -ruN remotetimers-1.0.0/menu.c remotetimers-1.0.0.edit/menu.c
          cRecording *recording = ri->Recording();
          cString FileName = recording->FileName();
 +#if APIVERSNUM > 20101
-+        if (RecordingsHandler.GetUsage(FileName)) {
++        if (RecordingsHandler.GetUsage(*FileName) != ruNone) {
 +#else
          if (cCutter::Active(ri->Recording()->FileName())) {
 +#endif
             if (Interface->Confirm(tr("Recording is being edited - really delete?"))) {
 +#if APIVERSNUM > 20101
-+              RecordingsHandler.DelAll();
++              RecordingsHandler.Del(*FileName);
 +#else
                cCutter::Stop();
 +#endif
