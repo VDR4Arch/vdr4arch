@@ -2,15 +2,22 @@
 pkgname=vdr-femon
 pkgver=2.0.0
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="DVB Frontend Status Monitor plugin"
 url="http://www.saunalahti.fi/rahrenbe/vdr/femon/"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://www.saunalahti.fi/~rahrenbe/vdr/femon/files/$pkgname-$pkgver.tgz")
-md5sums=('b3977c1098df24492ada218bbe73df32')
+source=("http://www.saunalahti.fi/~rahrenbe/vdr/femon/files/$pkgname-$pkgver.tgz"
+        "femon.neu3.SNR_STR.diff.bz2::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=34539")
+md5sums=('b3977c1098df24492ada218bbe73df32'
+         '583e20cd6c326a9b55589d97f8efde3e')
+
+prepare() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  patch -p1 -i "$srcdir/femon.neu3.SNR_STR.diff"
+}
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
