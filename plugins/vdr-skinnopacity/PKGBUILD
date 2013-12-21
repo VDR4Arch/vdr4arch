@@ -1,7 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=1.0.2
-_gitver=76ad37217ef27fee821a689f33251d21b9ed302a
+pkgver=1.0.3
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
@@ -15,21 +14,15 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 backup=("var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-light.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-default.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-iceblue.conf")
-source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver")
-md5sums=('SKIP')
-
-pkgver() {
-  cd "${srcdir}/skin-nopacity"
-  git tag -a v1.0.2 -m 'Added Tag' 76ad37217ef27fee821a689f33251d21b9ed302a 2> /dev/null
-  git describe --tags | sed -E 's/([^-]*-g)/r\1/;s/-/./g;s/v//g'
-}
+source=("http://projects.vdr-developer.org/attachments/download/1587/$pkgname-$pkgver.tgz")
+md5sums=('6248fe0977c96f004c99e0fdd534d598')
 
 build() {
-  cd "${srcdir}/skin-nopacity"
+  cd "$srcdir/$_plugname-$pkgver"
   make IMAGELIB=graphicsmagick
 }
 
 package() {
-  cd "${srcdir}/skin-nopacity"
+  cd "$srcdir/$_plugname-$pkgver"
   make DESTDIR="$pkgdir" install
 }
