@@ -2,7 +2,7 @@
 pkgname=vdr-skinelchi
 pkgver=0.2.8
 _vdrapi=2.1.2
-pkgrel=16
+pkgrel=17
 pkgdesc="adds the 'Elchi' skin to the VDR standard skins"
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
 arch=('x86_64' 'i686')
