@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-vdrmanager
-pkgver=0.8
+pkgver=0.10
 _vdrapi=2.0.0
-pkgrel=5
+pkgrel=1
 pkgdesc="Allows remote programming VDR using VDR-Manager running on Android devices"
 url="http://projects.vdr-developer.org/projects/vdr-manager"
 arch=('x86_64' 'i686')
@@ -10,16 +10,14 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1130/$pkgname-$pkgver.tar.gz")
-md5sums=('9538cd51a0b230f6a6fd92b3888318c2')
+md5sums=('ecd5484ee247eb49175446de733164d2')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make
+}
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
-  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       all
+  make DESTDIR="$pkgdir" install
 }
