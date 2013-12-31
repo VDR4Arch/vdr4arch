@@ -1,0 +1,23 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-boblight
+pkgver=0.0.3
+_vdrapi=2.1.2
+pkgrel=2
+pkgdesc="Boblight with data from softhddevice"
+url="http://projects.vdr-developer.org/projects/plg-boblight"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('boblight' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://projects.vdr-developer.org/attachments/download/1591/vdr-plugin-$_plugname-$pkgver.tar.gz")
+md5sums=('dbb034531f4de06d9af904c53d024988')
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  make
+}
+
+package() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
