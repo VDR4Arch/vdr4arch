@@ -2,15 +2,22 @@
 pkgname=vdr-boblight
 pkgver=0.0.3
 _vdrapi=2.1.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Boblight with data from softhddevice"
 url="http://projects.vdr-developer.org/projects/plg-boblight"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('boblight' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1591/vdr-plugin-$_plugname-$pkgver.tar.gz")
-md5sums=('dbb034531f4de06d9af904c53d024988')
+source=("http://projects.vdr-developer.org/attachments/download/1591/vdr-plugin-$_plugname-$pkgver.tar.gz"
+        'boblight-set_menucategory.diff')
+md5sums=('dbb034531f4de06d9af904c53d024988'
+         'f10b3cdd7723ef545762266c01ed1836')
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  patch -p1 -i "$srcdir/boblight-set_menucategory.diff"
+}
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
