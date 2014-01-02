@@ -1,40 +1,34 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvguide
-pkgver=1.0.0
+_gitrev=5bd0ad2603c5cfe1ac0ab9cadafa1ba6d3aee114
+pkgver=1.0.0_22_g5bd0ad2
 epoch=1
 _vdrapi=2.0.0
-pkgrel=13
+pkgrel=1
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('imagemagick=6.8.7.10' 'libpng' "vdr-api=$_vdrapi")
+makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1402/$pkgname-$pkgver.tgz"
-        'tvguide-search_for_logos_in_resourcedir.diff'
-        'tvguide-graphicsmagick.patch')
-md5sums=('72679ad1d7764f886091615e5d5ee688'
-         '92de66af2d7cc60d5b6c2628aab5c6a1'
-         'd34203bc3ee8aa649cf520d4b09e0739')
+source=("git://projects.vdr-developer.org/vdr-plugin-tvguide.git#commit=$_gitrev")
+md5sums=('SKIP')
 
-prepare() {
-  cd "${srcdir}/$_plugname-$pkgver"
-  sed -i '/MAGICKCORE_HDRI_ENABLE/d' Makefile
-  sed -i '/MAGICKCORE_QUANTUM_DEPTH/d' Makefile
-  sed -i 's/cflags-only-I/cflags/g' Makefile
-#   sed -i 's/Magick++/GraphicsMagick++/g' Makefile
-  patch -p1 -i "$srcdir/tvguide-search_for_logos_in_resourcedir.diff"
-  patch -p1 -i "$srcdir/tvguide-graphicsmagick.patch"
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+    git tag -a 1.0.0 -m 'Added Tag' c545f6b4cfc4c8fe604eb216fb1d8c86550e74ca 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
 }
 
 build() {
-  cd "$srcdir/$_plugname-$pkgver"
-  make
+  cd "$srcdir/vdr-plugin-${_plugname}"
+  make IMAGELIB=imagemagick
 }
 
 package() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "$srcdir/vdr-plugin-${_plugname}"
   make DESTDIR="$pkgdir" install
 
   find "$pkgdir" -name *.png -exec gm convert +profile icm {} {} \;
