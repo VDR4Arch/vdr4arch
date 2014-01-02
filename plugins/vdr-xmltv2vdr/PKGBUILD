@@ -8,7 +8,7 @@ pkgdesc="Add epg info from epg sources into vdr"
 url="http://projects.vdr-developer.org/projects/plg-xmltv2vdr"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('curl' 'enca' 'libxslt' 'libzip' 'sqlite' "vdr-api=${_vdrapi}")
+depends=('pcre' 'curl' 'enca' 'libxslt' 'libzip' 'sqlite' "vdr-api=${_vdrapi}")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')

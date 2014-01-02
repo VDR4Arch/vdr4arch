@@ -7,7 +7,7 @@ pkgdesc="Connects to the Fritz!Box to inform you about incoming and outgoing cal
 url="http://www.joachim-wilke.de/vdr-fritz.htm"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('commoncpp2' 'libgcrypt' "vdr-api=${_vdrapi}")
+depends=('boost-libs' 'commoncpp2' 'libgcrypt' "vdr-api=${_vdrapi}")
 makedepends=('boost')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://www.joachim-wilke.de/downloads/vdr-fritz/$pkgname-$pkgver.tgz")

@@ -9,7 +9,7 @@ pkgdesc="Brings the archive-hdd functionality to VDR."
 url="http://projects.vdr-developer.org/projects/show/plg-hddarchive"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('gcc-libs' "vdr-api=${_vdrapi}")
+depends=('bash' 'gcc-libs' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-hddarchive.git#commit=$_gitver"
