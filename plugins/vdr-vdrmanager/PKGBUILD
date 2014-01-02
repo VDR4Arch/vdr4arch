@@ -9,7 +9,7 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1130/$pkgname-$pkgver.tar.gz")
+source=("http://projects.vdr-developer.org/attachments/download/1588/$pkgname-$pkgver.tar.gz")
 md5sums=('ecd5484ee247eb49175446de733164d2')
 
 build() {
