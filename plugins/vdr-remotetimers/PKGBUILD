@@ -7,7 +7,7 @@ pkgdesc="Add/Edit/Remove timers on both, the local (client) VDR and a remote (se
 url="http://vdr.schmirler.de/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}" 'vdr-svdrpservice')
+depends=('gcc-libs' "vdr-api=${_vdrapi}" 'vdr-svdrpservice')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz"
         'remotetimers-vdr2.1.2compat.diff')

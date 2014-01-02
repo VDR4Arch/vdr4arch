@@ -7,7 +7,7 @@ pkgdesc="Display the menu of a remote VDR as submenu item of your local VDR menu
 url="http://vdr.schmirler.de/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}" 'vdr-svdrpservice')
+depends=('gcc-libs' "vdr-api=${_vdrapi}" 'vdr-svdrpservice')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz")
 md5sums=('5ec2756944cdb36808d1332e7e6a87c8')

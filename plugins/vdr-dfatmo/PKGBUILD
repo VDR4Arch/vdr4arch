@@ -45,7 +45,7 @@ package_dfatmo() {
 
 package_vdr-dfatmo() {
   pkgdesc="VDR plugin to drive a colored back lighting for TVs"
-  depends=('dfatmo' "vdr-api=${_vdrapi}")
+  depends=('gcc-libs' 'dfatmo' "vdr-api=${_vdrapi}")
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
   make VDRDESTDIR="${pkgdir}" vdrinstall
