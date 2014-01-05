@@ -4,7 +4,7 @@ pkgver=1.0.5_3_gb72afbf
 epoch=1
 _gitver=b72afbfd87a38f6147a4c591e3068dd9a7c64f7e
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="A bridge between VDR and OScam."
 url="https://github.com/manio/vdr-plugin-dvbapi"
 arch=('x86_64' 'i686')
@@ -14,6 +14,11 @@ makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://github.com/manio/vdr-plugin-dvbapi.git#commit=$_gitver")
 sha256sums=('SKIP')
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  sed -i 's/MAXDVBDEVICES/MAXDEVICES/g' device.cpp
+}
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
