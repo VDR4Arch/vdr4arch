@@ -21,6 +21,7 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
+  sed -i 's/MAXDVBDEVICES/MAXDEVICES/g' eepg.c
 }
 
 build() {
