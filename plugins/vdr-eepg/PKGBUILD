@@ -3,7 +3,7 @@ pkgname=vdr-eepg
 pkgver=0.0.5_184_g07d7e7e
 _gitver=07d7e7edfc182082af61756ac31171bf76298a8c
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Extended EPG (EEPG) plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-eepg"
 arch=('x86_64' 'i686')
@@ -21,6 +21,7 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
+  sed -i 's/MAXDVBDEVICES/MAXDEVICES/g' eepg.c
 }
 
 build() {
