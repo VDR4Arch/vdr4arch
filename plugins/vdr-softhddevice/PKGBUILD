@@ -13,8 +13,10 @@ depends=('ffmpeg' "vdr-api=${_vdrapi}" 'xcb-util-wm' 'xorg-server')
 optdepends=('nvidia: Required for VDPAU decoding')
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-softhddevice.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-softhddevice.git#commit=$_gitver"
+        'softhddevice-vdr2.1.3compat.diff')
+md5sums=('SKIP'
+         '9808f3661fc7d31a9773946a3383a4b2')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
@@ -35,6 +37,8 @@ prepare() {
 
   # Enable this to compile with debug logging
   #sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
+  
+  patch -p1 -i "$srcdir/softhddevice-vdr2.1.3compat.diff"
 }
 
 build() {
@@ -46,3 +50,4 @@ package() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   make DESTDIR="${pkgdir}" install
 }
+
