@@ -1,0 +1,28 @@
+diff --git a/softhddevice.cpp b/softhddevice.cpp
+index 21d5f4d..34881d2 100644
+--- a/softhddevice.cpp
++++ b/softhddevice.cpp
+@@ -2051,7 +2051,11 @@ class cSoftHdDevice:public cDevice
+     virtual bool HasDecoder(void) const;
+     virtual bool CanReplay(void) const;
+     virtual bool SetPlayMode(ePlayMode);
++#if APIVERSNUM >= 20103
++    virtual void TrickSpeed(int, bool);
++#else
+     virtual void TrickSpeed(int);
++#endif
+     virtual void Clear(void);
+     virtual void Play(void);
+     virtual void Freeze(void);
+@@ -2240,7 +2244,11 @@ int64_t cSoftHdDevice::GetSTC(void)
+ **
+ **	@param speed	trick speed
+ */
++#if APIVERSNUM >= 20103
++void cSoftHdDevice::TrickSpeed(int speed, bool forward)
++#else
+ void cSoftHdDevice::TrickSpeed(int speed)
++#endif
+ {
+     dsyslog("[softhddev]%s: %d\n", __FUNCTION__, speed);
+ 
