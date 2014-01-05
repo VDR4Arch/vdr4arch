@@ -15,6 +15,11 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://github.com/manio/vdr-plugin-dvbapi.git#commit=$_gitver")
 sha256sums=('SKIP')
 
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  sed -i 's/MAXDVBDEVICES/MAXDEVICES/g' device.cpp
+}
+
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   git describe --tags | sed 's/-/_/g;s/v//'
