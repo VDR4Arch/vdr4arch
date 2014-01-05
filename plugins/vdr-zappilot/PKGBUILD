@@ -1,8 +1,8 @@
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-zappilot
 pkgver=0.0.5
-_vdrapi=2.1.2
-pkgrel=5
+_vdrapi=2.1.3
+pkgrel=6
 pkgdesc="Plugin for VDR forked from the plugin pilotskin to browse EPG in channel info"
 url="http://projects.vdr-developer.org/projects/plg-zappilot"
 arch=('x86_64' 'i686')

@@ -3,8 +3,8 @@
 pkgbase=DFAtmo
 pkgname=('dfatmo' 'vdr-dfatmo' 'xbmc-addon-dfatmo')
 pkgver=0.3.4
-_vdrapi=2.1.2
-pkgrel=7
+_vdrapi=2.1.3
+pkgrel=8
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')

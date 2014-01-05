@@ -1,15 +1,15 @@
 pkgname=nopacity-logos
-pkgver=20131225
+pkgver=20140102
 pkgrel=1
-pkgdesc="Channellogos for skin nOpacity"
+pkgdesc="Channellogos for skin nOpacity and tvguide"
 arch=('any')
 url="http://creimer.net/channellogos/"
 depends=('vdr-skinnopacity')
 license=('GPL2')
 source=("http://creimer.net/channellogos/$pkgname-default-$pkgver.tar.xz"
         "http://creimer.net/channellogos/$pkgname-white-$pkgver.tar.xz")
-md5sums=('239b58b98c7aa1f4c94f7ea3d68ec0bc'
-         '51eae024f7270b34500f9681f2ece0bb')
+md5sums=('d0b5d4db9b7a5ecb6cc38a030db422b8'
+         '11b2594aa07b7c2ac4856c8651f36801')
 
 package() {
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos"
@@ -22,4 +22,6 @@ package() {
   ln -s white darkred
   ln -s white darkredNG
   ln -s white green
+  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos" \
+    "$pkgdir/usr/share/vdr/plugins/tvguide/channellogos"
 }
