@@ -1,0 +1,9 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr4arch-imagemagick-wrapper
+pkgver=1
+pkgrel=1
+pkgdesc="Workaround to give the vdr4arch project more control over imagemagick updates"
+url="https://github.com/CReimer/vdr4arch"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('imagemagick=6.8.8.1')
