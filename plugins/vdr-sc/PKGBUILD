@@ -29,6 +29,8 @@ prepare() {
   #Disable Keyfile support. If you want to watch paytv, pay for it.
   ( cd systems
     ls | grep -v cardclient | xargs rm -r )
+
+  sed -i 's/MAXDVBDEVICES/MAXDEVICES/g' device.c
 }
 
 package() {
