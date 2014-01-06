@@ -1,30 +1,29 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-boblight
-pkgver=0.0.3
+pkgver=0.0.4
+_gitrev=6d3d8e8a0753f2c88d51bceea7c9e617c0ff8181
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=1
 pkgdesc="Boblight with data from softhddevice"
 url="http://projects.vdr-developer.org/projects/plg-boblight"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('boblight' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1591/vdr-plugin-$_plugname-$pkgver.tar.gz"
-        'boblight-set_menucategory.diff')
-md5sums=('dbb034531f4de06d9af904c53d024988'
-         'f10b3cdd7723ef545762266c01ed1836')
+source=("git://projects.vdr-developer.org/vdr-plugin-boblight.git#commit=$_gitrev")
+md5sums=('SKIP')
 
-prepare() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
-  patch -p1 -i "$srcdir/boblight-set_menucategory.diff"
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git describe --tags | sed 's/-/_/g;s/v//'
 }
 
 build() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}"
   make
 }
 
 package() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}"
   make DESTDIR="${pkgdir}" install
 }
