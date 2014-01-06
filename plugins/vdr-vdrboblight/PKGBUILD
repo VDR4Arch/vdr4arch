@@ -1,5 +1,5 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
-pkgname=vdr-boblight
+pkgname=vdr-vdrboblight
 pkgver=0.0.4
 _gitrev=6d3d8e8a0753f2c88d51bceea7c9e617c0ff8181
 _vdrapi=2.0.0
@@ -9,7 +9,9 @@ url="http://projects.vdr-developer.org/projects/plg-boblight"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('boblight' "vdr-api=${_vdrapi}")
-_plugname=$(echo $pkgname | sed 's/vdr-//g')
+replaces=('vdr-boblight')
+conflicts=('vdr-boblight')
+_plugname=$(echo $pkgname | sed 's/vdr-vdr//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-boblight.git#commit=$_gitrev")
 md5sums=('SKIP')
 
