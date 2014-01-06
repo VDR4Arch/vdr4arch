@@ -1,7 +1,5 @@
 [Unit]
 Description=Video Disk Recorder
-After=eventlircd.service
-After=lirc.service
 After=oscam.service
 After=sundtek.service
 
