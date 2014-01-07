@@ -8,6 +8,7 @@ url="http://projects.vdr-developer.org/git/vdr-checkts.git/"
 arch=('x86_64' 'i686')
 license=('BSD')
 depends=('glibc')
+makedepends=('git')
 source=("git://projects.vdr-developer.org/vdr-checkts.git#commit=$_gitver")
 md5sums=('SKIP')
 
