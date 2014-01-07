@@ -9,6 +9,7 @@ url="http://projects.vdr-developer.org/projects/plg-boblight"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('boblight' "vdr-api=${_vdrapi}")
+makedepends=('git')
 replaces=('vdr-boblight')
 conflicts=('vdr-boblight')
 _plugname=$(echo $pkgname | sed 's/vdr-vdr//g')
