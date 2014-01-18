@@ -1,0 +1,30 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-epg2vdr
+pkgver=0.0.6_99_g21242e3
+_gitver=21242e302a6b3ece1b7f3373f7b5cfff245a3f56
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Used to retrieve EPG data into the VDR"
+url="http://projects.vdr-developer.org/projects/plg-epg2vdr"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('libmariadbclient' 'util-linux' "vdr-api=${_vdrapi}")
+makedepends=('git')
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("git://projects.vdr-developer.org/vdr-plugin-epg2vdr.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git describe --tags | sed 's/-/_/g'
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make
+}
+
+package() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make DESTDIR="${pkgdir}" install
+}
