@@ -1,0 +1,9 @@
+[Unit]
+Description=VDR EPG Daemon
+Wants=mysqld.service
+
+[Service]
+ExecStart=/usr/bin/epgd
+
+[Install]
+WantedBy=multi-user.target

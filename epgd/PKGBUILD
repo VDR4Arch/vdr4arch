@@ -2,24 +2,33 @@
 pkgname=epgd
 pkgver=0.0.7_135_g1307f6e
 _gitver=1307f6efb12c40ba9f657a3a19d261c63caada93
-pkgrel=1
+pkgrel=2
 pkgdesc="Part of the double team epgd+epg2vdr to effectively retrieve, store and import epg data to vdr"
 url="http://projects.vdr-developer.org/projects/vdr-epg-daemon"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('curl' 'libxslt' 'libarchive' 'libmariadbclient')
 makedepends=('git')
-source=("git://projects.vdr-developer.org/vdr-epg-daemon.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-epg-daemon.git#commit=$_gitver"
+        'epgd.service'
+        'epgd-tool-fix.diff')
+md5sums=('SKIP'
+         'c801f4d42ac9b80004bc287fe714b2eb'
+         'c9c26503f9aa178e0dabe44cb2864582')
 
 pkgver() {
   cd "${srcdir}/vdr-epg-daemon"
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
+prepare() {
+  cd "${srcdir}/vdr-epg-daemon"
+  patch -p0 -i "$srcdir/epgd-tool-fix.diff"
+}
+
 build() {
   cd "${srcdir}/vdr-epg-daemon"
-  make
+  make PREFIX='/usr'
 }
 
 package() {
@@ -32,4 +41,6 @@ package() {
   #Workaround epglv Makefile bug
   mkdir -p "$pkgdir/$(mysql_config --plugindir)"
   mv "$pkgdir/mysqlepglv.so" "$pkgdir/$(mysql_config --plugindir)"
+
+  install -Dm644 "$srcdir/epgd.service" "$pkgdir/usr/lib/systemd/systemd/epgd.service"
 }
