@@ -1,0 +1,35 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=epgd
+pkgver=0.0.7_135_g1307f6e
+_gitver=1307f6efb12c40ba9f657a3a19d261c63caada93
+pkgrel=1
+pkgdesc="Part of the double team epgd+epg2vdr to effectively retrieve, store and import epg data to vdr"
+url="http://projects.vdr-developer.org/projects/vdr-epg-daemon"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('curl' 'libxslt' 'libarchive' 'libmariadbclient')
+makedepends=('git')
+source=("git://projects.vdr-developer.org/vdr-epg-daemon.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/vdr-epg-daemon"
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+build() {
+  cd "${srcdir}/vdr-epg-daemon"
+  make
+}
+
+package() {
+  cd "${srcdir}/vdr-epg-daemon"
+  mkdir -p "$pkgdir/usr/bin"
+  make DESTDIR="${pkgdir}" \
+       PREFIX='/usr' \
+       install
+  
+  #Workaround epglv Makefile bug
+  mkdir -p "$pkgdir/$(mysql_config --plugindir)"
+  mv "$pkgdir/mysqlepglv.so" "$pkgdir/$(mysql_config --plugindir)"
+}
