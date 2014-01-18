@@ -9,8 +9,14 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("https://github.com/flensrocker/vdr-plugin-$_plugname/archive/v$pkgver.tar.gz")
+source=("https://github.com/flensrocker/vdr-plugin-$_plugname/archive/v$pkgver.tar.gz"
+        'recsearch-vdr2.1.2compat.diff')
 md5sums=('cbbcee966acfda6b9e116525cd04ae4e')
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  patch -p1 -i "$srcdir/recsearch-vdr2.1.2compat.diff"
+}
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
