@@ -58,6 +58,9 @@ Just file a bug and add the label "enhancement"
 
 https://github.com/CReimer/vdr4arch/issues
 
+You want to provide patches via pull requests?
+Please patch branch master only.
+
 Known problems
 --------------
 
