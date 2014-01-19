@@ -1,0 +1,43 @@
+--- scripts/epgd-tool	2014-01-18 20:19:50.150197193 +0100
++++ scripts/epgd-tool	2014-01-18 20:32:57.803550087 +0100
+@@ -14,14 +14,6 @@
+ 
+ systemd_start ()
+ {
+-  MYSQL_START="service mysql start"
+-  MYSQL_RESTART="service mysql restart"
+-  EPGD_START="service epgd start"
+-  EPGD_STOP="service epgd stop"
+-  EPGD_RESTART="service epgd restart"
+-}
+-archlinux_start ()
+-{
+   MYSQL_START="systemctl start mysqld"
+   MYSQL_RESTART="systemctl restart mysqld"
+   EPGD_START="systemctl epgd start"
+@@ -42,22 +34,18 @@
+ [ -f ~/.ssh/mysqlpasswd ] && . ~/.ssh/mysqlpasswd 
+ if [ ! $PASSWORD ] ; then
+   echo "root Password for MySQL Database is not set!"
+-  echo "Exit"
+-  exit
++  SQL_ROOT="mysql -u root --verbose"
+ else
+   . ~/.ssh/mysqlpasswd
+   SQL_ROOT="mysql -u root -p"$PASSWORD" --verbose"
+ fi
+ }
+ 
+-RC="$(which rc |wc -l)"
+-if [ -f /etc-arch-release ] ; then
+-        archlinux_start
+-elif [ -d /etc/systemd ] && [ $RC -ne 1 ] ; then
++if [ $(ps -p 1 -o comm=) == 'systemd' ] ; then
+   systemd_start
+ elif [ -d /usr/lib/upstart ] ; then
+   upstart_start
+-elif [ $RC -eq 1 ] ; then
++elif which rc > /dev/null 2>&1 ; then
+   rc_start
+ fi
+ 
