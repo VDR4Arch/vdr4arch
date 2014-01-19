@@ -2,7 +2,7 @@
 pkgname=epgd
 pkgver=0.0.7_135_g1307f6e
 _gitver=1307f6efb12c40ba9f657a3a19d261c63caada93
-pkgrel=2
+pkgrel=3
 pkgdesc="Part of the double team epgd+epg2vdr to effectively retrieve, store and import epg data to vdr"
 url="http://projects.vdr-developer.org/projects/vdr-epg-daemon"
 arch=('x86_64' 'i686')
@@ -42,5 +42,5 @@ package() {
   mkdir -p "$pkgdir/$(mysql_config --plugindir)"
   mv "$pkgdir/mysqlepglv.so" "$pkgdir/$(mysql_config --plugindir)"
 
-  install -Dm644 "$srcdir/epgd.service" "$pkgdir/usr/lib/systemd/systemd/epgd.service"
+  install -Dm644 "$srcdir/epgd.service" "$pkgdir/usr/lib/systemd/system/epgd.service"
 }
