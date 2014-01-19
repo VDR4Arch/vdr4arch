@@ -3,7 +3,7 @@ post_install() {
   cd /var/lib/vdr/plugins/live
   if [ ! -e live.pem ] || [ ! -e live-key.pem ]; then
     openssl req -new -x509 -keyout live-key.pem -out live.pem -days 9999 -nodes -batch
-    chown -R vdr:vdr var/lib/vdr
+    chown -R vdr:vdr /var/lib/vdr
   fi
 }
 
