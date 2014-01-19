@@ -1,0 +1,22 @@
+pkgname=vdr-dummydevice
+pkgver=2.0.0
+_vdrapi=2.1.3
+pkgrel=1
+pkgdesc="Output device that does nothing"
+url="http://phivdr.dyndns.org/vdr/vdr-dummydevice/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://phivdr.dyndns.org/vdr/vdr-dummydevice/vdr-dummydevice-$pkgver.tgz")
+md5sums=('1a23299d3cb0b8bd539decd86f399aba')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make
+}
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
