@@ -11,12 +11,5 @@ post_install() {
 }
 
 post_upgrade() {
-  gpasswd -a oscam video > /dev/null
   chown -R oscam:oscam var/lib/oscam
-  chown oscam:oscam /tmp/camd.socket
-
-  cd var/lib/oscam
-  for file in *.pacsave; do
-    mv $file $(basename $file .pacsave) 2>/dev/null > /dev/null
-  done
 }
