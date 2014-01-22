@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=graphlcd-base
-pkgver=20130419
-_gitver=c45745ea462ea3758daffc6302552993ba4c3be0
-pkgrel=11
+pkgver=20130520
+_gitver=1e01a8963f9ab95ba40ddb44a6c166b8e546053d
+pkgrel=1
 pkgdesc="Project to support graphical LC displays connected to the PC"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
@@ -25,8 +25,8 @@ prepare() {
   sed -i '/CFLAGS/d' Make.config
   sed -i '/CXXFLAGS/d' Make.config
   sed -i '/LDFLAGS/d' Make.config
-  sed -i 's/#HAVE_AX206DPF_EXPERIMENTAL/HAVE_AX206DPF_EXPERIMENTAL/' Make.config
-  sed -i 's/#HAVE_picoLCD_256x64_EXPERIMENTAL/HAVE_picoLCD_256x64_EXPERIMENTAL/' Make.config
+  sed -i 's/#HAVE_DRIVER_AX206DPF/HAVE_DRIVER_AX206DPF/' Make.config
+  sed -i 's/#HAVE_DRIVER_picoLCD_256x64/HAVE_DRIVER_picoLCD_256x64/' Make.config
   sed -i 's/#HAVE_GRAPHICSMAGICK/HAVE_GRAPHICSMAGICK/' Make.config
 }
 
