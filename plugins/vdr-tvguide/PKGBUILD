@@ -4,12 +4,12 @@ _gitrev=d0651a4a507bbd633b30105f1fa01abe1172b311
 pkgver=1.0.0_28_gd0651a4
 epoch=1
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('vdr4arch-imagemagick-wrapper' 'libpng' "vdr-api=$_vdrapi")
+depends=('graphicsmagick' 'libpng' "vdr-api=$_vdrapi")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
