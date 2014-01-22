@@ -1,10 +1,10 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvguide
-_gitrev=d0651a4a507bbd633b30105f1fa01abe1172b311
-pkgver=1.0.0_28_gd0651a4
+_gitrev=a65fca41d87e69007369662368ef3ac14902297b
+pkgver=1.0.0_39_ga65fca4
 epoch=1
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=1
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
