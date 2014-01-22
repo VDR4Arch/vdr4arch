@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-vdrboblight
-pkgver=0.0.5
-_gitrev=98afa7fb78fbe80faf25d6c5f424b2aa29b5c197
+pkgver=0.0.5_3_g06464fb
+_gitrev=06464fbaa856da447cb794d80e07f5abb96f4b1f
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="Boblight with data from softhddevice"
