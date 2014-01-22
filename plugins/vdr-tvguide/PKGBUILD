@@ -4,7 +4,7 @@ _gitrev=d0651a4a507bbd633b30105f1fa01abe1172b311
 pkgver=1.0.0_28_gd0651a4
 epoch=1
 _vdrapi=2.0.0
-pkgrel=3
+pkgrel=2
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
@@ -13,13 +13,20 @@ depends=('graphicsmagick' 'libpng' "vdr-api=$_vdrapi")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-tvguide.git#commit=$_gitrev")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-tvguide.git#commit=$_gitrev"
+        'tvguide-graphicsmagick.patch')
+md5sums=('SKIP'
+         '8e015974ed52603440da79420dc5a6b5')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
     git tag -a 1.0.0 -m 'Added Tag' c545f6b4cfc4c8fe604eb216fb1d8c86550e74ca 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+prepare() {
+  cd "$srcdir/vdr-plugin-${_plugname}"
+  patch -p1 -i "$srcdir/tvguide-graphicsmagick.patch"
 }
 
 build() {

@@ -1,0 +1,16 @@
+diff --git a/imageloader.c b/imageloader.c
+index 8b913ea..3ad7ab6 100644
+--- a/imageloader.c
++++ b/imageloader.c
+@@ -98,8 +98,9 @@ bool cImageLoader::LoadOsdElement(cString name, int width, int height) {
+     success = LoadImage(*name, *path, "png");
+     if (!success)
+         return false;
+-    cString geometry = cString::sprintf("%dx%d!", width, height);
+-    buffer.resize(Geometry(*geometry));
++    Geometry size(width, height);
++    size.aspect(true);
++    buffer.sample(size);
+     return true;
+ }
+ 
