@@ -4,7 +4,7 @@ _gitrev=d0651a4a507bbd633b30105f1fa01abe1172b311
 pkgver=1.0.0_28_gd0651a4
 epoch=1
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
@@ -24,12 +24,12 @@ pkgver() {
 
 build() {
   cd "$srcdir/vdr-plugin-${_plugname}"
-  make IMAGELIB=imagemagick
+  make IMAGELIB=graphicsmagick
 }
 
 package() {
   cd "$srcdir/vdr-plugin-${_plugname}"
   make DESTDIR="$pkgdir" install
 
-  find "$pkgdir" -name *.png -exec gm convert +profile icm {} {} \;
+#   find "$pkgdir" -name *.png -exec gm convert +profile icm {} {} \;
 }

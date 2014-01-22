@@ -3,12 +3,12 @@
 pkgname=graphlcd-base
 pkgver=20130419
 _gitver=c45745ea462ea3758daffc6302552993ba4c3be0
-pkgrel=10
+pkgrel=11
 pkgdesc="Project to support graphical LC displays connected to the PC"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('vdr4arch-imagemagick-wrapper' 'libusb-compat' 'libvncserver')
+depends=('graphicsmagick' 'libusb-compat' 'libvncserver')
 optdepends='serdisplib: Add support for more serial displays'
 makedepends=('git')
 backup=(etc/graphlcd.conf)
@@ -27,7 +27,7 @@ prepare() {
   sed -i '/LDFLAGS/d' Make.config
   sed -i 's/#HAVE_AX206DPF_EXPERIMENTAL/HAVE_AX206DPF_EXPERIMENTAL/' Make.config
   sed -i 's/#HAVE_picoLCD_256x64_EXPERIMENTAL/HAVE_picoLCD_256x64_EXPERIMENTAL/' Make.config
-  sed -i 's/#HAVE_IMAGEMAGICK/HAVE_IMAGEMAGICK/' Make.config
+  sed -i 's/#HAVE_GRAPHICSMAGICK/HAVE_GRAPHICSMAGICK/' Make.config
 }
 
 build() {

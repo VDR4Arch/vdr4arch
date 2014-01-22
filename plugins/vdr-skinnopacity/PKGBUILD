@@ -2,12 +2,12 @@
 pkgname=vdr-skinnopacity
 pkgver=1.0.3
 _vdrapi=2.0.0
-pkgrel=4
+pkgrel=5
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('vdr4arch-imagemagick-wrapper' "vdr-api=${_vdrapi}")
+depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
@@ -19,7 +19,7 @@ md5sums=('6248fe0977c96f004c99e0fdd534d598')
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
-  make IMAGELIB=imagemagick
+  make IMAGELIB=graphicsmagick
 }
 
 package() {

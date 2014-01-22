@@ -2,12 +2,12 @@
 pkgname=vdr-skinflat
 pkgver=0.1.1
 _vdrapi=2.0.0
-pkgrel=7
+pkgrel=8
 pkgdesc="Simple and slim skin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-skinflat"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('vdr4arch-imagemagick-wrapper' "vdr-api=${_vdrapi}")
+depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1476/$_plugname-$pkgver.tar.gz")
@@ -15,7 +15,7 @@ md5sums=('1c54a17cdb9f56608dce815bc87e72da')
 
 prepare() {
   cd "${srcdir}/$_plugname-$pkgver"
-#   sed -i 's/Magick++/GraphicsMagick++/g' Makefile
+  sed -i 's/Magick++/GraphicsMagick++/g' Makefile
 }
 
 build() {
