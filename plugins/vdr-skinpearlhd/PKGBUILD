@@ -17,7 +17,7 @@ source=("git://projects.vdr-developer.org/vdr-plugin-skinpearlhd.git#commit=$_gi
         'skinpearlhd-search_for_logos_in_resourcedir.diff'
         'http://projects.vdr-developer.org/attachments/download/1386/setup-page-fix.diff')
 md5sums=('SKIP'
-         'fe16699af9b34813badb0592707848be'
+         '7906df33146a0d65cbf7dcb8d524e07a'
          'a3863c199b78f405a79b46b2e10c9dc9'
          '2a8bfca1077129fbcc0d777075336878')
 
