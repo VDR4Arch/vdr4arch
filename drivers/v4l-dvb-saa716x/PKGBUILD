@@ -2,9 +2,9 @@
 pkgname=v4l-dvb-saa716x
 pkgver=20130802
 _hgver=0dab24906ff0
-_kernver=3.12.8
+_kernver=3.12.9
 url='http://powarman.dyndns.org/hgwebdir.cgi/v4l-dvb-saa716x'
-pkgrel=15
+pkgrel=16
 pkgdesc="All interesting modules of powarman's repository"
 arch=('x86_64' 'i686')
 license=('GPL2')
