@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-softhddevice
-pkgver=0.6.1rc1_14_g590bae4
+pkgver=0.6.1rc1_16_g340e10a
 epoch=1
-_gitver=590bae406a06f128f806ef9f6269bfbdb8f81d4c
+_gitver=340e10a0eb66eff59581371d3bfcebb602da8046
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
