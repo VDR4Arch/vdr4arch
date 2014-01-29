@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvguide
-_gitrev=a65fca41d87e69007369662368ef3ac14902297b
-pkgver=1.0.0_39_ga65fca4
+_gitrev=26f46355f9fb20b3921d1188c7084dcaa2b838d4
+pkgver=1.0.0_47_g26f4635
 epoch=1
 _vdrapi=2.0.0
 pkgrel=1
@@ -13,20 +13,13 @@ depends=('graphicsmagick' 'libpng' "vdr-api=$_vdrapi")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-tvguide.git#commit=$_gitrev"
-        'tvguide-graphicsmagick.patch')
-md5sums=('SKIP'
-         '8e015974ed52603440da79420dc5a6b5')
+source=("git://projects.vdr-developer.org/vdr-plugin-tvguide.git#commit=$_gitrev")
+md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
     git tag -a 1.0.0 -m 'Added Tag' c545f6b4cfc4c8fe604eb216fb1d8c86550e74ca 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
-}
-
-prepare() {
-  cd "$srcdir/vdr-plugin-${_plugname}"
-  patch -p1 -i "$srcdir/tvguide-graphicsmagick.patch"
 }
 
 build() {
