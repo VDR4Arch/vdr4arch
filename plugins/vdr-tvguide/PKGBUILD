@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvguide
-_gitrev=26f46355f9fb20b3921d1188c7084dcaa2b838d4
-pkgver=1.0.0_47_g26f4635
+_gitrev=9f127fbbb5e0cc508879bb380f214d72db9439e8
+pkgver=1.2.0
 epoch=1
 _vdrapi=2.0.0
 pkgrel=1
@@ -18,7 +18,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-    git tag -a 1.0.0 -m 'Added Tag' c545f6b4cfc4c8fe604eb216fb1d8c86550e74ca 2> /dev/null
+    git tag -a v1.2.0 -m 'Added Tag' 9f127fbbb5e0cc508879bb380f214d72db9439e8 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
