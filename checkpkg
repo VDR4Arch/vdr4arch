@@ -3,7 +3,7 @@
 # checkpkg script for the vdr4arch project. Automatically executed by repo-make
 # for every new package. Checks packages for common mistakes.
 #
-# To manually check repository, just call ./checkpkg.sh
+# To manually check repository, just call ./checkpkg
 
 if [[ $1 == "--help" ]]; then
   echo "Usage: ./checkpkg [PATH]"
