@@ -7,7 +7,7 @@ pkgdesc="VDR plugin for doing extra fixing of EPG data"
 url="http://projects.vdr-developer.org/projects/plg-epgfixer"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('pcre' "vdr-api=${_vdrapi}")
+depends=('gcc-libs' 'pcre' "vdr-api=${_vdrapi}")
 backup=('var/lib/vdr/plugins/epgfixer/blacklist.conf'
         'var/lib/vdr/plugins/epgfixer/charset.conf'
         'var/lib/vdr/plugins/epgfixer/epgclone.conf'

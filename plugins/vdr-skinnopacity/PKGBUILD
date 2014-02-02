@@ -14,8 +14,8 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 backup=("var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-light.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-default.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-iceblue.conf")
-source=("http://projects.vdr-developer.org/attachments/download/1625/$pkgname-$pkgver.tgz")
-md5sums=('760bbb000982a26765c5a7a1a5b1c4be')
+source=("http://projects.vdr-developer.org/attachments/download/1626/$pkgname-$pkgver.tgz")
+md5sums=('68eb23460cccf373aee97a8edfa40567')
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"

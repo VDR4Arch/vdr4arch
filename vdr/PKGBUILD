@@ -6,7 +6,7 @@ pkgdesc="'open' digital satellite receiver and timer controlled video disk recor
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('libjpeg-turbo' 'perl' 'ttf-font')
+depends=('libcap' 'libjpeg-turbo' 'perl' 'ttf-font')
 optdepends=('lirc-utils: remote control support'
             'ncurses: skinncurses plugin'
             'runvdr-extreme: startscript for vdr')
