@@ -1,0 +1,73 @@
+#!/usr/bin/bash
+#
+# checkpkg script for the vdr4arch project. Automatically executed by repo-make
+# for every new package. Checks packages for common mistakes.
+#
+# To manually check repository, just call ./checkpkg.sh
+
+if [[ $1 == "--help" ]]; then
+  echo "Usage: ./checkpkg [PATH]"
+  exit
+fi
+if [[ -n $1 ]]; then
+  PACKAGES=$*
+else
+  PACKAGES=$(find repo -name "*.pkg.tar.xz" -not -name "*-debug-*")
+fi
+
+for PKG in $PACKAGES; do
+  #
+  # Namcap checks (optional). Some messages are filtered out for vdr4arch.
+  # Only namcap *Errors* make the script return with error status.
+  #
+  if which namcap >/dev/null 2>/dev/null; then
+    if namcap "$PKG" | grep -v \
+      -e "E: unknown is not a common license" \
+      -e "E: Missing custom license directory" \
+      -e "E: Symlink .*fonts.* points to non-existing" \
+      -e "W: Dependency included and not needed ('vdr-api')" \
+      -e "W: Dependency included and not needed ('linux')" \
+      -e "W: File name .* contains non standard characters" \
+        | tee /dev/stderr | grep -q 'E:'; then
+      echo "namcap error in $PKG!" >&2
+      exit 1
+    fi
+  else
+    echo "WARNING: You should install namcap for automated package checks!" >&2
+  fi
+
+  #
+  # Prepare some variables for faster access in the following checks
+  #
+  FILELIST=$(tar -tf "$PKG");
+  if [[ $? != 0 ]]; then exit 1; fi
+  INSTALL=$(tar -xOf "$PKG" .INSTALL 2>/dev/null)
+
+  #
+  # If we package "var/lib/vdr" then we *have to* chown it to vdr:vdr!
+  #
+  if grep -q '^var/lib/vdr' <<<"$FILELIST" &&
+      ! grep -q 'chown -R vdr:vdr /\?var/lib/vdr' <<<"$INSTALL"; then
+    echo "chown for var/lib/vdr missing in $PKG!" >&2
+    exit 1
+  fi
+
+  #
+  # If a theme doesn't deliver its "default.theme", then we have to delete
+  # the auto-generated file while installation, so VDR creates an updated one.
+  #
+  if grep -q '^var/lib/vdr/themes/' <<<"$FILELIST" &&
+      ! grep -q '^var/lib/vdr/themes/.*-default\.theme' <<<"$FILELIST" &&
+      ! grep -q 'rm -f var/lib/vdr/themes/.*-default\.theme' <<<"$INSTALL"; then
+    echo "rm for default.theme missing in $PKG" >&2
+    exit 1
+  fi
+
+  #
+  # "Cache stuff" shouldn't be packaged
+  #
+  if grep -q '^var/cache/' <<<"$FILELIST"; then
+    echo "Cache files shouldn't be part of $PKG!" >&2
+    exit 1
+  fi
+done;
