@@ -2,9 +2,9 @@
 # Contributor: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase=DFAtmo
 pkgname=('dfatmo' 'vdr-dfatmo' 'xbmc-addon-dfatmo')
-pkgver=0.3.4
+pkgver=0.4.0
 _vdrapi=2.0.0
-pkgrel=5
+pkgrel=1
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686')
@@ -12,7 +12,7 @@ license=('GPL2')
 makedepends=('libusbx' 'python2' "vdr-api=${_vdrapi}" 'zip')
 source=("https://github.com/durchflieger/${pkgbase}/archive/v${pkgver}.tar.gz"
         '45-df10ch.rules')
-md5sums=('f219c14904b800303565be29a607c52d'
+md5sums=('6b9a85af2d4dc66a80bd14f5bd13a3c2'
          'c5e0bf17e88febc7e86c7e435f5eea5f')
 
 prepare() {
@@ -54,6 +54,7 @@ package_vdr-dfatmo() {
 
 package_xbmc-addon-dfatmo() {
   pkgdesc="VDR plugin to drive a colored back lighting for TVs"
+  arch=('any')
   depends=('dfatmo' 'xbmc')
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
