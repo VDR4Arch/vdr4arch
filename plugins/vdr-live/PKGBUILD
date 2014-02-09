@@ -4,7 +4,7 @@ pkgver=0.3.0_4_g69f84f9
 epoch=1
 _gitver=69f84f95fa875c6f562294b1a6a1ea6f584d3f6c
 _vdrapi=2.0.0
-pkgrel=5
+pkgrel=6
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
 url="http://projects.vdr-developer.org/projects/plg-live"
 arch=('x86_64' 'i686')
@@ -17,15 +17,18 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-live.git#commit=$_gitver"
         'live-vdr2.1.2compat.diff'
-        'live-folderstatecookie-v2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=34407')
+        'live-folderstatecookie-v2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=34407'
+        'live-osd-v4.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=33794')
 md5sums=('SKIP'
          '8dab4290bd72852089832f924887707b'
-         '6abb3d1724057e765e98e1a9b5326fe3')
+         '6abb3d1724057e765e98e1a9b5326fe3'
+         '00b6fea67492e1e2ed6520b2c816c751')
 
 prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   patch -p1 -i "$srcdir/live-vdr2.1.2compat.diff"
   patch -p1 -i "$srcdir/live-folderstatecookie-v2.diff"
+  patch -p1 -i "$srcdir/live-osd-v4.diff"
 }
 
 pkgver() {
