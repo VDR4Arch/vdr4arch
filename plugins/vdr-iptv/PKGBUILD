@@ -1,0 +1,22 @@
+pkgname=vdr-iptv
+pkgver=2.0.2
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Integrates multicast IPTV transport streams seamlessly into VDR"
+url="http://www.saunalahti.fi/~rahrenbe/vdr/iptv/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('curl' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://www.saunalahti.fi/~rahrenbe/vdr/$_plugname/files/$pkgname-$pkgver.tgz")
+md5sums=('4d8d0e8602337b4dfe66881483918433')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make
+}
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install-lib install-i18n
+}
