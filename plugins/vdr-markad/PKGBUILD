@@ -1,8 +1,8 @@
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-markad
-pkgver=0.1.4_33_g09617a6
+pkgver=0.1.4_34_g838b535
 epoch=1
-_gitver=09617a66e26cb5ccadd8762133a42f3ecaeeb3bf
+_gitver=838b535ded763a5a2210c4657e5a316f70966a74
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="automatic advertisement detection"
