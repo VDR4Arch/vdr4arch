@@ -1,0 +1,25 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-rssreader
+pkgver=2.0.1
+_vdrapi=2.0.0
+pkgrel=1
+pkgdesc="Provides a simple OSD menu based user interface for reading user-defined RSS streams"
+url="http://www.saunalahti.fi/rahrenbe/vdr/rssreader/"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=('curl' 'expat' "vdr-api=${_vdrapi}")
+install="$pkgname.install"
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://www.saunalahti.fi/~rahrenbe/vdr/$_plugname/files/$pkgname-$pkgver.tgz")
+md5sums=('37e0583b5dadf89b03dea94553e1993d')
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make GITTAG=''
+}
+
+
+package() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make DESTDIR="$pkgdir" install
+}
