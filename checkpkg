@@ -12,7 +12,7 @@ fi
 if [[ -n $1 ]]; then
   PACKAGES=$*
 else
-  PACKAGES=$(find repo -name "*.pkg.tar.xz" -not -name "*-debug-*")
+  PACKAGES=$(find -name "*.pkg.tar.xz" -not -name "*-debug-*")
 fi
 
 for PKG in $PACKAGES; do
