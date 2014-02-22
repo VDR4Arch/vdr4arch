@@ -1,0 +1,138 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
+pkgbase=drivers
+pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
+pkgver=3.13.4
+pkgrel=1
+_extramodules=extramodules-3.13-ARCH
+url='https://github.com/CReimer/vdr4arch'
+pkgdesc="Additional or updated dvb driver modules"
+arch=('x86_64' 'i686')
+license=('GPL2')
+depends=("linux=$pkgver")
+makedepends=("linux-headers=$pkgver")
+install="${pkgbase}.install"
+source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
+        'kernel-3.13.4-dvbsky.patch'
+        'http://www.dvbsky.net/download/linux/media_build-bst-140128.tar.gz'
+        'http://www.metzlerbros.de/dddvb/dddvb-0.9.10.tar.bz2'
+        'sit2.patch'
+        '010_dd-frontends-kconfig2.diff'
+        'drop_DVBC2.diff'
+        'backport-ddbridge.diff'
+        'hg+https://bitbucket.org/powARman/v4l-dvb-saa716x'
+        'hg+http://linuxtv.org/hg/~endriss/media_build_experimental')
+md5sums=('282aee559c3dc51e224761184d8634d1'
+         'bdb6cab25a98431d20f60548c2ee5f19'
+         'c538c1635e7f9838f1c56409943f7080'
+         '171dde3271b15fd34350d79b237f2943'
+         'b957bebead31f541822773ab47ce5ae0'
+         '4933d24660c79d7ae7148529b55208bd'
+         '7c20ef6d1ad06dec2815c27dd175308f'
+         '69266141e794c8bcbff95515ab7a4a83'
+         'SKIP'
+         'SKIP')
+
+#dvbsky server doesn't like curl's user agent
+DLAGENTS="$( IFS=$'\n'; echo "${DLAGENTS[*]}" | grep '^http::' ) --user-agent 'Mozilla/4.0'"
+
+prepare() {
+  sed -i -e "s/EXTRAMODULES=.*/EXTRAMODULES=${_extramodules}/g" "${startdir}/${pkgbase}.install"
+
+
+  #dd
+  cd $srcdir/dddvb-0.9.10
+  patch -p1 -i "$srcdir/backport-ddbridge.diff"
+  cp frontends/{stv0367dd*,tda18212dd*,cxd2843*} $srcdir/linux-$pkgver/drivers/media/dvb-frontends/
+  mkdir -p $srcdir/linux-$pkgver/include/linux/dvb
+  cp include/linux/dvb/mod.h $srcdir/linux-$pkgver/include/linux/dvb/
+  rm "$srcdir/linux-$pkgver/drivers/media/pci/ddbridge/"{*.c,*.h,Makefile}
+  cp -r ddbridge "$srcdir/linux-$pkgver/drivers/media/pci/"
+  cd "$srcdir/linux-$pkgver"
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/010_dd-frontends-kconfig.diff"
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/010_dd-frontends-makefile.diff"
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/100_dvbdev.h.diff"
+  patch -p1 -i "$srcdir/drop_DVBC2.diff"
+#   patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/100_frontend.h.diff"
+  patch -p1 -i "$srcdir/010_dd-frontends-kconfig2.diff"
+
+
+  #dvbsky
+  cd "$srcdir/linux-$pkgver"
+  ln -sf "$srcdir"/media_build-bst/v4l/sit2.o.dvbc_x${CARCH: -2} "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/sit2.o
+  patch -Np1 -i "$srcdir/kernel-3.13.4-dvbsky.patch"
+  patch -Np1 -i "$srcdir/sit2.patch"
+
+
+  #technotrend
+  echo 'EXTRA_CFLAGS += -Idrivers/media/tuners' >> "$srcdir/v4l-dvb-saa716x/linux/drivers/media/common/saa716x/Makefile"
+  cd "$srcdir"/linux-$pkgver
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/saa716x.include-osd.diff"
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/saa716x.pci-kconfig.diff"
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/saa716x.pci-makefile.diff"
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/320_stv090x_ucblocks_ber.diff"
+  cp -r "$srcdir/v4l-dvb-saa716x/linux/drivers/media/common/saa716x" drivers/media/pci
+
+
+  #Prepare full kernel source. linux-headers package is incomplete.
+  cd "$srcdir/linux-$pkgver"
+  cp /usr/lib/modules/$pkgver-*-ARCH/build/.config .
+  cp /usr/lib/modules/$pkgver-*-ARCH/build/Module.symvers .
+  echo CONFIG_SAA716X_SUPPORT=y >> .config
+  yes 'm' | make oldconfig
+  make prepare
+  make scripts
+}
+
+build() {
+  for _folder in dvb-frontends \
+                 pci/cx23885 \
+                 pci/cx88 \
+                 pci/ddbridge \
+                 pci/saa716x \
+                 rc/keymaps \
+                 usb/dvb-usb-v2; do
+    cd "$srcdir/linux-$pkgver/drivers/media/$_folder"
+    make -C "$srcdir"/linux-$pkgver M=$(pwd) modules
+  done
+}
+
+package_digitaldevices-dvb-drivers() {
+  pkgdesc+="(Digital Devices/Linux4Media)"
+  replaces=('dddvb' 'ngene-octopus-test')
+  conflicts=('dddvb' 'ngene-octopus-test')
+  mkdir -p "$pkgdir"/usr/lib/modules/$_extramodules
+  cd "$pkgdir"/usr/lib/modules/$_extramodules
+  mv "$srcdir"/linux-$pkgver/drivers/media/pci/ddbridge/ddbridge.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/stv0367dd.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/tda18212dd.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/cxd2843.ko .
+  gzip -9 *
+}
+
+package_dvbsky-dvb-drivers() {
+  pkgdesc+="(DVBSky)"
+  replaces=('media-build-dvbsky')
+  conflicts=('media-build-dvbsky')
+  license=('unknown') #sit2.o is obviously closed source.
+  mkdir -p "$pkgdir"/usr/lib/modules/$_extramodules
+  cd "$pkgdir"/usr/lib/modules/$_extramodules
+  mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/m88d{c2800,s3103}.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/sit2fe.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/pci/cx23885/cx23885.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/pci/cx88/cx88{-dvb,00,xx}.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/rc/keymaps/rc-dvbsky.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/usb/dvb-usb-v2/dvb-usb-dvbsky.ko .
+  gzip -9 *
+}
+
+package_technotrend-dvb-drivers() {
+  pkgdesc+="(TechnoTrend)"
+  replaces=('v4l-dvb-saa716x')
+  conflicts=('v4l-dvb-saa716x')
+  mkdir -p "$pkgdir"/usr/lib/modules/$_extramodules
+  cd "$pkgdir"/usr/lib/modules/$_extramodules
+  mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/stv090x.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/pci/saa716x/*.ko .
+  gzip -9 *
+}

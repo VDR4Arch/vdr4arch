@@ -1,0 +1,119 @@
+--- a/drivers/media/dvb-frontends/Kconfig	2014-02-14 16:49:40.000000000 +0100
++++ b/drivers/media/dvb-frontends/Kconfig	2014-02-14 17:07:25.618637604 +0100
+@@ -220,6 +220,13 @@
+ 	default m if !MEDIA_SUBDRV_AUTOSELECT
+ 	help
+ 	  A DVB-C tuner module. Say Y when you want to support this frontend.
++
++config DVB_SIT2
++	tristate "SIT2 based"
++	depends on DVB_CORE && I2C
++	default m if !MEDIA_SUBDRV_AUTOSELECT
++	help
++	  A DVB-T2/T/C tuner module. Say Y when you want to support this frontend.
+ 	  	  
+ config DVB_SI21XX
+ 	tristate "Silicon Labs SI21XX based"
+--- /dev/null	2014-02-14 11:04:47.020998318 +0100
++++ linux/drivers/media/dvb-frontends/kmem_func.c	2013-06-27 11:00:28.000000000 +0200
+@@ -0,0 +1,17 @@
++/* memory functions. */
++#include <linux/slab.h>
++
++void *kmalloc_os(size_t size)
++{
++       return kmalloc(size, GFP_KERNEL);
++}
++
++void *kzalloc_os(size_t size)
++{
++       return kzalloc(size, GFP_KERNEL);
++}
++
++void kfree_os(void *p)
++{
++       kfree(p);
++}
+--- a/drivers/media/dvb-frontends/Makefile	2014-02-14 16:49:40.000000000 +0100
++++ b/drivers/media/dvb-frontends/Makefile	2014-02-14 17:09:46.957269176 +0100
+@@ -10,6 +10,7 @@
+ drxd-objs := drxd_firm.o drxd_hard.o
+ cxd2820r-objs := cxd2820r_core.o cxd2820r_c.o cxd2820r_t.o cxd2820r_t2.o
+ drxk-objs := drxk_hard.o
++sit2fe-objs := sit2.o kmem_func.o
+ 
+ obj-$(CONFIG_DVB_PLL) += dvb-pll.o
+ obj-$(CONFIG_DVB_STV0299) += stv0299.o
+@@ -106,3 +107,4 @@
+ obj-$(CONFIG_DVB_AF9033) += af9033.o
+ obj-$(CONFIG_DVB_M88DS3103) += m88ds3103.o
+ obj-$(CONFIG_DVB_M88DC2800) += m88dc2800.o
++obj-$(CONFIG_DVB_SIT2) += sit2fe.o
+--- /dev/null	2014-02-14 11:04:47.020998318 +0100
++++ b/drivers/media/dvb-frontends/sit2.h	2013-05-05 16:17:20.000000000 +0200
+@@ -0,0 +1,45 @@
++/*
++    SIT2  - DVB-T2/T/C demodulator and tuner
++
++    Copyright (C) 2013 Max Nibble <nibble.max@gmail.com>
++
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program; if not, write to the Free Software
++    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++*/
++
++#ifndef SIT2_H
++#define SIT2_H
++
++#include <linux/dvb/frontend.h>
++
++struct sit2_config {
++	u8 ts_bus_mode; /*1-serial, 2-parallel.*/
++	u8 ts_clock_mode; /*0-auto, 1-manual.*/
++	
++	int (*start_ctrl)(struct dvb_frontend *fe);
++};
++
++#if defined(CONFIG_DVB_SIT2) || (defined(CONFIG_DVB_SIT2_MODULE) && defined(MODULE))
++extern struct dvb_frontend *sit2_attach(const struct sit2_config *config,
++					    struct i2c_adapter *i2c);
++#else
++static inline struct dvb_frontend *sit2_attach(const struct sit2_config *config,
++					    struct i2c_adapter *i2c)
++{
++	printk(KERN_WARNING "%s: driver disabled by Kconfig\n", __func__);
++	return NULL;
++}
++#endif /* CONFIG_DVB_SIT2 */
++
++#endif /* SIT2_H */
+--- a/drivers/media/pci/cx23885/Kconfig	2014-02-14 16:49:40.000000000 +0100
++++ b/drivers/media/pci/cx23885/Kconfig	2014-02-14 17:13:01.125387110 +0100
+@@ -26,6 +26,7 @@
+ 	select DVB_CX24117 if MEDIA_SUBDRV_AUTOSELECT
+ 	select DVB_M88DS3103 if MEDIA_SUBDRV_AUTOSELECT
+ 	select DVB_M88DC2800 if MEDIA_SUBDRV_AUTOSELECT
++	select DVB_SIT2 if MEDIA_SUBDRV_AUTOSELECT
+ 	select DVB_STV0900 if MEDIA_SUBDRV_AUTOSELECT
+ 	select DVB_DS3000 if MEDIA_SUBDRV_AUTOSELECT
+ 	select DVB_TS2020 if MEDIA_SUBDRV_AUTOSELECT
+--- a/drivers/media/usb/dvb-usb-v2/Kconfig	2014-02-14 17:28:08.000000000 +0100
++++ b/drivers/media/usb/dvb-usb-v2/Kconfig	2014-02-14 17:39:55.426137451 +0100
+@@ -150,6 +150,7 @@
+ config DVB_USB_DVBSKY
+ 	tristate "DVBSky USB2.0 support"
+ 	depends on DVB_USB_V2
++	select DVB_SIT2 if MEDIA_SUBDRV_AUTOSELECT
+ 	select DVB_M88DS3103 if MEDIA_SUBDRV_AUTOSELECT
+ 	help
+ 	  Say Y here to support the USB receivers from DVBSky.
