@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinflatplus
-pkgver=0.1.0
+pkgver=0.2.0
 _vdrapi=2.0.0
-pkgrel=6
+pkgrel=1
 pkgdesc="Simple and slim skin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-skinflatplus"
 arch=('x86_64' 'i686')
@@ -10,8 +10,8 @@ license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1578/$_plugname-$pkgver.tar.gz")
-md5sums=('SKIP')
+source=("http://projects.vdr-developer.org/attachments/download/1653/$_plugname-$pkgver.tar.gz")
+md5sums=('d8b2b57a7d1bedb5b05de0543282ae07')
 
 prepare() {
   cd "$srcdir/$_plugname-$pkgver"
@@ -27,6 +27,4 @@ package() {
   cd "$srcdir/$_plugname-$pkgver"
 
   make DESTDIR="$pkgdir" install
-
-#   find "$pkgdir" -name *.png -exec gm convert +profile icm {} {} \;
 }
