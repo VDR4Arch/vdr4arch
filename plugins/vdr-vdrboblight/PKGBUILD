@@ -8,7 +8,7 @@ pkgdesc="Boblight with data from softhddevice"
 url="http://projects.vdr-developer.org/projects/plg-boblight"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('boblight' "vdr-api=${_vdrapi}")
+depends=('boblight' 'gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 replaces=('vdr-boblight')
 conflicts=('vdr-boblight')
