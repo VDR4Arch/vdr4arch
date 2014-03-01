@@ -12,7 +12,7 @@ license=('GPL2')
 makedepends=('libusbx' 'python2' "vdr-api=${_vdrapi}" 'zip')
 source=("https://github.com/durchflieger/${pkgbase}/archive/v${pkgver}.tar.gz"
         '45-df10ch.rules')
-md5sums=('6b9a85af2d4dc66a80bd14f5bd13a3c2'
+md5sums=('c10affe8304d494fee575d95ff791dca'
          'c5e0bf17e88febc7e86c7e435f5eea5f')
 
 prepare() {
