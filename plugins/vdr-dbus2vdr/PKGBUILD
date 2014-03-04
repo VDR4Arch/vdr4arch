@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-dbus2vdr
-pkgver=12
-pkgrel=2
+pkgver=21
+pkgrel=1
 _vdrapi=2.0.0
 pkgdesc="Expose some methods via DBus to control the vdr"
 url="https://github.com/flensrocker/vdr-plugin-dbus2vdr"
@@ -12,15 +12,8 @@ makedepends=('png++')
 backup=('etc/dbus-1/system.d/de.tvdr.vdr.conf')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("https://github.com/flensrocker/vdr-plugin-dbus2vdr/archive/v12.tar.gz"
-        'dbus2vdr-vdr2.1.2compat.diff')
-md5sums=('201ec3b131860db493a77460ac1452e4'
-         '7c1b19e8410519a3a8fc69f076fe15dc')
-
-prepare() {
-  cd "$srcdir/vdr-plugin-$_plugname-$pkgver"
-  patch -p1 -i "$srcdir/dbus2vdr-vdr2.1.2compat.diff"
-}
+source=("https://github.com/flensrocker/vdr-plugin-dbus2vdr/archive/v$pkgver.tar.gz")
+md5sums=('9368a1ab48412dddf4550dfec70925b8')
 
 build() {
   cd "$srcdir/vdr-plugin-$_plugname-$pkgver"
