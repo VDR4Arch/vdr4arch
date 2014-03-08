@@ -7,7 +7,7 @@ pkgdesc='Standalone skin providing the good old "ElchiAIO" looks'
 url="http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/"
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=("vdr-api=${_vdrapi}")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/files/$pkgname-$pkgver.tgz")
