@@ -2,7 +2,7 @@
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
-pkgver=3.13.5
+pkgver=3.13.6
 pkgrel=1
 _extramodules=extramodules-3.13-ARCH
 url='https://github.com/CReimer/vdr4arch'
@@ -22,11 +22,11 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         'backport-ddbridge.diff'
         'hg+https://bitbucket.org/powARman/v4l-dvb-saa716x'
         'hg+http://linuxtv.org/hg/~endriss/media_build_experimental')
-md5sums=('b9fa20262a7ecbbc3277aa2ee10412da'
+md5sums=('445aa27da818617409982f42902a6e41'
          'bdb6cab25a98431d20f60548c2ee5f19'
          'c538c1635e7f9838f1c56409943f7080'
          '171dde3271b15fd34350d79b237f2943'
-         'b957bebead31f541822773ab47ce5ae0'
+         '96183387a23c930d5b3ad2a1068b25ed'
          '4933d24660c79d7ae7148529b55208bd'
          '7c20ef6d1ad06dec2815c27dd175308f'
          '69266141e794c8bcbff95515ab7a4a83'
@@ -61,7 +61,7 @@ prepare() {
 
   #dvbsky
   cd "$srcdir/linux-$pkgver"
-  ln -sf "$srcdir"/media_build-bst/v4l/sit2.o.dvbc_x${CARCH: -2} "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/sit2.o
+  ln -sf "$srcdir"/media_build-bst/v4l/sit2.o.x${CARCH: -2} drivers/media/dvb-frontends/sit2.o
   patch -Np1 -i "$srcdir/kernel-3.13.4-dvbsky.patch"
   patch -Np1 -i "$srcdir/sit2.patch"
 
