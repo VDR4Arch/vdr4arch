@@ -18,6 +18,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         'http://www.metzlerbros.de/dddvb/dddvb-0.9.10.tar.bz2'
         'sit2.patch'
         '010_dd-frontends-kconfig2.diff'
+        '010_dd-frontends-makefile.diff'
         'drop_DVBC2.diff'
         'backport-ddbridge.diff'
         'hg+https://bitbucket.org/powARman/v4l-dvb-saa716x'
@@ -28,6 +29,7 @@ md5sums=('445aa27da818617409982f42902a6e41'
          '171dde3271b15fd34350d79b237f2943'
          '96183387a23c930d5b3ad2a1068b25ed'
          '4933d24660c79d7ae7148529b55208bd'
+         '0b33ab73fa45b544e1fb131bdcb5dfca'
          '7c20ef6d1ad06dec2815c27dd175308f'
          '69266141e794c8bcbff95515ab7a4a83'
          'SKIP'
@@ -52,10 +54,10 @@ prepare() {
   cp -r ddbridge "$srcdir/linux-$pkgver/drivers/media/pci/"
   cd "$srcdir/linux-$pkgver"
   patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/010_dd-frontends-kconfig.diff"
-  patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/010_dd-frontends-makefile.diff"
+#   patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/010_dd-frontends-makefile.diff"
+  patch -p1 -i "$srcdir/010_dd-frontends-makefile.diff"
   patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/100_dvbdev.h.diff"
   patch -p1 -i "$srcdir/drop_DVBC2.diff"
-#   patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/100_frontend.h.diff"
   patch -p1 -i "$srcdir/010_dd-frontends-kconfig2.diff"
 
 
