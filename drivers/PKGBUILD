@@ -3,7 +3,7 @@
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
 pkgver=3.13.6
-pkgrel=1
+pkgrel=2
 _extramodules=extramodules-3.13-ARCH
 url='https://github.com/CReimer/vdr4arch'
 pkgdesc="Additional or updated dvb driver modules"
@@ -15,7 +15,6 @@ install="${pkgbase}.install"
 source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         'kernel-3.13.4-dvbsky.patch'
         'http://www.dvbsky.net/download/linux/media_build-bst-140128.tar.gz'
-        'http://www.metzlerbros.de/dddvb/dddvb-0.9.10.tar.bz2'
         'sit2.patch'
         '010_dd-frontends-kconfig2.diff'
         '010_dd-frontends-makefile.diff'
@@ -26,12 +25,11 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
 md5sums=('445aa27da818617409982f42902a6e41'
          'bdb6cab25a98431d20f60548c2ee5f19'
          'c538c1635e7f9838f1c56409943f7080'
-         '171dde3271b15fd34350d79b237f2943'
          '96183387a23c930d5b3ad2a1068b25ed'
          '4933d24660c79d7ae7148529b55208bd'
          '0b33ab73fa45b544e1fb131bdcb5dfca'
-         '7c20ef6d1ad06dec2815c27dd175308f'
-         '69266141e794c8bcbff95515ab7a4a83'
+         'dfd1df8ec6ec3a6e2fcdafd40d382196'
+         '725a1e423e0dd6e7b7159fb23dd04a12'
          'SKIP'
          'SKIP')
 
@@ -45,20 +43,21 @@ prepare() {
 
 
   #dd
-  cd $srcdir/dddvb-0.9.10
+  cd "$srcdir/media_build_experimental/experimental/dddvb"
   patch -p1 -i "$srcdir/backport-ddbridge.diff"
   cp frontends/{stv0367dd*,tda18212dd*,cxd2843*} $srcdir/linux-$pkgver/drivers/media/dvb-frontends/
-  mkdir -p $srcdir/linux-$pkgver/include/linux/dvb
-  cp include/linux/dvb/mod.h $srcdir/linux-$pkgver/include/linux/dvb/
+  install -Dm644 include/linux/dvb/mod.h $srcdir/linux-$pkgver/include/linux/dvb/mod.h
+
   rm "$srcdir/linux-$pkgver/drivers/media/pci/ddbridge/"{*.c,*.h,Makefile}
   cp -r ddbridge "$srcdir/linux-$pkgver/drivers/media/pci/"
+
   cd "$srcdir/linux-$pkgver"
   patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/010_dd-frontends-kconfig.diff"
-#   patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/010_dd-frontends-makefile.diff"
-  patch -p1 -i "$srcdir/010_dd-frontends-makefile.diff"
-  patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/100_dvbdev.h.diff"
-  patch -p1 -i "$srcdir/drop_DVBC2.diff"
   patch -p1 -i "$srcdir/010_dd-frontends-kconfig2.diff"
+  patch -p1 -i "$srcdir/010_dd-frontends-makefile.diff"
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/020_ddbridge-drxk.diff"
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/100_dvbdev.h.diff"
+  patch -p1 -i "$srcdir/drop_DVBC2.diff" #100_frontend.h.diff
 
 
   #dvbsky

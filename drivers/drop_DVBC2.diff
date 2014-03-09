@@ -1,7 +1,7 @@
-diff -ruN linux-3.13.4/drivers/media/dvb-frontends/cxd2843.c linux-3.13.4.edit/drivers/media/dvb-frontends/cxd2843.c
---- linux-3.13.4/drivers/media/dvb-frontends/cxd2843.c	2014-02-22 22:40:13.580077588 +0100
-+++ linux-3.13.4.edit/drivers/media/dvb-frontends/cxd2843.c	2014-02-22 22:41:36.246747076 +0100
-@@ -1082,9 +1082,6 @@
+diff -ruN linux-3.13.6/drivers/media/dvb-frontends/cxd2843.c linux-3.13.6.edit/drivers/media/dvb-frontends/cxd2843.c
+--- linux-3.13.6/drivers/media/dvb-frontends/cxd2843.c	2014-03-09 11:22:26.653432931 +0100
++++ linux-3.13.6.edit/drivers/media/dvb-frontends/cxd2843.c	2014-03-09 11:23:18.513433935 +0100
+@@ -1078,9 +1078,6 @@
  	case SYS_DVBC_ANNEX_A:
  		state->omode = OM_DVBC;
  		break;
@@ -11,7 +11,7 @@ diff -ruN linux-3.13.4/drivers/media/dvb-frontends/cxd2843.c linux-3.13.4.edit/d
  	case SYS_DVBT:
  		state->omode = OM_DVBT;
  		break;
-@@ -1495,7 +1492,7 @@
+@@ -1556,7 +1553,7 @@
  }
  
  static struct dvb_frontend_ops common_ops_2843 = {
@@ -20,11 +20,11 @@ diff -ruN linux-3.13.4/drivers/media/dvb-frontends/cxd2843.c linux-3.13.4.edit/d
  	.info = {
  		.name = "CXD2843 DVB-C/C2 DVB-T/T2",
  		.frequency_stepsize = 166667,	/* DVB-T only */
-diff -ruN linux-3.13.4/drivers/media/dvb-frontends/tda18212dd.c linux-3.13.4.edit/drivers/media/dvb-frontends/tda18212dd.c
---- linux-3.13.4/drivers/media/dvb-frontends/tda18212dd.c	2014-02-22 22:40:13.580077588 +0100
-+++ linux-3.13.4.edit/drivers/media/dvb-frontends/tda18212dd.c	2014-02-22 22:40:58.260079120 +0100
-@@ -768,8 +768,7 @@
- 	state->m_Frequency = p->frequency;
+diff -ruN linux-3.13.6/drivers/media/dvb-frontends/tda18212dd.c linux-3.13.6.edit/drivers/media/dvb-frontends/tda18212dd.c
+--- linux-3.13.6/drivers/media/dvb-frontends/tda18212dd.c	2014-03-09 11:22:26.653432931 +0100
++++ linux-3.13.6.edit/drivers/media/dvb-frontends/tda18212dd.c	2014-03-09 11:23:31.510100853 +0100
+@@ -777,8 +777,7 @@
+ 	printk("tuner bw=%u  freq=%u\n", bw, state->m_Frequency);
  	if (p->delivery_system == SYS_DVBT ||
  	    p->delivery_system == SYS_DVBT2 ||
 -	    p->delivery_system == SYS_ISDBT ||
