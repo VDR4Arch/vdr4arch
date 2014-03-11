@@ -1,7 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvguide
-_gitrev=9f127fbbb5e0cc508879bb380f214d72db9439e8
-pkgver=1.2.0
+pkgver=1.2.1
 epoch=1
 _vdrapi=2.0.0
 pkgrel=1
@@ -13,23 +12,15 @@ depends=('graphicsmagick' 'libpng' "vdr-api=$_vdrapi")
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-tvguide.git#commit=$_gitrev")
-md5sums=('SKIP')
-
-pkgver() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
-    git tag -a v1.2.0 -m 'Added Tag' 9f127fbbb5e0cc508879bb380f214d72db9439e8 2> /dev/null
-  git describe --tags | sed 's/-/_/g;s/v//'
-}
+source=("http://projects.vdr-developer.org/attachments/download/1627/$pkgname-$pkgver.tgz")
+md5sums=('51b4ef1f8e8970eac00b96cf43040226')
 
 build() {
-  cd "$srcdir/vdr-plugin-${_plugname}"
+  cd "$srcdir/$_plugname-$pkgver"
   make IMAGELIB=graphicsmagick
 }
 
 package() {
-  cd "$srcdir/vdr-plugin-${_plugname}"
+  cd "$srcdir/$_plugname-$pkgver"
   make DESTDIR="$pkgdir" install
-
-#   find "$pkgdir" -name *.png -exec gm convert +profile icm {} {} \;
 }
