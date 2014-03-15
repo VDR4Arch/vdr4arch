@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-satip
-pkgver=0.0.1
+pkgver=0.1.0
 _vdrapi=2.0.0
 pkgrel=1
 pkgdesc="Integrates SAT>IP network devices seamlessly into VDR"
@@ -11,7 +11,7 @@ depends=('curl' 'gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://www.saunalahti.fi/~rahrenbe/vdr/satip/files/$pkgname-$pkgver.tgz")
 options=('!emptydirs')
-md5sums=('941b2902d4488fb076921c497fba485b')
+md5sums=('9df4f8783d48786e65bd3b10fce03f4f')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
