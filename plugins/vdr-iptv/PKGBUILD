@@ -1,7 +1,7 @@
 pkgname=vdr-iptv
-pkgver=2.0.2
+pkgver=2.0.3
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=1
 pkgdesc="Integrates multicast IPTV transport streams seamlessly into VDR"
 url="http://www.saunalahti.fi/~rahrenbe/vdr/iptv/"
 arch=('x86_64' 'i686')
@@ -19,7 +19,7 @@ source=("http://www.saunalahti.fi/~rahrenbe/vdr/$_plugname/files/$pkgname-$pkgve
         'https://github.com/yavdr/yavdr-base/raw/stable-0.5/etc/vdr/plugins/iptv/vlcinput/zdf-iptv.conf'
         'https://github.com/yavdr/yavdr-base/raw/stable-0.5/etc/vdr/plugins/iptv/vlcinput/zdf_info-iptv.conf'
         'https://github.com/yavdr/yavdr-base/raw/stable-0.5/etc/vdr/plugins/iptv/vlcinput/zdf_kultur-iptv.conf')
-md5sums=('4d8d0e8602337b4dfe66881483918433'
+md5sums=('36638fcaeb4fe931c6d2361e0d397f23'
          '5e960f7a71ee493c0bb7a7c56ea109c4'
          '8b51a64c8278f62dd9721a83a0654933'
          '48c790160833a16bc29aff1e0410995b'
