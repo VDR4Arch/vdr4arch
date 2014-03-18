@@ -22,4 +22,8 @@ package() {
   ln -s white darkred
   ln -s white darkredNG
   ln -s white green
+
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/tvguide/logos"
+  cd "$pkgdir/usr/share/vdr/plugins/tvguide/logos"
+  ln -s ../skinnopacity/logos/ .
 }
