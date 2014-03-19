@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
 pkgver=2.0.5
-pkgrel=1
+pkgrel=3
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686')
@@ -21,29 +21,51 @@ options='!emptydirs'
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
+        'vdr-2.1.6-conf.d-v4.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=35767'
         'vdr-loglevel-fix.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=33745'
+        '10-vdr.conf'
+        '50-dvbsddevice.conf'
+        '50-hello.conf'
+        '50-pictures.conf'
+        '50-rcu.conf'
+        '60-create-dvb-device-units.rules'
+        '60-vdr-tty.rules'
+        'gen-sddropin'
         'shutdown.sh'
-        'shutdown-wrapper.c')
+        'shutdown-wrapper.c'
+        'vdr.service')
 md5sums=('f58b9836a60440fde84480a2e37ee91d'
          '301c9b9766ed5182b07f1debc79abc21'
+         '0fc319d8047fa0233bba6eb4cda88c13'
          '6877c9efd84261c4a0471e657edce52d'
+         'e277548e8363569c8b9d30333209196f'
+         '9cb821ebb6a25e603f9c32bafabde362'
+         'fc450f75037b8712673db4969a1dd758'
+         'f00583e3f5507b0ff935b4d5919e7df2'
+         '1d637e4f97adc66ef84615897116f29a'
+         '23d6e1ca0a36cfdbd35d3b1a61f0a105'
+         '32dcab4ce46f8164977ab3abdeccec57'
+         '5fe146509c84500bbf9b1be97b1d5a7d'
          'fb1f52d7decba2df9c5d00c70040984a'
-         '7cad811b4ac5ee6c0b5496d006f1e0ee')
+         '7cad811b4ac5ee6c0b5496d006f1e0ee'
+         'd3ab8c550fa077d8ad40243ba659ce60')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-cat > Make.config <<EOF
-CFLAGS      += -O3
-CXXFLAGS    += -O3
-PREFIX       = /usr
-LIBDIR       = /usr/lib/vdr/plugins
-VDR_USER     = vdr
-EOF
+  touch Make.config
+  echo 'CFLAGS      += -O3' >> Make.config
+  echo 'CXXFLAGS    += -O3' >> Make.config
+  echo 'PREFIX       = /usr' >> Make.config
+  echo 'LIBDIR       = /usr/lib/vdr/plugins' >> Make.config
+  echo 'VDR_USER     = vdr' >> Make.config
 
   sed -i 's/NULL, 0, true/NULL, 0, OpenSubMenus/g' "$srcdir/MainMenuHooks-v1_0_2.diff"
   patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
   patch -p1 -i "$srcdir/vdr-loglevel-fix.diff"
+  sed -i 's/cVideoDirectory::SetName(VideoDirectory);/SetVideoDirectory(VideoDirectory);/g' \
+    $srcdir/vdr-2.1.6-conf.d-v4.diff
+  patch -p1 -i "$srcdir/vdr-2.1.6-conf.d-v4.diff"
 }
 
 build() {
@@ -54,9 +76,27 @@ build() {
 }
 
 package() {
+  install -Dm644 60-create-dvb-device-units.rules "$pkgdir/usr/lib/udev/rules.d/60-create-dvb-device-units.rules"
+  install -Dm644 60-vdr-tty.rules "$pkgdir/usr/lib/udev/rules.d/60-vdr-tty.rules"
   install -Dm754 shutdown-wrapper "$pkgdir/usr/lib/vdr/bin/shutdown-wrapper"
+  install -Dm755 gen-sddropin "$pkgdir/usr/lib/vdr/bin/gen-sddropin"
   install -Dm755 shutdown.sh "$pkgdir/usr/lib/vdr/bin/shutdown.sh"
 
   cd "${srcdir}/${pkgname}-${pkgver}"
+  mkdir -p "$pkgdir/var/lib/vdr"
   make DESTDIR="${pkgdir}" install
+  
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  install -Dm644 "$srcdir/50-dvbsddevice.conf" "$pkgdir/etc/vdr/conf.avail/50-dvbsddevice.conf"
+  echo "[dvbhddevice]" > "$pkgdir/etc/vdr/conf.avail/50-dvbhddevice.conf"
+  echo "[epgtableid0]" > "$pkgdir/etc/vdr/conf.avail/50-epgtableid0.conf"
+  install -Dm644 "$srcdir/50-hello.conf" "$pkgdir/etc/vdr/conf.avail/50-hello.conf"
+  echo "[osddemo]" > "$pkgdir/etc/vdr/conf.avail/50-osddemo.conf"
+  install -Dm644 "$srcdir/50-pictures.conf" "$pkgdir/etc/vdr/conf.avail/50-pictures.conf"
+  install -Dm644 "$srcdir/50-rcu.conf" "$pkgdir/etc/vdr/conf.avail/50-rcu.conf"
+  echo "[skincurses]" > "$pkgdir/etc/vdr/conf.avail/50-skincurses.conf"
+  echo "[status]" > "$pkgdir/etc/vdr/conf.avail/50-status.conf"
+  echo "[svccli]" > "$pkgdir/etc/vdr/conf.avail/50-svccli.conf"
+  echo "[svcsvr]" > "$pkgdir/etc/vdr/conf.avail/50-svcsvr.conf"
+  echo "[svdrpdemo]" > "$pkgdir/etc/vdr/conf.avail/50-svdrpdemo.conf"
 }

@@ -2,7 +2,7 @@
 pkgname=vdr-epgfixer
 pkgver=0.3.1
 _vdrapi=2.0.0
-pkgrel=11
+pkgrel=12
 pkgdesc="VDR plugin for doing extra fixing of EPG data"
 url="http://projects.vdr-developer.org/projects/plg-epgfixer"
 arch=('x86_64' 'i686')
@@ -15,6 +15,7 @@ backup=('var/lib/vdr/plugins/epgfixer/blacklist.conf'
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1138/$pkgname-$pkgver.tgz")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('b9612533df73332d9c6305bf03d558dc')
 
 prepare() {
@@ -34,4 +35,7 @@ package() {
 
   mkdir -p "$pkgdir/var/lib/vdr/plugins/epgfixer"
   install -Dm644 epgfixer/*  "$pkgdir/var/lib/vdr/plugins/epgfixer"
+
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

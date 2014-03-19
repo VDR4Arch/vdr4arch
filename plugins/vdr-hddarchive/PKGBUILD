@@ -4,7 +4,7 @@ epoch=1
 pkgver=0.0.1_4_g74e0ae5
 _gitver=74e0ae521c5f5c11102a33f0ba557b720e48c9ac
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Brings the archive-hdd functionality to VDR."
 url="http://projects.vdr-developer.org/projects/show/plg-hddarchive"
 arch=('x86_64' 'i686')
@@ -15,6 +15,7 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-hddarchive.git#commit=$_gitver"
         'hddarchive-default_settings.diff')
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
          '9982fc924c8300567052b239b4535228')
 
@@ -39,4 +40,7 @@ package() {
   make DESTDIR="${pkgdir}" install
 
   install -Dm755 vdr_move_to_hdd.sh "$pkgdir/usr/lib/vdr/bin/vdr_move_to_hdd.sh"
+
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

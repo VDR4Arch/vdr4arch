@@ -2,7 +2,7 @@
 pkgname=vdr-cdplayer
 pkgver=1.2.2
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="CD-Player plugin which supports CD-Text and CDDB-Database"
 url="http://uli-eckhardt.de/vdr/cdplayer.en.shtml"
 arch=('x86_64' 'i686')
@@ -11,8 +11,11 @@ depends=('libcdio-paranoia' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 backup=("var/lib/vdr/plugins/$_plugname/cd.mpg")
 install="${pkgname}.install"
-source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz")
-md5sums=('924e94016701d36c7b5f1e77f7855347')
+source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('924e94016701d36c7b5f1e77f7855347'
+         '11a99c990340c8a3c0c1eb62635136f8')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
@@ -22,4 +25,6 @@ build() {
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

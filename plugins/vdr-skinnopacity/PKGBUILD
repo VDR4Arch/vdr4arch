@@ -2,7 +2,7 @@
 pkgname=vdr-skinnopacity
 pkgver=1.0.4
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
@@ -11,11 +11,14 @@ depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://projects.vdr-developer.org/attachments/download/1626/$pkgname-$pkgver.tgz"
+        "50-$_plugname.conf")
 backup=("var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-light.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-default.conf"
-        "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-iceblue.conf")
-source=("http://projects.vdr-developer.org/attachments/download/1626/$pkgname-$pkgver.tgz")
-md5sums=('68eb23460cccf373aee97a8edfa40567')
+        "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-iceblue.conf"
+        "etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('68eb23460cccf373aee97a8edfa40567'
+         'ccdd82d2627a9d2b8d3906cb477be515')
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
@@ -25,4 +28,6 @@ build() {
 package() {
   cd "$srcdir/$_plugname-$pkgver"
   make DESTDIR="$pkgdir" install
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

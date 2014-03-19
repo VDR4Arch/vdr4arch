@@ -2,16 +2,19 @@
 pkgname=vdr-satip
 pkgver=0.1.1
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Integrates SAT>IP network devices seamlessly into VDR"
 url="http://www.saunalahti.fi/rahrenbe/vdr/satip/"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('curl' 'gcc-libs' 'tinyxml' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://www.saunalahti.fi/~rahrenbe/vdr/satip/files/$pkgname-$pkgver.tgz")
+source=("http://www.saunalahti.fi/~rahrenbe/vdr/satip/files/$pkgname-$pkgver.tgz"
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
-md5sums=('dfdfe4e844bb9f05a74fe44ab5030f85')
+md5sums=('74f2bea797e91b9b31ba2967c90027b3'
+         '20a93484308163359976452febf481dd')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
@@ -22,4 +25,6 @@ build() {
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
   make DESTDIR="$pkgdir" install
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

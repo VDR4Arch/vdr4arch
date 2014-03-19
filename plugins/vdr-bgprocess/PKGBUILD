@@ -2,7 +2,7 @@
 pkgname=vdr-bgprocess
 pkgver=0.1.0
 _vdrapi=2.0.0
-pkgrel=8
+pkgrel=9
 pkgdesc="Displays information about background processes"
 url="http://projects.vdr-developer.org/projects/plg-undelete"
 arch=('x86_64' 'i686')
@@ -12,6 +12,7 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://ftp.uni-kl.de/pub/linux/gentoo/distfiles/$pkgname-$pkgver.tgz"
         'bgprocess-tlphrases-fix.diff'
         'bgprocess-osditem-fix.diff')
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('46bc8626cf843110eedef74d2dc27c3d'
          'd2f7efb1ab40727298d4d17e1b07e37c'
          '1556e199ab90264a1f45838abbef0243')
@@ -34,4 +35,7 @@ package() {
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        VDRLOCALE=1 \
        all
+
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

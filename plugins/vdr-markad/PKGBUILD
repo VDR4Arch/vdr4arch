@@ -4,7 +4,7 @@ pkgver=0.1.4_34_g838b535
 epoch=1
 _gitver=838b535ded763a5a2210c4657e5a316f70966a74
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="automatic advertisement detection"
 url="http://projects.vdr-developer.org/projects/plg-markad"
 arch=('x86_64' 'i686')
@@ -12,8 +12,11 @@ license=('GPL2')
 depends=('ffmpeg' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-markad.git#commit=$_gitver")
-md5sums=('SKIP')
+source=("git://projects.vdr-developer.org/vdr-plugin-markad.git#commit=$_gitver"
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('SKIP'
+         'c0d6383c9c9b8ee6c34af19179676bf3')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
@@ -35,4 +38,6 @@ package() {
   mkdir -p "$pkgdir/usr/share"
   mv "$pkgdir/var/lib/markad" "$pkgdir/usr/share/markad"
   ln -s /usr/share/markad "$pkgdir/var/lib/markad"
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

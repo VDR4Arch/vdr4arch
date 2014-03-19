@@ -2,7 +2,7 @@
 pkgname=vdr-gamepad
 pkgver=0.0.1
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Control VDR via a joystick device."
 url="http://projects.vdr-developer.org/projects/plg-gamepad"
 arch=('x86_64' 'i686')
@@ -11,6 +11,7 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1562/vdr-plugin-$_plugname-$pkgver.tgz")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('dc9112ec8bd40c042bf1a10ba4ecba5e')
 
 prepare() {
@@ -26,4 +27,7 @@ build() {
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
   make DESTDIR="$pkgdir" install
+
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

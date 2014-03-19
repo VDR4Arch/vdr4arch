@@ -3,7 +3,7 @@ pkgname=vdr-epg2vdr
 pkgver=0.1.7
 _gitver=70d365869e1568656c3bfac5c275138757302f8e
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Used to retrieve EPG data into the VDR"
 url="http://projects.vdr-developer.org/projects/plg-epg2vdr"
 arch=('x86_64' 'i686')
@@ -12,6 +12,7 @@ depends=('libmariadbclient' 'libutil-linux' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-epg2vdr.git#commit=$_gitver")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP')
 
 pkgver() {
@@ -28,4 +29,7 @@ build() {
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   make DESTDIR="${pkgdir}" install
+
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

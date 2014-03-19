@@ -2,15 +2,18 @@
 pkgname=vdr-vdrmanager
 pkgver=0.11
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Allows remote programming VDR using VDR-Manager running on Android devices"
 url="http://projects.vdr-developer.org/projects/vdr-manager"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}" 'zlib')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1594/$pkgname-$pkgver.tar.gz")
-md5sums=('ec8f1fa14a16dfe85a85fcde4f8de361')
+source=("http://projects.vdr-developer.org/attachments/download/1594/$pkgname-$pkgver.tar.gz"
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('ec8f1fa14a16dfe85a85fcde4f8de361'
+         '6cc6cfd5e342d34206f82d366f41e7ec')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -20,4 +23,6 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="$pkgdir" install
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

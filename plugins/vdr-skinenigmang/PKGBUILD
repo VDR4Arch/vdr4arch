@@ -4,7 +4,7 @@ pkgver=0.1.2_13_g1a4a597
 epoch=1
 _gitver=1a4a5979
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="skin based on the Enigma text2skin addon"
 url="http://andreas.vdr-developer.org/enigmang/index.html"
 arch=('x86_64' 'i686')
@@ -14,9 +14,12 @@ makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-skinenigmang.git#commit=$_gitver"
-        'skinenigmang-search_for_logos_in_resourcedir.diff')
+        'skinenigmang-search_for_logos_in_resourcedir.diff'
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
-         '6bfd86e7a92d969edd208401b65b20fe')
+         '6bfd86e7a92d969edd208401b65b20fe'
+         '8b2c4d67273e3b52e38496e52b35e345')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
@@ -40,4 +43,6 @@ package() {
 
   mkdir -p "$pkgdir/var/lib/vdr/themes"
   cp themes/* "$pkgdir/var/lib/vdr/themes"
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

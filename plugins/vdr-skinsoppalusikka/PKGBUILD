@@ -2,7 +2,7 @@
 pkgname=vdr-skinsoppalusikka
 pkgver=2.0.3
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Standalone skin providing the good old "ElchiAIO" looks'
 url="http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/"
 arch=('x86_64' 'i686')
@@ -10,8 +10,11 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/files/$pkgname-$pkgver.tgz")
-md5sums=('18163ac856a2e1c9193dba6d2828f276')
+source=("http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/files/$pkgname-$pkgver.tgz"
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('18163ac856a2e1c9193dba6d2828f276'
+         'bd9d1d8599cb554fe4a59ceeb08662d8')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
@@ -21,4 +24,6 @@ build() {
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

@@ -2,7 +2,7 @@
 pkgname=vdr-wirbelscan
 pkgver=0.0.7
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Performs a channel scans for DVB-T, DVB-C and DVB-S"
 url="http://wirbel.htpc-forum.de/wirbelscan/index2.html"
 arch=('x86_64' 'i686')
@@ -10,9 +10,12 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://wirbel.htpc-forum.de/$_plugname/$pkgname-$pkgver.tgz"
-        "vdr-wirbelscan-0.0.7-receiver-api-fixes.patch.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=32195")
+        "vdr-wirbelscan-0.0.7-receiver-api-fixes.patch.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=32195"
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('b07d57cecbb0dc3cbf1d13f3d47bc7f3'
-         '0acf42568623bec4638e71636ebf7564')
+         '0acf42568623bec4638e71636ebf7564'
+         'cb2ff89d8c275d790cf613d4cf9fa180')
 
 prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
@@ -29,4 +32,6 @@ package() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        all
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

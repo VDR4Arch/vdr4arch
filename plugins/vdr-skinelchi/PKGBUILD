@@ -2,7 +2,7 @@
 pkgname=vdr-skinelchi
 pkgver=0.2.8
 _vdrapi=2.0.0
-pkgrel=18
+pkgrel=19
 pkgdesc="adds the 'Elchi' skin to the VDR standard skins"
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
 arch=('x86_64' 'i686')
@@ -12,10 +12,13 @@ install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://firefly.vdr-developer.org/skinelchi/${pkgname}-${pkgver}.tar.bz2"
         'skinelchi-search_for_logos_in_resourcedir.diff'
-        'skinelchi-imagemagick_fix.diff')
+        'skinelchi-imagemagick_fix.diff'
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('b4d3160033fa6541eab55bbf7ad41276'
          'eb414c26fbe46ccfc9cb8ac8cc6e3280'
-         '10b5f84b1566810a20d1542502716f2d')
+         '10b5f84b1566810a20d1542502716f2d'
+         '4d0c003d9b75d2a6d5aa6b67711bfcdf')
 
 prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
@@ -36,4 +39,6 @@ package() {
 
   mkdir -p "$pkgdir/var/lib/vdr/themes"
   install -Dm644 themes/*.theme "$pkgdir/var/lib/vdr/themes"
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

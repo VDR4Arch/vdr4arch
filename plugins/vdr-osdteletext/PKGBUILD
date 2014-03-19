@@ -2,7 +2,7 @@
 pkgname=vdr-osdteletext
 pkgver=0.9.4
 _vdrapi=2.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Displays teletext pages directly on VDR's OSD"
 url="http://projects.vdr-developer.org/projects/plg-osdteletext"
 arch=('x86_64' 'i686')
@@ -10,8 +10,11 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1282/$pkgname-$pkgver.tgz")
-md5sums=('5cd30817e9deaa3c93f7f2b9af2065c5')
+source=("http://projects.vdr-developer.org/attachments/download/1282/$pkgname-$pkgver.tgz"
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('5cd30817e9deaa3c93f7f2b9af2065c5'
+         '0f078abc1dd1bfbc32c2bae49a4e11a8')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
@@ -21,4 +24,6 @@ build() {
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
   make DESTDIR="$pkgdir" install
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

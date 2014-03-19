@@ -2,7 +2,7 @@
 pkgname=vdr-svdrposd
 pkgver=1.0.0
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Make contents of OSD menu available via SVDRP"
 url="http://vdr.schmirler.de/"
 arch=('x86_64' 'i686')
@@ -10,6 +10,7 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('4a7ac5d0580a426cf2c8221722763d4c')
 
 build() {
@@ -20,4 +21,7 @@ build() {
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

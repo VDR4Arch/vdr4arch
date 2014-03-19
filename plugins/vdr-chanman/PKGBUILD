@@ -3,7 +3,7 @@
 pkgname=vdr-chanman
 pkgver=0.0.10
 _vdrapi=2.0.0
-pkgrel=6
+pkgrel=7
 pkgdesc="Change channel with a multi level choice"
 url="http://projects.vdr-developer.org/projects/plg-chanman"
 arch=('x86_64' 'i686')
@@ -12,6 +12,7 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 #install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1004/vdr-plugin-$_plugname-$pkgver.tar.gz")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('ad5928dd686377e98b6de13017e8aaab')
 
 package() {
@@ -25,4 +26,7 @@ package() {
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        GIT_REV='' \
        all
+
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

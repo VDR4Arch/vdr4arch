@@ -3,7 +3,7 @@
 
 pkgname=vdr-loadepg
 pkgver=0.2.6
-pkgrel=1
+pkgrel=2
 _vdrapi=2.0.0
 arch=('x86_64' 'i686')
 pkgdesc="Displays Canal+ group (Mediahighway) and Sky EPG Data"
@@ -12,14 +12,17 @@ license=("GPL2")
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 install="${pkgname}.install"
-source=("http://lukkinosat.altervista.org/$pkgname-$pkgver.tgz")
+source=("http://lukkinosat.altervista.org/$pkgname-$pkgver.tgz"
+        "50-$_plugname.conf")
 backup=("var/lib/vdr/plugins/${_plugname}/loadepg.conf"
         "var/lib/vdr/plugins/${_plugname}/loadepg.equiv"
         "var/lib/vdr/plugins/${_plugname}/sky_it.dict"
         "var/lib/vdr/plugins/${_plugname}/sky_it.themes"
         "var/lib/vdr/plugins/${_plugname}/sky_uk.dict"
-        "var/lib/vdr/plugins/${_plugname}/sky_uk.themes")
-md5sums=('601c345941cd6d181ff6f5546fd02aee')
+        "var/lib/vdr/plugins/${_plugname}/sky_uk.themes"
+        "etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('601c345941cd6d181ff6f5546fd02aee'
+         '957b12f37a9136153e934c318b2772ab')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
@@ -32,4 +35,6 @@ package() {
 
   mkdir -p "$pkgdir/var/lib/vdr/plugins/${_plugname}"
   install -Dm644 "${srcdir}/$_plugname-${pkgver}"/conf/* "$pkgdir/var/lib/vdr/plugins/${_plugname}"
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

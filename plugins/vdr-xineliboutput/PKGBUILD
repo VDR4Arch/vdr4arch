@@ -3,7 +3,7 @@ pkgname=vdr-xineliboutput
 pkgver=1.1.0
 _gitver=32bde0a1eb887de10e460fe12c32251b6a7f1114
 _vdrapi=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="X11 and Linux framebuffer front-end for VDR"
 url="http://www.sourceforge.net/projects/xineliboutput"
 arch=('x86_64' 'i686')
@@ -14,9 +14,12 @@ optdepends=('nvidia: Required for VDPAU decoding'
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/$_plugname.git#commit=$_gitver"
-        'xineliboutput-vdr2.1.2compat.diff')
+        'xineliboutput-vdr2.1.2compat.diff'
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
-         'd313b50c576ab17dfb2a08d50981bec8')
+         'd313b50c576ab17dfb2a08d50981bec8'
+         '92cb2a167ae0a4acef41b95901f26cb8')
 
 pkgver() {
   cd "${srcdir}/${_plugname}"
@@ -38,4 +41,6 @@ package() {
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        DESTDIR="$pkgdir" \
        install
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

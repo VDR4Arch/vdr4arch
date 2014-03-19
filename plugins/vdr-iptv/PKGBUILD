@@ -1,7 +1,7 @@
 pkgname=vdr-iptv
 pkgver=2.0.3
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Integrates multicast IPTV transport streams seamlessly into VDR"
 url="http://www.saunalahti.fi/~rahrenbe/vdr/iptv/"
 arch=('x86_64' 'i686')
@@ -18,7 +18,9 @@ source=("http://www.saunalahti.fi/~rahrenbe/vdr/$_plugname/files/$pkgname-$pkgve
         'https://github.com/yavdr/yavdr-base/raw/stable-0.5/etc/vdr/plugins/iptv/vlcinput/THE_VOICE.conf'
         'https://github.com/yavdr/yavdr-base/raw/stable-0.5/etc/vdr/plugins/iptv/vlcinput/zdf-iptv.conf'
         'https://github.com/yavdr/yavdr-base/raw/stable-0.5/etc/vdr/plugins/iptv/vlcinput/zdf_info-iptv.conf'
-        'https://github.com/yavdr/yavdr-base/raw/stable-0.5/etc/vdr/plugins/iptv/vlcinput/zdf_kultur-iptv.conf')
+        'https://github.com/yavdr/yavdr-base/raw/stable-0.5/etc/vdr/plugins/iptv/vlcinput/zdf_kultur-iptv.conf'
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('36638fcaeb4fe931c6d2361e0d397f23'
          '5e960f7a71ee493c0bb7a7c56ea109c4'
          '8b51a64c8278f62dd9721a83a0654933'
@@ -28,7 +30,8 @@ md5sums=('36638fcaeb4fe931c6d2361e0d397f23'
          '433df5f08b933040bf81684f45006f09'
          'cf7e544dd2eba58ebef78131706749e4'
          'b611bef1267193d056f8e0b3eae3a63d'
-         '793750d284f06285ea317128abcc398c')
+         '793750d284f06285ea317128abcc398c'
+         '5ffc4e10ee120975540a7b3bff916d56')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
@@ -43,4 +46,6 @@ package() {
 
   mkdir -p "$pkgdir/etc/vdr/plugins/iptv/vlcinput"
   cp "$srcdir"/*.conf "$pkgdir/etc/vdr/plugins/iptv/vlcinput"
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

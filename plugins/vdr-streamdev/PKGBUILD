@@ -4,7 +4,7 @@ pkgname=vdr-streamdev
 pkgver=0.6.1
 epoch=1
 _vdrapi=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
 url="http://projects.vdr-developer.org/projects/show/plg-streamdev"
 arch=('x86_64' 'i686')
@@ -14,8 +14,11 @@ makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 backup=('var/lib/vdr/plugins/streamdev-server/streamdevhosts.conf')
 install="${pkgname}.install"
-source=("http://projects.vdr-developer.org/attachments/download/1580/$pkgname-$pkgver.tgz")
-md5sums=('e611df2dd9fc75b21e068a8c0aabcc68')
+source=("http://projects.vdr-developer.org/attachments/download/1580/$pkgname-$pkgver.tgz"
+        "50-$_plugname-server.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('e611df2dd9fc75b21e068a8c0aabcc68'
+         '8c352d8ee7401eeb34fe5ab82e791a21')
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
@@ -27,4 +30,8 @@ package() {
   make DESTDIR="$pkgdir" install
 
   install -Dm644 streamdev-server/streamdevhosts.conf "$pkgdir/var/lib/vdr/plugins/streamdev-server/streamdevhosts.conf"
+
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname-client.conf"
+  install -Dm644 "$srcdir/50-$_plugname-server.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname-server.conf"
 }

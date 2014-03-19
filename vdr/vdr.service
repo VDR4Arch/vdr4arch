@@ -2,11 +2,13 @@
 Description=Video Disk Recorder
 After=oscam.service
 After=sundtek.service
+After=xlogin@vdr.service
 
 [Service]
-ExecStart=/usr/bin/runvdr
-KillMode=process
+ExecStart=/usr/bin/vdr
 ExecStopPost=/usr/lib/vdr/bin/gen-sddropin
+Restart=on-failure
+RestartPreventExitStatus=0 2
 
 [Install]
 WantedBy=multi-user.target

@@ -2,15 +2,18 @@
 pkgname=vdr-sleeptimer
 pkgver=0.8.2
 _vdrapi=2.0.0
-pkgrel=8
+pkgrel=9
 pkgdesc="Shutdown, mute or execute a custom command after a configurable timespan"
 url="http://projects.vdr-developer.org/projects/plg-sleeptimer"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/652/vdr-plugin-$_plugname-$pkgver.tgz")
-md5sums=('cd7012d58d1350a6dc5597dd50a2cd40')
+source=("http://projects.vdr-developer.org/attachments/download/652/vdr-plugin-$_plugname-$pkgver.tgz"
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('cd7012d58d1350a6dc5597dd50a2cd40'
+         '7ac2bda3d2a6238e815a6b04bccf4a81')
 
 prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
@@ -27,4 +30,6 @@ package() {
        LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
        LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
        all
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }
