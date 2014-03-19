@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=epgd
-pkgver=0.1.12
-_gitver=84adc87248a9a07b519d56fcfdaa09b0478235e5
+pkgver=0.1.14
+_gitver=713b7e57f42d87d77433ea53da8c8b5ea3f7b3d3
 pkgrel=1
 pkgdesc="Part of the double team epgd+epg2vdr to effectively retrieve, store and import epg data to vdr"
 url="http://projects.vdr-developer.org/projects/vdr-epg-daemon"
@@ -16,7 +16,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/vdr-epg-daemon"
-  git tag -a 0.1.12 -m 'Added Tag' 84adc87248a9a07b519d56fcfdaa09b0478235e5 2> /dev/null
+  git tag -a 0.1.14 -m 'Added Tag' 713b7e57f42d87d77433ea53da8c8b5ea3f7b3d3 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
