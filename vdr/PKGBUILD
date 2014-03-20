@@ -10,6 +10,8 @@ depends=('libcap' 'libjpeg-turbo' 'perl' 'ttf-font')
 optdepends=('lirc-utils: remote control support'
             'ncurses: skinncurses plugin'
             'runvdr-extreme: startscript for vdr')
+replaces=('runvdr-extreme')
+conflicts=('runvdr-extreme')
 provides=("vdr-api=2.0.0")
 backup=('var/lib/vdr/channels.conf'
         'var/lib/vdr/diseqc.conf'
@@ -85,8 +87,9 @@ package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   mkdir -p "$pkgdir/var/lib/vdr"
   make DESTDIR="${pkgdir}" install
-  
+
   mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  install -Dm644 "$srcdir/10-vdr.conf" "$pkgdir/etc/vdr/conf.avail/10-vdr.conf"
   install -Dm644 "$srcdir/50-dvbsddevice.conf" "$pkgdir/etc/vdr/conf.avail/50-dvbsddevice.conf"
   echo "[dvbhddevice]" > "$pkgdir/etc/vdr/conf.avail/50-dvbhddevice.conf"
   echo "[epgtableid0]" > "$pkgdir/etc/vdr/conf.avail/50-epgtableid0.conf"
@@ -99,4 +102,7 @@ package() {
   echo "[svccli]" > "$pkgdir/etc/vdr/conf.avail/50-svccli.conf"
   echo "[svcsvr]" > "$pkgdir/etc/vdr/conf.avail/50-svcsvr.conf"
   echo "[svdrpdemo]" > "$pkgdir/etc/vdr/conf.avail/50-svdrpdemo.conf"
+
+  mkdir -p "$pkgdir/etc/vdr/conf.d"
+  ln -sr "$pkgdir/etc/vdr/conf.avail/10-vdr.conf" "$pkgdir/etc/vdr/conf.d/10-vdr.conf"
 }
