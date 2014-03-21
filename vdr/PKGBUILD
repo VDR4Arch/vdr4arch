@@ -23,7 +23,7 @@ options='!emptydirs'
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
-        'vdr-2.1.6-conf.d-v4.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=35767'
+        'vdr-2.1.6-conf.d-v5.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=35781'
         'vdr-loglevel-fix.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=33745'
         '10-vdr.conf'
         '50-dvbsddevice.conf'
@@ -38,7 +38,7 @@ source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
         'vdr.service')
 md5sums=('f58b9836a60440fde84480a2e37ee91d'
          '301c9b9766ed5182b07f1debc79abc21'
-         '0fc319d8047fa0233bba6eb4cda88c13'
+         'ca3eec417c96ce197481a17244313ca6'
          '6877c9efd84261c4a0471e657edce52d'
          'e277548e8363569c8b9d30333209196f'
          '9cb821ebb6a25e603f9c32bafabde362'
@@ -67,7 +67,7 @@ prepare() {
   patch -p1 -i "$srcdir/vdr-loglevel-fix.diff"
   sed -i 's/cVideoDirectory::SetName(VideoDirectory);/SetVideoDirectory(VideoDirectory);/g' \
     $srcdir/vdr-2.1.6-conf.d-v4.diff
-  patch -p1 -i "$srcdir/vdr-2.1.6-conf.d-v4.diff"
+  patch -p1 -i "$srcdir/vdr-2.1.6-conf.d-v5.diff"
 }
 
 build() {
