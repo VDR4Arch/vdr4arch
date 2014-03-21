@@ -1,0 +1,19 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=xlogin
+pkgver=20140305
+_gitver=9d75c5a056af989994f7cc7e1db0a83da758f48a
+pkgrel=1
+pkgdesc="Login to X without a desktop manager."
+arch=('any')
+url="https://github.com/joukewitteveen/xlogin"
+depends=('bash' 'xorg-server')
+makedepends=('git')
+license=('custom')
+source=("git+https://github.com/joukewitteveen/xlogin.git#commit=$_gitver")
+md5sums=('SKIP')
+
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}
