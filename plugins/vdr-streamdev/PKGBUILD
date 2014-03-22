@@ -3,8 +3,8 @@
 pkgname=vdr-streamdev
 pkgver=0.6.1
 epoch=1
-_vdrapi=2.0.0
-pkgrel=1
+_vdrapi=2.0.6
+pkgrel=2
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
 url="http://projects.vdr-developer.org/projects/show/plg-streamdev"
 arch=('x86_64' 'i686')

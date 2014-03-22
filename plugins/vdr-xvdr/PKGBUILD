@@ -2,8 +2,8 @@
 pkgname=vdr-xvdr
 pkgver=0.9.9_33_gae7c45d
 _gitver=ae7c45dfaaed071ec8c97c4aa401224a82f2d02c
-_vdrapi=2.0.0
-pkgrel=1
+_vdrapi=2.0.6
+pkgrel=2
 url="https://github.com/pipelka/vdr-plugin-xvdr"
 arch=('x86_64' 'i686')
 license=('GPL2')
