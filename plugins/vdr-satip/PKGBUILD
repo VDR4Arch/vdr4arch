@@ -11,7 +11,7 @@ depends=('curl' 'gcc-libs' 'tinyxml' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://www.saunalahti.fi/~rahrenbe/vdr/satip/files/$pkgname-$pkgver.tgz")
 options=('!emptydirs')
-md5sums=('dfdfe4e844bb9f05a74fe44ab5030f85')
+md5sums=('74f2bea797e91b9b31ba2967c90027b3')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
