@@ -14,8 +14,15 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 backup=("var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-light.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-default.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-iceblue.conf")
-source=("http://projects.vdr-developer.org/attachments/download/1626/$pkgname-$pkgver.tgz")
-md5sums=('68eb23460cccf373aee97a8edfa40567')
+source=("http://projects.vdr-developer.org/attachments/download/1626/$pkgname-$pkgver.tgz"
+        'nopacity-always_show_displaychannel.diff')
+md5sums=('68eb23460cccf373aee97a8edfa40567'
+         'c53a82c3b66a44f5b4304a01cdb66632')
+
+prepare() {
+  cd "$srcdir/$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/nopacity-always_show_displaychannel.diff"
+}
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
