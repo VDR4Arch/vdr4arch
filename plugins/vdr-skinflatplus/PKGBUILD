@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinflatplus
-pkgver=0.2.0
+pkgver=0.2.1
 _vdrapi=2.0.6
-pkgrel=3
+pkgrel=2
 pkgdesc="Simple and slim skin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-skinflatplus"
 arch=('x86_64' 'i686')
@@ -13,7 +13,7 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1653/$_plugname-$pkgver.tar.gz"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('d8b2b57a7d1bedb5b05de0543282ae07'
+md5sums=('28b6ec9efcef7385753651a80b83bcbc'
          '878594e0f5af2ab308e6ab86a9bf0136')
 
 prepare() {
