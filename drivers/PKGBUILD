@@ -2,8 +2,8 @@
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
-pkgver=3.13.6
-pkgrel=2
+pkgver=3.13.7
+pkgrel=1
 _extramodules=extramodules-3.13-ARCH
 url='https://github.com/CReimer/vdr4arch'
 pkgdesc="Additional or updated dvb driver modules"
@@ -22,7 +22,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         'backport-ddbridge.diff'
         'hg+https://bitbucket.org/powARman/v4l-dvb-saa716x'
         'hg+http://linuxtv.org/hg/~endriss/media_build_experimental')
-md5sums=('445aa27da818617409982f42902a6e41'
+md5sums=('370adced5e5c1cb1d0d621c2dae2723f'
          'bdb6cab25a98431d20f60548c2ee5f19'
          'c538c1635e7f9838f1c56409943f7080'
          '96183387a23c930d5b3ad2a1068b25ed'
