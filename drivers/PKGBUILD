@@ -3,8 +3,10 @@
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
 pkgver=3.13.7
-pkgrel=1
+pkgrel=2
 _extramodules=extramodules-3.13-ARCH
+_saa716xrev=196681f1e154
+_media_buildrev=54c77a526abf
 url='https://github.com/CReimer/vdr4arch'
 pkgdesc="Additional or updated dvb driver modules"
 arch=('x86_64' 'i686')
@@ -20,8 +22,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         '010_dd-frontends-makefile.diff'
         'drop_DVBC2.diff'
         'backport-ddbridge.diff'
-        'hg+https://bitbucket.org/powARman/v4l-dvb-saa716x'
-        'hg+http://linuxtv.org/hg/~endriss/media_build_experimental')
+        "hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_saa716xrev"
+        "hg+http://linuxtv.org/hg/~endriss/media_build_experimental#revision=$_media_buildrev")
 md5sums=('370adced5e5c1cb1d0d621c2dae2723f'
          'bdb6cab25a98431d20f60548c2ee5f19'
          'c538c1635e7f9838f1c56409943f7080'
@@ -29,7 +31,7 @@ md5sums=('370adced5e5c1cb1d0d621c2dae2723f'
          '4933d24660c79d7ae7148529b55208bd'
          '0b33ab73fa45b544e1fb131bdcb5dfca'
          'dfd1df8ec6ec3a6e2fcdafd40d382196'
-         '725a1e423e0dd6e7b7159fb23dd04a12'
+         '8e98286db26b2211b235d1d205e30936'
          'SKIP'
          'SKIP')
 

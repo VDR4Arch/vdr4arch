@@ -30,7 +30,7 @@ diff -ruN dddvb/ddbridge/ddbridge-core.c dddvb.edit/ddbridge/ddbridge-core.c
  };
  
  static struct dvb_device dvbdev_mod = {
-@@ -2442,165 +2432,6 @@
+@@ -2507,165 +2499,6 @@
  }
  
  
@@ -115,7 +115,7 @@ diff -ruN dddvb/ddbridge/ddbridge-core.c dddvb.edit/ddbridge/ddbridge-core.c
 -		}
 -		ddbcpyfrom(dev, dev->tsbuf, TS_CAPTURE_MEMORY,
 -			   TS_CAPTURE_LEN);
--		ts->len = ddbreadl(dev, TS_CAPTURE_RECEIVED) & 0xfff;
+-		ts->len = ddbreadl(dev, TS_CAPTURE_RECEIVED) & 0x1fff;
 -		if (copy_to_user(ts->ts, dev->tsbuf, ts->len))
 -			return -EIO;
 -		break;
