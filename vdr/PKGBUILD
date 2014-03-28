@@ -8,23 +8,26 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('libcap' 'libjpeg-turbo' 'perl' 'ttf-font')
 optdepends=('lirc-utils: remote control support'
-            'ncurses: skinncurses plugin'
-            'runvdr-extreme: startscript for vdr')
+            'ncurses: skincurses plugin')
 replaces=('runvdr-extreme')
 conflicts=('runvdr-extreme')
 provides=("vdr-api=2.0.6")
-backup=('etc/vdr/conf.avail/50-dvbsddevice.conf'
-        'etc/vdr/conf.avail/50-dvbhddevice.conf'
-        'etc/vdr/conf.avail/50-epgtableid0.conf'
-        'etc/vdr/conf.avail/50-hello.conf'
-        'etc/vdr/conf.avail/50-osddemo.conf'
-        'etc/vdr/conf.avail/50-pictures.conf'
-        'etc/vdr/conf.avail/50-rcu.conf'
-        'etc/vdr/conf.avail/50-skincurses.conf'
-        'etc/vdr/conf.avail/50-status.conf'
-        'etc/vdr/conf.avail/50-svccli.conf'
-        'etc/vdr/conf.avail/50-svcsvr.conf'
-        'etc/vdr/conf.avail/50-svdrpdemo.conf'
+options='!emptydirs'
+install='vdr.install'
+source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
+        'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
+        'vdr-2.1.6-conf.d-v5.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=35781'
+        'vdr-loglevel-fix.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=33745'
+        '10-vdr.conf' '50-dvbsddevice.conf' '50-hello.conf' '50-pictures.conf' '50-rcu.conf'
+        '60-create-dvb-device-units.rules'
+        '60-vdr-tty.rules'
+        'gen-sddropin'
+        'shutdown.sh'
+        'shutdown-wrapper.c'
+        'vdr.service')
+backup=("etc/vdr/conf.avail/"50-dvb{s,h}ddevice.conf
+        "etc/vdr/conf.avail/"50-{epgtableid0,hello,osddemo,pictures,rcu,skincurses,status,svdrpdemo}.conf
+        "etc/vdr/conf.avail/"50-svc{cli,svr}.conf
         'etc/vdr/conf.d/10-vdr.conf'
         'var/lib/vdr/channels.conf'
         'var/lib/vdr/diseqc.conf'
@@ -32,23 +35,6 @@ backup=('etc/vdr/conf.avail/50-dvbsddevice.conf'
         'var/lib/vdr/scr.conf'
         'var/lib/vdr/sources.conf'
         'var/lib/vdr/svdrphosts.conf')
-options='!emptydirs'
-install='vdr.install'
-source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
-        'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
-        'vdr-2.1.6-conf.d-v5.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=35781'
-        'vdr-loglevel-fix.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=33745'
-        '10-vdr.conf'
-        '50-dvbsddevice.conf'
-        '50-hello.conf'
-        '50-pictures.conf'
-        '50-rcu.conf'
-        '60-create-dvb-device-units.rules'
-        '60-vdr-tty.rules'
-        'gen-sddropin'
-        'shutdown.sh'
-        'shutdown-wrapper.c'
-        'vdr.service')
 md5sums=('f6916524c302f3209fd0af507ab97387'
          '301c9b9766ed5182b07f1debc79abc21'
          'ca3eec417c96ce197481a17244313ca6'
@@ -91,25 +77,20 @@ build() {
 }
 
 package() {
+  for i in dvbsddevice hello pictures rcu; do
+    install -Dm644 50-$i.conf "$pkgdir/etc/vdr/conf.avail/50-$i.conf"
+  done
+
   install -Dm644 10-vdr.conf "$pkgdir/etc/vdr/conf.d/10-vdr.conf"
-  install -Dm644 50-dvbsddevice.conf "$pkgdir/etc/vdr/conf.avail/50-dvbsddevice.conf"
-  install -Dm644 50-hello.conf "$pkgdir/etc/vdr/conf.avail/50-hello.conf"
-  install -Dm644 50-pictures.conf "$pkgdir/etc/vdr/conf.avail/50-pictures.conf"
-  install -Dm644 50-rcu.conf "$pkgdir/etc/vdr/conf.avail/50-rcu.conf"
   install -Dm644 60-create-dvb-device-units.rules "$pkgdir/usr/lib/udev/rules.d/60-create-dvb-device-units.rules"
   install -Dm644 60-vdr-tty.rules "$pkgdir/usr/lib/udev/rules.d/60-vdr-tty.rules"
   install -Dm754 shutdown-wrapper "$pkgdir/usr/lib/vdr/bin/shutdown-wrapper"
   install -Dm755 gen-sddropin "$pkgdir/usr/lib/vdr/bin/gen-sddropin"
   install -Dm755 shutdown.sh "$pkgdir/usr/lib/vdr/bin/shutdown.sh"
 
-  echo "[dvbhddevice]" > "$pkgdir/etc/vdr/conf.avail/50-dvbhddevice.conf"
-  echo "[epgtableid0]" > "$pkgdir/etc/vdr/conf.avail/50-epgtableid0.conf"
-  echo "[osddemo]" > "$pkgdir/etc/vdr/conf.avail/50-osddemo.conf"
-  echo "[skincurses]" > "$pkgdir/etc/vdr/conf.avail/50-skincurses.conf"
-  echo "[status]" > "$pkgdir/etc/vdr/conf.avail/50-status.conf"
-  echo "[svccli]" > "$pkgdir/etc/vdr/conf.avail/50-svccli.conf"
-  echo "[svcsvr]" > "$pkgdir/etc/vdr/conf.avail/50-svcsvr.conf"
-  echo "[svdrpdemo]" > "$pkgdir/etc/vdr/conf.avail/50-svdrpdemo.conf"
+  for i in dvbhddevice epgtableid0 osddemo skincurses status svc{cli,svr} svdrpdemo; do
+    echo "[$i]" > "$pkgdir/etc/vdr/conf.avail/50-$i.conf"
+  done
 
   cd "${srcdir}/${pkgname}-${pkgver}"
   mkdir -p "$pkgdir/var/lib/vdr"
