@@ -20,7 +20,6 @@ source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
         'vdr-loglevel-fix.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=33745'
         '10-vdr.conf' '50-dvbsddevice.conf' '50-hello.conf' '50-pictures.conf' '50-rcu.conf'
         '60-create-dvb-device-units.rules'
-        '60-vdr-tty.rules'
         'gen-sddropin'
         'shutdown.sh'
         'shutdown-wrapper.c'
@@ -83,7 +82,6 @@ package() {
 
   install -Dm644 10-vdr.conf "$pkgdir/etc/vdr/conf.d/10-vdr.conf"
   install -Dm644 60-create-dvb-device-units.rules "$pkgdir/usr/lib/udev/rules.d/60-create-dvb-device-units.rules"
-  install -Dm644 60-vdr-tty.rules "$pkgdir/usr/lib/udev/rules.d/60-vdr-tty.rules"
   install -Dm644 vdr.service "$pkgdir/usr/lib/systemd/system/vdr.service"
   install -Dm754 shutdown-wrapper "$pkgdir/usr/lib/vdr/bin/shutdown-wrapper"
   install -Dm755 gen-sddropin "$pkgdir/usr/lib/vdr/bin/gen-sddropin"
