@@ -12,14 +12,15 @@ optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1626/$pkgname-$pkgver.tgz"
-        "50-$_plugname.conf")
+        "50-$_plugname.conf"
+        'nopacity-always_show_displaychannel.diff')
 backup=("var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-light.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-default.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-iceblue.conf"
-        "etc/vdr/conf.avail/50-$_plugname.conf"
-        'nopacity-always_show_displaychannel.diff')
+        "etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('68eb23460cccf373aee97a8edfa40567'
-         'ccdd82d2627a9d2b8d3906cb477be515')
+         'ccdd82d2627a9d2b8d3906cb477be515'
+         'c53a82c3b66a44f5b4304a01cdb66632')
 
 prepare() {
   cd "$srcdir/$_plugname-$pkgver"
