@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-xmltv2vdr
-pkgver=0.1.1_61_g8d66725
-_gitver=8d667255bfc28b5db2a87c0e881e072e2316104a
+pkgver=0.1.1_65_g151296e
+_gitver=151296e1afce5284a90de2a6b4ed2d41979ca9dc
 _vdrapi=2.0.6
-pkgrel=3
+pkgrel=1
 pkgdesc="Add epg info from epg sources into vdr"
 url="http://projects.vdr-developer.org/projects/plg-xmltv2vdr"
 arch=('x86_64' 'i686')
@@ -13,22 +13,15 @@ makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-xmltv2vdr.git#commit=$_gitver"
-        'xmltv2vdr-vdr2.1.2compat.diff'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 backup=("var/lib/epgsources/epgdata2xmltv")
 md5sums=('SKIP'
-         'a1865ca3040ffc9bcc18e3bbfdf63cf8'
          'e295ea355768bd373f64eb4b0f760840')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-$_plugname"
   git describe --tags | sed 's/-/_/g;s/v//'
-}
-
-prepare() {
-  cd "${srcdir}/vdr-plugin-$_plugname"
-  patch -p1 -i "$srcdir/xmltv2vdr-vdr2.1.2compat.diff"
 }
 
 build() {
