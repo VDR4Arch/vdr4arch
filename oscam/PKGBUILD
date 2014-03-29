@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=oscam
-pkgver=9576
+pkgver=9604
 pkgrel=1
 pkgdesc="Open Source Conditional Access Module software"
-url="http://www.oscam.cc"
+url="http://www.streamboard.tv/oscam"
 arch=('x86_64' 'i686')
 license=('GPL3')
 depends=('libusb' 'openssl')
@@ -14,7 +14,7 @@ source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${p
         'oscam.service'
         'oscam-faster_retry.diff')
 noextract="${pkgname}-${pkgver}.zip"
-md5sums=('86b474c99d1307d5c1b47b3fdafd3902'
+md5sums=('919ac1ab144925acf6ed23bce8034e19'
          'f6200432fa01030016d6fac913033812'
          '0de56c99e34a6bdb7f4dc6349478a920'
          'b67f77bf1ecaeb9bc4f8cddb5258ed4e')
