@@ -1,10 +1,10 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-hddarchive
 epoch=1
-pkgver=0.0.1_4_g74e0ae5
-_gitver=74e0ae521c5f5c11102a33f0ba557b720e48c9ac
+pkgver=0.0.1_6_gd014d52
+_gitver=d014d52dcb3790bd1ba38fe7b6fb0c4136364148
 _vdrapi=2.0.6
-pkgrel=3
+pkgrel=1
 pkgdesc="Brings the archive-hdd functionality to VDR."
 url="http://projects.vdr-developer.org/projects/show/plg-hddarchive"
 arch=('x86_64' 'i686')
