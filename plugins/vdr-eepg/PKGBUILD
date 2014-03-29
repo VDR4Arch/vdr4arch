@@ -1,9 +1,9 @@
 # Maintainer: George Kranis https://github.com/gkranis/vdr4arch
 pkgname=vdr-eepg
-pkgver=0.0.5_184_g07d7e7e
-_gitver=07d7e7edfc182082af61756ac31171bf76298a8c
+pkgver=0.0.5_186_g69b47ba
+_gitver=69b47ba4bf0195fd6820beb2cf4f7c7ea31f4011
 _vdrapi=2.0.6
-pkgrel=5
+pkgrel=1
 pkgdesc="Extended EPG (EEPG) plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-eepg"
 arch=('x86_64' 'i686')
@@ -18,11 +18,6 @@ md5sums=('SKIP')
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   git describe --tags | sed 's/-/_/g;s/eepg_//g'
-}
-
-prepare() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
-  sed -i 's/MAXDVBDEVICES/MAXDEVICES/g' eepg.c
 }
 
 build() {
