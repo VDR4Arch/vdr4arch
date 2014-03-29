@@ -1,3 +1,12 @@
+_common() {
+  chown -R vdr:vdr var/lib/vdr
+
+  mkdir -p usr/share/vdr/shutdown-hooks
+
+  chgrp vdr usr/lib/vdr/bin/shutdown-wrapper
+  chmod u+s usr/lib/vdr/bin/shutdown-wrapper
+}
+
 post_install() {
   #Add vdr user
   groupadd -g 666 vdr 2> /dev/null
@@ -14,16 +23,14 @@ post_install() {
   mkdir -p srv/vdr/video
   chown -R vdr:vdr srv/vdr
 
-  post_upgrade
+  _common
 }
 
 post_upgrade() {
-  chown -R vdr:vdr var/lib/vdr
-
-  mkdir -p usr/share/vdr/shutdown-hooks
-
-  chgrp vdr usr/lib/vdr/bin/shutdown-wrapper
-  chmod u+s usr/lib/vdr/bin/shutdown-wrapper
+  _common
+  if [ "$(vercmp 2.0.6-1 "$2")" -eq 1 ]; then
+    echo "WARNING!! Configuration has changed. Please convert your /etc/runvdr.conf to /etc/vdr/conf.d configs"
+  fi
 }
 
 post_remove() {
