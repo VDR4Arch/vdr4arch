@@ -8,7 +8,8 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('libcap' 'libjpeg-turbo' 'perl' 'ttf-font')
 optdepends=('lirc-utils: remote control support'
-            'ncurses: skincurses plugin')
+            'ncurses: skincurses plugin'
+            'xlogin: To start X11')
 replaces=('runvdr-extreme')
 conflicts=('runvdr-extreme')
 provides=("vdr-api=2.0.6")
