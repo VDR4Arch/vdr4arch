@@ -1,15 +1,15 @@
 pkgname=nopacity-logos
-pkgver=20140308
+pkgver=20140331
 pkgrel=1
 pkgdesc="Channellogos for skin nOpacity"
 arch=('any')
 url="http://creimer.net/channellogos/"
 depends=('vdr-skinnopacity')
 license=('GPL2')
-source=("http://creimer.net/channellogos/$pkgname-default-$pkgver.tar.xz"
-        "http://creimer.net/channellogos/$pkgname-white-$pkgver.tar.xz")
-md5sums=('68af72bcf1cab60ff5e937f07aa5288c'
-         '1fbd9aa4febba3ad72c5701a7ca1dafe')
+source=("http://creimer.net/channellogos/$pkgname-default-$pkgver.tar.gz"
+        "http://creimer.net/channellogos/$pkgname-white-$pkgver.tar.gz")
+md5sums=('0acc556917f4c8643df70b819bd7f857'
+         'fbb7f13a91dd443a87916e0d59bd192d')
 
 package() {
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos"
@@ -24,6 +24,14 @@ package() {
   ln -s white green
 
   mkdir -p "$pkgdir/usr/share/vdr/plugins/tvguide/logos"
-  cd "$pkgdir/usr/share/vdr/plugins/tvguide/logos"
-  ln -s ../skinnopacity/logos/ .
+  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos" \
+    "$pkgdir/usr/share/vdr/plugins/tvguide/logos"
+
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinflat/logos"
+  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos" \
+    "$pkgdir/usr/share/vdr/plugins/skinflat/logos"
+
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinflatplus/logos"
+  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos" \
+    "$pkgdir/usr/share/vdr/plugins/skinflatplus/logos"
 }
