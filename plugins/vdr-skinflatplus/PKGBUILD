@@ -10,7 +10,7 @@ license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1653/$_plugname-$pkgver.tar.gz"
+source=("http://projects.vdr-developer.org/attachments/download/1658/$_plugname-$pkgver.tar.gz"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('28b6ec9efcef7385753651a80b83bcbc'
