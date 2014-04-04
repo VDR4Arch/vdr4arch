@@ -4,7 +4,7 @@ pkgname=(vdr-xineliboutput xineliboutput-frontends xineliboutput-xineplug)
 pkgver=1.1.0
 _gitver=32bde0a1eb887de10e460fe12c32251b6a7f1114
 _vdrapi=2.0.6
-pkgrel=5
+pkgrel=6
 url="http://www.sourceforge.net/projects/xineliboutput"
 arch=('x86_64' 'i686')
 license=('GPL2')
@@ -44,7 +44,7 @@ package_vdr-xineliboutput() {
        install
 
   rm -r "$pkgdir/usr/bin"
-#   rm -r "$pkgdir/usr/lib/xine"
+  rm -r "$pkgdir/usr/lib/xine"
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }
 
