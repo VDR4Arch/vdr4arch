@@ -3,7 +3,7 @@ pkgname=vdr-epgsearch
 pkgver=1.0.1.beta5
 _vdrapi=2.0.6
 epoch=1
-pkgrel=4
+pkgrel=5
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686')
@@ -47,4 +47,7 @@ package() {
   make DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
+  echo "[${_plugname}only]" > "$pkgdir/etc/vdr/conf.avail/50-${_plugname}only.conf"
+  echo "[conflictcheckonly]" > "$pkgdir/etc/vdr/conf.avail/50-conflictcheckonly.conf"
+  echo "[quick${_plugname}]" > "$pkgdir/etc/vdr/conf.avail/50-quick${_plugname}.conf"
 }
