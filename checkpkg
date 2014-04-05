@@ -70,4 +70,25 @@ for PKG in $PACKAGES; do
     echo "Cache files shouldn't be part of $PKG!" >&2
     exit 1
   fi
+
+  #
+  # VDR plugin config file check
+  #
+  PLUGINLIST=$(sed -n 's#^usr/lib/vdr/plugins/libvdr-\(.*\)\.so\..*#\1#p' <<<"$FILELIST")
+  if [[ -n "$PLUGINLIST" ]]; then
+    while read PLUGIN; do
+      PLGCFGPATH=$(grep '^etc/vdr/conf.avail/[0-9]\+-'"$PLUGIN"'.conf$' <<<"$FILELIST")
+      if [[ -z "$PLGCFGPATH" ]]; then
+        echo "Config file for plugin $PLUGIN missing in $PKG!" >&2
+        exit 1
+      fi
+
+      PLGCFG=$(tar -xOf "$PKG" "$PLGCFGPATH")
+      if ! grep -q '\['"$PLUGIN"'\]' <<<"$PLGCFG"; then
+        echo "Plugin name missing in config file for $PLUGIN in $PKG!" >&2
+        exit 1
+      fi
+    done <<<"$PLUGINLIST"
+  fi
+
 done;
