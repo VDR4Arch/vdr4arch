@@ -64,7 +64,7 @@ prepare() {
   patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
   patch -p1 -i "$srcdir/vdr-loglevel-fix.diff"
   sed -i 's/cVideoDirectory::SetName(VideoDirectory);/SetVideoDirectory(VideoDirectory);/g' \
-    $srcdir/vdr-2.1.6-conf.d-v5.diff
+    $srcdir/vdr-2.1.6-conf.d-v6.diff
   patch -p1 -i "$srcdir/vdr-2.1.6-conf.d-v6.diff"
 }
 
