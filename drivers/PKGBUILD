@@ -3,7 +3,7 @@
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
 pkgver=3.14
-pkgrel=1
+pkgrel=2
 _extramodules=extramodules-3.14-ARCH
 _saa716xrev=196681f1e154
 _media_buildrev=54c77a526abf
