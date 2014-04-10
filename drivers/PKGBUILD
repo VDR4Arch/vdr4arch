@@ -1,10 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgbase=drivers
-# pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
-pkgname=('digitaldevices-dvb-drivers' 'technotrend-dvb-drivers')
+pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
 pkgver=3.14
-pkgrel=1
+pkgrel=2
 _extramodules=extramodules-3.14-ARCH
 _saa716xrev=196681f1e154
 _media_buildrev=54c77a526abf
@@ -16,7 +15,7 @@ depends=("linux=$pkgver")
 makedepends=('mercurial' "linux-headers=$pkgver")
 install="${pkgbase}.install"
 source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
-        'kernel-3.13.4-dvbsky.patch'
+        'kernel-3.14-dvbsky.patch'
         'http://www.dvbsky.net/download/linux/media_build-bst-140128.tar.gz'
         'sit2.patch'
         '010_dd-frontends-kconfig2.diff'
@@ -26,9 +25,9 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         "hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_saa716xrev"
         "hg+http://linuxtv.org/hg/~endriss/media_build_experimental#revision=$_media_buildrev")
 md5sums=('b621207b3f6ecbb67db18b13258f8ea8'
-         'bdb6cab25a98431d20f60548c2ee5f19'
+         '3fe353d7cc3e2af1fed2eab03e4e7c5e'
          'c538c1635e7f9838f1c56409943f7080'
-         '96183387a23c930d5b3ad2a1068b25ed'
+         'e69319bb53b84ed2ea5848f028e8eccf'
          '4933d24660c79d7ae7148529b55208bd'
          '0b33ab73fa45b544e1fb131bdcb5dfca'
          'dfd1df8ec6ec3a6e2fcdafd40d382196'
@@ -65,9 +64,9 @@ prepare() {
 
   #dvbsky
   cd "$srcdir/linux-$pkgver"
-#   ln -sf "$srcdir"/media_build-bst/v4l/sit2.o.x${CARCH: -2} drivers/media/dvb-frontends/sit2.o
-#   patch -Np1 -i "$srcdir/kernel-3.13.4-dvbsky.patch"
-#   patch -Np1 -i "$srcdir/sit2.patch"
+   ln -sf "$srcdir"/media_build-bst/v4l/sit2.o.x${CARCH: -2} drivers/media/dvb-frontends/sit2.o
+   patch -Np1 -i "$srcdir/kernel-3.14-dvbsky.patch"
+   patch -Np1 -i "$srcdir/sit2.patch"
 
 
   #technotrend
@@ -123,7 +122,7 @@ package_dvbsky-dvb-drivers() {
   license=('unknown') #sit2.o is obviously closed source.
   mkdir -p "$pkgdir"/usr/lib/modules/$_extramodules
   cd "$pkgdir"/usr/lib/modules/$_extramodules
-  mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/m88d{c2800,s3103}.ko .
+  mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/m88d{c2800,s3103_dvbsky}.ko .
   mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/sit2fe.ko .
   mv "$srcdir"/linux-$pkgver/drivers/media/pci/cx23885/cx23885.ko .
   mv "$srcdir"/linux-$pkgver/drivers/media/pci/cx88/cx88{-dvb,00,xx}.ko .
