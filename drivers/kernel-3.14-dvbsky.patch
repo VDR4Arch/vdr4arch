@@ -1,11 +1,11 @@
 diff -urN a/drivers/media/dvb-frontends/Kconfig b/drivers/media/dvb-frontends/Kconfig
 --- a/drivers/media/dvb-frontends/Kconfig	2014-02-20 20:10:27.000000000 +0100
 +++ b/drivers/media/dvb-frontends/Kconfig	2014-02-22 01:02:24.652298003 +0100
-@@ -207,6 +207,20 @@
+@@ -214,6 +214,20 @@
  	help
  	  A Dual DVB-S/S2 tuner module. Say Y when you want to support this frontend.
  
-+config DVB_M88DS3103
++config DVB_M88DS3103_DVBSKY
 +	tristate "Montage M88DS3103 based"
 +	depends on DVB_CORE && I2C
 +	default m if !MEDIA_SUBDRV_AUTOSELECT
@@ -2198,9 +2198,9 @@ diff -urN a/drivers/media/dvb-frontends/m88dc2800.h b/drivers/media/dvb-frontend
 +}
 +#endif /* CONFIG_DVB_M88DC2800 */
 +#endif /* M88DC2800_H */
-diff -urN a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
---- a/drivers/media/dvb-frontends/m88ds3103.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/drivers/media/dvb-frontends/m88ds3103.c	2014-02-22 00:57:39.128949969 +0100
+diff -urN a/drivers/media/dvb-frontends/m88ds3103_dvbsky.c b/drivers/media/dvb-frontends/m88ds3103_dvbsky.c
+--- a/drivers/media/dvb-frontends/m88ds3103_dvbsky.c	1970-01-01 01:00:00.000000000 +0100
++++ b/drivers/media/dvb-frontends/m88ds3103_dvbsky.c	2014-02-22 00:57:39.128949969 +0100
 @@ -0,0 +1,1707 @@
 +/*
 +    Montage Technology M88DS3103/M88TS2022 - DVBS/S2 Satellite demod/tuner driver
@@ -2232,8 +2232,8 @@ diff -urN a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontend
 +#include <linux/firmware.h>
 +
 +#include "dvb_frontend.h"
-+#include "m88ds3103.h"
-+#include "m88ds3103_priv.h"
++#include "m88ds3103_dvbsky.h"
++#include "m88ds3103_dvbsky_priv.h"
 +
 +static int debug;
 +module_param(debug, int, 0644);
@@ -2912,7 +2912,7 @@ diff -urN a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontend
 +static struct dvb_frontend_ops m88ds3103_ops;
 +static int m88ds3103_initilaze(struct dvb_frontend *fe);
 +
-+struct dvb_frontend *m88ds3103_attach(const struct m88ds3103_config *config,
++struct dvb_frontend *m88ds3103_dvbky_attach(const struct m88ds3103_config *config,
 +				    struct i2c_adapter *i2c)
 +{
 +	struct m88ds3103_state *state = NULL;
@@ -2950,7 +2950,7 @@ diff -urN a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontend
 +error2:
 +	return NULL;
 +}
-+EXPORT_SYMBOL(m88ds3103_attach);
++EXPORT_SYMBOL(m88ds3103_dvbky_attach);
 +
 +static int m88ds3103_set_carrier_offset(struct dvb_frontend *fe,
 +					s32 carrier_offset_khz)
@@ -3909,9 +3909,9 @@ diff -urN a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontend
 +MODULE_DESCRIPTION("DVB Frontend module for Montage DS3103/TS2022 hardware");
 +MODULE_AUTHOR("Max nibble");
 +MODULE_LICENSE("GPL");
-diff -urN a/drivers/media/dvb-frontends/m88ds3103.h b/drivers/media/dvb-frontends/m88ds3103.h
---- a/drivers/media/dvb-frontends/m88ds3103.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/drivers/media/dvb-frontends/m88ds3103.h	2014-02-22 00:57:39.128949969 +0100
+diff -urN a/drivers/media/dvb-frontends/m88ds3103_dvbsky.h b/drivers/media/dvb-frontends/m88ds3103_dvbsky.h
+--- a/drivers/media/dvb-frontends/m88ds3103_dvbsky.h	1970-01-01 01:00:00.000000000 +0100
++++ b/drivers/media/dvb-frontends/m88ds3103_dvbsky.h	2014-02-22 00:57:39.128949969 +0100
 @@ -0,0 +1,53 @@
 +/*
 +    Montage Technology M88DS3103/M88TS2022 - DVBS/S2 Satellite demod/tuner driver
@@ -3931,8 +3931,8 @@ diff -urN a/drivers/media/dvb-frontends/m88ds3103.h b/drivers/media/dvb-frontend
 +    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
-+#ifndef M88DS3103_H
-+#define M88DS3103_H
++#ifndef M88DS3103_DVBSKY_H
++#define M88DS3103_DVBSKY_H
 +
 +#include <linux/kconfig.h>
 +#include <linux/dvb/frontend.h>
@@ -3952,23 +3952,23 @@ diff -urN a/drivers/media/dvb-frontends/m88ds3103.h b/drivers/media/dvb-frontend
 +    int (*set_voltage)(struct dvb_frontend* fe, fe_sec_voltage_t voltage);
 +};
 +
-+#if IS_ENABLED(CONFIG_DVB_M88DS3103)
-+extern struct dvb_frontend *m88ds3103_attach(
++#if IS_ENABLED(CONFIG_DVB_M88DS3103_DVBSKY)
++extern struct dvb_frontend *m88ds3103_dvbky_attach(
 +       const struct m88ds3103_config *config,
 +       struct i2c_adapter *i2c);
 +#else
-+static inline struct dvb_frontend *m88ds3103_attach(
++static inline struct dvb_frontend *m88ds3103_dvbky_attach(
 +       const struct m88ds3103_config *config,
 +       struct i2c_adapter *i2c)
 +{
 +	printk(KERN_WARNING "%s: driver disabled by Kconfig\n", __func__);
 +	return NULL;
 +}
-+#endif /* CONFIG_DVB_M88DS3103 */
-+#endif /* M88DS3103_H */
-diff -urN a/drivers/media/dvb-frontends/m88ds3103_priv.h b/drivers/media/dvb-frontends/m88ds3103_priv.h
---- a/drivers/media/dvb-frontends/m88ds3103_priv.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/drivers/media/dvb-frontends/m88ds3103_priv.h	2014-02-22 00:57:39.128949969 +0100
++#endif /* CONFIG_DVB_M88DS3103_DVBSKY */
++#endif /* M88DS3103_DVBSKY_H */
+diff -urN a/drivers/media/dvb-frontends/m88ds3103_dvbsky_priv.h b/drivers/media/dvb-frontends/m88ds3103_dvbsky_priv.h
+--- a/drivers/media/dvb-frontends/m88ds3103_dvbsky_priv.h	1970-01-01 01:00:00.000000000 +0100
++++ b/drivers/media/dvb-frontends/m88ds3103_dvbsky_priv.h	2014-02-22 00:57:39.128949969 +0100
 @@ -0,0 +1,403 @@
 +/*
 +    Montage Technology M88DS3103/M88TS2022 - DVBS/S2 Satellite demod/tuner driver
@@ -3988,8 +3988,8 @@ diff -urN a/drivers/media/dvb-frontends/m88ds3103_priv.h b/drivers/media/dvb-fro
 +    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
-+#ifndef M88DS3103_PRIV_H
-+#define M88DS3103_PRIV_H
++#ifndef M88DS3103_DVBSKY_PRIV_H
++#define M88DS3103_DVBSKY_PRIV_H
 +
 +#define FW_DOWN_SIZE 32
 +#define FW_DOWN_LOOP (8192/FW_DOWN_SIZE)
@@ -4372,16 +4372,16 @@ diff -urN a/drivers/media/dvb-frontends/m88ds3103_priv.h b/drivers/media/dvb-fro
 +	0xb8, 0x00,
 +};
 +
-+#endif /* M88DS3103_PRIV_H */
++#endif /* M88DS3103_DVBSKY_PRIV_H */
 diff -urN a/drivers/media/dvb-frontends/Makefile b/drivers/media/dvb-frontends/Makefile
 --- a/drivers/media/dvb-frontends/Makefile	2014-02-20 20:10:27.000000000 +0100
 +++ b/drivers/media/dvb-frontends/Makefile	2014-02-22 01:02:24.652298003 +0100
-@@ -104,4 +104,5 @@
+@@ -105,4 +105,5 @@
  obj-$(CONFIG_DVB_RTL2832) += rtl2832.o
  obj-$(CONFIG_DVB_M88RS2000) += m88rs2000.o
  obj-$(CONFIG_DVB_AF9033) += af9033.o
 -
-+obj-$(CONFIG_DVB_M88DS3103) += m88ds3103.o
++obj-$(CONFIG_DVB_M88DS3103_DVBSKY) += m88ds3103_dvbsky.o
 +obj-$(CONFIG_DVB_M88DC2800) += m88dc2800.o
 diff -urN a/drivers/media/pci/cx23885/cimax2.c b/drivers/media/pci/cx23885/cimax2.c
 --- a/drivers/media/pci/cx23885/cimax2.c	2014-02-20 20:10:27.000000000 +0100
@@ -4722,7 +4722,7 @@ diff -urN a/drivers/media/pci/cx23885/cx23885-dvb.c b/drivers/media/pci/cx23885/
  #include "lnbh24.h"
  #include "cx24116.h"
  #include "cx24117.h"
-+#include "m88ds3103.h"
++#include "m88ds3103_dvbsky.h"
 +#include "m88dc2800.h"
  #include "cimax2.h"
  #include "lgs8gxx.h"
@@ -4828,7 +4828,7 @@ diff -urN a/drivers/media/pci/cx23885/cx23885-dvb.c b/drivers/media/pci/cx23885/
 +	case CX23885_BOARD_BST_PS8512:
 +	case CX23885_BOARD_DVBSKY_S950:
 +		i2c_bus = &dev->i2c_bus[1];	
-+		fe0->dvb.frontend = dvb_attach(m88ds3103_attach,
++		fe0->dvb.frontend = dvb_attach(m88ds3103_dvbky_attach,
 +					&bst_ds3103_config,
 +					&i2c_bus->i2c_adap);
 +		break;				
@@ -4837,14 +4837,14 @@ diff -urN a/drivers/media/pci/cx23885/cx23885-dvb.c b/drivers/media/pci/cx23885/
 +		/* port B */
 +		case 1:
 +			i2c_bus = &dev->i2c_bus[1];
-+			fe0->dvb.frontend = dvb_attach(m88ds3103_attach,
++			fe0->dvb.frontend = dvb_attach(m88ds3103_dvbky_attach,
 +						&dvbsky_ds3103_config_pri,
 +						&i2c_bus->i2c_adap);
 +			break;
 +		/* port C */
 +		case 2:
 +			i2c_bus = &dev->i2c_bus[0];
-+			fe0->dvb.frontend = dvb_attach(m88ds3103_attach,
++			fe0->dvb.frontend = dvb_attach(m88ds3103_dvbky_attach,
 +						&dvbsky_ds3103_config_sec,
 +						&i2c_bus->i2c_adap);	
 +			break;
@@ -4852,7 +4852,7 @@ diff -urN a/drivers/media/pci/cx23885/cx23885-dvb.c b/drivers/media/pci/cx23885/
 +		break;
 +	case CX23885_BOARD_DVBSKY_S950_CI:
 +		i2c_bus = &dev->i2c_bus[1];	
-+		fe0->dvb.frontend = dvb_attach(m88ds3103_attach,
++		fe0->dvb.frontend = dvb_attach(m88ds3103_dvbky_attach,
 +					&dvbsky_ds3103_ci_config,
 +					&i2c_bus->i2c_adap);
 +		break;				
@@ -4867,7 +4867,7 @@ diff -urN a/drivers/media/pci/cx23885/cx23885-dvb.c b/drivers/media/pci/cx23885/
 +		/* port B */
 +		case 1:
 +			i2c_bus = &dev->i2c_bus[1];
-+			fe0->dvb.frontend = dvb_attach(m88ds3103_attach,
++			fe0->dvb.frontend = dvb_attach(m88ds3103_dvbky_attach,
 +						&dvbsky_ds3103_config_pri,
 +						&i2c_bus->i2c_adap);
 +			break;
@@ -5021,7 +5021,7 @@ diff -urN a/drivers/media/pci/cx23885/Kconfig b/drivers/media/pci/cx23885/Kconfi
  	select DVB_STV6110 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_CX24116 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_CX24117 if MEDIA_SUBDRV_AUTOSELECT
-+	select DVB_M88DS3103 if MEDIA_SUBDRV_AUTOSELECT
++	select DVB_M88DS3103_DVBSKY if MEDIA_SUBDRV_AUTOSELECT
 +	select DVB_M88DC2800 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_STV0900 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_DS3000 if MEDIA_SUBDRV_AUTOSELECT
@@ -5079,7 +5079,7 @@ diff -urN a/drivers/media/pci/cx88/cx88-dvb.c b/drivers/media/pci/cx88/cx88-dvb.
  #include "stv0288.h"
  #include "stb6000.h"
  #include "cx24116.h"
-+#include "m88ds3103.h"
++#include "m88ds3103_dvbsky.h"
  #include "stv0900.h"
  #include "stb6100.h"
  #include "stb6100_proc.h"
@@ -5157,7 +5157,7 @@ diff -urN a/drivers/media/pci/cx88/cx88-dvb.c b/drivers/media/pci/cx88/cx88-dvb.
  		}
  		break;
 +	case CX88_BOARD_BST_PS8312:
-+		fe0->dvb.frontend = dvb_attach(m88ds3103_attach,
++		fe0->dvb.frontend = dvb_attach(m88ds3103_dvbky_attach,
 +						&dvbsky_ds3103_config,
 +						&core->i2c_adap);
 +		if (fe0->dvb.frontend != NULL){
@@ -5220,7 +5220,7 @@ diff -urN a/drivers/media/pci/cx88/Kconfig b/drivers/media/pci/cx88/Kconfig
  	select DVB_ISL6421 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_S5H1411 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_CX24116 if MEDIA_SUBDRV_AUTOSELECT
-+	select DVB_M88DS3103 if MEDIA_SUBDRV_AUTOSELECT
++	select DVB_M88DS3103_DVBSKY if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_STV0299 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_STV0288 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_STB6000 if MEDIA_SUBDRV_AUTOSELECT
@@ -5349,7 +5349,7 @@ diff -urN a/drivers/media/usb/dvb-usb-v2/dvbsky.c b/drivers/media/usb/dvb-usb-v2
 +
 +#include "dvb_ca_en50221.h"
 +#include "dvb_usb.h"
-+#include "m88ds3103.h"
++#include "m88ds3103_dvbsky.h"
 +
 +static int dvbsky_debug;
 +module_param(dvbsky_debug, int, 0644);
@@ -5898,7 +5898,7 @@ diff -urN a/drivers/media/usb/dvb-usb-v2/dvbsky.c b/drivers/media/usb/dvb-usb-v2
 +	dvbsky_gpio_ctrl(d, 0x83, 1);
 +	msleep(20);
 +	
-+	adap->fe[0] = dvb_attach(m88ds3103_attach,
++	adap->fe[0] = dvb_attach(m88ds3103_dvbky_attach,
 +				&dvbsky_usb_ds3103_config,
 +				&d->i2c_adap);
 +	if (!adap->fe[0]) {
@@ -5935,7 +5935,7 @@ diff -urN a/drivers/media/usb/dvb-usb-v2/dvbsky.c b/drivers/media/usb/dvb-usb-v2
 +	dvbsky_gpio_ctrl(d, 0x83, 1);
 +	msleep(20);
 +	
-+	adap->fe[0] = dvb_attach(m88ds3103_attach,
++	adap->fe[0] = dvb_attach(m88ds3103_dvbky_attach,
 +				&dvbsky_usb_ds3103_ci_config,
 +				&d->i2c_adap);
 +	if (!adap->fe[0]) {
@@ -6072,7 +6072,7 @@ diff -urN a/drivers/media/usb/dvb-usb-v2/Kconfig b/drivers/media/usb/dvb-usb-v2/
 +config DVB_USB_DVBSKY
 +	tristate "DVBSky USB2.0 support"
 +	depends on DVB_USB_V2
-+	select DVB_M88DS3103 if MEDIA_SUBDRV_AUTOSELECT
++	select DVB_M88DS3103_DVBSKY if MEDIA_SUBDRV_AUTOSELECT
 +	help
 +	  Say Y here to support the USB receivers from DVBSky.
 diff -urN a/drivers/media/usb/dvb-usb-v2/Makefile b/drivers/media/usb/dvb-usb-v2/Makefile
