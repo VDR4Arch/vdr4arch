@@ -1,5 +1,5 @@
 pkgname=elchi-logos
-pkgver=20140405
+pkgver=20140410
 pkgrel=1
 pkgdesc="Channellogos for skin Elchi"
 arch=('any')
@@ -8,7 +8,7 @@ depends=('vdr-skinelchi')
 license=('GPL2')
 source=("http://creimer.net/channellogos/elchiHD-logos-$pkgver.tar.gz")
 options=(!strip)
-md5sums=('d329368bf8c2580d963a89956c17c015')
+md5sums=('f4c766703059835e151b626dc897bfd4')
 
 package() {
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skinelchi/logos"
