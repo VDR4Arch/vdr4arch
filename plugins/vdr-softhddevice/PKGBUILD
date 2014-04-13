@@ -4,7 +4,7 @@ pkgver=0.6.1rc1_24_g42bbb76
 epoch=1
 _gitver=42bbb763fd93ee3936ea50e003c0892c791b1214
 _vdrapi=2.0.6
-pkgrel=2
+pkgrel=3
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686')
@@ -46,7 +46,6 @@ prepare() {
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-  export PKG_CONFIG_PATH=/usr/lib/ffmpeg-compat/pkgconfig
   make
 }
 
