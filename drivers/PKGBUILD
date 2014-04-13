@@ -3,10 +3,10 @@
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
 pkgver=3.14
-pkgrel=2
+pkgrel=3
 _extramodules=extramodules-3.14-ARCH
 _saa716xrev=196681f1e154
-_media_buildrev=54c77a526abf
+_media_buildrev=4460f31ab97f
 url='https://github.com/CReimer/vdr4arch'
 pkgdesc="Additional or updated dvb driver modules"
 arch=('x86_64' 'i686')
@@ -62,6 +62,7 @@ prepare() {
   patch -p1 -i "$srcdir/010_dd-frontends-makefile.diff"
   patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/020_ddbridge-drxk.diff"
   patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/100_dvbdev.h.diff"
+  patch -p1 -i "$srcdir/media_build_experimental/experimental/patch.d/151_clr_DMA_buffer_on_open_fix.diff"
   patch -p1 -i "$srcdir/drop_DVBC2.diff" #100_frontend.h.diff
 
 
