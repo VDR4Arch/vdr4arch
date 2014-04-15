@@ -1,7 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-scraper2vdr
 pkgver=0.1.0
-_gitver=ed8b63540d8fd23268da0e1ddfbad1b21265a6c3
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="Acts as client and provides scraped metadata for tvshows and movies from epgd"
@@ -10,25 +9,19 @@ arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('graphicsmagick' 'libmariadbclient' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-scraper2vdr.git#commit=$_gitver"
+source=("http://projects.vdr-developer.org/attachments/download/1672/$pkgname-$pkgver.tgz"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('SKIP'
+md5sums=('d1ca85b39172bd28dc7000ad4d2a266d'
          'b3be8ea56e120b1b0e61d9f53cd9dc26')
 
-pkgver() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
-  git tag -a v0.1.0 -m 'Added Tag' ed8b63540d8fd23268da0e1ddfbad1b21265a6c3 2> /dev/null
-  git describe --tags | sed 's/-/_/g;s/v//'
-}
-
 build() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
+  cd "$srcdir/$_plugname-$pkgver"
   make IMAGELIB=graphicsmagick
 }
 
 package() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
+  cd "$srcdir/$_plugname-$pkgver"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
