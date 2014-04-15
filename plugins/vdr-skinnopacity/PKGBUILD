@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=1.0.4
+pkgver=1.1.1
 _vdrapi=2.0.6
-pkgrel=3
+pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
@@ -11,14 +11,14 @@ depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1626/$pkgname-$pkgver.tgz"
+source=("http://projects.vdr-developer.org/attachments/download/1671/$pkgname-$pkgver.tgz"
         "50-$_plugname.conf"
         'nopacity-always_show_displaychannel.diff')
 backup=("var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-light.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-default.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-iceblue.conf"
         "etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('68eb23460cccf373aee97a8edfa40567'
+md5sums=('65dbdc1e045c2d72b975e7b4a585e006'
          'ccdd82d2627a9d2b8d3906cb477be515'
          'c53a82c3b66a44f5b4304a01cdb66632')
 
