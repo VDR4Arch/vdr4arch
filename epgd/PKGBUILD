@@ -1,41 +1,42 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
-pkgname=epgd
-pkgver=0.1.16
-_gitver=a45a8639709fcdc8e460163f0bc1e4d00612eb3d
+pkgbase=vdr-epg-daemon
+pkgname=('epgd' 'mariadb-epglv')
+pkgver=0.2.0
+_gitver=dd4e8eadbe907c533dcf1efb5fa623d26d6f47b7
 pkgrel=1
-pkgdesc="Part of the double team epgd+epg2vdr to effectively retrieve, store and import epg data to vdr"
-url="http://projects.vdr-developer.org/projects/vdr-epg-daemon"
+url='http://projects.vdr-developer.org/projects/vdr-epg-daemon'
 arch=('x86_64' 'i686')
 license=('GPL2')
-depends=('curl' 'libxslt' 'libarchive' 'libmariadbclient')
-makedepends=('git')
-source=("git://projects.vdr-developer.org/vdr-epg-daemon.git#commit=$_gitver")
-backup=('etc/epgd/channelmap.conf'
-        'etc/epgd/epgd.conf')
+makedepends=('curl' 'jansson' 'libarchive' 'libmariadbclient' 'libxslt')
+source=("git://projects.vdr-developer.org/$pkgbase.git#commit=$_gitver")
 md5sums=('SKIP')
 
 pkgver() {
-  cd "${srcdir}/vdr-epg-daemon"
-  git tag -a 0.1.16 -m 'Added Tag' a45a8639709fcdc8e460163f0bc1e4d00612eb3d 2> /dev/null
+  cd "$srcdir/$pkgbase"
+  git tag -a v0.2.0 -m 'Added Tag' dd4e8eadbe907c533dcf1efb5fa623d26d6f47b7 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
 build() {
-  cd "${srcdir}/vdr-epg-daemon"
-  make PREFIX='/usr'
+  cd "$srcdir/$pkgbase"
+  make PREFIX=/usr
 }
 
-package() {
-  cd "${srcdir}/vdr-epg-daemon"
-  mkdir -p "$pkgdir/usr/bin"
-  make DESTDIR="${pkgdir}" \
-       PREFIX='/usr' \
-       install
+package_epgd() {
+  pkgdesc='write epg data to a mysql database'
+  depends=('curl' 'jansson' 'libarchive' 'libmariadbclient' 'libxslt')
+  backup=('etc/epgd/channelmap.conf' 'etc/epgd/epgd.conf')
+  cd "$srcdir/$pkgbase"
+  make PREFIX=/usr DESTDIR="$pkgdir" install
+  install -Dm644 contrib/epgd.service "$pkgdir/usr/lib/systemd/system/epgd.service"
+  rm "$pkgdir/mysqlepglv.so"
+}
 
-  #Workaround epglv Makefile bug
-  mkdir -p "$pkgdir/$(mysql_config --plugindir)"
-  mv "$pkgdir/mysqlepglv.so" "$pkgdir/$(mysql_config --plugindir)"
-
-  install -Dm644 "contrib/epgd.service" "$pkgdir/usr/lib/systemd/system/epgd.service"
-  rm "$pkgdir/usr/bin/epgd-tool"
+package_mariadb-epglv() {
+  pkgdesc='epglv plugin for mysql/mariadb'
+  depends=('mariadb')
+  backup=("$(mysql_config --plugindir | cut -d/ -f2-)/mysqlepglv.so")
+  install='mariadb-epglv.install'
+  cd "$srcdir/$pkgbase"
+  install -Dm755 epglv/mysqlepglv.so "$pkgdir/$(mysql_config --plugindir)/mysqlepglv.so"
 }
