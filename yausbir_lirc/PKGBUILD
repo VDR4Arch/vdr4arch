@@ -1,24 +1,28 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=yausbir_lirc
-pkgver=20120318
-pkgrel=2
+pkgver=20140415
+_gitver=4fbc03d5d8b6a28abc3f3f054739cd22cd9f753b
+pkgrel=1
 pkgdesc="Small UDP LIRC daemon for yausbir"
-url="http://www.vdr-portal.de/board18-vdr-hardware/board13-fernbedienungen/111753-yausbir-lirc-f%C3%A4higer-usb-ir-empf%C3%A4nger-sender-mit-einschalter"
+url="https://github.com/M-Reimer/yausbir_lirc/"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' 'libusb-compat')
-source=("$pkgname.tar.gz::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30192"
-        "$pkgname.service")
-md5sums=('7402ba4cd889c9eb61edea3aaacfd4ef'
-         'd08da63d5e2ab732ca9b493b6f6c1db8')
+makedepends=('git')
+source=("git+https://github.com/M-Reimer/yausbir_lirc.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+  git log -1 --pretty=format:%ad --date=short | sed 's/-//g'
+}
 
 build() {
   cd "${srcdir}/${pkgname}"
-  g++ $CXXFLAGS -o $pkgname main.cpp -lusb
+  make
 }
 
 package() {
   cd "${srcdir}/${pkgname}"
-  install -Dm755 $pkgname "$pkgdir/usr/bin/$pkgname"
-  install -Dm644 "$srcdir/$pkgname.service" "$pkgdir/usr/lib/systemd/system/$pkgname.service"
+  make BINDIR=/usr/bin DESTDIR="$pkgdir" install
 }
