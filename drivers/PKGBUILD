@@ -17,7 +17,7 @@ install="${pkgbase}.install"
 source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         'kernel-3.14-dvbsky.patch'
         'http://www.dvbsky.net/download/linux/media_build-bst-140128.tar.gz'
-        'https://raw.githubusercontent.com/flensrocker/dddvb-dkms/master/dddvb-0.9.13.0yavdr0/patches/remove_188_byte_limit_in_ts_write.diff'
+        'https://raw.githubusercontent.com/flensrocker/dddvb-dkms/master/dddvb-0.9.13.1yavdr0/patches/remove_188_byte_limit_in_ts_write.diff'
         'sit2.patch'
         '010_dd-frontends-kconfig2.diff'
         '010_dd-frontends-makefile.diff'
