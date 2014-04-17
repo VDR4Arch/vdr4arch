@@ -1,0 +1,8 @@
+post_install() {
+  chown -R vdr:vdr var/lib/vdr
+  rm -f var/lib/vdr/themes/anthra_1920_FSE-default.theme
+}
+
+post_upgrade() {
+  post_install
+}

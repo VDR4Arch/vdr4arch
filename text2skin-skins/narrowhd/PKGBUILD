@@ -1,0 +1,24 @@
+pkgbase=NarrowHD
+pkgname=text2skin-$(echo $pkgbase | tr '[:upper:]' '[:lower:]')
+pkgver=0.2
+pkgrel=1
+pkgdesc="Full HD skin inital based on the famous PearlHD skin"
+arch=('any')
+url="http://projects.vdr-developer.org/projects/skin-narrowhd"
+depends=('vdr-text2skin')
+license=('GPL2')
+install=$pkgname.install
+source=("${pkgbase}_v$pkgver.zip::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=35935")
+md5sums=('0f7d704a698fb3868fd6b7f2484fa21a')
+
+prepare() {
+  cd "$srcdir/${pkgbase}_v$pkgver"
+  sed -i 's|\.\.\/\.\.\/\.\.\/channellogos|\/usr\/share\/vdr\/plugins\/text2skin\/narrowhdlogos|g' ${pkgbase//-/_}.skin
+}
+
+package() {
+  cd "$srcdir/${pkgbase}_v$pkgver"
+  install -Dm644 $pkgbase.colors "$pkgdir/usr/share/vdr/plugins/text2skin/$pkgbase/$pkgbase.colors"
+  install -Dm644 $pkgbase.skin "$pkgdir/usr/share/vdr/plugins/text2skin/$pkgbase/$pkgbase.skin"
+  install -Dm644 themes/$pkgbase-default.theme "$pkgdir/var/lib/vdr/themes/$pkgbase-default.theme"
+}

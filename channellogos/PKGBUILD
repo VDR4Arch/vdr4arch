@@ -1,0 +1,69 @@
+pkgbase=channellogos
+pkgname=({anthra,elchi,enigma,narrowhd,nopacity}-logos)
+pkgver=20140413
+pkgrel=1
+pkgdesc="Channellogos for VDR"
+arch=('any')
+url="http://creimer.net/channellogos/"
+license=('GPL2')
+source=(http://creimer.net/channellogos/{anthra,elchiHD,enigma,narrowhd}-logos-$pkgver.tar.gz
+        http://creimer.net/channellogos/nopacity-logos-{default,white}-$pkgver.tar.gz)
+options=(!strip)
+md5sums=('58275a7f8d51448128f6cb703e5f141b'
+         '3dc13501da3c30d75bef4d40e7ff3237'
+         'c1a7f23b83b01f5d233b2b9511222295'
+         '7620692b4771d4829da0de19d9774f80'
+         '11ae5e7e1bca1edce9e220995183289d'
+         '5468e7a5d1c36c5a14fc3927a676c70e')
+
+package_anthra-logos() {
+  depends=('text2skin-anthra')
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/"
+  cp -r "$srcdir/anthralogos" "$pkgdir/usr/share/vdr/plugins/text2skin/"
+}
+
+package_elchi-logos() {
+  depends=('vdr-skinelchi')
+  cd "$srcdir"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinelchi/logos"
+  cp -r elchilogos/* "$pkgdir/usr/share/vdr/plugins/skinelchi/logos"
+}
+
+package_enigma-logos() {
+  depends=('vdr-skinenigmang')
+  cd "$srcdir"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinenigmang/logos"
+  cp -r enigmalogos/* "$pkgdir/usr/share/vdr/plugins/skinenigmang/logos"
+}
+
+package_narrowhd-logos() {
+  depends=('text2skin-narrowhd')
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/"
+  cp -r "$srcdir/narrowhdlogos" "$pkgdir/usr/share/vdr/plugins/text2skin"
+}
+
+package_nopacity-logos() {
+  depends=('vdr-skinnopacity')
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos"
+  cd "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos"
+  cp -r "$srcdir/nopacitylogos/white" .
+  cp -r "$srcdir"/nopacitylogos/default/* .
+
+  ln -s white blue
+  ln -s white darkblue
+  ln -s white darkred
+  ln -s white darkredNG
+  ln -s white green
+
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/tvguide/logos"
+  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos" \
+    "$pkgdir/usr/share/vdr/plugins/tvguide/logos"
+
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinflat/logos"
+  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos/white" \
+    "$pkgdir/usr/share/vdr/plugins/skinflat/logos"
+
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinflatplus/logos"
+  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos/white" \
+    "$pkgdir/usr/share/vdr/plugins/skinflatplus/logos"
+}

@@ -1,0 +1,25 @@
+pkgbase=anthra-1024
+pkgname=text2skin-$(echo $pkgbase | tr '[:upper:]' '[:lower:]')
+pkgver=0.3.4
+pkgrel=1
+pkgdesc="Dark, anthracite skins for Klaus Schmidingers VDR"
+arch=('any')
+url="http://www.anthra.de/"
+groups=('text2skin-anthra')
+depends=('vdr-text2skin')
+license=('GPL2')
+install=$pkgname.install
+source=("http://www.anthra.de/anthra-skins/${pkgbase//-/_}-$pkgver.tar.xz")
+md5sums=('091bb25b0769b9173efb31d2ee46c984')
+
+prepare() {
+  cd "$srcdir/${pkgbase//-/_}"
+  sed -i 's/var\/lib\/vdr/usr\/share\/vdr\/plugins\/text2skin/g' ${pkgbase//-/_}.skin
+}
+
+package() {
+  cd "$srcdir/${pkgbase//-/_}"
+  make DESTDIR="$pkgdir" THEMESDIR="/var/lib/vdr/themes" install
+  find "$pkgdir" -name COPYING -delete
+  find "$pkgdir" -name .directory -delete
+}

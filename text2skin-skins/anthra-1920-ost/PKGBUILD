@@ -1,0 +1,27 @@
+pkgbase=anthra-1920-OSt
+pkgname=text2skin-$(echo $pkgbase | tr '[:upper:]' '[:lower:]')
+pkgver=20140324
+pkgrel=1
+pkgdesc="Dark, anthracite skins for Klaus Schmidingers VDR"
+arch=('any')
+url="http://www.anthra.de/"
+groups=('text2skin-anthra')
+depends=('vdr-text2skin')
+license=('GPL2')
+install=$pkgname.install
+source=("http://www.anthra.de/anthra-skins/${pkgbase//-/_}-$pkgver.tar.xz")
+md5sums=('097c92dc4a1adff43a60638b30fdd590')
+
+prepare() {
+  cd "$srcdir/${pkgbase//-/_}"
+  sed -i 's/var\/lib\/vdr/usr\/share\/vdr\/plugins\/text2skin/g' ${pkgbase//-/_}.skin
+}
+
+package() {
+  cd "$srcdir/${pkgbase//-/_}"
+  make DESTDIR="$pkgdir" THEMESDIR="/var/lib/vdr/themes" install
+  find "$pkgdir" -name COPYING -delete
+  find "$pkgdir" -name .directory -delete
+  rm "$pkgdir/var/lib/vdr/themes/anthra_1920_FSt-default.theme"
+  rm "$pkgdir/var/lib/vdr/themes/anthra_1920_OS-light.theme"
+}
