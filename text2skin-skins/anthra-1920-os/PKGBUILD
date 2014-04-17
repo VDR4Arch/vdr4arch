@@ -1,12 +1,12 @@
 pkgbase=anthra-1920-OS
 pkgname=text2skin-$(echo $pkgbase | tr '[:upper:]' '[:lower:]')
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Dark, anthracite skins for Klaus Schmidingers VDR"
 arch=('any')
 url="http://www.anthra.de/"
-groups=('text2skin-anthra')
 depends=('vdr-text2skin')
+provides=('text2skin-anthra')
 license=('GPL2')
 install=$pkgname.install
 source=("http://www.anthra.de/anthra-skins/${pkgbase//-/_}-$pkgver.tar.xz")
