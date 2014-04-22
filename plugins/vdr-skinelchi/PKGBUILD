@@ -8,6 +8,7 @@ url="http://firefly.vdr-developer.org/skinelchi/index.html"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
+optdepends=('elchi-logos: To show channellogos in DisplayChannel view')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://firefly.vdr-developer.org/skinelchi/${pkgname}-${pkgver}.tar.bz2"

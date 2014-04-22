@@ -6,6 +6,7 @@ pkgdesc="Full HD skin inital based on the famous PearlHD skin"
 arch=('any')
 url="http://projects.vdr-developer.org/projects/skin-narrowhd"
 depends=('vdr-text2skin')
+optdepends=('narrowhd-logos: To show channellogos in DisplayChannel view')
 license=('GPL2')
 install=$pkgname.install
 source=("${pkgbase}_v$pkgver.zip::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=35935")

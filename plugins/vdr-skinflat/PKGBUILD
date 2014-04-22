@@ -8,6 +8,7 @@ url="http://projects.vdr-developer.org/projects/plg-skinflat"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
+optdepends=('nopacity-logos: To show channellogos in DisplayChannel view')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1476/$_plugname-$pkgver.tar.gz"

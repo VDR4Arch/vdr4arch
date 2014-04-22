@@ -8,7 +8,9 @@ url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
-optdepends=('vdr-tvscraper: To display scraped images in various EPG views')
+optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
+            'vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
+            'vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1671/$pkgname-$pkgver.tgz"

@@ -17,33 +17,28 @@ md5sums=('58275a7f8d51448128f6cb703e5f141b'
          '5468e7a5d1c36c5a14fc3927a676c70e')
 
 package_anthra-logos() {
-  depends=('text2skin-anthra')
   mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/"
   cp -r "$srcdir/anthralogos" "$pkgdir/usr/share/vdr/plugins/text2skin/"
 }
 
 package_elchi-logos() {
-  depends=('vdr-skinelchi')
   cd "$srcdir"
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skinelchi/logos"
   cp -r elchilogos/* "$pkgdir/usr/share/vdr/plugins/skinelchi/logos"
 }
 
 package_enigma-logos() {
-  depends=('vdr-skinenigmang')
   cd "$srcdir"
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skinenigmang/logos"
   cp -r enigmalogos/* "$pkgdir/usr/share/vdr/plugins/skinenigmang/logos"
 }
 
 package_narrowhd-logos() {
-  depends=('text2skin-narrowhd')
   mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/"
   cp -r "$srcdir/narrowhdlogos" "$pkgdir/usr/share/vdr/plugins/text2skin"
 }
 
 package_nopacity-logos() {
-  depends=('vdr-skinnopacity')
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos"
   cd "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos"
   cp -r "$srcdir/nopacitylogos/white" .

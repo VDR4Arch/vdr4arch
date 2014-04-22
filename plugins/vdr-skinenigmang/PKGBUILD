@@ -10,6 +10,7 @@ url="http://andreas.vdr-developer.org/enigmang/index.html"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
+optdepends=('enigma-logos: To show channellogos in DisplayChannel view')
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')

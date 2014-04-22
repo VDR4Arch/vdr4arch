@@ -9,6 +9,7 @@ url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('graphicsmagick' 'libpng' "vdr-api=$_vdrapi")
+optdepends=('nopacity-logos: To show channellogos in the left column')
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
