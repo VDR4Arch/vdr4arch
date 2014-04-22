@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-xmltv2vdr
-pkgver=0.1.1_65_g151296e
-_gitver=151296e1afce5284a90de2a6b4ed2d41979ca9dc
+pkgver=0.1.1_67_gd45bad0
+_gitver=d45bad06f58853f69dde50d5014addf500fcf61a
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="Add epg info from epg sources into vdr"
