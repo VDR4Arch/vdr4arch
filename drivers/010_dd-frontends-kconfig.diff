@@ -1,0 +1,63 @@
+--- linux/drivers/media/dvb-frontends/Kconfig.old	2013-11-05 08:06:41.000000000 +0100
++++ linux/drivers/media/dvb-frontends/Kconfig	2013-11-05 08:22:11.000000000 +0100
+@@ -56,6 +56,60 @@ config DVB_TDA18271C2DD
+ 
+ 	  Say Y when you want to support this tuner.
+ 
++config DVB_STV0367DD
++	tristate "STV 0367 (DD)"
++	depends on DVB_CORE && I2C
++	default m if !MEDIA_SUBDRV_AUTOSELECT
++	help
++	  STV 0367 DVB-C/T demodulator (Digital Devices driver).
++
++	  Say Y when you want to support this frontend.
++
++config DVB_TDA18212DD
++	tristate "NXP TDA18212 silicon tuner (DD)"
++	depends on DVB_CORE && I2C
++	default m if !MEDIA_SUBDRV_AUTOSELECT
++	help
++	  NXP TDA18212 silicon tuner (Digital Devices driver).
++
++	  Say Y when you want to support this tuner.
++
++config DVB_CXD2843
++	tristate "Sony CXD2843 DVB-C/T demodulator family"
++	depends on DVB_CORE && I2C
++	default m if !MEDIA_SUBDRV_AUTOSELECT
++	help
++	  Sony CXD2843 demodulator (Digital Devices driver).
++
++	  Say Y when you want to support this frontend.
++
++config DVB_LNBH25
++	tristate "Sony CXD2843 DVB-C/T demodulator family"
++	depends on DVB_CORE && I2C
++	default m if !MEDIA_SUBDRV_AUTOSELECT
++	help
++	  Sony CXD2843 demodulator (Digital Devices driver).
++
++	  Say Y when you want to support this frontend.
++
++config DVB_STV6111
++	tristate "Sony CXD2843 DVB-C/T demodulator family"
++	depends on DVB_CORE && I2C
++	default m if !MEDIA_SUBDRV_AUTOSELECT
++	help
++	  Sony CXD2843 demodulator (Digital Devices driver).
++
++	  Say Y when you want to support this frontend.
++
++config DVB_STV0910
++	tristate "Sony CXD2843 DVB-C/T demodulator family"
++	depends on DVB_CORE && I2C
++	default m if !MEDIA_SUBDRV_AUTOSELECT
++	help
++	  Sony CXD2843 demodulator (Digital Devices driver).
++
++	  Say Y when you want to support this frontend.
++
+ comment "DVB-S (satellite) frontends"
+ 	depends on DVB_CORE
+ 

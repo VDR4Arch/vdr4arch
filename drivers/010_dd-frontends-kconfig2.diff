@@ -1,13 +1,16 @@
 --- linux-3.12.9/drivers/media/pci/ddbridge/Kconfig	2014-01-25 18:18:00.000000000 +0100
 +++ linux-3.12.9.diff/drivers/media/pci/ddbridge/Kconfig	2014-02-17 11:12:13.547870415 +0100
-@@ -6,6 +6,10 @@
+@@ -6,6 +6,13 @@
  	select DVB_STV090x if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_DRXK if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_TDA18271C2DD if MEDIA_SUBDRV_AUTOSELECT
-+	select DVB_CXD2099 if MEDIA_SUBDRV_AUTOSELECT
 +	select DVB_STV0367DD if MEDIA_SUBDRV_AUTOSELECT
 +	select DVB_TDA18212DD if MEDIA_SUBDRV_AUTOSELECT
 +	select DVB_CXD2843 if MEDIA_SUBDRV_AUTOSELECT
++	select DVB_CXD2099 if MEDIA_SUBDRV_AUTOSELECT
++	select DVB_LNBH25 if MEDIA_SUBDRV_AUTOSELECT
++	select DVB_STV6111 if MEDIA_SUBDRV_AUTOSELECT
++	select DVB_STV0910 if MEDIA_SUBDRV_AUTOSELECT
  	---help---
  	  Support for cards with the Digital Devices PCI express bridge:
  	  - Octopus PCIe Bridge
