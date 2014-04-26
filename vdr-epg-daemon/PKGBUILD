@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase=vdr-epg-daemon
 pkgname=('epgd' 'mariadb-epglv')
-pkgver=0.2.0
-_gitver=dd4e8eadbe907c533dcf1efb5fa623d26d6f47b7
+pkgver=0.2.0_11_ga9d880b
+_gitver=a9d880b33fb8ac6f1f1ea27120fc9a2179df5b82
 pkgrel=1
 url='http://projects.vdr-developer.org/projects/vdr-epg-daemon'
 arch=('x86_64' 'i686')
