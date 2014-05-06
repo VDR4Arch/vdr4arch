@@ -363,6 +363,165 @@ diff -urN a/drivers/media/pci/cx23885/Kconfig b/drivers/media/pci/cx23885/Kconfi
  	select DVB_STV0900 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_DS3000 if MEDIA_SUBDRV_AUTOSELECT
  	select DVB_TS2020 if MEDIA_SUBDRV_AUTOSELECT
+diff -urN a/drivers/media/usb/dvb-usb-v2/dvbsky.c b/drivers/media/usb/dvb-usb-v2/dvbsky.c
+--- a/drivers/media/usb/dvb-usb-v2/dvbsky.c	2014-05-06 10:37:19.520955539 +0200
++++ b/drivers/media/usb/dvb-usb-v2/dvbsky.c	2014-05-06 10:48:02.844419047 +0200
+@@ -26,6 +26,7 @@
+ 
+ #include "dvb_ca_en50221.h"
+ #include "dvb_usb.h"
++#include "sit2.h"
+ #include "m88ds3103_dvbsky.h"
+ 
+ static int dvbsky_debug;
+@@ -523,6 +524,70 @@
+ 	return dvbsky_gpio_ctrl(d, 0x00, value);
+ }
+ 
++static struct sit2_config dvbsky_usb_sit2_config = {
++	.ts_bus_mode = 2,
++	.ts_clock_mode = 1,
++	.start_ctrl = NULL,
++};
++
++static int dvbsky_t680c_attach(struct dvb_usb_adapter *adap)
++{
++	struct dvbsky_state *state = adap_to_priv(adap);
++	struct dvb_usb_device *d = adap_to_d(adap);
++	int ret = 0;
++
++	dprintk("%s()\n", __func__);
++
++	dvbsky_gpio_ctrl(d, 0x83, 0);
++	msleep(50);
++	dvbsky_gpio_ctrl(d, 0x83, 1);
++	msleep(20);
++
++	adap->fe[0] = dvb_attach(sit2_attach,
++				&dvbsky_usb_sit2_config,
++				&d->i2c_adap);
++	if (!adap->fe[0]) {
++		printk(KERN_ERR "dvbsky_t680c_attach fail.");
++		ret = -ENODEV;
++	}
++
++	state->has_ci = 1;
++
++	return ret;
++}
++
++static struct sit2_config dvbsky_t330_sit2_config = {
++	.ts_bus_mode = 2,
++	.ts_clock_mode = 0x81,
++	.start_ctrl = NULL,
++};
++
++static int dvbsky_t330_attach(struct dvb_usb_adapter *adap)
++{
++	struct dvbsky_state *state = adap_to_priv(adap);
++	struct dvb_usb_device *d = adap_to_d(adap);
++	int ret = 0;
++
++	dprintk("%s()\n", __func__);
++
++	dvbsky_gpio_ctrl(d, 0x83, 0);
++	msleep(50);
++	dvbsky_gpio_ctrl(d, 0x83, 1);
++	msleep(20);
++
++	adap->fe[0] = dvb_attach(sit2_attach,
++				&dvbsky_t330_sit2_config,
++				&d->i2c_adap);
++	if (!adap->fe[0]) {
++		printk(KERN_ERR "dvbsky_t330_attach fail.");
++		ret = -ENODEV;
++	}
++
++	state->has_ci = 0;
++
++	return ret;
++}
++
+ static int dvbsky_read_mac_addr(struct dvb_usb_adapter *adap, u8 mac[6])
+ {
+ 	struct dvb_usb_device *d = adap_to_d(adap);
+@@ -662,6 +727,31 @@
+ }
+ 
+ /* DVB USB Driver stuff */
++static struct dvb_usb_device_properties dvbsky_t330_props = {
++	.driver_name = KBUILD_MODNAME,
++	.owner = THIS_MODULE,
++	.adapter_nr = adapter_nr,
++	.size_of_priv = sizeof(struct dvbsky_state),
++
++	.generic_bulk_ctrl_endpoint = 0x01,
++	.generic_bulk_ctrl_endpoint_response = 0x81,
++
++	.i2c_algo         = &dvbsky_i2c_algo,
++	.frontend_attach  = dvbsky_t330_attach,
++	.init             = dvbsky_init,
++	.get_rc_config    = dvbsky_get_rc_config,
++	.streaming_ctrl   = dvbsky_streaming_ctrl,
++	.identify_state	  = dvbsky_identify_state,
++	.exit             = dvbsky_exit,
++
++	.num_adapters = 1,
++	.adapter = {
++		{
++			.stream = DVB_USB_STREAM_BULK(0x82, 8, 4096),
++		}
++	}
++};
++
+ static struct dvb_usb_device_properties dvbsky_s960c_props = {
+ 	.driver_name = KBUILD_MODNAME,
+ 	.owner = THIS_MODULE,
+@@ -687,6 +777,31 @@
+ 	}
+ };
+ 
++static struct dvb_usb_device_properties dvbsky_t680c_props = {
++	.driver_name = KBUILD_MODNAME,
++	.owner = THIS_MODULE,
++	.adapter_nr = adapter_nr,
++	.size_of_priv = sizeof(struct dvbsky_state),
++
++	.generic_bulk_ctrl_endpoint = 0x01,
++	.generic_bulk_ctrl_endpoint_response = 0x81,
++
++	.i2c_algo         = &dvbsky_i2c_algo,
++	.frontend_attach  = dvbsky_t680c_attach,
++	.init             = dvbsky_init,
++	.get_rc_config    = dvbsky_get_rc_config,
++	.streaming_ctrl   = dvbsky_streaming_ctrl,
++	.identify_state	  = dvbsky_identify_state,
++	.exit             = dvbsky_exit,
++
++	.num_adapters = 1,
++	.adapter = {
++		{
++			.stream = DVB_USB_STREAM_BULK(0x82, 8, 4096),
++		}
++	}
++};
++
+ static struct dvb_usb_device_properties dvbsky_s960_props = {
+ 	.driver_name = KBUILD_MODNAME,
+ 	.owner = THIS_MODULE,
+@@ -714,8 +829,12 @@
+ };
+ 
+ static const struct usb_device_id dvbsky_id_table[] = {
++	{ DVB_USB_DEVICE(0x0572, 0x0320,
++		&dvbsky_t330_props, "DVBSky T330 USB Stick", RC_MAP_DVBSKY) },
+ 	{ DVB_USB_DEVICE(0x0572, 0x960c,
+ 		&dvbsky_s960c_props, "DVBSky S960CI", RC_MAP_DVBSKY) },
++	{ DVB_USB_DEVICE(0x0572, 0x680c,
++		&dvbsky_t680c_props, "DVBSky T680CI", RC_MAP_DVBSKY) },
+ 	{ DVB_USB_DEVICE(0x0572, 0x6831,
+ 		&dvbsky_s960_props, "DVBSky S960/S860", RC_MAP_DVBSKY) },
+ 	{ }
 diff -urN a/drivers/media/usb/dvb-usb-v2/Kconfig b/drivers/media/usb/dvb-usb-v2/Kconfig
 --- a/drivers/media/usb/dvb-usb-v2/Kconfig	2014-03-01 17:39:10.081733000 +0100
 +++ b/drivers/media/usb/dvb-usb-v2/Kconfig	2014-03-01 17:49:21.318880683 +0100

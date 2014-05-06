@@ -29,14 +29,14 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         "hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_saa716xrev")
 md5sums=('28b68cde77997ddafab3c4e16cefae7d'
          '540b1f94770238166b7017102da0d4ad'
-         'a0dd7500623270e85b7bc647c42bd14b'
+         'e373ab5c48785dbd0e07d2bf97ec35c9'
          'c538c1635e7f9838f1c56409943f7080'
          '53d2ede9c39f76f62b4a600451e97481'
          'fd63ea01a4f7e62682180fc925a4ac88'
          'd7e5fa4559918594ef2f84908f04a27d'
          '109da4ad9b692b866cbf7eba6b483ecb'
          '693ae5fe2672d44e153b99aca7c72ab0'
-         'e69319bb53b84ed2ea5848f028e8eccf'
+         '08a40ba25f0c11c4e538b8f7ab8bf66f'
          '485eea60abca891ce6cb291bb7f971de'
          'dcb9acaa0496cd430855c0defd2dcf5a'
          'd38c96f0d295fa39e81c51e792c49ba4'
@@ -59,6 +59,7 @@ prepare() {
   cp frontends/{stv0367dd*,tda18212dd*,cxd2843*,lnbh25*,stv6111*,stv0910*,drxk*} $srcdir/linux-$pkgver/drivers/media/dvb-frontends/
   cp frontends/cxd2099* $srcdir/linux-$pkgver/drivers/staging/media/cxd2099/
   install -Dm644 include/linux/dvb/mod.h $srcdir/linux-$pkgver/include/linux/dvb/mod.h
+  install -Dm644 dvb-core/dvb_ca_en50221.h $srcdir/linux-$pkgver/drivers/media/dvb-core/dvb_ca_en50221.h
 
   rm "$srcdir/linux-$pkgver/drivers/media/pci/ddbridge/"{*.c,*.h,Makefile}
   cp -r ddbridge "$srcdir/linux-$pkgver/drivers/media/pci/"
