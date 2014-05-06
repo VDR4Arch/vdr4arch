@@ -5926,7 +5926,7 @@ diff -urN a/drivers/media/usb/dvb-usb-v2/dvbsky.c b/drivers/media/usb/dvb-usb-v2
 +	struct dvb_usb_device *d = adap_to_d(adap);
 +	int ret = 0;
 +	
-+	dprintk("%s, build on %s %s()\n", __func__);
++	dprintk("%s()\n", __func__);
 +	
 +	dvbsky_gpio_ctrl(d, 0x04, 1);
 +	
