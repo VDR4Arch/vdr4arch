@@ -3,7 +3,7 @@
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
 pkgver=3.14.2
-pkgrel=4
+pkgrel=5
 _extramodules=extramodules-3.14-ARCH
 _saa716xrev=196681f1e154
 _media_buildrev=04cd0952eb04
@@ -25,6 +25,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         '010_dd-frontends-kconfig.diff'
         '010_dd-frontends-kconfig2.diff'
         '010_dd-frontends-makefile.diff'
+        '020_ddbridge-drxk.diff'
         'backport-dddvb.diff'
         "hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_saa716xrev")
 md5sums=('28b68cde77997ddafab3c4e16cefae7d'
@@ -40,6 +41,7 @@ md5sums=('28b68cde77997ddafab3c4e16cefae7d'
          '485eea60abca891ce6cb291bb7f971de'
          'dcb9acaa0496cd430855c0defd2dcf5a'
          'd38c96f0d295fa39e81c51e792c49ba4'
+         '693ae5fe2672d44e153b99aca7c72ab0'
          '93dc16be654a1e9670284d3439d96a4f'
          'SKIP')
 
@@ -56,8 +58,8 @@ prepare() {
   patch -p1 -i "$srcdir/backport-dddvb.diff"
   cp $srcdir/linux-$pkgver/drivers/media/dvb-frontends/drxk.h $srcdir/linux-$pkgver/drivers/media/pci/cx23885/drxk.h
   cp $srcdir/linux-$pkgver/drivers/media/dvb-frontends/drxk.h $srcdir/linux-$pkgver/drivers/media/usb/dvb-usb-v2/drxk.h
-  cp frontends/{stv0367dd*,tda18212dd*,cxd2843*,lnbh25*,stv6111*,stv0910*,drxk*} $srcdir/linux-$pkgver/drivers/media/dvb-frontends/
-  cp frontends/cxd2099* $srcdir/linux-$pkgver/drivers/staging/media/cxd2099/
+  cp frontends/{stv0367dd*,tda18212dd*,cxd2843*,lnbh25*,stv6111*,stv0910*} $srcdir/linux-$pkgver/drivers/media/dvb-frontends/
+#   cp frontends/cxd2099* $srcdir/linux-$pkgver/drivers/staging/media/cxd2099/
   install -Dm644 include/linux/dvb/mod.h $srcdir/linux-$pkgver/include/linux/dvb/mod.h
 
   rm "$srcdir/linux-$pkgver/drivers/media/pci/ddbridge/"{*.c,*.h,Makefile}
@@ -67,7 +69,7 @@ prepare() {
   patch -p1 -i "$srcdir/010_dd-frontends-kconfig.diff"
   patch -p1 -i "$srcdir/010_dd-frontends-kconfig2.diff"
   patch -p1 -i "$srcdir/010_dd-frontends-makefile.diff"
-#   patch -p1 -i "$srcdir/020_ddbridge-drkx.diff"
+  patch -p1 -i "$srcdir/020_ddbridge-drxk.diff"
 
   #dvbsky
   cd "$srcdir/linux-$pkgver"
@@ -96,8 +98,8 @@ build() {
   make prepare
   make scripts
 
-  for _folder in staging/media/cxd2099 \
-                 media/dvb-frontends \
+#   staging/media/cxd2099 \
+  for _folder in media/dvb-frontends \
                  media/pci/cx88 \
                  media/pci/cx23885 \
                  media/usb/dvb-usb-v2 \
@@ -122,8 +124,8 @@ package_digitaldevices-dvb-drivers() {
   mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/lnbh25.ko .
   mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/stv6111.ko .
   mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/stv0910.ko .
-  mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/drxk.ko .
-  mv "$srcdir"/linux-$pkgver/drivers/staging/media/cxd2099/cxd2099.ko .
+#   mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/drxk.ko .
+#   mv "$srcdir"/linux-$pkgver/drivers/staging/media/cxd2099/cxd2099.ko .
   gzip -9 *
 }
 
