@@ -1,6 +1,6 @@
 diff -ruN dddvb-0.9.14/ddbridge/ddbridge-core.c dddvb-0.9.14.edit/ddbridge/ddbridge-core.c
 --- dddvb-0.9.14/ddbridge/ddbridge-core.c	2014-04-21 16:52:10.000000000 +0200
-+++ dddvb-0.9.14.edit/ddbridge/ddbridge-core.c	2014-04-26 14:56:50.418683175 +0200
++++ dddvb-0.9.14.edit/ddbridge/ddbridge-core.c	2014-05-07 13:22:14.529801924 +0200
 @@ -22,6 +22,9 @@
   * Or, point your browser to http://www.gnu.org/copyleft/gpl.html
   */
@@ -66,7 +66,7 @@ diff -ruN dddvb-0.9.14/ddbridge/ddbridge-core.c dddvb-0.9.14.edit/ddbridge/ddbri
  	case DDB_TUNER_DVBS_ST:
 diff -ruN dddvb-0.9.14/ddbridge/ddbridge.h dddvb-0.9.14.edit/ddbridge/ddbridge.h
 --- dddvb-0.9.14/ddbridge/ddbridge.h	2014-04-20 22:57:56.000000000 +0200
-+++ dddvb-0.9.14.edit/ddbridge/ddbridge.h	2014-04-26 14:53:23.270958509 +0200
++++ dddvb-0.9.14.edit/ddbridge/ddbridge.h	2014-05-07 13:22:14.539801343 +0200
 @@ -69,7 +69,6 @@
  #include <linux/device.h>
  #include <linux/io.h>
@@ -85,7 +85,7 @@ diff -ruN dddvb-0.9.14/ddbridge/ddbridge.h dddvb-0.9.14.edit/ddbridge/ddbridge.h
  	int                    users;
 diff -ruN dddvb-0.9.14/ddbridge/Kbuild dddvb-0.9.14.edit/ddbridge/Kbuild
 --- dddvb-0.9.14/ddbridge/Kbuild	2014-04-01 23:39:47.000000000 +0200
-+++ dddvb-0.9.14.edit/ddbridge/Kbuild	2014-04-26 14:53:23.270958509 +0200
++++ dddvb-0.9.14.edit/ddbridge/Kbuild	2014-05-07 13:22:14.539801343 +0200
 @@ -4,5 +4,5 @@
  obj-$(CONFIG_DVB_OCTONET) += octonet.o 
  
@@ -94,9 +94,37 @@ diff -ruN dddvb-0.9.14/ddbridge/Kbuild dddvb-0.9.14.edit/ddbridge/Kbuild
 +EXTRA_CFLAGS += -Idrivers/media/common/tuners -Idrivers/media/dvb-core -Idrivers/staging/media/cxd2099 -Iinclude/uapi/linux/dvb -Idrivers/media/tuners
  NOSTDINC_FLAGS += -I$(SUBDIRS)/frontends -I$(SUBDIRS)/include -I$(SUBDIRS)/dvb-core 
 \ No newline at end of file
+diff -ruN dddvb-0.9.14/frontends/cxd2099.c dddvb-0.9.14.edit/frontends/cxd2099.c
+--- dddvb-0.9.14/frontends/cxd2099.c	2014-04-20 16:24:48.000000000 +0200
++++ dddvb-0.9.14.edit/frontends/cxd2099.c	2014-05-07 13:25:35.271122549 +0200
+@@ -36,8 +36,6 @@
+ 
+ #include "cxd2099.h"
+ 
+-#define BUFFER_MODE 1
+-
+ #define MAX_BUFFER_SIZE 248
+ 
+ static int read_data(struct dvb_ca_en50221 *ca, int slot, u8 *ebuf, int ecount);
+@@ -289,6 +289,7 @@ static void cam_mode(struct cxd *ci, int
+ 		write_regm(ci, 0x20, 0x80, 0x80);
+ 		break;
+ 	case 0x01:
++#ifdef BUFFER_MODE
+ 		if (!ci->en.read_data)
+ 			return;
+ 		ci->write_busy = 0;
+@@ -298,6 +299,7 @@ static void cam_mode(struct cxd *ci, int
+ 		write_regm(ci, 0x08, 0x40, 0x40);
+ 		read_reg(ci, 0x12, &dummy);
+ 		write_regm(ci, 0x08, 0x80, 0x80);
++#endif
+ 		break;
+ 	default:
+ 		break;
 diff -ruN dddvb-0.9.14/frontends/cxd2843.c dddvb-0.9.14.edit/frontends/cxd2843.c
 --- dddvb-0.9.14/frontends/cxd2843.c	2014-04-25 10:08:44.000000000 +0200
-+++ dddvb-0.9.14.edit/frontends/cxd2843.c	2014-04-26 14:53:23.270958509 +0200
++++ dddvb-0.9.14.edit/frontends/cxd2843.c	2014-05-07 13:22:14.543134483 +0200
 @@ -1126,9 +1126,6 @@
  	case SYS_DVBC_ANNEX_A:
  		state->omode = OM_DVBC;
@@ -118,7 +146,7 @@ diff -ruN dddvb-0.9.14/frontends/cxd2843.c dddvb-0.9.14.edit/frontends/cxd2843.c
  		.frequency_stepsize = 166667,	/* DVB-T only */
 diff -ruN dddvb-0.9.14/frontends/tda18212dd.c dddvb-0.9.14.edit/frontends/tda18212dd.c
 --- dddvb-0.9.14/frontends/tda18212dd.c	2014-04-20 18:36:35.000000000 +0200
-+++ dddvb-0.9.14.edit/frontends/tda18212dd.c	2014-04-26 14:53:23.270958509 +0200
++++ dddvb-0.9.14.edit/frontends/tda18212dd.c	2014-05-07 13:22:14.543134483 +0200
 @@ -805,8 +805,7 @@
  	/*pr_info("tuner bw=%u  freq=%u\n", bw, state->m_Frequency);*/
  	if (p->delivery_system == SYS_DVBT ||
