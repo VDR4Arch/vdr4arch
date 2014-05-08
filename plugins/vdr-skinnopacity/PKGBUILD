@@ -1,6 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinnopacity
-pkgver=1.1.1
+pkgver=1.1.2_6_gcd33c3d
+_gitver=cd33c3dfe2a9d65cf1711f6422d100920f7b5f15
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
@@ -13,29 +14,35 @@ optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
             'vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1671/$pkgname-$pkgver.tgz"
+source=("git://projects.vdr-developer.org/skin-nopacity.git#commit=$_gitver"
         "50-$_plugname.conf"
         'nopacity-always_show_displaychannel.diff')
 backup=("var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-light.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-default.conf"
         "var/lib/vdr/plugins/skinnopacity/themeconfigs/theme-iceblue.conf"
         "etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('65dbdc1e045c2d72b975e7b4a585e006'
+md5sums=('SKIP'
          'ccdd82d2627a9d2b8d3906cb477be515'
          'c53a82c3b66a44f5b4304a01cdb66632')
 
+pkgver() {
+  cd "${srcdir}/skin-nopacity"
+  git tag -a 1.1.2 -m 'Added Tag' 5152d70ebc7470c3d05b75cf150244c324681a0f 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
 prepare() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/skin-nopacity"
   patch -p1 -i "$srcdir/nopacity-always_show_displaychannel.diff"
 }
 
 build() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/skin-nopacity"
   make IMAGELIB=graphicsmagick
 }
 
 package() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/skin-nopacity"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
