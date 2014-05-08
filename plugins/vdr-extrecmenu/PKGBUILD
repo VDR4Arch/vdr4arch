@@ -1,10 +1,10 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-extrecmenu
-pkgver=1.2.2_21_g8e43c91
+pkgver=1.2.2_22_ga1bd80a
 epoch=1
-_gitver=8e43c91736a35b197507999ac53de399b0f48dfd
+_gitver=a1bd80a9e0f218f65bcddedc70fab84b1711b61f
 _vdrapi=2.0.6
-pkgrel=3
+pkgrel=1
 pkgdesc="provides additional functions to VDR's recordings menu"
 url="http://projects.vdr-developer.org/projects/show/plg-extrecmenu"
 arch=('x86_64' 'i686')
