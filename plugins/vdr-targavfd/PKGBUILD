@@ -1,38 +1,41 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-targavfd
-pkgver=0.2.1
+pkgver=0.2.1_12_ga43ceec
+_gitver=a43ceec397f510147824ff9c152bd8491c8d502f
 epoch=1
 _vdrapi=2.0.6
-pkgrel=3
+pkgrel=1
 pkgdesc="shows information about the current state of VDR on Targa USB Graphic Vacuum Fluorescent Display"
 url="http://projects.vdr-developer.org/projects/show/plg-targavfd"
 arch=('x86_64' 'i686')
 license=('GPL3')
 depends=('freetype2' 'libusbx' "vdr-api=${_vdrapi}")
-optdepends=()
+makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1345/$pkgname-$pkgver.tgz"
-        'targavfd-fix_replay_time.diff::http://projects.vdr-developer.org/git/vdr-plugin-targavfd.git/patch/?id=0f3cf887c868ace108e814bd31fb3bffa1e6568a'
+source=("git://projects.vdr-developer.org/vdr-plugin-targavfd.git#commit=$_gitver"
         '92-targavfd.rules')
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('5d938b1400cf130a3f614a0a208a0bb3'
-         'a303963b1f17e6a230c2d21100d34742'
+md5sums=('SKIP'
          'ee53f6e044af746a1e518937edc9a341')
 
-prepare() {
-  cd "$srcdir/$_plugname-$pkgver"
-  patch -p1 -i "$srcdir/targavfd-fix_replay_time.diff"
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git describe --tags | sed 's/-/_/g;s/v//'
 }
 
 build() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/vdr-plugin-${_plugname}"
   make
 }
+
 package() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/vdr-plugin-${_plugname}"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir/92-targavfd.rules" "$pkgdir/usr/lib/udev/rules.d/92-targavfd.rules"
+
+  mkdir -p "$pkgdir/usr/share/fonts/TTF"
+  cp contrib/*.ttf "$pkgdir/usr/share/fonts/TTF"
 
   mkdir -p "$pkgdir/etc/vdr/conf.avail"
   echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
