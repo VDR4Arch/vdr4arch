@@ -9,6 +9,7 @@ url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
+makedepends=('git')
 optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
             'vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
             'vdr-tvscraper: To display scraped images in various EPG views')
