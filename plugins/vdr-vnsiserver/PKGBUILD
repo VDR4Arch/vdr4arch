@@ -1,47 +1,43 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-vnsiserver
-pkgver=12.0_Frodo
-_gitver=96774c4f775b156a46fb58151379dece3e773c96
+pkgver=1.0.0_5_g031f69b
+_gitver=031f69bd8844af38dac78f403c197bcb96c9a43a
 _vdrapi=2.0.6
-epoch=1
-pkgrel=2
-url="http://www.xbmc.org/pvr"
+epoch=2
+pkgrel=1
+url="https://github.com/FernetMenta/vdr-plugin-vnsiserver"
 arch=('x86_64' 'i686')
 license=('GPL2')
 pkgdesc="VDR plugin to handle XBMC clients"
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://github.com/opdenkamp/xbmc-pvr-addons.git#commit=$_gitver"
-        'vnsiserver-vdr2.1.2compat.diff')
+source=("git://github.com/FernetMenta/vdr-plugin-vnsiserver#commit=$_gitver"
+        "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 backup=('var/lib/vdr/plugins/vnsiserver/allowed_hosts.conf')
 install="$pkgname.install"
 md5sums=('SKIP'
-         'd3748ed104553ad86bc7f052475f1225')
+         '28f0bcbff7d2d6fbb70d1632767f5800')
 
 pkgver() {
-  cd "${srcdir}/xbmc-pvr-addons"
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  git tag -a 1.0.0 -m 'Added Tag' a3f7ac569ad9cbbbe42cbdb3f13ce1b31f2dc407 2> /dev/null
   git describe --tags | sed 's/-/_/g'
 }
 
-prepare() {
-  cd "${srcdir}/xbmc-pvr-addons"
-  patch -p1 -i "$srcdir/vnsiserver-vdr2.1.2compat.diff"
-}
-
 build() {
-  cd "${srcdir}/xbmc-pvr-addons/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver"
+  cd "${srcdir}/vdr-plugin-$_plugname"
   make
 }
 
 package() {
-  cd "${srcdir}/xbmc-pvr-addons/addons/pvr.vdr.vnsi/vdr-plugin-vnsiserver"
+  cd "${srcdir}/vdr-plugin-$_plugname"
   make DESTDIR="${pkgdir}" install
 
   mkdir -p "$pkgdir/var/lib/vdr/plugins"
   cp -r vnsiserver "$pkgdir/var/lib/vdr/plugins"
 
   mkdir -p "$pkgdir/etc/vdr/conf.avail"
-  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }
