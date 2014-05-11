@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-epg2vdr
-pkgver=0.1.9
-_gitver=bc365ceabfba99914a3d1ee80fac39f35a3ab5bd
+pkgver=0.1.9_1_gd8382ba
+_gitver=d8382ba4132fc27deec0997a407da4dbd28dd2aa
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="Used to retrieve EPG data into the VDR"
