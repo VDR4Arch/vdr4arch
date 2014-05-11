@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinflatplus
-pkgver=0.2.1
+pkgver=0.3.0
 _vdrapi=2.0.6
 pkgrel=2
 pkgdesc="Simple and slim skin for VDR"
@@ -11,10 +11,11 @@ depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 optdepends=('nopacity-logos: To show channellogos in DisplayChannel view')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1658/$_plugname-$pkgver.tar.gz"
+source=("http://projects.vdr-developer.org/attachments/download/1703/$_plugname-$pkgver.tar.gz"
         "50-$_plugname.conf")
-backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('28b6ec9efcef7385753651a80b83bcbc'
+backup=('etc/epgd/eventsview-flatplus.sql'
+        "etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('249954d0a9edd24d6929393686162f6b'
          '878594e0f5af2ab308e6ab86a9bf0136')
 
 prepare() {
@@ -32,5 +33,6 @@ package() {
 
   make DESTDIR="$pkgdir" install
 
+  install -Dm644 contrib/eventsview-flatplus.sql "$pkgdir/etc/epgd/eventsview-flatplus.sql"
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }
