@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvguide
-pkgver=1.2.1
+pkgver=1.2.2
 epoch=1
 _vdrapi=2.0.6
-pkgrel=3
+pkgrel=1
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
 arch=('x86_64' 'i686')
@@ -13,10 +13,10 @@ optdepends=('nopacity-logos: To show channellogos in the left column')
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1627/$pkgname-$pkgver.tgz"
+source=("http://projects.vdr-developer.org/attachments/download/1701/$pkgname-$pkgver.tgz"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('51b4ef1f8e8970eac00b96cf43040226'
+md5sums=('1e811e1a99f68afd8f85f56fd416a0f1'
          '3caf2313b8794eaa525af664a7208b7a')
 
 build() {
