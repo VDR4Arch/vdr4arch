@@ -8,6 +8,7 @@ url="http://projects.vdr-developer.org/projects/plg-scraper2vdr"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('graphicsmagick' 'libmariadbclient' "vdr-api=${_vdrapi}")
+makedepends=('imlib2')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/1700/$pkgname-$pkgver.tgz"
         "50-$_plugname.conf")
@@ -17,7 +18,7 @@ md5sums=('24d5e98883afd6ab5db2a10eee42ef3a'
 
 build() {
   cd "$srcdir/$_plugname-$pkgver"
-  make IMAGELIB=graphicsmagick
+  make -j1 IMAGELIB=graphicsmagick
 }
 
 package() {

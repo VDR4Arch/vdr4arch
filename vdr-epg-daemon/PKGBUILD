@@ -7,7 +7,7 @@ pkgrel=1
 url='http://projects.vdr-developer.org/projects/vdr-epg-daemon'
 arch=('x86_64' 'i686')
 license=('GPL2')
-makedepends=('curl' 'git' 'jansson' 'libarchive' 'libmariadbclient' 'libxslt')
+makedepends=('curl' 'git' 'imlib2' 'jansson' 'libarchive' 'libjpeg' 'libmariadbclient' 'libxslt')
 source=("git://projects.vdr-developer.org/$pkgbase.git#commit=$_gitver")
 md5sums=('SKIP')
 
