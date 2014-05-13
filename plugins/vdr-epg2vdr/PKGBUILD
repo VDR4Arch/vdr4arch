@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-epg2vdr
-pkgver=0.1.9_1_gd8382ba
-_gitver=d8382ba4132fc27deec0997a407da4dbd28dd2aa
+pkgver=0.1.10
+_gitver=5934544a256b75eaf70c98e58e0dbce186f9875c
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="Used to retrieve EPG data into the VDR"
@@ -17,7 +17,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-  git tag -a 0.1.9 -m 'Added Tag' bc365ceabfba99914a3d1ee80fac39f35a3ab5bd 2> /dev/null
+  git tag -a 0.1.10 -m 'Added Tag' 5934544a256b75eaf70c98e58e0dbce186f9875c 2> /dev/null
   git describe --tags | sed 's/-/_/g'
 }
 
