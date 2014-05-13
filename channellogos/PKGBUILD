@@ -1,6 +1,6 @@
 pkgbase=channellogos
 pkgname=({anthra,elchi,enigma,narrowhd,nopacity}-logos)
-pkgver=20140413
+pkgver=20140513
 pkgrel=1
 pkgdesc="Channellogos for VDR"
 arch=('any')
@@ -9,12 +9,12 @@ license=('GPL2')
 source=(http://creimer.net/channellogos/{anthra,elchiHD,enigma,narrowhd}-logos-$pkgver.tar.gz
         http://creimer.net/channellogos/nopacity-logos-{default,white}-$pkgver.tar.gz)
 options=(!strip)
-md5sums=('58275a7f8d51448128f6cb703e5f141b'
-         '3dc13501da3c30d75bef4d40e7ff3237'
-         'c1a7f23b83b01f5d233b2b9511222295'
-         '7620692b4771d4829da0de19d9774f80'
-         '11ae5e7e1bca1edce9e220995183289d'
-         '5468e7a5d1c36c5a14fc3927a676c70e')
+md5sums=('44de247c760786f8303719369ab8082d'
+         '7db0e3366a234e1a18ae5b792f79ad68'
+         '4ca26c60ae31af1edd132862fb581d0c'
+         '88622eacea1f0cb1e388bc112daac644'
+         '629edf0f137e2f6ea62d048f2d97cdb8'
+         '71b7f13e8eb2343ff650649335f4a8a5')
 
 package_anthra-logos() {
   mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/"
@@ -50,15 +50,15 @@ package_nopacity-logos() {
   ln -s white darkredNG
   ln -s white green
 
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/tvguide/logos"
-  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos" \
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/tvguide"
+  ln -srT "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos" \
     "$pkgdir/usr/share/vdr/plugins/tvguide/logos"
 
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinflat/logos"
-  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos/white" \
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinflat"
+  ln -srT "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos/white" \
     "$pkgdir/usr/share/vdr/plugins/skinflat/logos"
 
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinflatplus/logos"
-  ln -sr "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos/white" \
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinflatplus"
+  ln -srT "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos/white" \
     "$pkgdir/usr/share/vdr/plugins/skinflatplus/logos"
 }
