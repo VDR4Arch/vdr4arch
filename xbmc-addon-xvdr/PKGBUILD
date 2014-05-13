@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=xbmc-addon-xvdr
-pkgver=0.9.8_13_gacd4e14
-_gitver=acd4e145fc3220cf708aaf40d895904732dce2c7
+pkgver=0.9.8_57_g82b5093
+_gitver=82b5093ad33847f97a978cb620c9a87d2dbcf7eb
 epoch=1
 pkgrel=1
 url="https://github.com/pipelka/xbmc-addon-xvdr"
