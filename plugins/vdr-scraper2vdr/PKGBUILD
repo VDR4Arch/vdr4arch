@@ -14,7 +14,6 @@ source=("http://projects.vdr-developer.org/attachments/download/1740/$pkgname-$p
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('38fe693ddfbede04a9d31051da185c43'
-         '1bdc48eb59ea417bccd97791c401d989'
          'b3be8ea56e120b1b0e61d9f53cd9dc26')
 
 build() {
