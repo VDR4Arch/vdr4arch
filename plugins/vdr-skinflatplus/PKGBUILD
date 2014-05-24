@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinflatplus
-pkgver=0.3.0
+pkgver=0.3.0_2_g1271728
 _gitver=1271728831c84ae458720dc0f659ef23f18aadd8
 _vdrapi=2.0.6
 pkgrel=1
@@ -9,6 +9,7 @@ url="http://projects.vdr-developer.org/projects/plg-skinflatplus"
 arch=('x86_64' 'i686')
 license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
+makedepends=('git')
 optdepends=('nopacity-logos: To show channellogos in DisplayChannel view')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
@@ -16,7 +17,7 @@ source=("git://projects.vdr-developer.org/skin-flatplus.git#commit=$_gitver"
         "50-$_plugname.conf")
 backup=('etc/epgd/eventsview-flatplus.sql'
         "etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('249954d0a9edd24d6929393686162f6b'
+md5sums=('SKIP'
          '878594e0f5af2ab308e6ab86a9bf0136')
 pkgver() {
   cd "${srcdir}/skin-flatplus"
