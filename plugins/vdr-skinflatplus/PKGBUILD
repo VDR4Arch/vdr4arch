@@ -1,6 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinflatplus
 pkgver=0.3.0
+_gitver=1271728831c84ae458720dc0f659ef23f18aadd8
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="Simple and slim skin for VDR"
@@ -11,25 +12,30 @@ depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 optdepends=('nopacity-logos: To show channellogos in DisplayChannel view')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1703/$_plugname-$pkgver.tar.gz"
+source=("git://projects.vdr-developer.org/skin-flatplus.git#commit=$_gitver"
         "50-$_plugname.conf")
 backup=('etc/epgd/eventsview-flatplus.sql'
         "etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('249954d0a9edd24d6929393686162f6b'
          '878594e0f5af2ab308e6ab86a9bf0136')
+pkgver() {
+  cd "${srcdir}/skin-flatplus"
+  git tag -a 0.3.0 -m 'Added Tag' b27f62896d0325e88cb0cef166fc2c3f05dc6705 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
 
 prepare() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/skin-flatplus"
   sed -i 's/Magick++/GraphicsMagick++/g' Makefile
 }
 
 build() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/skin-flatplus"
   make
 }
 
 package() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/skin-flatplus"
 
   make DESTDIR="$pkgdir" install
 
