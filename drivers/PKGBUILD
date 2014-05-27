@@ -3,7 +3,7 @@
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
 pkgver=3.14.4
-pkgrel=2
+pkgrel=3
 _extramodules=extramodules-3.14-ARCH
 _saa716xrev=196681f1e154
 _media_buildrev=04cd0952eb04
@@ -17,7 +17,7 @@ install="${pkgbase}.install"
 source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
          http://download.digital-devices.de/download/linux/dddvb-0.9.14c.tar.xz
         'kernel-3.14-dvbsky.patch'
-        'http://www.dvbsky.net/download/linux/media_build-bst-14-140524.tar.gz'
+        'http://www.dvbsky.net/download/linux/media_build-bst-14-140526.tar.gz'
         "http://linuxtv.org/hg/~endriss/media_build_experimental/raw-file/$_media_buildrev/experimental/saa716x."{include-osd,pci-kconfig,pci-makefile}.diff
         "http://linuxtv.org/hg/~endriss/media_build_experimental/raw-file/$_media_buildrev/experimental/patch.d/320_stv090x_ucblocks_ber.diff"
         "http://linuxtv.org/hg/~endriss/media_build_experimental/raw-file/$_media_buildrev/experimental/patch.d/020_ddbridge-drxk.diff"
@@ -29,8 +29,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         "hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_saa716xrev")
 md5sums=('c7c565d14833550faa39ef8279272182'
          '540b1f94770238166b7017102da0d4ad'
-         '19e002da16e2be1ed9b16cdca360eb6b'
-         '01c85d0e8f6840849da412453e2fb4c9'
+         '5a68c49b6c4550c09490164ddece2141'
+         '0de1563120154ffdc072ecdafaf5d2bc'
          '53d2ede9c39f76f62b4a600451e97481'
          'fd63ea01a4f7e62682180fc925a4ac88'
          'd7e5fa4559918594ef2f84908f04a27d'

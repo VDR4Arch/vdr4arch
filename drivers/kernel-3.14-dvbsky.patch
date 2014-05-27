@@ -730,6 +730,7 @@ diff -urN linux/drivers/media/dvb-frontends/dvbsky_m88ds3103.c linux/drivers/med
 +	state->i2c = i2c;
 +	state->preBer = 0xffff;
 +	state->delivery_system = SYS_DVBS; /*Default to DVB-S.*/
++	printk(KERN_INFO "M88DS3103 tuner read stops = %d.\n", config->tuner_readstops);
 +	
 +	/* check demod id */
 +	if(m88ds3103_check_id(state) == UNKNOW_ID){
@@ -7863,7 +7864,7 @@ diff -urN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smip
 +	dev->i2c_bit[0].setscl = smi_i2c0_setscl;
 +	dev->i2c_bit[0].getsda = smi_i2c0_getsda;
 +	dev->i2c_bit[0].getscl = smi_i2c0_getscl;
-+	dev->i2c_bit[0].udelay = 10;
++	dev->i2c_bit[0].udelay = 12;
 +	dev->i2c_bit[0].timeout = 10;
 +	/* Raise SCL and SDA */
 +	smi_i2c0_setsda(dev, 1);
@@ -7885,7 +7886,7 @@ diff -urN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smip
 +	dev->i2c_bit[1].setscl = smi_i2c1_setscl;
 +	dev->i2c_bit[1].getsda = smi_i2c1_getsda;
 +	dev->i2c_bit[1].getscl = smi_i2c1_getscl;
-+	dev->i2c_bit[1].udelay = 10;
++	dev->i2c_bit[1].udelay = 12;
 +	dev->i2c_bit[1].timeout = 10;
 +	/* Raise SCL and SDA */
 +	smi_i2c1_setsda(dev, 1);
@@ -8132,7 +8133,7 @@ diff -urN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smip
 +	.pin_ctrl = 0x82,
 +	.ci_mode = 0,
 +	.ts_mode = 0,
-+	.tuner_readstops = 1,
++	//.tuner_readstops = 1,
 +};
 +
 +static struct dvbsky_m88ds3103_config smi_dvbsky_s950_cfg = {
@@ -8140,7 +8141,7 @@ diff -urN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smip
 +	.pin_ctrl = 0x82,
 +	.ci_mode = 0,
 +	.ts_mode = 0,
-+	.tuner_readstops = 1,
++	//.tuner_readstops = 1,
 +};
 +
 +static int smi_fe_init(struct smi_port *port)
