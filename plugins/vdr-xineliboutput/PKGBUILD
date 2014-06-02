@@ -15,7 +15,7 @@ source=("git://projects.vdr-developer.org/$_plugname.git#commit=$_gitver"
         "50-$_plugname.conf")
 md5sums=('SKIP'
          'd313b50c576ab17dfb2a08d50981bec8'
-         '92cb2a167ae0a4acef41b95901f26cb8')
+         'a9a3cd09b950d2024b21a1c6e0620506')
 
 pkgver() {
   cd "${srcdir}/${_plugname}"
