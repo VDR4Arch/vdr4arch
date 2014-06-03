@@ -1,7 +1,7 @@
 diff -urN linux/drivers/media/dvb-frontends/dvbsky_m88ds3103.c linux/drivers/media/dvb-frontends/dvbsky_m88ds3103.c
 --- linux/drivers/media/dvb-frontends/dvbsky_m88ds3103.c	1970-01-01 01:00:00.000000000 +0100
 +++ linux/drivers/media/dvb-frontends/dvbsky_m88ds3103.c	2014-05-24 10:34:28.000000000 +0200
-@@ -0,0 +1,1718 @@
+@@ -0,0 +1,1719 @@
 +/*
 +    Montage Technology M88DS3103/M88TS2022 - DVBS/S2 Satellite demod/tuner driver
 +
