@@ -5,7 +5,7 @@ _vdrapi=2.0.6
 pkgrel=4
 pkgdesc="Wrapper for the plugins remotetimers and remoteosd"
 url="http://vdr.schmirler.de/"
-arch=('x86_64' 'i686')
+arch=('x86_64' 'i686' 'armv6h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 optdepends=('remoteosd: Add/edit/remove timers on local and peer VDR or move timers between them'

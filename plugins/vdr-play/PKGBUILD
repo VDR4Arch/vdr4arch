@@ -6,7 +6,7 @@ _vdrapi=2.0.6
 pkgrel=3
 pkgdesc="Mediaplayer plugin for VDR and X11"
 url="http://projects.vdr-developer.org/projects/plg-play"
-arch=('x86_64' 'i686')
+arch=('x86_64' 'i686' 'armv6h')
 license=('AGPL3')
 depends=('mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')
 makedepends=('git')

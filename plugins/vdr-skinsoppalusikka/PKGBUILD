@@ -5,7 +5,7 @@ _vdrapi=2.0.6
 pkgrel=3
 pkgdesc='Standalone skin providing the good old "ElchiAIO" looks'
 url="http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/"
-arch=('x86_64' 'i686')
+arch=('x86_64' 'i686' 'armv6h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 install="$pkgname.install"

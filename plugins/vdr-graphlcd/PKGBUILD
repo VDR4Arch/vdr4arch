@@ -6,7 +6,7 @@ _vdrapi=2.0.6
 pkgrel=3
 pkgdesc="VDR Plugin to support graphical LC displays"
 url="http://projects.vdr-developer.org/projects/show/graphlcd"
-arch=('x86_64' 'i686')
+arch=('x86_64' 'i686' 'armv6h')
 license=('GPL2')
 depends=('graphlcd-base' 'ttf-dejavu' "vdr-api=${_vdrapi}")
 optdepends=('serdisplib: Support more modern LCDs')

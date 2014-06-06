@@ -5,7 +5,7 @@ _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="Integrates SAT>IP network devices seamlessly into VDR"
 url="http://www.saunalahti.fi/rahrenbe/vdr/satip/"
-arch=('x86_64' 'i686')
+arch=('x86_64' 'i686' 'armv6h')
 license=('GPL2')
 depends=('curl' 'gcc-libs' 'tinyxml' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')

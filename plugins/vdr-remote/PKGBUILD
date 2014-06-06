@@ -5,7 +5,7 @@ _vdrapi=2.0.6
 pkgrel=11
 pkgdesc="Extends the remote control capabilities of vdr"
 url="http://www.escape-edv.de/endriss/vdr/"
-arch=('x86_64' 'i686')
+arch=('x86_64' 'i686' 'armv6h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')

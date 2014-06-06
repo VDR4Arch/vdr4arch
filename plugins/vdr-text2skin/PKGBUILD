@@ -6,7 +6,7 @@ _vdrapi=2.0.6
 pkgrel=12
 pkgdesc="VDR Text2Skin Plugin"
 url="http://projects.vdr-developer.org/projects/plg-text2skin"
-arch=('x86_64' 'i686')
+arch=('x86_64' 'i686' 'armv6h')
 license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 makedepends=('git')

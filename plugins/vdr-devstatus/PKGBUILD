@@ -5,7 +5,7 @@ _vdrapi=2.0.6
 pkgrel=10
 pkgdesc="displays the status of all available dvb devices"
 url="http://www.u32.de/vdr.html"
-arch=('x86_64' 'i686')
+arch=('x86_64' 'i686' 'armv6h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')

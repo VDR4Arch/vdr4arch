@@ -6,7 +6,7 @@ _vdrapi=2.0.6
 pkgrel=6
 pkgdesc="Software CAM emulation"
 url="http://207.44.152.197/"
-arch=('x86_64' 'i686')
+arch=('x86_64' 'i686' 'armv6h')
 license=('GPL2')
 depends=('libdvbcsa' 'openssl' "vdr-api=${_vdrapi}")
 makedepends=('mercurial')
