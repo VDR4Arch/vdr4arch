@@ -1,6 +1,6 @@
 pkgbase=channellogos
 pkgname=({anthra,elchi,enigma,narrowhd,nopacity}-logos)
-pkgver=20140513
+pkgver=20140607
 pkgrel=1
 pkgdesc="Channellogos for VDR"
 arch=('any')
@@ -9,12 +9,12 @@ license=('GPL2')
 source=(http://creimer.net/channellogos/{anthra,elchiHD,enigma,narrowhd}-logos-$pkgver.tar.gz
         http://creimer.net/channellogos/nopacity-logos-{default,white}-$pkgver.tar.gz)
 options=(!strip)
-md5sums=('44de247c760786f8303719369ab8082d'
-         '7db0e3366a234e1a18ae5b792f79ad68'
-         '4ca26c60ae31af1edd132862fb581d0c'
-         '88622eacea1f0cb1e388bc112daac644'
-         '629edf0f137e2f6ea62d048f2d97cdb8'
-         '71b7f13e8eb2343ff650649335f4a8a5')
+md5sums=('9cc635c336b07e79921312c64b5a25c7'
+         '041f5d71c94edafce3b597ba1319a9b1'
+         'df923571b6bfdaae4190f436f9acfc2f'
+         '30942a945f09252cd0ef6f4f253b1276'
+         'f6b471f8e268f8a266aa58fdde5d5249'
+         'c4005c02a279e7370d9254fe06caa3f8')
 
 package_anthra-logos() {
   mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/"
