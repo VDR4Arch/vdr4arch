@@ -8,6 +8,7 @@ After=xlogin@vdr.service
 Environment=VDR_CHARSET_OVERRIDE=ISO-8859-15
 ExecStart=/usr/bin/vdr
 ExecStopPost=/usr/lib/vdr/bin/gen-sddropin
+WorkingDirectory=/home/vdr
 Restart=on-failure
 RestartPreventExitStatus=0 2
 
