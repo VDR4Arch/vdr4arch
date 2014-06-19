@@ -10,7 +10,7 @@
 +obj-$(CONFIG_DVB_STV6111) += stv6111.o
 +obj-$(CONFIG_DVB_STV0910) += stv0910.o
 +obj-$(CONFIG_DVB_LNBH25) += lnbh25.o
- obj-$(CONFIG_DVB_IT913X_FE) += it913x-fe.o
  obj-$(CONFIG_DVB_A8293) += a8293.o
  obj-$(CONFIG_DVB_TDA10071) += tda10071.o
+ obj-$(CONFIG_DVB_RTL2830) += rtl2830.o
 

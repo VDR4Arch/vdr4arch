@@ -2,9 +2,9 @@
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
-pkgver=3.14.6
+pkgver=3.15.1
 pkgrel=1
-_extramodules=extramodules-3.14-ARCH
+_extramodules=extramodules-3.15-ARCH
 _saa716xrev=196681f1e154
 _media_buildrev=04cd0952eb04
 url='https://github.com/CReimer/vdr4arch'
@@ -27,7 +27,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         '020_ddbridge-drxk.diff'
         'backport-dddvb.diff'
         "hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_saa716xrev")
-md5sums=('0916f216a1833acf8afb8da29488ac6f'
+md5sums=('72bd0bf0e773963217c89cddbf3e0048'
          '540b1f94770238166b7017102da0d4ad'
          'f630c6212669f07ec3403632075380c6'
          'eb2740866fcf409f3647d41052d9fe14'
@@ -38,7 +38,7 @@ md5sums=('0916f216a1833acf8afb8da29488ac6f'
          '693ae5fe2672d44e153b99aca7c72ab0'
          '485eea60abca891ce6cb291bb7f971de'
          'dcb9acaa0496cd430855c0defd2dcf5a'
-         'd38c96f0d295fa39e81c51e792c49ba4'
+         'da1042f80d3c4d7016ba0df334ffa8a4'
          '693ae5fe2672d44e153b99aca7c72ab0'
          '93dc16be654a1e9670284d3439d96a4f'
          'SKIP')
