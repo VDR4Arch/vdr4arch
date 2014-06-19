@@ -14,7 +14,7 @@ source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${p
         'oscam.service'
         'oscam-faster_retry.diff')
 noextract="${pkgname}-${pkgver}.zip"
-md5sums=('dc9f1d41dd83c6f9f66e33b17a474ff9'
+md5sums=('b07b19f8d0238409b51ee9ec7ccd3e9a'
          'f6200432fa01030016d6fac913033812'
          '0de56c99e34a6bdb7f4dc6349478a920'
          'b67f77bf1ecaeb9bc4f8cddb5258ed4e')
