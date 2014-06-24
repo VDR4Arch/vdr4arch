@@ -7,7 +7,7 @@ _vdrapi=2.0.6
 pkgrel=3
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
-arch=('x86_64' 'i686' 'armv6h')
+arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 makedepends=('libusbx' 'python2' "vdr-api=${_vdrapi}" 'zip')
 source=("https://github.com/durchflieger/${pkgbase}/archive/v${pkgver}.tar.gz"

@@ -5,7 +5,7 @@ _vdrapi=2.0.6
 pkgrel=3
 pkgdesc="Connects to the Fritz!Box to inform you about incoming and outgoing calls"
 url="http://www.joachim-wilke.de/vdr-fritz.htm"
-arch=('x86_64' 'i686' 'armv6h')
+arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('boost-libs' 'commoncpp2' 'libgcrypt' "vdr-api=${_vdrapi}")
 makedepends=('boost')

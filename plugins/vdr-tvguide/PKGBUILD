@@ -6,7 +6,7 @@ _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="highly customizable 2D EPG viewer plugin."
 url="http://projects.vdr-developer.org/projects/plg-tvguide"
-arch=('x86_64' 'i686' 'armv6h')
+arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('graphicsmagick' 'libpng' "vdr-api=$_vdrapi")
 optdepends=('nopacity-logos: To show channellogos in the left column')

@@ -5,7 +5,7 @@ _vdrapi=2.0.6
 pkgrel=20
 pkgdesc="adds the 'Elchi' skin to the VDR standard skins"
 url="http://firefly.vdr-developer.org/skinelchi/index.html"
-arch=('x86_64' 'i686' 'armv6h')
+arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 optdepends=('elchi-logos: To show channellogos in DisplayChannel view')
