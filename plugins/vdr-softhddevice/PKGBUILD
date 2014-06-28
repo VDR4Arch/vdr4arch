@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-softhddevice
-pkgver=0.6.1rc1_28_g5207af6
+pkgver=0.6.1rc1_29_g37f409c
 epoch=1
-_gitver=5207af6b2da0df19a58db4932811d38526fde51b
+_gitver=37f409cb9aae06c99a6dff910b1b1d9278190ef1
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
@@ -14,11 +14,9 @@ optdepends=('nvidia: Required for VDPAU decoding')
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-softhddevice.git#commit=$_gitver"
-        "iatomic.h::http://git.alsa-project.org/?p=alsa-lib.git;a=blob_plain;f=include/iatomic.h;hb=f21f48a70f8437a671b58fcab75e54222a9eea16"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
-         '90e813e39d4ebe2c9f71ffafe1dfe5fb'
          'f6ef6cb0bf17c5a28f858e5306776d27')
 
 pkgver() {
@@ -40,9 +38,6 @@ prepare() {
 
   # Enable this to compile with debug logging
   #sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
-
-  cp "$srcdir/iatomic.h" .
-  sed -i 's/<alsa\/iatomic\.h>/"iatomic\.h"/g' *.h *.c
 }
 
 build() {
