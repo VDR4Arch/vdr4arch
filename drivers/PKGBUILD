@@ -3,9 +3,9 @@
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
 pkgver=3.15.2
-pkgrel=1
+pkgrel=2
 _extramodules=extramodules-3.15-ARCH
-_saa716xrev=196681f1e154
+_saa716xrev=432762831b67a456254fd291f4921e8ed75ae43b
 _media_buildrev=04cd0952eb04
 url='https://github.com/CReimer/vdr4arch'
 pkgdesc="Additional or updated dvb driver modules"
