@@ -1,20 +1,23 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=ttpremium-firmware
-pkgver=20140116
+pkgver=20140421
 pkgrel=1
 pkgdesc="Firmware for Technotrend S2-6400"
 url="http://www.aregel.de/"
 arch=('any')
 license=('custom')
 source=('http://www.aregel.de/file_download/7/dvb-ttpremium-loader-01_v1_03.zip'
-        'http://www.aregel.de/file_download/14/dvb-ttpremium-fpga-01_v1_09.zip'
-        'http://www.aregel.de/file_download/24/dvb-ttpremium-st7109-01_v0_4_1.zip')
+        'http://www.aregel.de/file_download/26/dvb-ttpremium-fpga-01_v1_10.zip'
+        'http://www.aregel.de/file_download/24/dvb-ttpremium-st7109-01_v0_4_1.zip'
+        'LICENSE')
 md5sums=('6b51c2dce350395dfafa4064777642bf'
-         '8817aa9ed241818f706370b8bf6ee257'
-         '4d85fb77d1177a674407b21645ba651e')
+         'cc3642eba7c564a3c8847d26ad348f59'
+         '4d85fb77d1177a674407b21645ba651e'
+         '3616759a98aaedb3e1cce50271263327')
 
 package() {
   install -Dm644 "$srcdir/dvb-ttpremium-fpga-01.fw" "$pkgdir/usr/lib/firmware/dvb-ttpremium-fpga-01.fw"
   install -Dm644 "$srcdir/dvb-ttpremium-loader-01.fw" "$pkgdir/usr/lib/firmware/dvb-ttpremium-loader-01.fw"
   install -Dm644 "$srcdir/dvb-ttpremium-st7109-01.fw" "$pkgdir/usr/lib/firmware/dvb-ttpremium-st7109-01.fw"
+  install -Dm644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }

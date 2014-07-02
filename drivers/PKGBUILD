@@ -130,7 +130,7 @@ package_dvbsky-dvb-drivers() {
   pkgdesc+="(DVBSky)"
   replaces=('media-build-dvbsky')
   conflicts=('media-build-dvbsky')
-  license=('unknown') #sit2.o is obviously closed source.
+  license=('GPL2') #sit2.o is obviously closed source. The license seems to be GPL2 anyway.
   mkdir -p "$pkgdir"/usr/lib/modules/$_extramodules
   cd "$pkgdir"/usr/lib/modules/$_extramodules
   mv "$srcdir"/linux-$pkgver/drivers/media/dvb-frontends/m88dc2800.ko .

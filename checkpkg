@@ -22,8 +22,6 @@ for PKG in $PACKAGES; do
   #
   if which namcap >/dev/null 2>/dev/null; then
     REPORT=$(namcap "$PKG" | grep -v \
-      -e "E: unknown is not a common license" \
-      -e "E: Missing custom license directory" \
       -e "E: Symlink .*fonts.* points to non-existing" \
       -e "W: Dependency included and not needed ('vdr-api')" \
       -e "W: Dependency included and not needed ('linux')" \
