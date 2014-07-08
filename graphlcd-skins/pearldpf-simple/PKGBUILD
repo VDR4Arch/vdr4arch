@@ -7,7 +7,7 @@ arch=('any')
 url="http://www.vdr-portal.de/board18-vdr-hardware/board11-displays/p1054042-pearl-display-yavdr-todo-install/#post1054042"
 depends=('ttf-ubuntu-font-family' 'vdr-graphlcd')
 makedepends=('git')
-license=('custom')
+license=('GPL2')
 source=("git+https://github.com/M-Reimer/pearldpf-simple.git#commit=$_gitver")
 backup=('usr/share/vdr/plugins/graphlcd/skins/pearldpf-simple/settings.conf')
 md5sums=('SKIP')

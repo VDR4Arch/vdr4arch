@@ -1,7 +1,8 @@
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 # Contributor: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase=DFAtmo
-pkgname=('dfatmo' 'vdr-dfatmo' 'xbmc-addon-dfatmo')
+pkgname=('dfatmo' 'vdr-dfatmo')
+[[ "$CARCH" = "x86_64" ]] || [[ "$CARCH" = "i686" ]] && pkgname+=('xbmc-addon-dfatmo')
 pkgver=0.4.0
 _vdrapi=2.0.6
 pkgrel=3
@@ -28,7 +29,7 @@ build() {
 
   #Compile dfatmo
   CFLAGS+=' -fPIC'
-  make DFATMOINSTDIR='/usr' dfatmo
+  make DFATMOINSTDIR='/usr' ATMODRIVER=atmodriver.so
 
   #Compile vdr plugin
   make DFATMOINSTDIR='/usr' vdrplugin
@@ -41,8 +42,7 @@ package_dfatmo() {
   depends=('libusbx' 'python2')
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
-  make DFATMOINSTDIR="${pkgdir}/usr" dfatmoinstall
-  rm "$pkgdir/usr/lib/dfatmo/dfatmo-xbmc-addon.zip"
+  make DFATMOINSTDIR="${pkgdir}/usr" ATMODRIVER=atmodriver.so dfatmoinstall
 }
 
 package_vdr-dfatmo() {

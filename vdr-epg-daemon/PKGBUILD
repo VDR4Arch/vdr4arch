@@ -17,6 +17,12 @@ pkgver() {
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
+prepare() {
+  cd "$srcdir/$pkgbase"/epglv
+  sed -i '/CPP_FLAGS_32/d' Makefile
+  sed -i '/CPP_FLAGS_64/d' Makefile
+}
+
 build() {
   cd "$srcdir/$pkgbase"
   make PREFIX=/usr

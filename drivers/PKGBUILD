@@ -9,7 +9,7 @@ _saa716xrev=432762831b67a456254fd291f4921e8ed75ae43b
 _media_buildrev=04cd0952eb04
 url='https://github.com/CReimer/vdr4arch'
 pkgdesc="Additional or updated dvb driver modules"
-arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
+arch=('x86_64' 'i686')
 license=('GPL2')
 depends=("linux=$pkgver")
 makedepends=('mercurial' "linux-headers=$pkgver")

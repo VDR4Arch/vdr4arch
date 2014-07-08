@@ -7,7 +7,7 @@ pkgdesc="Tool to check VDR recordings for errors"
 url="http://projects.vdr-developer.org/git/vdr-checkts.git/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('BSD')
-depends=('glibc')
+depends=('gcc-libs' 'glibc')
 makedepends=('git')
 source=("git://projects.vdr-developer.org/vdr-checkts.git#commit=$_gitver")
 md5sums=('SKIP')
