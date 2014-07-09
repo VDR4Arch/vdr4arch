@@ -11,21 +11,26 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 #install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1004/vdr-plugin-$_plugname-$pkgver.tar.gz")
+source=("http://projects.vdr-developer.org/attachments/download/1004/vdr-plugin-$_plugname-$pkgver.tar.gz"
+        "http://projects.vdr-developer.org/git/vdr-plugin-chanman.git/plain/chanman/Makefile")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('ad5928dd686377e98b6de13017e8aaab')
+md5sums=('ad5928dd686377e98b6de13017e8aaab'
+         '55c42f218df5a456bb4570083ec414ef')
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  cp "$srcdir/Makefile" .
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  make
+}
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
 
-  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       GIT_REV='' \
-       all
+  make DESTDIR="$pkgdir" install
 
   mkdir -p "$pkgdir/etc/vdr/conf.avail"
   echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"

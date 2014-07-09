@@ -1,10 +1,10 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-live
-pkgver=0.3.0_4_g69f84f9
+pkgver=0.3.0_12_g8849321
 epoch=1
-_gitver=69f84f95fa875c6f562294b1a6a1ea6f584d3f6c
+_gitver=88493218652e4196fd5c2a3bd64f496697cb02dc
 _vdrapi=2.0.6
-pkgrel=8
+pkgrel=1
 pkgdesc="Adds the possibility to control VDR and some of it's plugins by a web interface."
 url="http://projects.vdr-developer.org/projects/plg-live"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -15,42 +15,35 @@ optdepends=('vdr-epgsearch: Manage searchtimers'
 makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-live.git#commit=$_gitver"
-        'live-vdr2.1.2compat.diff'
+source=("git://github.com/CReimer/vdr-plugin-live.git#commit=$_gitver"
         'live-folderstatecookie-v2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=34407'
-        'live-osd-v4.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=33794'
+        'live-osd-v4.diff'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
-         '8dab4290bd72852089832f924887707b'
          '6abb3d1724057e765e98e1a9b5326fe3'
-         '00b6fea67492e1e2ed6520b2c816c751'
+         '7aae6abe11ce66be2dcc4b49f3e59f2c'
          '563961eb90d9f2b3d2a0a34472ef51ee')
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git tag -a 0.3.0 -m 'Added Tag' 9f56065e62206700b5ab22a9af4d4a253a714d48 2> /dev/null
+   git describe --tags | sed 's/-/_/g;s/v//'
+}
 
 prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-  patch -p1 -i "$srcdir/live-vdr2.1.2compat.diff"
   patch -p1 -i "$srcdir/live-folderstatecookie-v2.diff"
   patch -p1 -i "$srcdir/live-osd-v4.diff"
 }
 
-pkgver() {
+build() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-  git describe --tags | sed 's/release_//;s/-/\./;s/-/\./;s/-/_/g'
+  make
 }
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-
-  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)"
-
-  mkdir -p "$pkgdir/usr/share/vdr/plugins"
-  cp -r live "$pkgdir/usr/share/vdr/plugins"
+  make DESTDIR="$pkgdir" install install-resources
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

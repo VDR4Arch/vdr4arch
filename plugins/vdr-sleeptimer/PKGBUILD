@@ -10,26 +10,28 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/652/vdr-plugin-$_plugname-$pkgver.tgz"
+        "http://projects.vdr-developer.org/git/vdr-plugin-sleeptimer.git/plain/Makefile"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('cd7012d58d1350a6dc5597dd50a2cd40'
+         '6045e319c4dc47bc877ae6f331db8049'
          '7ac2bda3d2a6238e815a6b04bccf4a81')
 
 prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
+  cp "$srcdir/Makefile" .
   sed -i 's/i18n\.o//g' Makefile
+
+}
+
+build() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  make
 }
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-
-  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       all
+  make DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }

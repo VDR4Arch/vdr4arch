@@ -12,11 +12,13 @@ depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-text2skin.git#commit=$_gitver"
+        "https://raw.githubusercontent.com/CReimer/vdr-plugin-text2skin/master/Makefile"
         'text2skin-vdr2.1.2compat.diff'
         'patch-1' 'patch-2' 'patch-3' 'patch-4'
         'static-std-string.diff')
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
+         'd581d5542448a7d84d40c5a970de4648'
          '5615fceb3b7597405402d1b817f8bc22'
          '7ec3aae93025ed5608daf5c81dfcc234'
          '717775474393c3724f5c14ebca76ca7d'
@@ -38,19 +40,18 @@ prepare() {
   patch -p1 -i "$srcdir/patch-4"
   patch -p1 -i "$srcdir/static-std-string.diff"
   sed -i 's/Config/Resource/g' common.c
+  cp "$srcdir/Makefile" .
   sed -i '/^IMAGELIB/d' Makefile
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make IMAGELIB=graphicsmagick
 }
 
 package() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-
-  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
-  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
-       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
-       VDRDIR="/usr/include/vdr" \
-       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
-       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
-       IMAGELIB=graphicsmagick
+  make DESTDIR="$pkgdir" install
 
   mkdir -p "$pkgdir/etc/vdr/conf.avail"
   echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
