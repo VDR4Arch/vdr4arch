@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-softhddevice
-pkgver=0.6.1rc1_29_g37f409c
+pkgver=0.6.1rc1_30_g4a4de36
 epoch=1
-_gitver=37f409cb9aae06c99a6dff910b1b1d9278190ef1
+_gitver=4a4de36878127ff1c405d2771789be48aab020df
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
@@ -38,6 +38,10 @@ prepare() {
 
   # Enable this to compile with debug logging
   #sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
+  
+  # Enable VA-API
+  sed -i 's/#VAAPI/VAAPI/g' Makefile
+  sed -i 's/#OPENGL/OPENGL/g' Makefile
 }
 
 build() {
