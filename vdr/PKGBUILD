@@ -48,7 +48,7 @@ md5sums=('f6916524c302f3209fd0af507ab97387'
          '5fe146509c84500bbf9b1be97b1d5a7d'
          'fb1f52d7decba2df9c5d00c70040984a'
          '7cad811b4ac5ee6c0b5496d006f1e0ee'
-         'd9f622b970b8748d0cb3e1d2cacceff4')
+         '70c721ac0f6cb3c0453e8ca51d95e04e')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
