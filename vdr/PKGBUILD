@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
 pkgver=2.0.6
-pkgrel=6
+pkgrel=7
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -59,6 +59,7 @@ prepare() {
   echo 'PREFIX       = /usr' >> Make.config
   echo 'LIBDIR       = /usr/lib/vdr/plugins' >> Make.config
   echo 'VDR_USER     = vdr' >> Make.config
+  echo 'LIRC_DEVICE  = /run/lirc/lircd' >> Make.config
 
   sed -i 's/NULL, 0, true/NULL, 0, OpenSubMenus/g' "$srcdir/MainMenuHooks-v1_0_2.diff"
   patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
