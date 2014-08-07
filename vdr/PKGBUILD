@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
 pkgver=2.0.6
-pkgrel=7
+pkgrel=8
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -45,7 +45,7 @@ md5sums=('f6916524c302f3209fd0af507ab97387'
          'f00583e3f5507b0ff935b4d5919e7df2'
          '1d637e4f97adc66ef84615897116f29a'
          '23d6e1ca0a36cfdbd35d3b1a61f0a105'
-         '5fe146509c84500bbf9b1be97b1d5a7d'
+         'f117dd13da2c557361479e49a3b2e74f'
          'fb1f52d7decba2df9c5d00c70040984a'
          '7cad811b4ac5ee6c0b5496d006f1e0ee'
          '70c721ac0f6cb3c0453e8ca51d95e04e')
