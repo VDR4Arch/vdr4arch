@@ -1,0 +1,8 @@
+post_install() {
+  mkdir -p var/lib/vdradmin
+  mkdir -p var/cache/vdradmin
+}
+
+post_remove() {
+  rm -r var/cache/vdramin 2> /dev/null
+}

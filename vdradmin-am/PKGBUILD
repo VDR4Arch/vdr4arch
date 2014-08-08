@@ -1,0 +1,43 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdradmin-am
+pkgver=3.6.10
+pkgrel=1
+pkgdesc="Web user interface for VDR"
+url="http://andreas.vdr-developer.org/vdradmin-am"
+arch=('any')
+license=('GPL2')
+depends=('perl-http-date' 'perl-locale-gettext' 'perl-template-plugin-javascript' 'perl-template-toolkit' 'perl-uri' 'vdr')
+optdepends=('perl-authen-sasl: Required for AutoTimer email notification'
+            'perl-digest-hmac: Required for AutoTimer email notification and CRAM-MD5 authentication'
+            'perl-io-socket-inet6: Required for IPv6 support'
+            'perl-io-socket-ssl: Required for SSL support (https)')
+makedepends=('perl-authen-sasl' 'perl-digest-hmac' 'perl-io-socket-inet6' 'perl-io-socket-ssl')
+install="$pkgname.install"
+source=("http://andreas.vdr-developer.org/vdradmin-am/download/$pkgname-$pkgver.tar.bz2"
+        'fix-install.sh.diff'
+        'vdradmin-am.service')
+options=('!emptydirs')
+md5sums=('467ff4a482be2a5331ad4224a1cb9d8e'
+         'f898ed796cc823286c9897dd72999017'
+         '12621acb53ba46dc2de97d6fcdb094a6')
+
+prepare() {
+  cd "$srcdir/$pkgname-$pkgver"
+  patch -p1 -i "$srcdir/fix-install.sh.diff"
+}
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  rm -r lib/*
+  export DESTDIR="$pkgdir"
+  export ETCDIR='/var/lib/vdradmin'
+  export LOGDIR='/var/log'
+  export PIDFILE='/run/vdradmind.pid'
+  export VIDEODIR='/srv/vdr/video'
+  export EPGIMAGES='/var/cache/vdr/epgimages'
+  export VDRCONF='/var/lib/vdr'
+  ./install.sh
+
+  mkdir -p "$pkgdir/etc/vdradmin"
+
+  install -Dm644 "$srcdir/$pkgname.service" "$pkgdir/usr/lib/systemd/system/$pkgname.service"
+}

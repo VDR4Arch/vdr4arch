@@ -1,0 +1,10 @@
+[Unit]
+Description=VDRAdmin-AM
+After=vdr.service
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/vdradmind
+
+[Install]
+WantedBy=multi-user.target
