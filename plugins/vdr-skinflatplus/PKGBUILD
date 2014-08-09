@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinflatplus
-pkgver=0.3.1
-_gitver=52a6afcc01e8da9ea226e15e8d4e63c5573fbb48
+pkgver=0.4.0
+_gitver=c72f7fd35c511e16275e3fa85a50d51b44eb6458
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="Simple and slim skin for VDR"
@@ -21,7 +21,7 @@ md5sums=('SKIP'
          '878594e0f5af2ab308e6ab86a9bf0136')
 pkgver() {
   cd "${srcdir}/skin-flatplus"
-  git tag -a 0.3.1 -m 'Added Tag' 52a6afcc01e8da9ea226e15e8d4e63c5573fbb48 2> /dev/null
+  git tag -a 0.4.0 -m 'Added Tag' c72f7fd35c511e16275e3fa85a50d51b44eb6458 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
