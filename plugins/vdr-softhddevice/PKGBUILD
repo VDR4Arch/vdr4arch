@@ -1,10 +1,10 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-softhddevice
-pkgver=0.6.1rc1_30_g4a4de36
+pkgver=0.6.1rc1_31_g8b7402a
 epoch=1
-_gitver=4a4de36878127ff1c405d2771789be48aab020df
+_gitver=8b7402a397bf460e25a75add8059aa2eb83709ee
 _vdrapi=2.0.6
-pkgrel=4
+pkgrel=1
 pkgdesc="software and GPU emulated HD output device plugin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-softhddevice"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -14,11 +14,9 @@ optdepends=('nvidia: Required for VDPAU decoding')
 makedepends=('git' 'glu' )
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-softhddevice.git#commit=$_gitver"
-        'ffmpeg_13.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=36508'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
-         '96a9bea6becf098d68df37b6f5945849'
          'f6ef6cb0bf17c5a28f858e5306776d27')
 
 pkgver() {
@@ -28,8 +26,6 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-
-  patch -p1 -i "$srcdir/ffmpeg_13.diff"
 
   # Disable OSS. Arch Linux doesn't ship OSS
   sed -i '/OSS /d' Makefile
@@ -42,7 +38,7 @@ prepare() {
 
   # Enable this to compile with debug logging
   #sed -i 's/# -DDEBUG/-DDEBUG/g' Makefile
-  
+
   # Enable VA-API
   sed -i 's/#VAAPI/VAAPI/g' Makefile
   sed -i 's/#OPENGL/OPENGL/g' Makefile
