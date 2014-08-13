@@ -1,6 +1,17 @@
-diff -ruN dddvb-0.9.14/ddbridge/ddbridge-core.c dddvb-0.9.14.edit/ddbridge/ddbridge-core.c
---- dddvb-0.9.14/ddbridge/ddbridge-core.c	2014-04-21 16:52:10.000000000 +0200
-+++ dddvb-0.9.14.edit/ddbridge/ddbridge-core.c	2014-05-07 13:22:14.529801924 +0200
+diff -ruN dddvb-0.9.15a/ddbridge/ddbridge.c dddvb-0.9.15a.patched/ddbridge/ddbridge.c
+--- dddvb-0.9.15a/ddbridge/ddbridge.c	2014-06-22 01:09:17.000000000 +0200
++++ dddvb-0.9.15a.patched/ddbridge/ddbridge.c	2014-08-13 10:55:01.445116617 +0200
+@@ -146,6 +146,7 @@
+ 
+ #ifdef CONFIG_PCI_MSI
+ 	if (msi && pci_msi_enabled()) {
++#define pci_enable_msi_block pci_enable_msi_exact
+ 		stat = pci_enable_msi_block(dev->pdev, 2);
+ 		if (stat == 0) {
+ 			dev->msi = 1;
+diff -ruN dddvb-0.9.15a/ddbridge/ddbridge-core.c dddvb-0.9.15a.patched/ddbridge/ddbridge-core.c
+--- dddvb-0.9.15a/ddbridge/ddbridge-core.c	2014-06-20 10:58:53.000000000 +0200
++++ dddvb-0.9.15a.patched/ddbridge/ddbridge-core.c	2014-08-13 10:43:35.356651582 +0200
 @@ -22,6 +22,9 @@
   * Or, point your browser to http://www.gnu.org/copyleft/gpl.html
   */
@@ -40,7 +51,56 @@ diff -ruN dddvb-0.9.14/ddbridge/ddbridge-core.c dddvb-0.9.14.edit/ddbridge/ddbri
  };
  
  static struct dvb_device dvbdev_mod = {
-@@ -1385,10 +1380,6 @@
+@@ -1280,13 +1275,6 @@
+ 	return 0;
+ }
+ 
+-static struct mxl5xx_cfg mxl5xx = {
+-	.adr      = 0x60,
+-	.type     = 0x01,
+-	.clk      = 27000000,
+-	.cap      = 12,
+-};
+-
+ static int lnb_command(struct ddb *dev, u32 lnb, u32 cmd)
+ {
+ 	u32 c, v = 0;
+@@ -1387,34 +1375,6 @@
+ 	return 0;
+ }
+ 
+-static int fe_attach_mxl5xx(struct ddb_input *input)
+-{
+-	struct ddb *dev = input->port->dev;
+-	struct i2c_adapter *i2c = &dev->i2c[0].adap;
+-	struct ddb_dvb *dvb = &input->port->dvb[input->nr & 1];
+-	int demod, tuner;
+-
+-	demod = input->nr;
+-	tuner = demod & 3;
+-	dvb->fe = dvb_attach(mxl5xx_attach, i2c, &mxl5xx,
+-			     demod, tuner);
+-	if (!dvb->fe) {
+-		pr_err("No MXL5XX found!\n");
+-		return -ENODEV;
+-	}
+-	if (input->nr < 4) 
+-		lnb_command(dev, input->nr, LNB_CMD_INIT);
+-	dvb->fe->ops.set_voltage = dd_set_voltage;
+-	dvb->fe->ops.enable_high_lnb_voltage = dd_enable_high_lnb_voltage;
+-	dvb->fe->ops.set_tone = dd_set_tone;
+-	dvb->fe->ops.diseqc_send_master_cmd = dd_send_master_cmd;
+-	dvb->fe->sec_priv = input;
+-	dvb->set_input = dvb->fe->ops.set_input;
+-	dvb->fe->ops.set_input = dd_set_input;
+-	dvb->input = tuner;
+-	return 0;
+-}
+-
+ static int my_dvb_dmx_ts_card_init(struct dvb_demux *dvbdemux, char *id,
+ 				   int (*start_feed)(struct dvb_demux_feed *),
+ 				   int (*stop_feed)(struct dvb_demux_feed *),
+@@ -1519,10 +1479,6 @@
  		dvb_frontend_detach(dvb->fe);
  		dvb->fe = dvb->fe2 = NULL;
  		/* fallthrough */
@@ -51,7 +111,7 @@ diff -ruN dddvb-0.9.14/ddbridge/ddbridge-core.c dddvb-0.9.14.edit/ddbridge/ddbri
  	case 0x20:
  		dvb_net_release(&dvb->dvbnet);
  		/* fallthrough */
-@@ -1538,12 +1529,6 @@
+@@ -1672,17 +1628,8 @@
  		return ret;
  	dvb->attached = 0x20;
  
@@ -63,10 +123,31 @@ diff -ruN dddvb-0.9.14/ddbridge/ddbridge-core.c dddvb-0.9.14.edit/ddbridge/ddbri
 -	}
  	dvb->fe = dvb->fe2 = 0;
  	switch (port->type) {
+-	case DDB_TUNER_MXL5XX:
+-		fe_attach_mxl5xx(input);
+-		break;
  	case DDB_TUNER_DVBS_ST:
-diff -ruN dddvb-0.9.14/ddbridge/ddbridge.h dddvb-0.9.14.edit/ddbridge/ddbridge.h
---- dddvb-0.9.14/ddbridge/ddbridge.h	2014-04-20 22:57:56.000000000 +0200
-+++ dddvb-0.9.14.edit/ddbridge/ddbridge.h	2014-05-07 13:22:14.539801343 +0200
+ 		if (demod_attach_stv0900(input, 0) < 0)
+ 			return -ENODEV;
+@@ -1943,15 +1890,6 @@
+ 		return;
+ 	}
+ 
+-	if (dev->info->type == DDB_OCTOPUS_MAX) {
+-		port->name = "DUAL DVB-S2 MX";
+-		port->class = DDB_PORT_TUNER;
+-		port->type = DDB_TUNER_MXL5XX;
+-		if (port->i2c)
+-			ddbwritel(dev, I2C_SPEED_400, port->i2c->regs + I2C_TIMING);
+-		return;
+-	}
+-
+ 	if (port->nr > 1 && dev->info->type == DDB_OCTOPUS_CI) {
+ 		port->name = "CI internal";
+ 		port->class = DDB_PORT_CI;
+diff -ruN dddvb-0.9.15a/ddbridge/ddbridge.h dddvb-0.9.15a.patched/ddbridge/ddbridge.h
+--- dddvb-0.9.15a/ddbridge/ddbridge.h	2014-05-09 17:56:47.000000000 +0200
++++ dddvb-0.9.15a.patched/ddbridge/ddbridge.h	2014-08-13 10:49:13.034904835 +0200
 @@ -69,7 +69,6 @@
  #include <linux/device.h>
  #include <linux/io.h>
@@ -75,7 +156,15 @@ diff -ruN dddvb-0.9.14/ddbridge/ddbridge.h dddvb-0.9.14.edit/ddbridge/ddbridge.h
  #include "dmxdev.h"
  #include "dvbdev.h"
  #include "dvb_demux.h"
-@@ -198,7 +197,6 @@
+@@ -92,7 +91,6 @@
+ #include "stv0910.h"
+ #include "stv6111.h"
+ #include "lnbh25.h"
+-#include "mxl5xx.h"
+ 
+ #define DDB_MAX_I2C     4
+ #define DDB_MAX_PORT   10
+@@ -201,7 +199,6 @@
  	struct dmxdev          dmxdev;
  	struct dvb_demux       demux;
  	struct dvb_net         dvbnet;
@@ -83,9 +172,17 @@ diff -ruN dddvb-0.9.14/ddbridge/ddbridge.h dddvb-0.9.14.edit/ddbridge/ddbridge.h
  	struct dmx_frontend    hw_frontend;
  	struct dmx_frontend    mem_frontend;
  	int                    users;
-diff -ruN dddvb-0.9.14/ddbridge/Kbuild dddvb-0.9.14.edit/ddbridge/Kbuild
---- dddvb-0.9.14/ddbridge/Kbuild	2014-04-01 23:39:47.000000000 +0200
-+++ dddvb-0.9.14.edit/ddbridge/Kbuild	2014-05-07 13:22:14.539801343 +0200
+@@ -265,7 +262,6 @@
+ #define DDB_TUNER_DVBC2T2_SONY_P 8
+ #define DDB_TUNER_ISDBT_SONY_P   9
+ #define DDB_TUNER_DVBS_STV0910_P 10
+-#define DDB_TUNER_MXL5XX         11
+ 
+ #define DDB_TUNER_XO2           16
+ #define DDB_TUNER_DVBS_STV0910  16
+diff -ruN dddvb-0.9.15a/ddbridge/Kbuild dddvb-0.9.15a.patched/ddbridge/Kbuild
+--- dddvb-0.9.15a/ddbridge/Kbuild	2014-04-30 17:32:37.000000000 +0200
++++ dddvb-0.9.15a.patched/ddbridge/Kbuild	2014-08-13 10:42:18.090436984 +0200
 @@ -4,5 +4,5 @@
  obj-$(CONFIG_DVB_OCTONET) += octonet.o 
  
@@ -94,9 +191,9 @@ diff -ruN dddvb-0.9.14/ddbridge/Kbuild dddvb-0.9.14.edit/ddbridge/Kbuild
 +EXTRA_CFLAGS += -Idrivers/media/common/tuners -Idrivers/media/dvb-core -Idrivers/staging/media/cxd2099 -Iinclude/uapi/linux/dvb -Idrivers/media/tuners
  NOSTDINC_FLAGS += -I$(SUBDIRS)/frontends -I$(SUBDIRS)/include -I$(SUBDIRS)/dvb-core 
 \ No newline at end of file
-diff -ruN dddvb-0.9.14/frontends/cxd2099.c dddvb-0.9.14.edit/frontends/cxd2099.c
---- dddvb-0.9.14/frontends/cxd2099.c	2014-04-20 16:24:48.000000000 +0200
-+++ dddvb-0.9.14.edit/frontends/cxd2099.c	2014-05-07 13:25:35.271122549 +0200
+diff -ruN dddvb-0.9.15a/frontends/cxd2099.c dddvb-0.9.15a.patched/frontends/cxd2099.c
+--- dddvb-0.9.15a/frontends/cxd2099.c	2014-04-20 16:24:48.000000000 +0200
++++ dddvb-0.9.15a.patched/frontends/cxd2099.c	2014-08-13 10:42:18.237089861 +0200
 @@ -36,8 +36,6 @@
  
  #include "cxd2099.h"
@@ -106,7 +203,7 @@ diff -ruN dddvb-0.9.14/frontends/cxd2099.c dddvb-0.9.14.edit/frontends/cxd2099.c
  #define MAX_BUFFER_SIZE 248
  
  static int read_data(struct dvb_ca_en50221 *ca, int slot, u8 *ebuf, int ecount);
-@@ -289,6 +289,7 @@ static void cam_mode(struct cxd *ci, int
+@@ -289,6 +287,7 @@
  		write_regm(ci, 0x20, 0x80, 0x80);
  		break;
  	case 0x01:
@@ -114,7 +211,7 @@ diff -ruN dddvb-0.9.14/frontends/cxd2099.c dddvb-0.9.14.edit/frontends/cxd2099.c
  		if (!ci->en.read_data)
  			return;
  		ci->write_busy = 0;
-@@ -298,6 +299,7 @@ static void cam_mode(struct cxd *ci, int
+@@ -298,6 +297,7 @@
  		write_regm(ci, 0x08, 0x40, 0x40);
  		read_reg(ci, 0x12, &dummy);
  		write_regm(ci, 0x08, 0x80, 0x80);
@@ -122,9 +219,9 @@ diff -ruN dddvb-0.9.14/frontends/cxd2099.c dddvb-0.9.14.edit/frontends/cxd2099.c
  		break;
  	default:
  		break;
-diff -ruN dddvb-0.9.14/frontends/cxd2843.c dddvb-0.9.14.edit/frontends/cxd2843.c
---- dddvb-0.9.14/frontends/cxd2843.c	2014-04-25 10:08:44.000000000 +0200
-+++ dddvb-0.9.14.edit/frontends/cxd2843.c	2014-05-07 13:22:14.543134483 +0200
+diff -ruN dddvb-0.9.15a/frontends/cxd2843.c dddvb-0.9.15a.patched/frontends/cxd2843.c
+--- dddvb-0.9.15a/frontends/cxd2843.c	2014-06-04 17:38:21.000000000 +0200
++++ dddvb-0.9.15a.patched/frontends/cxd2843.c	2014-08-13 10:42:18.237089861 +0200
 @@ -1126,9 +1126,6 @@
  	case SYS_DVBC_ANNEX_A:
  		state->omode = OM_DVBC;
@@ -135,7 +232,7 @@ diff -ruN dddvb-0.9.14/frontends/cxd2843.c dddvb-0.9.14.edit/frontends/cxd2843.c
  	case SYS_DVBT:
  		state->omode = OM_DVBT;
  		break;
-@@ -1852,7 +1849,7 @@
+@@ -1853,7 +1850,7 @@
  }
  
  static struct dvb_frontend_ops common_ops_2843 = {
@@ -144,9 +241,9 @@ diff -ruN dddvb-0.9.14/frontends/cxd2843.c dddvb-0.9.14.edit/frontends/cxd2843.c
  	.info = {
  		.name = "CXD2843 DVB-C/C2 DVB-T/T2",
  		.frequency_stepsize = 166667,	/* DVB-T only */
-diff -ruN dddvb-0.9.14/frontends/tda18212dd.c dddvb-0.9.14.edit/frontends/tda18212dd.c
---- dddvb-0.9.14/frontends/tda18212dd.c	2014-04-20 18:36:35.000000000 +0200
-+++ dddvb-0.9.14.edit/frontends/tda18212dd.c	2014-05-07 13:22:14.543134483 +0200
+diff -ruN dddvb-0.9.15a/frontends/tda18212dd.c dddvb-0.9.15a.patched/frontends/tda18212dd.c
+--- dddvb-0.9.15a/frontends/tda18212dd.c	2014-04-20 18:36:35.000000000 +0200
++++ dddvb-0.9.15a.patched/frontends/tda18212dd.c	2014-08-13 10:42:18.237089861 +0200
 @@ -805,8 +805,7 @@
  	/*pr_info("tuner bw=%u  freq=%u\n", bw, state->m_Frequency);*/
  	if (p->delivery_system == SYS_DVBT ||
