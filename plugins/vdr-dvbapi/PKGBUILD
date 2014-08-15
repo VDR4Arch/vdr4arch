@@ -1,0 +1,45 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-dvbapi
+pkgver=1.0.6
+epoch=1
+_gitver=9b4ddce97beb0bbccd733d82510092dd7a6b9bb2
+_vdrapi=2.0.6
+pkgrel=4
+pkgdesc="A bridge between VDR and OScam."
+url="https://github.com/manio/vdr-plugin-dvbapi"
+arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
+license=('GPL2')
+depends=('libdvbcsa' 'oscam' "vdr-api=${_vdrapi}")
+makedepends=('git')
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("git://github.com/manio/vdr-plugin-dvbapi.git#commit=$_gitver"
+        "ftp://ftp.tvdr.de/vdr/vdr-$_vdrapi.tar.bz2")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('SKIP'
+         'f6916524c302f3209fd0af507ab97387')
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  sed -i 's/MAXDVBDEVICES/MAXDEVICES/g' device.cpp
+
+  ln -sfr "$srcdir/vdr-$_vdrapi/PLUGINS/src/dvbhddevice" "$srcdir"
+  ln -sfr "$srcdir/vdr-$_vdrapi/PLUGINS/src/dvbsddevice" "$srcdir"
+}
+
+pkgver() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+build() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make LIBDVBCSA=1
+}
+
+package() {
+  cd "${srcdir}/vdr-plugin-${_plugname}"
+  make LIBDVBCSA=1 DESTDIR="$pkgdir" install
+
+  mkdir -p "$pkgdir/etc/vdr/conf.avail"
+  echo "[$_plugname]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
+}
