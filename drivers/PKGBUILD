@@ -2,7 +2,7 @@
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
-pkgver=3.16
+pkgver=3.16.1
 pkgrel=1
 _extramodules=extramodules-3.15-ARCH
 _saa716xrev=432762831b67a456254fd291f4921e8ed75ae43b
@@ -27,7 +27,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         '020_ddbridge-drxk.diff'
         'backport-dddvb.diff'
         "hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_saa716xrev")
-md5sums=('5c569ed649a0c9711879f333e90c5386'
+md5sums=('e7a985a243b7941b6bc6240fcbc797fc'
          'e7f313ce5b548aeb55d168ad8b34b91a'
          '543f60b2dab7075707573a1745580596'
          '9c41bdd0693e655d0590e55ad93bd8e2'
