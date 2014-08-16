@@ -1,4 +1,4 @@
-EXTRAMODULES=extramodules-3.15-ARCH
+EXTRAMODULES=extramodules-3.16-ARCH
 
 post_install() {
   # updating module dependencies
