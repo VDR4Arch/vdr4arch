@@ -1501,7 +1501,7 @@ diff -purN linux/drivers/media/dvb-frontends/dvbsky_m88ds3103.c linux/drivers/me
 +	}
 +	msleep(60);
 +	
-+	offset_khz = (ndiv - ndiv % 2 + 1024) * MT_FE_CRYSTAL_KHZ
++	offset_khz = (ndiv) * MT_FE_CRYSTAL_KHZ
 +		/ (6 + 8) / (div4 + 1) / 2 - realFreq;
 +
 +	m88ds3103_demod_connect(fe, offset_khz+lpf_offset_KHz);
