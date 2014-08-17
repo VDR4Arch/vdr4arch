@@ -27,13 +27,14 @@ Open /etc/pacman.conf with your favorites editor and add the following
 
     [vdr4arch]
     SigLevel = PackageRequired
-    Server = http://creimer.net/vdr4arch/repo
+    Server = http://creimer.net/vdr4arch/repos/$repo/os/$arch
+
+To update the package database run
+`pacman -Sy`
 
 To list all available packages run
 
 `pacman -Slq vdr4arch`
-
-For a working VDR install at least `vdr` and `runvdr-extreme`
 
 Compile from source
 -------------------
