@@ -34,7 +34,7 @@ build() {
 
 package_vdr-xineliboutput() {
   pkgdesc="X11 and Linux framebuffer front-end for VDR"
-  depends=('dbus-glib' 'libextractor' 'libxrandr' "vdr-api=${_vdrapi}" 'xine-lib' 'xineliboutput-xineplug')
+  depends=('dbus-glib' 'libextractor' 'libxrandr' 'mesa' "vdr-api=${_vdrapi}" 'xine-lib' 'xineliboutput-xineplug')
   optdepends=('nvidia: Required for VDPAU decoding'
               'xorg-server: Required for software decoding')
   install="$pkgbase.install"
