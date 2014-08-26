@@ -1,8 +1,20 @@
 post_install() {
   mkdir -p var/lib/vdradmin
+  chown -R vdr:vdr var/lib/vdradmin
+
   mkdir -p var/cache/vdradmin
+  chown -R vdr:vdr var/cache/vdradmin
+
+  mkdir -p var/log/vdradmin
+  chown -R vdr:vdr var/log/vdradmin
+}
+
+post_upgrade() {
+  post_install
 }
 
 post_remove() {
-  rm -r var/cache/vdramin 2> /dev/null
+  rm -r var/lib/vdradmin 2> /dev/null
+  rm -r var/cache/vdradmin 2> /dev/null
+  rm -r var/log/vdradmin 2> /dev/null
 }

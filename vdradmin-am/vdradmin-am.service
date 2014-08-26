@@ -3,8 +3,8 @@ Description=VDRAdmin-AM
 After=vdr.service
 
 [Service]
-Type=forking
-ExecStart=/usr/bin/vdradmind
+User=vdr
+ExecStart=/usr/bin/vdradmind -n
 
 [Install]
 WantedBy=multi-user.target

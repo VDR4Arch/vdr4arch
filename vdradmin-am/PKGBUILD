@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdradmin-am
 pkgver=3.6.10
-pkgrel=1
+pkgrel=2
 pkgdesc="Web user interface for VDR"
 url="http://andreas.vdr-developer.org/vdradmin-am"
 arch=('any')
@@ -19,7 +19,7 @@ source=("http://andreas.vdr-developer.org/vdradmin-am/download/$pkgname-$pkgver.
 options=('!emptydirs')
 md5sums=('467ff4a482be2a5331ad4224a1cb9d8e'
          'f898ed796cc823286c9897dd72999017'
-         '12621acb53ba46dc2de97d6fcdb094a6')
+         '8261c77e1f110bd89614d6c90647436e')
 
 prepare() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -30,7 +30,7 @@ package() {
   rm -r lib/*
   export DESTDIR="$pkgdir"
   export ETCDIR='/var/lib/vdradmin'
-  export LOGDIR='/var/log'
+  export LOGDIR='/var/log/vdradmin'
   export PIDFILE='/run/vdradmind.pid'
   export VIDEODIR='/srv/vdr/video'
   export EPGIMAGES='/var/cache/vdr/epgimages'
