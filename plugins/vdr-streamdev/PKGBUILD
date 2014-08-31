@@ -1,10 +1,11 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com
 pkgname=vdr-streamdev
-pkgver=0.6.1
+pkgver=0.6.1_14_ge8629b5
+_gitver=e8629b5ec6e34abbb8b6dc3e487d65d1c2b1d547
 epoch=1
 _vdrapi=2.0.6
-pkgrel=4
+pkgrel=1
 pkgdesc="implementation of the VTP (Video Transfer Protocol)"
 url="http://projects.vdr-developer.org/projects/show/plg-streamdev"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -13,21 +14,27 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 install="${pkgname}.install"
-source=("http://projects.vdr-developer.org/attachments/download/1580/$pkgname-$pkgver.tgz"
+source=("git://projects.vdr-developer.org/vdr-plugin-streamdev.git#commit=$_gitver"
         "50-$_plugname-server.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname-client.conf"
         "etc/vdr/conf.avail/50-$_plugname-server.conf"
         'var/lib/vdr/plugins/streamdev-server/streamdevhosts.conf')
-md5sums=('e611df2dd9fc75b21e068a8c0aabcc68'
+md5sums=('SKIP'
          '8c352d8ee7401eeb34fe5ab82e791a21')
 
+pkgver() {
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  git tag -a 0.6.1 -m 'Added Tag' 40704cdcbc012e15e9e814d8fe64303f13988f56 2> /dev/null
+  git describe --tags | sed 's/-/_/g'
+}
+
 build() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/vdr-plugin-$_plugname"
   make
 }
 
 package() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "${srcdir}/vdr-plugin-$_plugname"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 streamdev-server/streamdevhosts.conf "$pkgdir/var/lib/vdr/plugins/streamdev-server/streamdevhosts.conf"
