@@ -1,8 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-epgfixer
-pkgver=0.3.1
+pkgver=0.3.1_18_g1ad4aaf
+_gitver=1ad4aaffdc820af7e0a0f8c45a4beea4f3f10421
 _vdrapi=2.0.6
-pkgrel=13
+pkgrel=1
 pkgdesc="VDR plugin for doing extra fixing of EPG data"
 url="http://projects.vdr-developer.org/projects/plg-epgfixer"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -14,24 +15,18 @@ backup=('var/lib/vdr/plugins/epgfixer/blacklist.conf'
         'var/lib/vdr/plugins/epgfixer/regexp.conf')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1138/$pkgname-$pkgver.tgz"
-        "http://projects.vdr-developer.org/git/vdr-plugin-epgfixer.git/plain/Makefile")
+source=("git://projects.vdr-developer.org/vdr-plugin-epgfixer.git#commit=$_gitver")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('b9612533df73332d9c6305bf03d558dc'
-         '9d8dd9114429f313f645a946794a1968')
+md5sums=('SKIP')
 
-prepare() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
-  cp "$srcdir/Makefile" .
+pkgver() {
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  git describe --tags | sed 's/-/_/g;s/v//'
 }
 
-build() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
-  make
-}
 
 package() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
+  cd "${srcdir}/vdr-plugin-$_plugname"
   make DESTDIR="$pkgdir" install
 
   mkdir -p "$pkgdir/etc/vdr/conf.avail"
