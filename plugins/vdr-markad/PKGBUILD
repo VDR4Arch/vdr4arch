@@ -2,7 +2,7 @@
 pkgname=vdr-markad
 pkgver=0.1.4_36_g3c99d47
 epoch=1
-_gitver=3c99d4782fa62a1e24aabb510ce6230dc00a5b31
+_gitver=c55f43f413dff8740f99d684e8879835d4409920
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="automatic advertisement detection"
