@@ -9,6 +9,7 @@ url="http://projects.vdr-developer.org/projects/plg-epgfixer"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' 'pcre' "vdr-api=${_vdrapi}")
+makedepends=('git')
 backup=('var/lib/vdr/plugins/epgfixer/blacklist.conf'
         'var/lib/vdr/plugins/epgfixer/charset.conf'
         'var/lib/vdr/plugins/epgfixer/epgclone.conf'
