@@ -1,48 +1,53 @@
 pkgbase=channellogos
 pkgname=({anthra,elchi,enigma,narrowhd,nopacity}-logos)
-pkgver=20140724
+pkgver=20140908
 pkgrel=1
 pkgdesc="Channellogos for VDR"
 arch=('any')
 url="http://creimer.net/channellogos/"
 license=('GPL2')
-source=(http://creimer.net/channellogos/{anthra,elchiHD,enigma,narrowhd}-logos-$pkgver.tar.gz
-        http://creimer.net/channellogos/nopacity-logos-{default,white}-$pkgver.tar.gz)
+source=(http://creimer.net/channellogos/{anthra,elchi-{576,720,1080},enigma,narrowhd,nopacity-{black,white}}-$pkgver.tar.bz2)
 options=(!strip)
-md5sums=('56a343e99427b3fb84d684c43f2dbfbc'
-         '282d9c565852eaefc16022fa911292d4'
-         '74040f869fe70b15d56aa1f5f980ad27'
-         '98036e86a5040e2352788f8c5123350e'
-         '3d7cf1e26536a7cb9f4dffd479a93ebe'
-         'd0d2036106bd039e791a123f5afc8163')
+md5sums=('3da3fb2aee4b9220ccfbc43842dc2684'
+         'edfeeef79f48b0ca529413e4c150c7ba'
+         'e84648dc8d423b4e3656dfee0443859c'
+         '1be2b704dee591690de0dacfabba2b6e'
+         'b65e440c3c8588a0708a40ce6ba6227c'
+         '090c67aafd7d30c27c5f79f376d77c6f'
+         '50873415496e34429dfe2d95cfd6b489'
+         'b98324077e58214cdda966e7f94fa19e')
 
 package_anthra-logos() {
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/"
-  cp -r "$srcdir/anthralogos" "$pkgdir/usr/share/vdr/plugins/text2skin/"
+  cd "$srcdir"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/anthralogos"
+  cp -r anthra/* "$pkgdir/usr/share/vdr/plugins/text2skin/anthralogos"
 }
 
 package_elchi-logos() {
   cd "$srcdir"
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/skinelchi/logos"
-  cp -r elchilogos/* "$pkgdir/usr/share/vdr/plugins/skinelchi/logos"
+  mkdir -p "$pkgdir"/usr/share/vdr/plugins/skinelchi/logos/{576,720,1080}
+  cp -r elchi-576/* "$pkgdir/usr/share/vdr/plugins/skinelchi/logos/576"
+  cp -r elchi-720/* "$pkgdir/usr/share/vdr/plugins/skinelchi/logos/720"
+  cp -r elchi-1080/* "$pkgdir/usr/share/vdr/plugins/skinelchi/logos/1080"
 }
 
 package_enigma-logos() {
   cd "$srcdir"
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skinenigmang/logos"
-  cp -r enigmalogos/* "$pkgdir/usr/share/vdr/plugins/skinenigmang/logos"
+  cp -r enigma/* "$pkgdir/usr/share/vdr/plugins/skinenigmang/logos"
 }
 
 package_narrowhd-logos() {
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/"
-  cp -r "$srcdir/narrowhdlogos" "$pkgdir/usr/share/vdr/plugins/text2skin"
+  cd "$srcdir"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/text2skin/narrowhdlogos"
+  cp -r narrowhd/* "$pkgdir/usr/share/vdr/plugins/text2skin/narrowhdlogos"
 }
 
 package_nopacity-logos() {
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos"
   cd "$pkgdir/usr/share/vdr/plugins/skinnopacity/logos"
-  cp -r "$srcdir/nopacitylogos/white" .
-  cp -r "$srcdir"/nopacitylogos/default/* .
+  cp -r "$srcdir/nopacity-white" white
+  cp -r "$srcdir"/nopacity-black/* .
 
   ln -s white blue
   ln -s white darkblue
