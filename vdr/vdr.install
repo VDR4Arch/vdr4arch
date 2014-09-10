@@ -6,7 +6,9 @@ _common() {
   chgrp vdr usr/lib/vdr/bin/shutdown-wrapper
   chmod u+s usr/lib/vdr/bin/shutdown-wrapper
 
-  if [ ! -e /home/vdr/.xinitrc ]; then
+  if diff /etc/skel/.xinitrc /home/vdr/.xinitrc > /dev/null 2>&1 ||
+    [ ! -e /home/vdr/.xinitrc ]; then
+
     cat <<'EOF' > /home/vdr/.xinitrc
 #!/bin/sh
 #
