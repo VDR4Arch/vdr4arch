@@ -3,7 +3,7 @@ pkgname=vdr-epgsearch
 pkgver=1.0.1.beta5
 _vdrapi=2.0.6
 epoch=1
-pkgrel=5
+pkgrel=6
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -16,14 +16,17 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz"
         'epgsearch-vdr2.1.2compat.diff'
         "50-$_plugname.conf")
-backup=('var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-epgdata'
+backup=("etc/vdr/conf.avail/50-conflictcheckonly.conf"
+        "etc/vdr/conf.avail/50-$_plugname.conf"
+        "etc/vdr/conf.avail/50-${_plugname}only.conf"
+        "etc/vdr/conf.avail/50-quick$_plugname.conf"
+        'var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-epgdata'
         'var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-tvm2vdr-hoerzu'
         'var/lib/vdr/plugins/epgsearch/epgsearchcats.conf-tvm2vdr-tvmovie'
         'var/lib/vdr/plugins/epgsearch/epgsearchconflmail.templ'
         'var/lib/vdr/plugins/epgsearch/epgsearchmenu.conf'
         'var/lib/vdr/plugins/epgsearch/epgsearchupdmail-html.templ'
-        'var/lib/vdr/plugins/epgsearch/epgsearchupdmail.templ'
-        "etc/vdr/conf.avail/50-$_plugname.conf")
+        'var/lib/vdr/plugins/epgsearch/epgsearchupdmail.templ')
 options=('!emptydirs')
 md5sums=('6e63cc29df02f48fabf6e12e1e71b2fc'
          '9086b9f570b62b9aa72f78f0c684883a'
