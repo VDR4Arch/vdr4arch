@@ -90,4 +90,17 @@ for PKG in $PACKAGES; do
     done <<<"$PLUGINLIST"
   fi
 
+  #
+  # Backup array needed
+  #
+  PKGINFO=$(tar -xOf "$PKG" .PKGINFO 2>/dev/null)
+  BACKUPFILES=$(grep -e '^etc' -e '^var/lib/vdr' <<<"$FILELIST" | grep -v '/$' | grep -v '.theme$' \
+    | grep -v '.png$')
+  # | grep '.conf$'
+  for FILE in $BACKUPFILES; do
+    if ! grep -q $FILE <<<$PKGINFO; then
+      echo "Backup entry needed for file $FILE";
+      exit 1
+    fi
+  done
 done;
