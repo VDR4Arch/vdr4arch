@@ -2,7 +2,7 @@
 pkgname=xlogin
 pkgver=20140305
 _gitver=9d75c5a056af989994f7cc7e1db0a83da758f48a
-pkgrel=4
+pkgrel=5
 pkgdesc="Login to X without a desktop manager."
 arch=('any')
 url="https://github.com/joukewitteveen/xlogin"
@@ -10,6 +10,7 @@ depends=('bash' 'xorg-server')
 makedepends=('git')
 license=('GPL2')
 source=("git+https://github.com/joukewitteveen/xlogin.git#commit=$_gitver")
+backup=('etc/X11/xinit/xinitrc.d/25-xlogin')
 md5sums=('SKIP')
 
 package() {
