@@ -3,7 +3,7 @@ pkgbase=vdr-epg-daemon
 pkgname=('epgd' 'mariadb-epglv')
 pkgver=0.2.1
 _gitver=e1d19b88655144471daae1fade64b08b55606e1e
-pkgrel=1
+pkgrel=2
 url='http://projects.vdr-developer.org/projects/vdr-epg-daemon'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
@@ -31,11 +31,12 @@ build() {
 package_epgd() {
   pkgdesc='write epg data to a mysql database'
   depends=('curl' 'jansson' 'libarchive' 'libmariadbclient' 'libxslt')
-  backup=('etc/epgd/channelmap.conf' 'etc/epgd/epgd.conf')
   cd "$srcdir/$pkgbase"
   make PREFIX=/usr DESTDIR="$pkgdir" install
   install -Dm644 contrib/epgd.service "$pkgdir/usr/lib/systemd/system/epgd.service"
   rm "$pkgdir/mysqlepglv.so"
+  cd $pkgdir
+  backup=($(find etc -type f))
 }
 
 package_mariadb-epglv() {
