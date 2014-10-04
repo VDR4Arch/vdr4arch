@@ -1,6 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skindesigner
-pkgver=0.0.1
+pkgver=0.0.1_9_g688ad96
+_gitver=688ad9698e5722403b390d6a792746d94677cc23
 _vdrapi=2.0.6
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
@@ -14,20 +15,26 @@ optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
             'vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1796/$pkgname-$pkgver.tgz"
+source=("git://projects.vdr-developer.org/vdr-plugin-skindesigner.git#commit=$_gitver"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
-md5sums=('71c2eee666b95118e482621055ad7408'
+md5sums=('SKIP'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
+pkgver() {
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  git tag -a 0.0.1 -m 'Added Tag' b0509b5182b6e0d04f05e6b3d5676b0d21f51966 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
 build() {
-  cd "${srcdir}/$_plugname-$pkgver"
+  cd "${srcdir}/vdr-plugin-$_plugname"
   make IMAGELIB=graphicsmagick
 }
 
 package() {
-  cd "${srcdir}/$_plugname-$pkgver"
+  cd "${srcdir}/vdr-plugin-$_plugname"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
