@@ -2,9 +2,9 @@
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
-pkgver=3.16.4
+pkgver=3.17
 pkgrel=1
-_extramodules=extramodules-3.16-ARCH
+_extramodules=extramodules-3.17-ARCH
 _saa716xrev=432762831b67a456254fd291f4921e8ed75ae43b
 _media_buildrev=04cd0952eb04
 url='https://github.com/CReimer/vdr4arch'
@@ -16,21 +16,20 @@ makedepends=('mercurial' "linux-headers=$pkgver")
 install="${pkgbase}.install"
 source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         'http://download.digital-devices.de/download/linux/dddvb-0.9.15a.tar.bz2'
-        'kernel-3.16-dvbsky.patch'
-        'http://dvbsky.net/download/linux/media_build-bst-14-140926.tar.gz'
+        'kernel-3.17-dvbsky.patch'
+        'http://dvbsky.net/download/linux/media_build-bst-14-141014.tar.gz'
         "http://linuxtv.org/hg/~endriss/media_build_experimental/raw-file/$_media_buildrev/experimental/saa716x."{include-osd,pci-kconfig,pci-makefile}.diff
         "http://linuxtv.org/hg/~endriss/media_build_experimental/raw-file/$_media_buildrev/experimental/patch.d/320_stv090x_ucblocks_ber.diff"
         "http://linuxtv.org/hg/~endriss/media_build_experimental/raw-file/$_media_buildrev/experimental/patch.d/020_ddbridge-drxk.diff"
         '010_dd-frontends-kconfig.diff'
         '010_dd-frontends-kconfig2.diff'
         '010_dd-frontends-makefile.diff'
-        '020_ddbridge-drxk.diff'
         'backport-dddvb.diff'
         "hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_saa716xrev")
-md5sums=('33594ef9526373afb193761d8fc6ba43'
+md5sums=('fb30d0f29214d75cddd2faa94f73d5cf'
          'e7f313ce5b548aeb55d168ad8b34b91a'
-         'a587c4614010eb466fa8d08ee249b46e'
-         'eb35e60d1f8f9df8818a7c37e0bf3189'
+         '0c6fc17293bc04c06a9c213bacdab0c4'
+         '728907f942177c7fafcfac5d43457f33'
          '53d2ede9c39f76f62b4a600451e97481'
          'fd63ea01a4f7e62682180fc925a4ac88'
          'd7e5fa4559918594ef2f84908f04a27d'
@@ -38,8 +37,7 @@ md5sums=('33594ef9526373afb193761d8fc6ba43'
          '693ae5fe2672d44e153b99aca7c72ab0'
          '485eea60abca891ce6cb291bb7f971de'
          'dcb9acaa0496cd430855c0defd2dcf5a'
-         'da1042f80d3c4d7016ba0df334ffa8a4'
-         '693ae5fe2672d44e153b99aca7c72ab0'
+         '7c18c0eed49413014dedaaffa4dd8a0d'
          'a185170b5470a1151ecfaa838a157dc1'
          'SKIP')
 
@@ -73,7 +71,7 @@ prepare() {
   cd "$srcdir/linux-$pkgver"
   ln -sf "$srcdir"/media_build-bst-14/v4l/sit2_op.o.x${CARCH: -2} drivers/media/dvb-frontends/sit2_op.o
   ln -sf "$srcdir"/media_build-bst-14/v4l/sit2_mod.dvb drivers/media/dvb-frontends/sit2_mod.c
-  patch -Np1 -i "$srcdir/kernel-3.16-dvbsky.patch"
+  patch -Np1 -i "$srcdir/kernel-3.17-dvbsky.patch"
 
   #technotrend
   echo 'EXTRA_CFLAGS += -Idrivers/media/tuners' >> "$srcdir/v4l-dvb-saa716x/linux/drivers/media/common/saa716x/Makefile"
