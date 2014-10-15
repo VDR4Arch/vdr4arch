@@ -2,7 +2,7 @@
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgbase=drivers
 pkgname=('digitaldevices-dvb-drivers' 'dvbsky-dvb-drivers' 'technotrend-dvb-drivers')
-pkgver=3.17
+pkgver=3.17.1
 pkgrel=1
 _extramodules=extramodules-3.17-ARCH
 _saa716xrev=432762831b67a456254fd291f4921e8ed75ae43b
@@ -26,9 +26,9 @@ source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
         '010_dd-frontends-makefile.diff'
         'backport-dddvb.diff'
         "hg+https://bitbucket.org/powARman/v4l-dvb-saa716x#revision=$_saa716xrev")
-md5sums=('fb30d0f29214d75cddd2faa94f73d5cf'
+md5sums=('51765eb37215681798f0bd13450f49ef'
          'e7f313ce5b548aeb55d168ad8b34b91a'
-         '0c6fc17293bc04c06a9c213bacdab0c4'
+         '0e06a33e1b48c6daaef920b94338087e'
          '728907f942177c7fafcfac5d43457f33'
          '53d2ede9c39f76f62b4a600451e97481'
          'fd63ea01a4f7e62682180fc925a4ac88'
@@ -66,6 +66,7 @@ prepare() {
   patch -p1 -i "$srcdir/010_dd-frontends-kconfig2.diff"
   patch -p1 -i "$srcdir/010_dd-frontends-makefile.diff"
   patch -p1 -i "$srcdir/020_ddbridge-drxk.diff"
+  sed -i 's/0666/0664/' drivers/media/pci/ddbridge/ddbridge-core.c
 
   #dvbsky
   cd "$srcdir/linux-$pkgver"
