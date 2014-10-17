@@ -4,14 +4,14 @@ vdr4arch
 VDR4Arch is a set of VDR packages for Archlinux.
 
 Our goal is it to combine the feature-richness of VDR with the bleeding edge
-design of Archlinux.
+design of Archlinux. We provide always the newest version (developer or stable).
+But we delay new vdr releases for at least one week in a separate vdr4arch-testing
+repository. You can find more information on this testing repository in our wiki
 
 Install the base system
 -----------------------
 
 Installing Archlinux is not a big deal. Just follow this Installation Guide
-and skip the last step (Add a user)
-
 https://wiki.archlinux.org/index.php/Installation_Guide
 
 We don't need many different partitions on VDR systems. In most cases a single `/` (root)
@@ -21,26 +21,14 @@ mount another partition to `/srv/vdr/video`
 Install VDR4Arch packages
 -------------------------
 
-Download [vdr4arch-keyring](http://creimer.net/vdr4arch/repo/vdr4arch-keyring-20130219-1-any.pkg.tar.xz) and install it with `pacman -U`
-
-Open /etc/pacman.conf with your favorites editor and add the following
-
-    [vdr4arch]
-    SigLevel = PackageRequired
-    Server = http://creimer.net/vdr4arch/repos/$repo/os/$arch
-
-To update the package database run
-`pacman -Sy`
-
-To list all available packages run
-
-`pacman -Slq vdr4arch`
+Take a look at the Installation Section in our wiki
+https://github.com/VDR4Arch/vdr4arch/wiki/VDR4Arch-Installation-(en_US)#Installation
 
 Compile from source
 -------------------
 
-The easiest way? Follow the instuctions for the tool
-repo-make at http://repo-make.tuxfamily.org/
+You can find more information about compiling vdr4arch's packages in our wiki
+https://github.com/VDR4Arch/vdr4arch/wiki/VDR4Arch-Installation-(en_US)#compile-vdr4arch
 
 Compatibility
 -------------
@@ -55,14 +43,6 @@ Feature/Plugin missing?
 
 You miss something and you want us to add it. No problem!
 
-Just file a bug and add the label "enhancement"
+File a bug, please. But be aware that we don't want add more patches to the vdr package
 
 https://github.com/CReimer/vdr4arch/issues
-
-You want to provide patches via pull requests?
-Please patch branch master only.
-
-Known problems
---------------
-
-None?!?
