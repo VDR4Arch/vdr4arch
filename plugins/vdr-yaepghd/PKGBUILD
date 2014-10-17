@@ -2,8 +2,8 @@
 pkgname=vdr-yaepghd
 pkgver=0.0.4
 _gitver=2a08e4e54882a848975d1435e09dece58b7aa2de
-_vdrapi=2.0.6
-pkgrel=10
+_vdrapi=2.1.6
+pkgrel=15
 pkgdesc="Complete rewrite of the original yaepg plugin"
 url="http://sourceforge.net/projects/vdryaepghd"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

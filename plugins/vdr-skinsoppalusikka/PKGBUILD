@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinsoppalusikka
 pkgver=2.0.3
-_vdrapi=2.0.6
-pkgrel=3
+_vdrapi=2.1.6
+pkgrel=4
 pkgdesc='Standalone skin providing the good old "ElchiAIO" looks'
 url="http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

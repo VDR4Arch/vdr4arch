@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-remotetimers
 pkgver=1.0.1
-_vdrapi=2.0.6
-pkgrel=3
+_vdrapi=2.1.6
+pkgrel=4
 pkgdesc="Add/Edit/Remove timers on both, the local (client) VDR and a remote (server) VDR"
 url="http://vdr.schmirler.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
