@@ -23,6 +23,7 @@ pkgver() {
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
+  sed -i 's/ -fdiagnostics-color=auto//g' Makefile
   make LIBDVBCSA=1
 }
 
