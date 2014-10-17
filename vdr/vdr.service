@@ -5,6 +5,7 @@ After=sundtek.service
 After=xlogin@vdr.service
 
 [Service]
+Type=notify
 Environment=VDR_CHARSET_OVERRIDE=ISO-8859-15
 EnvironmentFile=-/home/vdr/.dbus/session-bus/%m-0
 ExecStart=/usr/bin/vdr
