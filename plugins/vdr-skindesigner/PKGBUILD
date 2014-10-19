@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skindesigner
-pkgver=0.0.1_25_g762115b
-_gitver=762115bf818fb11b5f03525d115adad1f40c480d
+pkgver=0.0.1_27_g4d0e2e7
+_gitver=4d0e2e731a7ee42a76c07af2cdb2e5b99131ac41
 _vdrapi=2.1.6
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
