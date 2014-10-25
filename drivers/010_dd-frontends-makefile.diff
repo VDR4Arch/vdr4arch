@@ -1,6 +1,6 @@
 --- linux/drivers/media/dvb-frontends/Makefile.old	2013-11-05 08:06:49.000000000 +0100
 +++ linux/drivers/media/dvb-frontends/Makefile	2013-11-05 08:24:17.000000000 +0100
-@@ -96,6 +96,12 @@ obj-$(CONFIG_DVB_STV0367) += stv0367.o
+@@ -105,6 +105,12 @@ obj-$(CONFIG_DVB_STV0367) += stv0367.o
  obj-$(CONFIG_DVB_CXD2820R) += cxd2820r.o
  obj-$(CONFIG_DVB_DRXK) += drxk.o
  obj-$(CONFIG_DVB_TDA18271C2DD) += tda18271c2dd.o
@@ -10,7 +10,6 @@
 +obj-$(CONFIG_DVB_STV6111) += stv6111.o
 +obj-$(CONFIG_DVB_STV0910) += stv0910.o
 +obj-$(CONFIG_DVB_LNBH25) += lnbh25.o
+ obj-$(CONFIG_DVB_SI2165) += si2165.o
  obj-$(CONFIG_DVB_A8293) += a8293.o
  obj-$(CONFIG_DVB_TDA10071) += tda10071.o
- obj-$(CONFIG_DVB_RTL2830) += rtl2830.o
-
