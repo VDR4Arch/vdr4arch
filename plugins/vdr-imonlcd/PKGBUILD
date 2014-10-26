@@ -20,7 +20,7 @@ backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('a7f2d49355758d2ccc33ea21dbadc3de'
          '260e88452dda6327d532ee61d5c3c45e'
          'bf67023030f3d5547441e41a709bc7e0'
-         '3db56608a62ee7d01693b8fd30829db4'
+         '4f012281b8a7025e99067e9945aabda0'
          '685c4657af98a1b7521784b1a547e046')
 
 prepare() {
