@@ -14,7 +14,8 @@ backup=("var/lib/vdr/plugins/$_plugname/cd.mpg")
 source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
         "autostart-improve_libcdio.diff::http://hg.uli-eckhardt.de/autostart/raw-rev/51e4428d565d"
         "50-$_plugname.conf")
-backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf"
+        "var/lib/vdr/plugins/$_plugname/$_plugname.conf")
 md5sums=('7d833142939d21a3edae907f9fa0b55b'
          '826139f5212b9ee465f2233ad084e137'
          'bfac43507495484a347bf5ab6c158651')
