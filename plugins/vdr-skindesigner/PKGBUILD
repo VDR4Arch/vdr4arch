@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skindesigner
-pkgver=0.0.1_35_g0b9e378
-_gitver=0b9e3787a2a920e010ab53330262fe8644e4b0d0
+pkgver=0.0.3
+_gitver=c53dbf7cd63785a4e23b9d85faf6ac8493a7a9c3
 _vdrapi=2.1.6
 pkgrel=1
 pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
@@ -24,7 +24,7 @@ md5sums=('SKIP'
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-$_plugname"
-  git tag -a 0.0.1 -m 'Added Tag' b0509b5182b6e0d04f05e6b3d5676b0d21f51966 2> /dev/null
+  git tag -a 0.0.3 -m 'Added Tag' c53dbf7cd63785a4e23b9d85faf6ac8493a7a9c3 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
