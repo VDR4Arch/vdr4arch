@@ -1,3 +1,4 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-ddci2
 pkgver=0.0.13
 _gitver=381a83d8c7a2d975f0c60bf21105f1f85a1003be

@@ -8,7 +8,7 @@ pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-depends=('graphicsmagick' 'libxml2' "vdr-api=${_vdrapi}")
+depends=('cairo' 'libxml2' "vdr-api=${_vdrapi}")
 makedepends=('git')
 optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
             'vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'

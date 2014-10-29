@@ -1,3 +1,4 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-suspendoutput
 pkgver=2.0.0
 _vdrapi=2.1.6

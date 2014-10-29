@@ -1,3 +1,4 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase=channellogos
 pkgname=({anthra,elchi,enigma,narrowhd,nopacity}-logos)
 pkgver=20140908
@@ -7,7 +8,7 @@ arch=('any')
 url="http://creimer.net/channellogos/"
 license=('GPL2')
 source=(http://creimer.net/channellogos/{anthra,elchi-{576,720,1080},enigma,narrowhd,nopacity-{black,white}}-$pkgver.tar.bz2)
-options=(!strip)
+options=('!strip')
 md5sums=('3da3fb2aee4b9220ccfbc43842dc2684'
          'edfeeef79f48b0ca529413e4c150c7ba'
          'e84648dc8d423b4e3656dfee0443859c'

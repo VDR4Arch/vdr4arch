@@ -9,9 +9,9 @@ url="http://projects.vdr-developer.org/projects/show/graphlcd"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('fontconfig' 'graphicsmagick' 'libusb-compat' 'libvncserver')
-optdepends='serdisplib: Add support for more serial displays'
+optdepends=('serdisplib: Add support for more serial displays')
 makedepends=('git')
-backup=(etc/graphlcd.conf)
+backup=('etc/graphlcd.conf')
 source=("git://projects.vdr-developer.org/graphlcd-base.git#commit=$_gitver")
 md5sums=('SKIP')
 
