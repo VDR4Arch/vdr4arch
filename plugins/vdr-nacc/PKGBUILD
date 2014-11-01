@@ -1,0 +1,39 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdr-nacc
+pkgver=0.0.3
+_vdrapi=2.1.6
+pkgrel=1
+pkgdesc="Software CAM emulation"
+url="http://www.fepg.org/nacc/"
+arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
+license=('GPL2')
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
+source=("http://www.fepg.org/files/$pkgname-$pkgver.tgz"
+        'nacc-vdr1.7.12-support.diff'
+        "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+md5sums=('14d4561d5641a72b3e12659f80e18b17'
+         'c9129617e1307bae84e994117a1790ee'
+         'af67c4c64e9bff9113b22d8795a647b8')
+
+prepare() {
+  cd "$srcdir/$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/nacc-vdr1.7.12-support.diff"
+}
+
+package() {
+  cd "$srcdir/$_plugname-$pkgver"
+
+  mkdir -p "$pkgdir/usr/lib/vdr/plugins"
+  make CFLAGS="$(pkg-config vdr --variable=cflags)" \
+       CXXFLAGS="$(pkg-config vdr --variable=cxxflags)" \
+       VDRDIR="/usr" \
+       LIBDIR="$pkgdir/$(pkg-config vdr --variable=libdir)" \
+       LOCALEDIR="$pkgdir/$(pkg-config vdr --variable=locdir)" \
+       all
+
+  install -Dm755 libvdr-$_plugname.so "$pkgdir/usr/lib/vdr/plugins/libvdr-$_plugname.so.$_vdrapi"
+
+  install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
+}

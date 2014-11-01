@@ -1,0 +1,56 @@
+Author: Manuel Reimer <manuel.reimer@gmx.de>
+
+diff -ruN nacc-0.0.3/manager.c nacc-0.0.3.patched/manager.c
+--- nacc-0.0.3/manager.c	2007-11-10 04:27:51.000000000 +0100
++++ nacc-0.0.3.patched/manager.c	2014-11-01 12:39:01.201673194 +0100
+@@ -146,10 +146,10 @@
+   interpreter = new Interpreter(osd); 
+   parser = new CCParser(this, interpreter);  
+   
+-#if VDRVERSNUM >= 10500      
+-  receiver = new CCReceiver(parser, currentChannel->GetChannelID(), currentChannel->Vpid());
++#if VDRVERSNUM >= 10712      
++  receiver = new CCReceiver(parser, currentChannel);
+ #else
+-  receiver = new CCReceiver(parser, currentChannel->Ca(), currentChannel->Vpid());
++  receiver = new CCReceiver(parser, currentChannel->GetChannelID(), currentChannel->Vpid());
+ #endif
+        
+   receiver->Attach( (cDevice*) currentDevice );   
+diff -ruN nacc-0.0.3/receiver.c nacc-0.0.3.patched/receiver.c
+--- nacc-0.0.3/receiver.c	2007-11-10 04:14:48.000000000 +0100
++++ nacc-0.0.3.patched/receiver.c	2014-11-01 12:38:40.389806281 +0100
+@@ -4,12 +4,12 @@
+ ///////////////////////////////////////////////////////////////////////////////
+ 
+ 
+-#if VDRVERSNUM >= 10500
++#if VDRVERSNUM >= 10712
++CCReceiver::CCReceiver(CCParser* p, const cChannel *Channel)
++:cReceiver(Channel, -1)
++#else
+ CCReceiver::CCReceiver(CCParser* p, tChannelID ChannelID, int Vpid, int* Apid, int* Dpid)
+ :cReceiver(ChannelID, -1, Vpid, Apid, Dpid, NULL)
+-#else
+-CCReceiver::CCReceiver(CCParser* p, int Ca, int Vpid, int* Apid, int* Dpid)
+-:cReceiver(Ca, -1, Vpid, Apid, Dpid, NULL)
+ #endif
+ {
+   parser = p;
+diff -ruN nacc-0.0.3/receiver.h nacc-0.0.3.patched/receiver.h
+--- nacc-0.0.3/receiver.h	2007-11-03 22:26:42.000000000 +0100
++++ nacc-0.0.3.patched/receiver.h	2014-11-01 12:38:00.492621132 +0100
+@@ -14,10 +14,10 @@
+ class CCReceiver : public cReceiver
+ {
+ public:
+-#if VDRVERSNUM >= 10500
+-  CCReceiver(CCParser* p, tChannelID ChannelID, int Vpid, int* Apid = NULL, int* Dpid = NULL);
++#if VDRVERSNUM >= 10712
++  CCReceiver(CCParser* p, const cChannel *Channel);
+ #else
+-  CCReceiver(CCParser* p, int Ca, int Vpid, int* Apid = NULL, int* Dpid = NULL);
++  CCReceiver(CCParser* p, tChannelID ChannelID, int Vpid, int* Apid = NULL, int* Dpid = NULL);
+ #endif  
+   virtual ~CCReceiver();
+   
