@@ -1,4 +1,8 @@
 post_install() {
+  if [ ! -f var/lib/vdradmin/vdradmind.conf ]; then
+    yes | vdradmind --config > /dev/null
+  fi
+
   mkdir -p var/lib/vdradmin
   chown -R vdr:vdr var/lib/vdradmin
 
