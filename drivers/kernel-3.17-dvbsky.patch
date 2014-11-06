@@ -7559,7 +7559,7 @@ diff -purN linux/drivers/media/pci/smipcie/Makefile linux/drivers/media/pci/smip
 diff -purN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smipcie/smipcie.c
 --- linux/drivers/media/pci/smipcie/smipcie.c	1970-01-01 01:00:00.000000000 +0100
 +++ linux/drivers/media/pci/smipcie/smipcie.c	2014-09-27 00:45:39.305497294 +0200
-@@ -0,0 +1,1131 @@
+@@ -0,0 +1,1148 @@
 +/*
 +    SMI PCIe driver for DVBSky cards.
 +    Copyright (C) 2014 Max Nibble <nibble.max@gmail.com>
@@ -7568,6 +7568,7 @@ diff -purN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smi
 +#include "smipcie.h"
 +#include "dvbsky_m88rs6000.h"
 +#include "dvbsky_m88ds3103.h"
++#include "sit2.h"
 +
 +static int debug;
 +module_param(debug, int, 0644);
@@ -8282,6 +8283,12 @@ diff -purN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smi
 +	//.tuner_readstops = 1,
 +};
 +
++static struct sit2_config smi_dvbsky_t9580_sit2_cfg = {
++	.ts_bus_mode = 2,
++	.ts_clock_mode = 0,
++	.start_ctrl = NULL,
++};
++
 +static int smi_fe_init(struct smi_port *port)
 +{
 +	int ret = 0;
@@ -8299,7 +8306,7 @@ diff -purN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smi
 +			port->fe = dvb_attach(dvbsky_m88ds3103_attach, &smi_dvbsky_s950_cfg, i2c);		
 +		break;
 +		case DVBSKY_FE_SIT2:
-+		
++			port->fe = dvb_attach(sit2_attach, &smi_dvbsky_t9580_sit2_cfg, i2c);
 +		break;
 +	}
 +	if(!port->fe)
@@ -8666,6 +8673,15 @@ diff -purN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smi
 +	.fe_1 = DVBSKY_FE_M88DS3103,	
 +};
 +
++static struct smi_cfg_info dvbsky_t9580_cfg = {
++	.type = SMI_DVBSKY_T9580,
++	.name = "DVBSky T9580 V3",
++	.ts_0 = 0x03,
++	.ts_1 = 0x03,
++	.fe_0 = DVBSKY_FE_SIT2,
++	.fe_1 = DVBSKY_FE_M88DS3103,
++};
++
 +/* PCI IDs */
 +#define SMI_ID(_subvend, _subdev, _driverdata) {	\
 +	.vendor      = SMI_VID,    .device    = SMI_PID, \
@@ -8675,6 +8691,7 @@ diff -purN linux/drivers/media/pci/smipcie/smipcie.c linux/drivers/media/pci/smi
 +static const struct pci_device_id smi_id_table[] = {
 +	SMI_ID(0x4254, 0x0552, dvbsky_s952_cfg),
 +	SMI_ID(0x4254, 0x0550, dvbsky_s950_cfg),
++	SMI_ID(0x4254, 0x5580, dvbsky_t9580_cfg),
 +	{0}
 +};
 +MODULE_DEVICE_TABLE(pci, smi_id_table);
