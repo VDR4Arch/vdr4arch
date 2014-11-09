@@ -1,6 +1,6 @@
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=dvbsky-firmware
-pkgver=20141013
+pkgver=20141108
 pkgrel=1
 pkgdesc="Firmware for DVBSky cards/boxes"
 url="http://www.dvbsky.net/Support.html"
@@ -8,15 +8,16 @@ arch=('any')
 license=('custom')
 source=("http://www.dvbsky.net/download/linux/$pkgname.tar.gz"
         'LICENSE')
-md5sums=('71e6aaa5f2b90a75a931857fe8086b98'
+md5sums=('544e70ff818e6dfb0ec52b04d335acde'
          '3616759a98aaedb3e1cce50271263327')
 
 #server doesn't like curl's user agent
 DLAGENTS="$( IFS=$'\n'; echo "${DLAGENTS[*]}" | grep '^http::' ) --user-agent 'Mozilla/4.0'"
 
 package() {
-  for file in dvb-{demod-m88rs6000,fe-ds300x,fe-ds3103,fe-rs6000}.fw; do
-    install -Dm644 "$srcdir/$pkgname/$file" "$pkgdir/usr/lib/firmware/$file"
+  cd "$srcdir/$pkgname"
+  for file in *.fw; do
+    install -Dm644 $file "$pkgdir/usr/lib/firmware/$file"
   done
   install -Dm644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }
