@@ -1,21 +1,21 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skindesigner
-pkgver=0.0.3_8_gf478ad1
-_gitver=f478ad10bbac192819c98a2edab464fb6347d5e9
+pkgver=0.0.3_35_g60cf545
+_gitver=60cf545efafbb1ad82056af11fc5ef3c22f90263
 _vdrapi=2.1.6
 pkgrel=1
-pkgdesc="highly customizable native true color skin for the Video Disc Recorder"
+pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
-license=('GPL2')
-depends=('graphicsmagick' 'libxml2' "vdr-api=${_vdrapi}")
+license=('Apache' 'GPL2')
+depends=('librsvg' "vdr-api=${_vdrapi}")
 makedepends=('git')
 optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
             'vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
             'vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("git://projects.vdr-developer.org/vdr-plugin-skindesigner.git#commit=$_gitver"
+source=("git://github.com/M-Reimer/vdr-plugin-skindesigner.git#commit=$_gitver"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
@@ -24,7 +24,7 @@ md5sums=('SKIP'
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-$_plugname"
-#   git tag -a 0.0.3 -m 'Added Tag' c53dbf7cd63785a4e23b9d85faf6ac8493a7a9c3 2> /dev/null
+  git tag -a 0.0.3 -m 'Added Tag' c53dbf7cd63785a4e23b9d85faf6ac8493a7a9c3 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
@@ -37,5 +37,8 @@ package() {
   cd "${srcdir}/vdr-plugin-$_plugname"
   make DESTDIR="$pkgdir" install
 
+  for file in fonts/VDROpenSans/*.ttf; do
+    install -Dm644 $file "$pkgdir/usr/share/fonts/TTF/$(basename $file)"
+  done
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }
