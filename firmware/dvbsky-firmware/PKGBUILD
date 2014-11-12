@@ -1,6 +1,6 @@
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=dvbsky-firmware
-pkgver=20141108
+pkgver=20141111
 pkgrel=1
 pkgdesc="Firmware for DVBSky cards/boxes"
 url="http://www.dvbsky.net/Support.html"
@@ -8,7 +8,7 @@ arch=('any')
 license=('custom')
 source=("http://www.dvbsky.net/download/linux/$pkgname.tar.gz"
         'LICENSE')
-md5sums=('544e70ff818e6dfb0ec52b04d335acde'
+md5sums=('ea5ae9d1c180dcd11adb40b9709a707d'
          '3616759a98aaedb3e1cce50271263327')
 
 #server doesn't like curl's user agent
