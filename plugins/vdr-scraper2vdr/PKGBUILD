@@ -9,7 +9,7 @@ url="http://projects.vdr-developer.org/projects/plg-scraper2vdr"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('graphicsmagick' 'libmariadbclient' "vdr-api=${_vdrapi}")
-makedepends=('imlib2')
+makedepends=('git' 'imlib2')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-scraper2vdr.git#commit=$_gitver"
         "50-$_plugname.conf")
