@@ -1,13 +1,13 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 _srcname=Holo
 pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
-pkgver=0.0.1_20_g06f861c
-_gitver=b5c764210fb0d4ec3b533bfbbb21662389c2d60e
+pkgver=0.0.1_20_g3e547ff
+_gitver=3e547ff077657274d84a99420b6866d5af769832
 pkgrel=1
 pkgdesc="Holo Skin for SkinDesigner"
 arch=('any')
 url="https://github.com/CReimer/Holo"
-depends=('vdr-skindesigner')
+depends=('ttf-roboto' 'vdr-skindesigner')
 makedepends=('git')
 optdepends=('skindesigner-logos: To show channellogos in DisplayChannel view')
 license=('GPL2')
