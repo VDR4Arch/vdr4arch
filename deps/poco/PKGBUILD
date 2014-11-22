@@ -1,0 +1,46 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# Original Maintainer: Robert Knauer <robert@privatdemail.net>
+# Contributor: Rodrigo Grumiche Silva <grumiche at integrityit dot com dot br>
+# Contributor: nozog
+# Contributor: davidhjelm
+# Contributor: Ray Kohler <ataraxia937 at gmail dot com>
+# Contributor: Nathan Owe < ndowens04 at gmail dot com>
+
+pkgname=poco
+pkgver=1.4.7
+pkgrel=1
+pkgdesc="C++ class libraries for network-centric, portable applications, complete edition"
+arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
+url="http://www.pocoproject.org"
+license=('custom:boost')
+depends=('expat' 'libmariadbclient' 'sqlite' 'unixodbc')
+makedepends=('chrpath')
+source=("http://pocoproject.org/releases/${pkgname}-${pkgver}/${pkgname}-${pkgver}-all.tar.gz"
+        'http://linux2.mathematik.tu-darmstadt.de/pub/linux/distributions/gentoo-portage/dev-libs/poco/files/poco-1.4.4-patch-for-libpcre-8.32.patch')
+sha256sums=('922bf9d8daa0fc350046fc70ce11f74463e88316ac5e08f7c9ce60bd36243e67'
+            'e5e0328898393d28e8caccf983b3ac4486af35844a2af9f68c79f7ade247c467')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}-all"
+  patch -p1 -i "$srcdir/poco-1.4.4-patch-for-libpcre-8.32.patch"
+  sed -i 's/$(STRIPCMD)//g' build/rules/*
+}
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}-all"
+  ./configure --prefix=/usr --no-samples --no-tests --unbundled
+  make ODBCLIBDIR="/usr/lib"
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}-all"
+  make ODBCLIBDIR="/usr/lib" DESTDIR="${pkgdir}" install
+  install -Dm644 'LICENSE' "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  # remove rpath information from binaries
+  chrpath -d "${pkgdir}/usr/bin/cpspc"
+  chrpath -d "${pkgdir}/usr/bin/cpspcd"
+  chrpath -d "${pkgdir}/usr/bin/f2cpspd"
+  chrpath -d "${pkgdir}/usr/bin/f2cpsp"
+  # remove debugging libraries
+  rm "${pkgdir}/usr/lib/libPoco"*"d.so"*
+}
