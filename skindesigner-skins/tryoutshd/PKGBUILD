@@ -1,0 +1,28 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+_srcname=tryoutsHD
+pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
+pkgver=0.0.1_6_g264db5a
+_gitver=264db5ae76bdfb3345800966b3e89c1222e1ccfd
+pkgrel=1
+pkgdesc="TryoutsHD Skin for SkinDesigner"
+arch=('any')
+url="https://github.com/BooStars/skindesigner-tryoutsHD"
+depends=('vdr-skindesigner')
+makedepends=('git')
+optdepends=('skindesigner-logos: To show channellogos in DisplayChannel view')
+license=('GPL2')
+install=$pkgname.install
+source=("git://github.com/BooStars/skindesigner-tryoutsHD.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/skindesigner-${_srcname}"
+  git tag -a 0.0.1 -m 'Added Tag' 59e9eaf6398628b711a4671e5a1020c17a4a4057 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+package() {
+  cd "$srcdir/skindesigner-${_srcname}"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
+  cp -r $_srcname "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
+}

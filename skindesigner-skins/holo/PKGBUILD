@@ -1,0 +1,31 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+_srcname=Holo
+pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
+pkgver=0.0.1_20_g06f861c
+_gitver=b5c764210fb0d4ec3b533bfbbb21662389c2d60e
+pkgrel=1
+pkgdesc="Holo Skin for SkinDesigner"
+arch=('any')
+url="https://github.com/CReimer/Holo"
+depends=('vdr-skindesigner')
+makedepends=('git')
+optdepends=('skindesigner-logos: To show channellogos in DisplayChannel view')
+license=('GPL2')
+install=$pkgname.install
+source=("git://github.com/CReimer/$_srcname.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/${_srcname}"
+  git tag -a 0.0.1 -m 'Added Tag' fb1cef5c4afab20e5f0f24167863b11ac2cd07f9 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+package() {
+  cd "$srcdir/${_srcname}"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
+  cp -r * "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
+
+  mkdir -p "$pkgdir/var/lib/vdr/themes"
+  find $pkgdir -name *.theme -exec mv {} "$pkgdir/var/lib/vdr/themes" \;
+}

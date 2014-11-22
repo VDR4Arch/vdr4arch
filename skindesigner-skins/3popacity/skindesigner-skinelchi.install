@@ -1,0 +1,7 @@
+post_install() {
+  rm -f var/lib/vdr/themes/3pOpacity-default.theme
+}
+
+post_upgrade() {
+  post_install
+}

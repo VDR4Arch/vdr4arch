@@ -1,0 +1,28 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+_srcname=3pOpacity
+pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
+pkgver=0.0.1_5_g2641275
+_gitver=2641275e17e6750be61154a0baaecf5d3b2392e4
+pkgrel=1
+pkgdesc="Skin 3pOpacity for SkinDesigner"
+arch=('any')
+url="https://github.com/3PO/3pOpacity"
+depends=('vdr-skindesigner')
+makedepends=('git')
+optdepends=('skindesigner-logos: To show channellogos in DisplayChannel view')
+license=('GPL2')
+source=("git://github.com/3PO/$_srcname.git#commit=$_gitver")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/${_srcname}"
+  git tag -a 0.0.1 -m 'Added Tag' 09eafd9b21a4f2c2fa842f93e563750d2a62c023 2> /dev/null
+  git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+package() {
+  cd "$srcdir/${_srcname}"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
+  rm README.md
+  cp -r * "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
+}
