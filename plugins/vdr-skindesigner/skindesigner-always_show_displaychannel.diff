@@ -1,0 +1,15 @@
+diff --git a/displaychannel.c b/displaychannel.c
+index d26e991..75f86ed 100644
+--- a/displaychannel.c
++++ b/displaychannel.c
+@@ -4,8 +4,8 @@
+ cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) {
+     if (firstDisplay) {
+         firstDisplay = false;
+-        doOutput = false;
+-        return;
++        doOutput = true;
++        //return;
+     } else if (!channelTemplate) {
+         esyslog("skindesigner: displayChannel no valid template - aborting");
+         doOutput = false;

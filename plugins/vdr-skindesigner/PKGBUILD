@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skindesigner
-pkgver=0.0.7_1_g714ee26
-_gitver=714ee26b1bdcfdac2968d7dcf885803074c4aa57
+pkgver=0.0.8
+_gitver=def1b3cc301398875b43fc52e50ed936302f56c6
 _vdrapi=2.1.6
 pkgrel=1
 pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
@@ -16,15 +16,22 @@ optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-skindesigner.git#commit=$_gitver"
+        'skindesigner-always_show_displaychannel.diff'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
 md5sums=('SKIP'
+         'b7b96592d3c0d0fc1ac994dee8594ac5'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-$_plugname"
   git describe --tags | sed 's/-/_/g;s/v//'
+}
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  patch -p1 -i "$srcdir/skindesigner-always_show_displaychannel.diff"
 }
 
 build() {
