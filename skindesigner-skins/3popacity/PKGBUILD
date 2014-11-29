@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 _srcname=3pOpacity
 pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
-pkgver=0.0.1_5_g2641275
-_gitver=2641275e17e6750be61154a0baaecf5d3b2392e4
-pkgrel=2
+pkgver=0.0.1_6_g4ec153f
+_gitver=4ec153f5e6d99f70981822295c54ddcb59e40642
+pkgrel=1
 pkgdesc="Skin 3pOpacity for SkinDesigner"
 arch=('any')
 url="https://github.com/3PO/3pOpacity"
