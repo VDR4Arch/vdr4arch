@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skindesigner
-pkgver=0.0.8
-_gitver=def1b3cc301398875b43fc52e50ed936302f56c6
+pkgver=0.1.0
+_gitver=012e5397434d117f38dd364e192c9358ca2f8285
 _vdrapi=2.1.6
 pkgrel=1
 pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
@@ -36,7 +36,7 @@ prepare() {
 
 build() {
   cd "${srcdir}/vdr-plugin-$_plugname"
-  make IMAGELIB=graphicsmagick
+  make
 }
 
 package() {
