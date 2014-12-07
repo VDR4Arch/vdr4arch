@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=w_scan
-pkgver=20140727
+pkgver=20141122
 pkgrel=1
 pkgdesc="Small channel scan tool for vdr"
 url="http://wirbel.htpc-forum.de/w_scan/index2.html"
@@ -8,7 +8,7 @@ arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('glibc')
 source=("http://wirbel.htpc-forum.de/$pkgname/$pkgname-$pkgver.tar.bz2")
-md5sums=('SKIP')
+md5sums=('da0f190bee696a02bf030fc01c0706e8')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
