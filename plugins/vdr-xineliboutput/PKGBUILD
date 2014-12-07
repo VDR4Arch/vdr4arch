@@ -4,7 +4,7 @@ pkgname=(vdr-xineliboutput xineliboutput-frontends xineliboutput-xineplug)
 pkgver=1.1.0.32.gbf166be
 _gitver=bf166be4a21c0a86f6852c4695dcdb06863f4e93
 _vdrapi=2.1.6
-pkgrel=3
+pkgrel=4
 url="http://www.sourceforge.net/projects/xineliboutput"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
@@ -12,9 +12,11 @@ makedepends=('dbus-glib' 'git' 'glu' 'libcec' 'libextractor' 'libxrandr' 'mesa' 
 _plugname=$(echo $pkgbase | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/$_plugname.git#commit=$_gitver"
         'xineliboutput-vdr2.1.6compat.diff'
+        'xineliboutput_renamed_iDoubleTapTimeoutMs_in_libcec.diff'
         "50-$_plugname.conf")
 md5sums=('SKIP'
          '14ef92cd38503a2f426669aa43b0aeb4'
+         'd9e14cb60e536109716ebc886f54880b'
          'a9a3cd09b950d2024b21a1c6e0620506')
 
 pkgver() {
@@ -25,6 +27,7 @@ pkgver() {
 prepare() {
   cd "${srcdir}/${_plugname}"
   patch -p1 -i "$srcdir/xineliboutput-vdr2.1.6compat.diff"
+  patch -p1 -i "$srcdir/xineliboutput_renamed_iDoubleTapTimeoutMs_in_libcec.diff"
 }
 
 build() {
