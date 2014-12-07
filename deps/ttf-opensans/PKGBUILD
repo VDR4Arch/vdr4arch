@@ -1,0 +1,20 @@
+# Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
+
+pkgname=ttf-opensans
+pkgver=20141207
+pkgrel=1
+pkgdesc="Google Fonts Open Sans"
+arch=('any')
+license=('Apache')
+url="http://www.google.com/fonts/specimen/Open+Sans"
+depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
+install=$pkgname.install
+source=("http://dl.1001fonts.com/open-sans.zip")
+md5sums=('e628ed23fb53515a0d26644dd15c96be')
+
+package() {
+  cd $srcdir
+
+  install -d $pkgdir/usr/share/fonts/TTF
+  install -m644 $srcdir/OpenSans*.ttf $pkgdir/usr/share/fonts/TTF
+}

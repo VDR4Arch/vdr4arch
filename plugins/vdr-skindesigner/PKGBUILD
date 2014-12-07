@@ -3,7 +3,7 @@ pkgname=vdr-skindesigner
 pkgver=0.1.0
 _gitver=012e5397434d117f38dd364e192c9358ca2f8285
 _vdrapi=2.1.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -11,17 +11,20 @@ license=('Apache' 'GPL2')
 depends=('librsvg' "vdr-api=${_vdrapi}")
 makedepends=('git')
 optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
+            'ttf-opensans: Required if you want to use the metrixhd skin'
             'vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
             'vdr-tvscraper: To display scraped images in various EPG views')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-skindesigner.git#commit=$_gitver"
         'skindesigner-always_show_displaychannel.diff'
+        'skindesigner-use-opensans-font.diff'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
 md5sums=('SKIP'
          'b7b96592d3c0d0fc1ac994dee8594ac5'
+         '2bb84dd39119c2a673887d178dcb4839'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
 pkgver() {
@@ -32,6 +35,7 @@ pkgver() {
 prepare() {
   cd "${srcdir}/vdr-plugin-$_plugname"
   patch -p1 -i "$srcdir/skindesigner-always_show_displaychannel.diff"
+  patch -p1 -i "$srcdir/skindesigner-use-opensans-font.diff"
 }
 
 build() {
@@ -43,8 +47,5 @@ package() {
   cd "${srcdir}/vdr-plugin-$_plugname"
   make DESTDIR="$pkgdir" install
 
-  for file in fonts/VDROpenSans/*.ttf; do
-    install -Dm644 $file "$pkgdir/usr/share/fonts/TTF/$(basename $file)"
-  done
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
 }
