@@ -10,7 +10,7 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://ftp.uni-kl.de/pub/linux/gentoo/distfiles/$pkgname-$pkgver.tgz"
-        "https://raw.githubusercontent.com/CReimer/vdr-plugin-bgprocess/master/Makefile"
+        "$pkgname-Makefile::https://raw.githubusercontent.com/CReimer/vdr-plugin-bgprocess/master/Makefile"
         'bgprocess-tlphrases-fix.diff'
         'bgprocess-osditem-fix.diff')
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
@@ -24,7 +24,7 @@ prepare() {
 
   patch -p1 -i ${srcdir}/bgprocess-tlphrases-fix.diff #By Holger Schvestka (yaVDR)
   patch -p1 -i ${srcdir}/bgprocess-osditem-fix.diff #By Holger Schestka (yaVDR)
-  cp "$srcdir/Makefile" .
+  cp "$srcdir/$pkgname-Makefile" Makefile
 }
 
 build() {

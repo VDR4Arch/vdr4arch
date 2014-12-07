@@ -10,7 +10,7 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/attachments/download/652/vdr-plugin-$_plugname-$pkgver.tgz"
-        "http://projects.vdr-developer.org/git/vdr-plugin-sleeptimer.git/plain/Makefile"
+        "$pkgname-Makefile::http://projects.vdr-developer.org/git/vdr-plugin-sleeptimer.git/plain/Makefile"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('cd7012d58d1350a6dc5597dd50a2cd40'
@@ -19,9 +19,8 @@ md5sums=('cd7012d58d1350a6dc5597dd50a2cd40'
 
 prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-  cp "$srcdir/Makefile" .
+  cp "$srcdir/$pkgname-Makefile" Makefile
   sed -i 's/i18n\.o//g' Makefile
-
 }
 
 build() {

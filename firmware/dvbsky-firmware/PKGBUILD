@@ -6,7 +6,7 @@ pkgdesc="Firmware for DVBSky cards/boxes"
 url="http://www.dvbsky.net/Support_linux.html"
 arch=('any')
 license=('custom')
-source=("http://www.dvbsky.net/download/linux/$pkgname.tar.gz"
+source=("$pkgname-$pkgver.tar.gz::http://www.dvbsky.net/download/linux/$pkgname.tar.gz"
         'LICENSE')
 md5sums=('b1aa72c5625e3deb9c8c9199d3b8789e'
          '3616759a98aaedb3e1cce50271263327')
