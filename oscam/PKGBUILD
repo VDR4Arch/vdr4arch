@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=oscam
-pkgver=10012
+pkgver=10077
 pkgrel=1
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.streamboard.tv/oscam"
@@ -14,7 +14,7 @@ source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${p
         'oscam.service'
         'oscam-faster_retry.diff')
 noextract=("${pkgname}-${pkgver}.zip")
-md5sums=('614fffd54a4ee584ec6f52f48d9a4bd0'
+md5sums=('344f2d0aa277991b0cbc80cab07b07a2'
          'f6200432fa01030016d6fac913033812'
          '0de56c99e34a6bdb7f4dc6349478a920'
          'b67f77bf1ecaeb9bc4f8cddb5258ed4e')
@@ -24,7 +24,7 @@ prepare() {
 
   cd "$srcdir/trunk"
   chmod +x config.sh webif/pages_mkdep
-  patch -p1 -i "$srcdir/oscam-faster_retry.diff"
+#   patch -p1 -i "$srcdir/oscam-faster_retry.diff"
 }
 
 build() {
