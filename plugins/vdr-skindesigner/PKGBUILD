@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skindesigner
-pkgver=0.1.0
-_gitver=012e5397434d117f38dd364e192c9358ca2f8285
+pkgver=0.1.1
+_gitver=8328a5d4d928bd81179ab03490eb59655d418b58
 _vdrapi=2.1.6
-pkgrel=2
+pkgrel=1
 pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
