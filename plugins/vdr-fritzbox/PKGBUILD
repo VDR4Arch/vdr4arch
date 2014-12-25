@@ -2,12 +2,12 @@
 pkgname=vdr-fritzbox
 pkgver=1.5.3
 _vdrapi=2.1.6
-pkgrel=8
+pkgrel=9
 pkgdesc="Connects to the Fritz!Box to inform you about incoming and outgoing calls"
 url="http://www.joachim-wilke.de/vdr-fritz.htm"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-depends=('boost-libs' 'commoncpp2' 'libgcrypt' "vdr-api=${_vdrapi}")
+depends=('boost-libs>=1.57.0' 'commoncpp2' 'libgcrypt' "vdr-api=${_vdrapi}")
 makedepends=('boost')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://www.joachim-wilke.de/downloads/vdr-fritz/$pkgname-$pkgver.tgz"
