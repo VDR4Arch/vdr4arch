@@ -13,7 +13,7 @@ makedepends=('git')
 install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-xmltv2vdr.git#commit=$_gitver"
-        "xmltv2vdr_newmakefile.diff::https://github.com/CReimer/vdr-plugin-xmltv2vdr/compare/41b9...master.diff"
+        "xmltv2vdr_newmakefile_v2.diff"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf"
         "var/lib/epgsources/epgdata2xmltv")
@@ -29,7 +29,7 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/vdr-plugin-$_plugname"
-  patch -p1 -i "$srcdir/xmltv2vdr_newmakefile.diff"
+  patch -p1 -i "$srcdir/xmltv2vdr_newmakefile_v2.diff"
 }
 
 build() {
