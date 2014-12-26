@@ -2,12 +2,13 @@
 pkgname=vdr-suspendoutput
 pkgver=2.0.0
 _vdrapi=2.1.6
-pkgrel=2
+pkgrel=3
 pkgdesc="Output device that does nothing"
 url="http://phivdr.dyndns.org/vdr/vdr-dummydevice/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
+makedepends=('ffmpeg')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://phivdr.dyndns.org/vdr/$pkgname/$pkgname-$pkgver.tgz"
         "$_plugname-vdr2.1.2compat.diff"
@@ -20,6 +21,12 @@ md5sums=('4cbeaf9bf9c83e72ed3a8dee703caf39'
 prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
   patch -p1 -i "$srcdir/$_plugname-vdr2.1.2compat.diff"
+
+  # http://www.vdr-wiki.de/wiki/index.php/Kategorie:Raspbian_VDR_Streaming_Client_mittels_Streamdev_und_rpihddevice#Installation_vorbereiten
+  for i in *.mpg; do
+    mv $i $i.pes
+    ffmpeg -i $i.pes -f mpegts $i
+  done
 }
 
 build() {
