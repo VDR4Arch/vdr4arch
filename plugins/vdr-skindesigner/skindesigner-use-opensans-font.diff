@@ -14,7 +14,7 @@ index 3f54d56..a532920 100644
      <fonts>
 -        <font name="light">VDROpen Sans Light:Light</font>
 -        <font name="semibold">VDROpen Sans Semibold:Semibold</font>
-+        <font name="light">Open Sans Light:Light</font>
-+        <font name="semibold">Open Sans Semibold:Semibold</font>
++        <font name="light">Open Sans:Light</font>
++        <font name="semibold">Open Sans:Semibold</font>
      </fonts>
  </globals>

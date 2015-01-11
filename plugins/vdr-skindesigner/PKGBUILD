@@ -1,30 +1,23 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
-pkgname=vdr-skindesigner
-pkgver=0.1.2
-_gitver=2ddc1ee46bb066029d8977801972362d0daae4c2
+pkgbase='vdr-skindesigner'
+pkgname=($pkgbase skindesigner-{blackhole,metrixhd,nopacity})
+pkgver=0.1.2_7_g5d86c45
+_gitver=5d86c45bc679974079842913b81785a4fbfb3305
 _vdrapi=2.1.6
 pkgrel=1
-pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
-license=('Apache' 'GPL2')
-depends=('librsvg' "vdr-api=${_vdrapi}")
-makedepends=('git')
-optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
-            'ttf-opensans: Required if you want to use the metrixhd skin'
-            'vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
-            'vdr-tvscraper: To display scraped images in various EPG views')
-install="$pkgname.install"
-_plugname=$(echo $pkgname | sed 's/vdr-//g')
+license=('GPL2')
+makedepends=('git' 'librsvg' 'vdr')
+_plugname=$(echo $pkgbase | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-skindesigner.git#commit=$_gitver"
         'skindesigner-always_show_displaychannel.diff'
         'skindesigner-use-opensans-font.diff'
         "50-$_plugname.conf")
-backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
 md5sums=('SKIP'
          'b7b96592d3c0d0fc1ac994dee8594ac5'
-         '2bb84dd39119c2a673887d178dcb4839'
+         'd2dab86d07fc0fa38a4141d2e728c620'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
 pkgver() {
@@ -43,9 +36,64 @@ build() {
   make
 }
 
-package() {
+package_vdr-skindesigner() {
+  pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
+  depends=('librsvg' "vdr-api=${_vdrapi}")
+  optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
+              'vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
+              'vdr-tvscraper: To display scraped images in various EPG views')
+  backup=("etc/vdr/conf.avail/50-$_plugname.conf")
+
   cd "${srcdir}/vdr-plugin-$_plugname"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
+  rm -r "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
+  rm -r "$pkgdir/var/lib/vdr/themes"
+
+  cd "$pkgdir/usr/lib/vdr/plugins/skindesigner/scripts"
+  mv temperatures.default temperatures
+  rm README temperatures.g2v
+}
+
+package_skindesigner-blackhole() {
+  arch=('any')
+  pkgdesc="Blackhole Skin for SkinDesigner"
+  depends=('ttf-sourcesanspro' 'vdr-skindesigner')
+  install="$pkgbase.install"
+
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
+  cp -r skins/blackhole "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/"
+
+  mkdir -p "$pkgdir/var/lib/vdr/themes"
+  cp -r themes/blackhole-* "$pkgdir/var/lib/vdr/themes"
+}
+
+package_skindesigner-metrixhd() {
+  arch=('any')
+  pkgdesc="MetrixHD Skin for SkinDesigner"
+  depends=('ttf-opensans' 'vdr-skindesigner')
+  install="$pkgbase.install"
+
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
+  cp -r skins/metrixhd "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/"
+
+  mkdir -p "$pkgdir/var/lib/vdr/themes"
+#   cp -r themes/metrixhd-* "$pkgdir/var/lib/vdr/themes"
+}
+
+package_skindesigner-nopacity() {
+  arch=('any')
+  pkgdesc="nOpacity Skin for SkinDesigner"
+  depends=('vdr-skindesigner')
+  install="$pkgbase.install"
+
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
+  cp -r skins/nopacity "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/"
+
+  mkdir -p "$pkgdir/var/lib/vdr/themes"
+  cp -r themes/nopacity-* "$pkgdir/var/lib/vdr/themes"
 }
