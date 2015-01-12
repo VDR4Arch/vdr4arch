@@ -1,30 +1,26 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=oscam
-pkgver=10077
+pkgver=10173
 pkgrel=1
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.streamboard.tv/oscam"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL3')
 depends=('libusb' 'openssl')
-backup=('var/lib/oscam/oscam.conf')
 install='oscam.install'
 source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
-        'oscam.conf'
         'oscam.service'
-        'oscam-faster_retry.diff')
+        'oscam.sysuser')
 noextract=("${pkgname}-${pkgver}.zip")
-md5sums=('344f2d0aa277991b0cbc80cab07b07a2'
-         'f6200432fa01030016d6fac913033812'
+md5sums=('48b0d428e055271151439195743edc8e'
          '0de56c99e34a6bdb7f4dc6349478a920'
-         'b67f77bf1ecaeb9bc4f8cddb5258ed4e')
+         'be0d9d7a5fdd8cf4918c4ea91cebd989')
 
 prepare() {
   cat "${pkgname}-${pkgver}.zip" | bsdtar -xf -
 
   cd "$srcdir/trunk"
   chmod +x config.sh webif/pages_mkdep
-#   patch -p1 -i "$srcdir/oscam-faster_retry.diff"
 }
 
 build() {
@@ -45,9 +41,6 @@ package() {
   install -Dm755 oscam "$pkgdir/usr/bin/oscam"
   install -Dm755 list_smargo "$pkgdir/usr/bin/list_smargo"
 
-  #Install config
-  install -Dm644 "$srcdir/oscam.conf" "$pkgdir/var/lib/oscam/oscam.conf"
-
   #Install man-pages
   mkdir -p $pkgdir/usr/share/man/man1/
   mkdir -p $pkgdir/usr/share/man/man5/
@@ -56,4 +49,7 @@ package() {
 
   #Install service file
   install -Dm644 ${srcdir}/oscam.service "$pkgdir/usr/lib/systemd/system/oscam.service"
+
+  #Install sysuser config
+  install -Dm644 ${srcdir}/oscam.sysuser "$pkgdir/usr/lib/sysusers.d/oscam.conf"
 }

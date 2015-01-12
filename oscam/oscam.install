@@ -1,15 +1,31 @@
 post_install() {
-  groupadd oscam 2> /dev/null
-  useradd -m -d /var/lib/oscam -g oscam -G uucp,video oscam 2> /dev/null
+  systemd-sysusers
 
-  chown -R oscam:oscam var/lib/oscam
+  if [ ! -f /var/lib/oscam/oscam.conf ]; then
+    mkdir -p /var/lib/oscam
+    cat <<'EOF' > /var/lib/oscam/oscam.conf
+[global]
+logfile                       = syslog
 
-  echo "Default username: myusername"
-  echo "Default password: mypassword"
-  echo "Default webinterface port: 8080"
-  echo "WARNING! Webinterface is accessible for all IPs by default. Change that!"
+[webif]
+httpport                      = 8080
+httpuser                      = myusername
+httppwd                       = mypassword
+httpallowed                   = 0.0.0.0-255.255.255.255
+EOF
+    chown -R oscam:oscam /var/lib/oscam
+    echo "Default username: myusername"
+    echo "Default password: mypassword"
+    echo "Default webinterface port: 8080"
+    echo "WARNING! Webinterface is accessible for all IPs by default. Change that!"
+  fi
 }
 
 post_upgrade() {
-  chown -R oscam:oscam var/lib/oscam
+  systemd-sysusers
+
+  if [ ! -f /var/lib/oscam/oscam.conf ]; then
+    mv /var/lib/oscam/oscam.conf.pacsave \
+      /var/lib/oscam/oscam.conf 2> /dev/null
+  fi
 }
