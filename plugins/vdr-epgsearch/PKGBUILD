@@ -11,7 +11,6 @@ license=('GPL2')
 depends=('gcc-libs' 'pcre' "vdr-api=${_vdrapi}")
 optdepends=('msmtp: To send notification mails (Simpler replacement for sendmail)'
             'ssmtp: To send notification mails (Another simpler replacement for sendmail)')
-install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://winni.vdr-developer.org/epgsearch/downloads/beta/$pkgname-$pkgver.tgz"
         'epgsearch-vdr2.1.2compat.diff'
@@ -53,4 +52,6 @@ package() {
   echo "[${_plugname}only]" > "$pkgdir/etc/vdr/conf.avail/50-${_plugname}only.conf"
   echo "[conflictcheckonly]" > "$pkgdir/etc/vdr/conf.avail/50-conflictcheckonly.conf"
   echo "[quick${_plugname}]" > "$pkgdir/etc/vdr/conf.avail/50-quick${_plugname}.conf"
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
 }

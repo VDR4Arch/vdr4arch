@@ -1,11 +1,4 @@
 _common() {
-  chown -R vdr:vdr var/lib/vdr
-
-  mkdir -p usr/share/vdr/shutdown-hooks
-
-  chgrp vdr usr/lib/vdr/bin/shutdown-wrapper
-  chmod u+s usr/lib/vdr/bin/shutdown-wrapper
-
   if diff /etc/skel/.xinitrc /home/vdr/.xinitrc > /dev/null 2>&1 ||
     [ ! -e /home/vdr/.xinitrc ]; then
 
@@ -34,32 +27,7 @@ EOF
 
 post_install() {
   #Add vdr user
-  groupadd -g 666 vdr 2> /dev/null
-  useradd -m -g vdr -u 666 -G audio,lp,optical,storage,video,power,uucp vdr 2> /dev/null
-
-  #Create cachedir
-  mkdir -p var/cache/vdr
-  chown -R vdr:vdr var/cache/vdr
-
-  #Create shutdown-hooks dir
-  mkdir -p usr/share/vdr/shutdown-hooks
-
-  #Create videodir
-  mkdir -p srv/vdr/video
-  chown -R vdr:vdr srv/vdr
+  systemd-sysusers
 
   _common
-}
-
-post_upgrade() {
-  _common
-  if [ "$(vercmp 2.0.6-1 "$2")" -eq 1 ]; then
-    echo "WARNING!! Configuration has changed. Please convert your /etc/runvdr.conf to /etc/vdr/conf.d configs"
-  fi
-}
-
-post_remove() {
-  rmdir var/cache/vdr 2> /dev/null
-  rmdir srv/vdr/video 2> /dev/null
-  rmdir srv/vdr 2> /dev/null
 }

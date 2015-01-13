@@ -13,7 +13,6 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-install="${pkgname}.install"
 source=("git://projects.vdr-developer.org/vdr-plugin-streamdev.git#commit=$_gitver"
         "50-$_plugname-server.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname-client.conf"
@@ -42,4 +41,6 @@ package() {
   mkdir -p "$pkgdir/etc/vdr/conf.avail"
   echo "[$_plugname-client]" > "$pkgdir/etc/vdr/conf.avail/50-$_plugname-client.conf"
   install -Dm644 "$srcdir/50-$_plugname-server.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname-server.conf"
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
 }

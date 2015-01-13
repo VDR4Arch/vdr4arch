@@ -1,7 +1,0 @@
-post_install() {
-  rm -f var/lib/vdr/themes/tryouts-default.theme
-}
-
-post_upgrade() {
-  post_install
-}

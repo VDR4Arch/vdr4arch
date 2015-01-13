@@ -40,7 +40,6 @@ package_vdr-xineliboutput() {
   depends=('dbus-glib' 'libextractor' 'libxrandr' 'mesa' "vdr-api=${_vdrapi}" 'xine-lib' 'xineliboutput-xineplug')
   optdepends=('nvidia: Required for VDPAU decoding'
               'xorg-server: Required for software decoding')
-  install="$pkgbase.install"
   backup=("etc/vdr/conf.avail/50-$_plugname.conf"
           "var/lib/vdr/plugins/$_plugname/allowed_hosts.conf")
   cd "${srcdir}/${_plugname}"
@@ -52,6 +51,8 @@ package_vdr-xineliboutput() {
   rm -r "$pkgdir/usr/lib/xine"
   install -Dm644 examples/allowed_hosts.conf "$pkgdir/var/lib/vdr/plugins/$_plugname/allowed_hosts.conf"
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
 }
 
 package_xineliboutput-frontends() {

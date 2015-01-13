@@ -11,7 +11,6 @@ url="http://lukkinosat.altervista.org/"
 license=("GPL2")
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-install="${pkgname}.install"
 source=("http://lukkinosat.altervista.org/$pkgname-$pkgver.tgz"
         "50-$_plugname.conf")
 backup=("var/lib/vdr/plugins/${_plugname}/loadepg.conf"
@@ -37,4 +36,6 @@ package() {
   install -Dm644 "${srcdir}/$_plugname-${pkgver}"/conf/* "$pkgdir/var/lib/vdr/plugins/${_plugname}"
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
 }

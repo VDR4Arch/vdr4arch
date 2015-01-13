@@ -11,7 +11,6 @@ depends=('vdr-skindesigner')
 makedepends=('git')
 optdepends=('skindesigner-logos: To show channellogos in DisplayChannel view')
 license=('GPL2')
-install=$pkgname.install
 source=("git://github.com/3PO/$_srcname.git#commit=$_gitver")
 md5sums=('SKIP')
 
@@ -26,4 +25,6 @@ package() {
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
   rm README.md
   cp -r * "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
 }

@@ -7,10 +7,8 @@ pkgdesc="Dark, anthracite skins for Klaus Schmidingers VDR"
 arch=('any')
 url="http://www.anthra.de/"
 depends=('vdr-text2skin')
-optdepends=('anthra-logos: To show channellogos in DisplayChannel view')
 groups=('text2skin-anthra')
 license=('GPL2')
-install=$pkgname.install
 source=("http://www.anthra.de/anthra-skins/$_srcname-$pkgver.tar.xz")
 md5sums=('091bb25b0769b9173efb31d2ee46c984')
 
@@ -24,4 +22,6 @@ package() {
   make DESTDIR="$pkgdir" THEMESDIR="/var/lib/vdr/themes" install
   find "$pkgdir" -name COPYING -delete
   find "$pkgdir" -name .directory -delete
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
 }

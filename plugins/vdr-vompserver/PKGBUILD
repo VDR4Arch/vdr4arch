@@ -8,7 +8,6 @@ url="http://www.loggytronic.com/vomp.php"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
-install="$pkgname.install"
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://www.loggytronic.com/dl/$pkgname-$pkgver.tgz"
         "50-$_plugname.conf")
@@ -29,5 +28,6 @@ package() {
   install -Dm 644 vomp.conf.sample "$pkgdir/var/lib/vdr/plugins/vompserver/vomp.conf"
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
-}
 
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
+}

@@ -39,8 +39,7 @@ build() {
 package_vdr-skindesigner() {
   pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
   depends=('librsvg' "vdr-api=${_vdrapi}")
-  optdepends=('nopacity-logos: To show channellogos in DisplayChannel view'
-              'vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
+  optdepends=('vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
               'vdr-tvscraper: To display scraped images in various EPG views')
   backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 
@@ -53,14 +52,13 @@ package_vdr-skindesigner() {
 
   cd "$pkgdir/usr/lib/vdr/plugins/skindesigner/scripts"
   mv temperatures.default temperatures
-  rm README temperatures.g2v
+  rm README temperatures.*
 }
 
 package_skindesigner-blackhole() {
   arch=('any')
   pkgdesc="Blackhole Skin for SkinDesigner"
   depends=('ttf-sourcesanspro' 'vdr-skindesigner')
-  install="$pkgbase.install"
 
   cd "${srcdir}/vdr-plugin-$_plugname"
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
@@ -68,13 +66,14 @@ package_skindesigner-blackhole() {
 
   mkdir -p "$pkgdir/var/lib/vdr/themes"
   cp -r themes/blackhole-* "$pkgdir/var/lib/vdr/themes"
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
 }
 
 package_skindesigner-metrixhd() {
   arch=('any')
   pkgdesc="MetrixHD Skin for SkinDesigner"
   depends=('ttf-opensans' 'vdr-skindesigner')
-  install="$pkgbase.install"
 
   cd "${srcdir}/vdr-plugin-$_plugname"
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
@@ -82,13 +81,14 @@ package_skindesigner-metrixhd() {
 
   mkdir -p "$pkgdir/var/lib/vdr/themes"
 #   cp -r themes/metrixhd-* "$pkgdir/var/lib/vdr/themes"
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
 }
 
 package_skindesigner-nopacity() {
   arch=('any')
   pkgdesc="nOpacity Skin for SkinDesigner"
   depends=('vdr-skindesigner')
-  install="$pkgbase.install"
 
   cd "${srcdir}/vdr-plugin-$_plugname"
   mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
@@ -96,4 +96,6 @@ package_skindesigner-nopacity() {
 
   mkdir -p "$pkgdir/var/lib/vdr/themes"
   cp -r themes/nopacity-* "$pkgdir/var/lib/vdr/themes"
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
 }
