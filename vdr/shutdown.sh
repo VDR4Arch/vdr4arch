@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Run through shutdown-hooks
-for file in /usr/share/vdr/shutdown-hooks/*; do
+for file in /usr/lib/vdr/shutdown-hooks/*; do
   if [ -x $file ]; then
     MESSAGE=$($file)
     if [ $? != '0' ]; then
@@ -22,4 +22,4 @@ echo '0' > /sys/class/rtc/rtc0/wakealarm
 echo $(($1 - 300 )) > /sys/class/rtc/rtc0/wakealarm
 
 #Initiate shutdown
-/sbin/shutdown -h now
+systemctl poweroff
