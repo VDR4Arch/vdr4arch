@@ -1,14 +1,14 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 # Original Maintainer: Onni R. <onnir at iki dot fi>
 pkgname=png++
-pkgver=0.2.5
-pkgrel=2
+pkgver=0.2.7
+pkgrel=1
 license=('BSD')
 pkgdesc="Provide simple yet powerful C++ interface to libpng"
 arch=('any')
 url="http://savannah.nongnu.org/projects/pngpp/"
-source=(http://download.savannah.gnu.org/releases/pngpp/$pkgname-$pkgver.tar.gz)
-md5sums=('beb02ba7daddcf847e1617e75b7af567')
+source=(http://download-mirror.savannah.gnu.org/releases/pngpp/$pkgname-$pkgver.tar.gz)
+md5sums=('99a74f9d02975ce9c893725476b47d95')
 
 package() {
   cd $srcdir/$pkgname-$pkgver
