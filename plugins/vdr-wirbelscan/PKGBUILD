@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-wirbelscan
-pkgver=0.0.7
+pkgver=0.0.9
 _vdrapi=2.1.6
-pkgrel=8
+pkgrel=1
 pkgdesc="Performs a channel scans for DVB-T, DVB-C and DVB-S"
 url="http://wirbel.htpc-forum.de/wirbelscan/index2.html"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -10,16 +10,14 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://wirbel.htpc-forum.de/$_plugname/$pkgname-$pkgver.tgz"
-        "vdr-wirbelscan-0.0.7-receiver-api-fixes.patch.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=32195"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('b07d57cecbb0dc3cbf1d13f3d47bc7f3'
-         '0acf42568623bec4638e71636ebf7564'
+md5sums=('5536179eab190edeaf71078dfae576dd'
          'cb2ff89d8c275d790cf613d4cf9fa180')
 
 prepare() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-  patch -p1 -i "$srcdir/vdr-wirbelscan-0.0.7-receiver-api-fixes.patch.diff"
+  sed -i '/Make.global/d' Makefile
 }
 
 package() {
