@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-weatherforecast
-pkgver=0.0.1
+pkgver=0.0.2
 _vdrapi=2.1.6
 pkgrel=1
 pkgdesc="provides a weather forecast based on forecast.io data"
@@ -12,7 +12,7 @@ depends=('curl' 'jansson' "vdr-api=$_vdrapi")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$pkgver.tar.bz2")
-md5sums=('5d823a99ba5f2cd8801349d65fd195b8')
+md5sums=('3d0c683039eec7339b2935409b9e5186')
 
 build() {
   cd "$srcdir/vdr-plugin-$_plugname-$pkgver"
