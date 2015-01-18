@@ -25,7 +25,8 @@ for PKG in $PACKAGES; do
       -e "E: Symlink .*fonts.* points to non-existing" \
       -e "W: Dependency included and not needed ('vdr-api')" \
       -e "W: Dependency included and not needed ('linux')" \
-      -e "W: File name .* contains non standard characters")
+      -e "W: File name .* contains non standard characters" \
+      -e "E: File .* is owned by .*:vdr")
     echo "$REPORT" >&2
     if grep -q 'E:' <<<"$REPORT"; then
       echo "namcap error in $PKG!" >&2
@@ -38,18 +39,27 @@ for PKG in $PACKAGES; do
   #
   # Prepare some variables for faster access in the following checks
   #
-  FILELIST=$(tar -tf "$PKG");
+  FILELIST=$(tar --numeric-owner -tvf "$PKG" | tr -s ' ' ' ');
   if [[ $? != 0 ]]; then exit 1; fi
   INSTALL=$(tar -xOf "$PKG" .INSTALL 2>/dev/null)
 
   #
   # If we package "var/lib/vdr" then we *have to* chown it to vdr:vdr!
   #
-  if grep -q '^var/lib/vdr' <<<"$FILELIST" &&
-      ! grep -q 'chown -R vdr:vdr /\?var/lib/vdr' <<<"$INSTALL"; then
-    echo "chown for var/lib/vdr missing in $PKG!" >&2
-    exit 1
-  fi
+  IFS=$'\n'
+  for i in $FILELIST; do
+    NAME=$(echo $i | cut -d' ' -f6)
+    UIDGID=$(echo $i | cut -d' ' -f2)
+    if grep -q \
+         -e 'var/lib/vdr' \
+         -e 'srv/vdr/video' \
+         -e 'var/cache/vdr' <<<"$NAME" &&
+       ! [ $UIDGID = '666/666' ]; then
+      echo "chown for $NAME missing in $PKG!" >&2
+      exit 1
+    fi
+#     echo $UIDGID
+  done
 
   #
   # If a theme doesn't deliver its "default.theme", then we have to delete

@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
-pkgver=2.1.6
-pkgrel=11
+pkgver=2.1.7
+pkgrel=1
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -13,7 +13,7 @@ optdepends=('lirc-utils: remote control support'
             'xlogin: To start X11')
 replaces=('runvdr-extreme')
 conflicts=('runvdr-extreme')
-provides=("vdr-api=2.1.6")
+provides=("vdr-api=2.1.7")
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
@@ -34,7 +34,7 @@ backup=("etc/vdr/conf.avail/"50-dvb{s,h}ddevice.conf
         'var/lib/vdr/scr.conf'
         'var/lib/vdr/sources.conf'
         'var/lib/vdr/svdrphosts.conf')
-md5sums=('79519dac59166fabc2029b916bd61d00'
+md5sums=('1c954bad31ce74cd1cbd7987e62d2a98'
          '301c9b9766ed5182b07f1debc79abc21'
          '572f5967fe232333e58ad846f53fc677'
          '9cb821ebb6a25e603f9c32bafabde362'
@@ -46,13 +46,12 @@ md5sums=('79519dac59166fabc2029b916bd61d00'
          'dd20f932b846b5f50ac455b65e9432ad'
          '7cad811b4ac5ee6c0b5496d006f1e0ee'
          '10d16378b50eec5b9aaa807d535971f9'
-         '5547ec38747ba2e43666918a6f631728')
+         '59ce04d1d01bf92bf6cfc0b74223191c')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  touch Make.config
-  echo 'CFLAGS      += -O3' >> Make.config
+  echo 'CFLAGS      += -O3' > Make.config
   echo 'CXXFLAGS    += -O3' >> Make.config
   echo 'PREFIX       = /usr' >> Make.config
   echo 'LIBDIR       = /usr/lib/vdr/plugins' >> Make.config
@@ -62,6 +61,8 @@ prepare() {
 
   sed -i 's/NULL, 0, true/NULL, 0, OpenSubMenus/g' "$srcdir/MainMenuHooks-v1_0_2.diff"
   patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
+
+  sed -i '/define DEPRECATED_VIDEOSYSTEM/d' device.h
 }
 
 build() {
