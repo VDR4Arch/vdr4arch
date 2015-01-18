@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
 pkgver=2.1.7
-pkgrel=1
+pkgrel=2
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -101,7 +101,7 @@ package() {
 
   mkdir -p "$pkgdir/usr/share/vdr/shutdown-hooks"
 
-  chown -R 666:666 "$pkgdir/srv/vdr/video"
+  chown -R 666:666 "$pkgdir/srv/vdr"
   chown -R 666:666 "$pkgdir/var/cache/vdr"
   chown -R 666:666 "$pkgdir/var/lib/vdr"
 }
