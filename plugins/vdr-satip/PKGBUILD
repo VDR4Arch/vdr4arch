@@ -14,7 +14,7 @@ source=("http://www.saunalahti.fi/~rahrenbe/vdr/satip/files/$pkgname-$pkgver.tgz
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
 md5sums=('1fe9950b5f8b6b35c57ee5485cb04484'
-         '4a4b93779b692ee9023983cf2515be90')
+         '1b86395f44c2a7c63b97a7ef6f866ec0')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
