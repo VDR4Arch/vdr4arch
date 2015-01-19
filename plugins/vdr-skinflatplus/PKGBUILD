@@ -1,8 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-skinflatplus
-pkgver=0.5.0
+pkgver=0.5.0_6_gec04db6
+_gitver=ec04db6f1e865c3fbc4faa33e7918c2d2038b187
 _vdrapi=2.1.7
-pkgrel=2
+pkgrel=1
 pkgdesc="Simple and slim skin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-skinflatplus"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -10,26 +11,32 @@ license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/attachments/download/1837/$_plugname-$pkgver.tar.gz"
+source=("git://projects.vdr-developer.org/skin-flatplus.git#commit=$_gitver"
         "50-$_plugname.conf")
 backup=('etc/epgd/eventsview-flatplus.sql'
         "etc/vdr/conf.avail/50-$_plugname.conf"
         'var/lib/vdr/plugins/skinflatplus/configs/'{MV_default,default,fnu_default})
-md5sums=('c011a8b35824c5678b70b7efdce9e53e'
+md5sums=('SKIP'
          '878594e0f5af2ab308e6ab86a9bf0136')
 
+pkgver() {
+  cd "$srcdir/skin-flatplus"
+  git tag -a 0.5.0 -m 'Added Tag' 0304f30425f3c9cc4bcb422ce5e2860225f1b93b 2> /dev/null
+  git describe --tags | sed 's/-/_/g'
+}
+
 prepare() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "$srcdir/skin-flatplus"
   sed -i 's/Magick++/GraphicsMagick++/g' Makefile
 }
 
 build() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "$srcdir/skin-flatplus"
   make
 }
 
 package() {
-  cd "$srcdir/$_plugname-$pkgver"
+  cd "$srcdir/skin-flatplus"
 
   make DESTDIR="$pkgdir" install
 
