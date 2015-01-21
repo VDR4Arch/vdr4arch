@@ -6,7 +6,7 @@ pkgdesc="Command-line utilty to query and set properties of common remote contro
 url="https://github.com/olebowle/$pkgname"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL3')
-depends=('glibc')
+depends=('gcc-libs' 'glibc')
 source=("https://github.com/olebowle/$pkgname/archive/v$pkgver.tar.gz")
 md5sums=('0929605217869276d359b636f60575a1')
 
