@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase='vdr-skindesigner'
 pkgname=($pkgbase skindesigner-{blackhole,metrixhd,nopacity})
-pkgver=0.1.5
-_gitver=3a6dced6c1e0f001bda8e45fc4879d361fefb6ed
+pkgver=0.1.6_1_g48afaee
+_gitver=48afaeed63786f41756be81a60e102cb0dc1a223
 _vdrapi=2.1.7
 pkgrel=1
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
@@ -11,12 +11,10 @@ license=('GPL2')
 makedepends=('git' 'librsvg' 'vdr')
 _plugname=$(echo $pkgbase | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-skindesigner.git#commit=$_gitver"
-        'skindesigner-always_show_displaychannel.diff'
         'skindesigner-use-opensans-font.diff'
         "50-$_plugname.conf")
 options=('!emptydirs')
 md5sums=('SKIP'
-         'b7b96592d3c0d0fc1ac994dee8594ac5'
          'd2dab86d07fc0fa38a4141d2e728c620'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
@@ -27,7 +25,6 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/vdr-plugin-$_plugname"
-  patch -p1 -i "$srcdir/skindesigner-always_show_displaychannel.diff"
   patch -p1 -i "$srcdir/skindesigner-use-opensans-font.diff"
 }
 
