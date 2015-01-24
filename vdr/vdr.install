@@ -29,5 +29,9 @@ post_install() {
   #Add vdr user
   systemd-sysusers
 
+  # systemd-sysusers doesn't create our homedirectory...
+  mkdir -p /home/vdr
+  chown vdr:vdr /home/vdr
+
   _common
 }
