@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 _srcname=skinElchi
 pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
-pkgver=0.0.1_20_g06f861c
-_gitver=06f861cd52b47b55a4e14bd56bc05c179071462d
+pkgver=0.0.1_22_g585107c
+_gitver=585107c03a5a3daeca967fc13177d1dac86a4c07
 pkgrel=1
 pkgdesc="ElchiAIO Skin for SkinDesigner"
 arch=('any')
