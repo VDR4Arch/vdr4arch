@@ -4,10 +4,10 @@ Date:   Sun Dec 7 16:23:36 2014 +0100
 
     Make metrixhd use the original "Open Sans" font
 
-diff --git a/skins/metrixhd/themes/default/globals.xml b/skins/metrixhd/themes/default/globals.xml
+diff --git a/skins/metrixhd/themes/default/theme.xml b/skins/metrixhd/themes/default/theme.xml
 index 3f54d56..a532920 100644
---- a/skins/metrixhd/themes/default/globals.xml
-+++ b/skins/metrixhd/themes/default/globals.xml
+--- a/skins/metrixhd/themes/default/theme.xml
++++ b/skins/metrixhd/themes/default/theme.xml
 @@ -209,7 +209,7 @@
      if an invalid font is used in a template, vdrOsd is used as default.
      -->

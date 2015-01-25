@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase='vdr-skindesigner'
 pkgname=($pkgbase skindesigner-{blackhole,metrixhd,nopacity})
-pkgver=0.1.6_1_g48afaee
-_gitver=48afaeed63786f41756be81a60e102cb0dc1a223
+pkgver=0.2.0
+_gitver=d0868978bc0970b16221cc72df5c37efbf2accc9
 _vdrapi=2.1.7
 pkgrel=1
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
@@ -15,7 +15,7 @@ source=("git://projects.vdr-developer.org/vdr-plugin-skindesigner.git#commit=$_g
         "50-$_plugname.conf")
 options=('!emptydirs')
 md5sums=('SKIP'
-         'd2dab86d07fc0fa38a4141d2e728c620'
+         '861e1814ccf3b7d2b69908fc76b60967'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
 pkgver() {
