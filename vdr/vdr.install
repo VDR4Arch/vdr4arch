@@ -30,7 +30,7 @@ post_install() {
   systemd-sysusers
 
   # systemd-sysusers doesn't create our homedirectory...
-  mkdir -p /home/vdr
+  mkdir -m 0711 -p /home/vdr
   chown vdr:vdr /home/vdr
 
   _common
