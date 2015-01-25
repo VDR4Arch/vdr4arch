@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 _srcname=Holo
 pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
-pkgver=0.0.1_26_g7ea1a37
-_gitver=7ea1a37ce2bc62b6e7d7a980b5149278f1a4791f
+pkgver=0.0.1_28_gcef6177
+_gitver=cef61778d6c05a8a3d3cc3b2b9a0d1dedae818fe
 pkgrel=1
 pkgdesc="Holo Skin for SkinDesigner"
 arch=('any')
