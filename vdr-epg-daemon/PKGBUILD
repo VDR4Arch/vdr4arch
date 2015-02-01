@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase=vdr-epg-daemon
 pkgname=('epgd' 'mariadb-epglv')
-pkgver=0.2.1
-_gitver=e1d19b88655144471daae1fade64b08b55606e1e
-pkgrel=3
+pkgver=0.2.2
+_gitver=e2230b6e8d0121233dc8861ceea3e6669fed8f57
+pkgrel=1
 url='http://projects.vdr-developer.org/projects/vdr-epg-daemon'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
@@ -13,7 +13,7 @@ md5sums=('SKIP')
 
 pkgver() {
   cd "$srcdir/$pkgbase"
-  git tag -a v0.2.1 -m 'Added Tag' e1d19b88655144471daae1fade64b08b55606e1e 2> /dev/null
+  git tag -a v0.2.2 -m 'Added Tag' e2230b6e8d0121233dc8861ceea3e6669fed8f57 2> /dev/null
   git describe --tags | sed 's/-/_/g;s/v//'
 }
 
