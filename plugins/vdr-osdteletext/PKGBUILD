@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-osdteletext
 pkgver=0.9.4
-_vdrapi=2.1.7
-pkgrel=13
+_vdrapi=2.1.8
+pkgrel=14
 pkgdesc="Displays teletext pages directly on VDR's OSD"
 url="http://projects.vdr-developer.org/projects/plg-osdteletext"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
