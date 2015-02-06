@@ -6,7 +6,7 @@ _vdrapi=2.1.8
 pkgrel=1
 pkgdesc="Output device for Raspberry Pi"
 url="http://projects.vdr-developer.org/projects/plg-rpihddevice"
-arch=('armv6h')
+arch=('armv6h' 'armv7h')
 license=('GPL2')
 depends=('ffmpeg' 'mesa' 'raspberrypi-firmware-tools' "vdr-api=${_vdrapi}")
 makedepends=('git')
