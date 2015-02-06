@@ -1,0 +1,32 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+_srcname=shady
+pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
+pkgver=20150205
+pkgrel=1
+pkgdesc="Shady Skin for SkinDesigner"
+arch=('any')
+url="http://www.anthra.de/shady-skin"
+depends=('ttf-opensans' 'vdr-skindesigner')
+optdepends=('skindesigner-logos: To show channellogos in DisplayChannel view')
+license=('GPL2')
+source=("http://www.anthra.de/$_srcname/$_srcname-$pkgver.tgz"
+        'shady-use-opensans-font.diff')
+md5sums=('b4acabbfa01a0aac9cd385a281e05ffa'
+         '98837f84adae023465616837ac38d2f4')
+
+prepare() {
+  cd "$srcdir/${_srcname}"
+  patch -p1 -i "$srcdir/shady-use-opensans-font.diff"
+}
+
+package() {
+  cd "$srcdir/${_srcname}"
+  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
+  rm COPYING HISTORY README *.orig
+  cp -r * "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
+
+  mkdir -p "$pkgdir/var/lib/vdr/themes"
+  find $pkgdir -name *.theme -exec mv {} "$pkgdir/var/lib/vdr/themes" \;
+
+  chown -R 666:666 "$pkgdir/var/lib/vdr"
+}
