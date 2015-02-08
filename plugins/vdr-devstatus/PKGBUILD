@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-devstatus
 pkgver=0.4.1
-_vdrapi=2.1.8
-pkgrel=17
+_vdrapi=2.1.9
+pkgrel=18
 pkgdesc="displays the status of all available dvb devices"
 url="http://www.u32.de/vdr.html"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

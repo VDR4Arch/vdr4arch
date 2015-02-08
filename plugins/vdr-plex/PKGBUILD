@@ -2,8 +2,8 @@
 pkgname=vdr-plex
 pkgver=0.0.1_23_g1ecdb2a
 _gitver=1ecdb2a5d9e05e0d30dae89e3d675218ca4c255e
-_vdrapi=2.1.8
-pkgrel=2
+_vdrapi=2.1.9
+pkgrel=3
 pkgdesc="Plex plugin for Linux VDR"
 url="https://github.com/chriszero/vdr-plugin-plex"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

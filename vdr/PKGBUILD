@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr
-pkgver=2.1.8
-pkgrel=2
+pkgver=2.1.9
+pkgrel=1
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -13,12 +13,11 @@ optdepends=('lirc-utils: remote control support'
             'xlogin: To start X11')
 replaces=('runvdr-extreme')
 conflicts=('runvdr-extreme')
-provides=("vdr-api=2.1.8")
+provides=("vdr-api=2.1.9")
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
-        'vdr-2.1.8-eit-memleak-v1.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=37554'
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
-        '10-vdr.conf' '50-dvbsddevice.conf' '50-hello.conf' '50-pictures.conf' '50-rcu.conf'
+        '00-vdr.conf' '50-dvbsddevice.conf' '50-hello.conf' '50-pictures.conf' '50-rcu.conf'
         '60-create-dvb-device-units.rules'
         'gen-sddropin'
         'shutdown.sh'
@@ -28,15 +27,14 @@ source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
 backup=("etc/vdr/conf.avail/"50-dvb{s,h}ddevice.conf
         "etc/vdr/conf.avail/"50-{epgtableid0,hello,osddemo,pictures,rcu,skincurses,status,svdrpdemo}.conf
         "etc/vdr/conf.avail/"50-svc{cli,svr}.conf
-        'etc/vdr/conf.d/10-vdr.conf'
+        'etc/vdr/conf.d/00-vdr.conf'
         'var/lib/vdr/channels.conf'
         'var/lib/vdr/diseqc.conf'
         'var/lib/vdr/keymacros.conf'
         'var/lib/vdr/scr.conf'
         'var/lib/vdr/sources.conf'
         'var/lib/vdr/svdrphosts.conf')
-md5sums=('1d2751e87def9b18b448513f24e635e9'
-         '8885a5012e5cfef7ab2e14c55596cd93'
+md5sums=('59a63596f3fcfe7c81df8e92b4486f78'
          '301c9b9766ed5182b07f1debc79abc21'
          '572f5967fe232333e58ad846f53fc677'
          '9cb821ebb6a25e603f9c32bafabde362'
@@ -47,7 +45,7 @@ md5sums=('1d2751e87def9b18b448513f24e635e9'
          'f117dd13da2c557361479e49a3b2e74f'
          'dd20f932b846b5f50ac455b65e9432ad'
          '7cad811b4ac5ee6c0b5496d006f1e0ee'
-         '10d16378b50eec5b9aaa807d535971f9'
+         '22f94ba4419736e3269445f9da5d865a'
          '59ce04d1d01bf92bf6cfc0b74223191c')
 
 prepare() {
@@ -65,8 +63,6 @@ prepare() {
   patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
 
   sed -i '/define DEPRECATED_VIDEOSYSTEM/d' device.h
-
-  patch -p1 -i "$srcdir/vdr-2.1.8-eit-memleak-v1.diff"
 }
 
 build() {
@@ -81,7 +77,7 @@ package() {
     install -Dm644 50-$i.conf "$pkgdir/etc/vdr/conf.avail/50-$i.conf"
   done
 
-  install -Dm644 10-vdr.conf "$pkgdir/etc/vdr/conf.d/10-vdr.conf"
+  install -Dm644 00-vdr.conf "$pkgdir/etc/vdr/conf.d/00-vdr.conf"
   install -Dm644 60-create-dvb-device-units.rules "$pkgdir/usr/lib/udev/rules.d/60-create-dvb-device-units.rules"
   install -Dm644 vdr.service "$pkgdir/usr/lib/systemd/system/vdr.service"
 
