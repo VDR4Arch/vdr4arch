@@ -27,5 +27,8 @@ package() {
   cp -r $_srcname "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
   rm -r "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname/.git"
 
+  mkdir -p "$pkgdir/var/lib/vdr/themes"
+  find $pkgdir -name *.theme -exec mv {} "$pkgdir/var/lib/vdr/themes" \;
+
   chown -R 666:666 "$pkgdir/var/lib/vdr"
 }
