@@ -26,5 +26,5 @@ package() {
   rm README.md
   cp -r * "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/$_srcname"
 
-  chown -R 666:666 "$pkgdir/var/lib/vdr"
+#   chown -R 666:666 "$pkgdir/var/lib/vdr"
 }
