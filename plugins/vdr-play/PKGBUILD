@@ -12,15 +12,22 @@ depends=('mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb
 makedepends=('git')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/vdr-plugin-play.git#commit=$_gitver"
+        'play-vdr2.1.10compat.diff'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
+         '88bd08bead28aab75bd002daccf7e5b5'
          '19d455b69728f7e6469763b2b2424074')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-$_plugname"
   git tag -a 0.0.14 -m 'Added Tag' eb4b8437553ff7666eceadd09c6cb9dd8255380e 2> /dev/null
   git describe --tags | sed 's/-/_/g'
+}
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-$_plugname"
+  patch -p1 -i "$srcdir/play-vdr2.1.10compat.diff"
 }
 
 build() {
