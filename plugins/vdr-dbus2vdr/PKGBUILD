@@ -12,12 +12,19 @@ makedepends=('png++')
 backup=('etc/dbus-1/system.d/de.tvdr.vdr.conf')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("https://github.com/flensrocker/vdr-plugin-dbus2vdr/archive/v$pkgver.tar.gz"
+        'dbus2vdr-vdr2.1.10compat.diff'
         "50-$_plugname.conf")
 backup=('etc/dbus-1/system.d/de.tvdr.vdr.conf'
         "etc/vdr/conf.avail/50-$_plugname.conf"
         "var/lib/vdr/plugins/$_plugname/network.conf")
 md5sums=('9368a1ab48412dddf4550dfec70925b8'
+         '71023ec8e9293eb19f0ea2721000e987'
          '52f40de6d5a5ca72528f5d65f573ccd2')
+
+prepare() {
+  cd "$srcdir/vdr-plugin-$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/dbus2vdr-vdr2.1.10compat.diff"
+}
 
 build() {
   cd "$srcdir/vdr-plugin-$_plugname-$pkgver"
