@@ -13,10 +13,12 @@ _plugname=$(echo $pkgbase | sed 's/vdr-//g')
 source=("git://projects.vdr-developer.org/$_plugname.git#commit=$_gitver"
         'xineliboutput-vdr2.1.6compat.diff'
         'xineliboutput_renamed_iDoubleTapTimeoutMs_in_libcec.diff'
+        'xineliboutput-vdr2.1.10compat.diff'
         "50-$_plugname.conf")
 md5sums=('SKIP'
          '14ef92cd38503a2f426669aa43b0aeb4'
          'd9e14cb60e536109716ebc886f54880b'
+         'de80424deabba49e3f40c2f92f640765'
          'a9a3cd09b950d2024b21a1c6e0620506')
 
 pkgver() {
@@ -28,6 +30,7 @@ prepare() {
   cd "${srcdir}/${_plugname}"
   patch -p1 -i "$srcdir/xineliboutput-vdr2.1.6compat.diff"
   patch -p1 -i "$srcdir/xineliboutput_renamed_iDoubleTapTimeoutMs_in_libcec.diff"
+  patch -p1 -i "$srcdir/xineliboutput-vdr2.1.10compat.diff"
 }
 
 build() {
