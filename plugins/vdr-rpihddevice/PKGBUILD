@@ -2,8 +2,8 @@
 pkgname=vdr-rpihddevice
 pkgver=0.0.11_4_g57958b2
 _gitver=57958b2ae5bebdba8648f6b63a69b4a961cdd274
-_vdrapi=2.1.9
-pkgrel=2
+_vdrapi=2.1.10
+pkgrel=3
 pkgdesc="Output device for Raspberry Pi"
 url="http://projects.vdr-developer.org/projects/plg-rpihddevice"
 arch=('armv6h' 'armv7h')

@@ -6,12 +6,10 @@ After=xlogin@vdr.service
 
 [Service]
 Type=notify
-Environment=VDR_CHARSET_OVERRIDE=ISO-8859-15
 ExecStart=/usr/bin/vdr
 ExecStopPost=/usr/lib/vdr/bin/gen-sddropin
-WorkingDirectory=/home/vdr
 Restart=on-failure
-RestartPreventExitStatus=0 2
+RestartPreventExitStatus=2
 
 [Install]
 WantedBy=multi-user.target
