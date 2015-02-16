@@ -3,15 +3,17 @@ FILE=/etc/systemd/system/vdr.service.d/wait-for-devices.conf
 
 if [ -d /dev/dvb/adapter0 ]; then
   mkdir -p $(dirname $FILE)
-  echo '[Unit]' > $FILE
+  echo "Replace or create the file $FILE"
+  echo "with the following"
+  echo
+  echo '[Unit]'
 
   cd /dev
   for dev in dvb/adapter*/*; do
     stringpart=$(tr / - <<< $dev)
-    echo "Wants=dev-$stringpart.device" >> $FILE
-    echo "After=dev-$stringpart.device" >> $FILE
+    echo "Wants=dev-$stringpart.device"
+    echo "After=dev-$stringpart.device"
   done
-  systemctl daemon-reload
 else
-  rm -f $FILE
+  echo "No DVB devices detected. No systemd rule needed"
 fi

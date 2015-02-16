@@ -35,3 +35,8 @@ post_install() {
 
   _common
 }
+
+post_upgrade() {
+  echo "Remember!! VDR has to run after all DVB devices are initialized"
+  echo "To generate a template rule for systemd run 'vdr-gensddropin"
+}

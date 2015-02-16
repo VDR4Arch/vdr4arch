@@ -7,7 +7,6 @@ After=xlogin@vdr.service
 [Service]
 Type=notify
 ExecStart=/usr/bin/vdr
-ExecStopPost=/usr/lib/vdr/bin/gen-sddropin
 Restart=on-failure
 RestartPreventExitStatus=2
 
