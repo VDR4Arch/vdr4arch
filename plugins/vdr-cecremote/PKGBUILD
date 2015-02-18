@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-cecremote
-pkgver=0.1.0
+pkgver=0.1.1
 _vdrapi=2.1.10
 pkgrel=1
 pkgdesc="CD-Player plugin which supports CD-Text and CDDB-Database"
@@ -12,7 +12,7 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('9626348f893dabd2ffc4b5607e293063'
+md5sums=('6901d582d70b4421a62f0a922ea4ce5f'
          'b07791e9ca361d41d58f2017fdcec70b')
 
 build() {
