@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-cecremote
 pkgver=0.1.1
-_vdrapi=2.1.10
-pkgrel=1
+_vdrapi=2.2.0
+pkgrel=2
 pkgdesc="CD-Player plugin which supports CD-Text and CDDB-Database"
 url="http://uli-eckhardt.de/vdr"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
