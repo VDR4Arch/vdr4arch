@@ -2,12 +2,12 @@
 pkgname=vdr-satip
 pkgver=1.0.2
 _vdrapi=2.2.0
-pkgrel=5
+pkgrel=6
 pkgdesc="Integrates SAT>IP network devices seamlessly into VDR"
 url="http://www.saunalahti.fi/rahrenbe/vdr/satip/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-depends=('curl' 'gcc-libs' 'tinyxml' "vdr-api=${_vdrapi}")
+depends=('curl' 'pugixml' "vdr-api=${_vdrapi}")
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://www.saunalahti.fi/~rahrenbe/vdr/satip/files/$pkgname-$pkgver.tgz"
         "50-$_plugname.conf")
@@ -18,7 +18,7 @@ md5sums=('fe5132ceea90a63fc727612044e499b0'
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-  make GITTAG='' SATIP_USE_TINYXML=1 SATIP_XCI=1
+  make GITTAG=''
 }
 
 
