@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=kodi-addon-xvdr
-pkgver=0.9.8_57_g82b5093
-_gitver=328fa653b821a4edc1256a13833f30a4483e2819
+pkgver=0.9.8_70_g8489520
+_gitver=8489520f6c2331c6ccbc6e54986829e3d9397517
 pkgrel=1
 url="https://github.com/pipelka/xbmc-addon-xvdr"
 arch=('x86_64' 'i686')
