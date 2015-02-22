@@ -1,9 +1,9 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-xvdr
-pkgver=0.9.9_55_g86b1113
-_gitver=86b111301e278929386cd206643fc86c5de3f170
-_vdrapi=2.1.6
-pkgrel=2
+pkgver=0.9.9_64_gb300fc3
+_gitver=b300fc3572f31ec3ed73929bc0b4044f2b144161
+_vdrapi=2.2.0
+pkgrel=1
 url="https://github.com/pipelka/vdr-plugin-xvdr"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
