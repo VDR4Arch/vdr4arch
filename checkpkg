@@ -40,22 +40,23 @@ for PKG in $PACKAGES; do
   #
   # Prepare some variables for faster access in the following checks
   #
-  FILELIST=$(tar --numeric-owner -tvf "$PKG" | tr -s ' ' ' ');
+  FILELIST=$(bsdtar --numeric-owner -tvf "$PKG" | tr -s ' ' ' ');
   if [[ $? != 0 ]]; then exit 1; fi
-  INSTALL=$(tar -xOf "$PKG" .INSTALL 2>/dev/null)
+  INSTALL=$(bsdtar -xOf "$PKG" .INSTALL 2>/dev/null)
 
   #
   # If we package "var/lib/vdr" then we *have to* chown it to vdr:vdr!
   #
   IFS=$'\n'
   for i in $FILELIST; do
-    NAME=$(echo $i | cut -d' ' -f6)
-    UIDGID=$(echo $i | cut -d' ' -f2)
+    NAME=$(echo $i | cut -d' ' -f9)
+    UIDGID=$(echo $i | cut -d' ' -f3-4)
+    echo $UIDGID
     if grep -q \
          -e 'var/lib/vdr' \
          -e 'srv/vdr' \
          -e 'var/cache/vdr' <<<"$NAME" &&
-       ! [ $UIDGID = '666/666' ]; then
+       ! [ $UIDGID = '666 666' ]; then
       echo "chown for $NAME missing in $PKG!" >&2
       exit 1
     fi
@@ -93,7 +94,7 @@ for PKG in $PACKAGES; do
         exit 1
       fi
 
-      PLGCFG=$(tar -xOf "$PKG" "$PLGCFGPATH")
+      PLGCFG=$(bsdtar -xOf "$PKG" "$PLGCFGPATH")
       if ! grep -q '\['"$PLUGIN"'\]' <<<"$PLGCFG"; then
         echo "Plugin name missing in config file for $PLUGIN in $PKG!" >&2
         exit 1
@@ -104,7 +105,7 @@ for PKG in $PACKAGES; do
   #
   # Backup array needed
   #
-  PKGINFO=$(tar -xOf "$PKG" .PKGINFO 2>/dev/null)
+  PKGINFO=$(bsdtar -xOf "$PKG" .PKGINFO 2>/dev/null)
   BACKUPFILES=$(grep -e '^etc' -e '^var/lib/vdr' <<<"$FILELIST" | grep -v '/$' | grep -v '.theme$' \
     | grep -v '.png$')
   # | grep '.conf$'
