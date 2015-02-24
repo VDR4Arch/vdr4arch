@@ -3,7 +3,7 @@ _pkgbase="dddvb"
 pkgname="dddvb-dkms"
 pkgdesc="Official Digital Devices driver package as DKMS"
 pkgver=0.9.18beta3
-pkgrel=1
+pkgrel=2
 arch=("i686" "x86_64")
 url="http://download.digital-devices.de/download/linux/"
 license=("GPL2")
@@ -24,6 +24,10 @@ prepare() {
   echo 'CHECK_MODULE_VERSION="no"' >> dkms.conf
   echo 'MAKE="make"' >> dkms.conf
   echo 'CLEAN="make clean"' >> dkms.conf
+
+  cd "$srcdir/$_pkgbase-$pkgver"
+  sed -i '/apps/d' Makefile
+  rm dvb-core/.#dvb_frontend.h
 }
 
 build() {

@@ -4,7 +4,7 @@ _pkgbase="media_build_experimental"
 pkgname="media-build-experimental-dkms"
 pkgdesc="Oliver Endriss experimental media tree as DKMS"
 pkgver=r434.1969cdc5388b
-pkgrel=1
+pkgrel=2
 arch=("i686" "x86_64")
 url="http://linuxtv.org/hg/~endriss/media_build_experimental"
 license=("GPL")
@@ -61,5 +61,9 @@ package() {
   install -D -m 0644 "$srcdir/dkms.conf" "$pkgdir/usr/src/$_pkgbase-$pkgver/dkms.conf"
 
   cd "$srcdir/$_pkgbase"
+
+  # Delete hardlinks.
+  find -type f \! -links 1 -delete
+
   cp -a * "$pkgdir/usr/src/$_pkgbase-$pkgver"
 }
