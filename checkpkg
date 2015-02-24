@@ -51,7 +51,6 @@ for PKG in $PACKAGES; do
   for i in $FILELIST; do
     NAME=$(echo $i | cut -d' ' -f9)
     UIDGID=$(echo $i | cut -d' ' -f3-4)
-    echo $UIDGID
     if grep -q \
          -e 'var/lib/vdr' \
          -e 'srv/vdr' \
@@ -60,7 +59,6 @@ for PKG in $PACKAGES; do
       echo "chown for $NAME missing in $PKG!" >&2
       exit 1
     fi
-#     echo $UIDGID
   done
 
   #
