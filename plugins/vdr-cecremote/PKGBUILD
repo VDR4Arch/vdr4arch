@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-cecremote
-pkgver=0.2.0
+pkgver=0.4.0
 _vdrapi=2.2.0
 pkgrel=1
 pkgdesc="Receive and send commands via CEC"
@@ -12,7 +12,7 @@ _plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('af74e34e711c6a67872c857e58123eb7'
+md5sums=('e01679708c40ac6e63d4bc81ec2123df'
          'b07791e9ca361d41d58f2017fdcec70b')
 
 build() {
