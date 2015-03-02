@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-plex
-pkgver=0.1.1
-_gitver=e44cc781e25490f0d942aa09cb383efd30e5e50d
+pkgver=0.1.2
+_gitver=f32ddb726d477ea1be41d852932d22b9def83d28
 _vdrapi=2.2.0
 pkgrel=1
 pkgdesc="Plex plugin for Linux VDR"
