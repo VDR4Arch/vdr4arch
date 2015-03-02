@@ -1,6 +1,6 @@
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 # Contributor: Christopher Reimer <vdr4arch[at]creimer[dot]net>
-pkgbase=DFAtmo
+pkgbase=dfatmo
 pkgname=('dfatmo' 'vdr-dfatmo')
 [[ "$CARCH" = "x86_64" ]] || [[ "$CARCH" = "i686" ]] && pkgname+=('kodi-addon-dfatmo')
 pkgver=0.4.0
@@ -17,15 +17,14 @@ source=("https://github.com/durchflieger/${pkgbase}/archive/v${pkgver}.tar.gz"
 md5sums=('c10affe8304d494fee575d95ff791dca'
          'c5e0bf17e88febc7e86c7e435f5eea5f'
          'f8f2376c860c78f522e40b1afd02d38c')
-
 prepare() {
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd "${srcdir}/DFAtmo-${pkgver}"
   sed -i "s/python-config/python2-config/" Makefile
   sed -i 's/static const char \*libusb/const char \*libusb/g' df10choutputdriver.c
 }
 
 build() {
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd "${srcdir}/DFAtmo-${pkgver}"
 
   #Compile dfatmo
   CFLAGS+=' -fPIC'
@@ -41,7 +40,7 @@ package_dfatmo() {
   conflicts=('dfatmo-driver')
   depends=('libusbx' 'python2')
 
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd "${srcdir}/DFAtmo-${pkgver}"
   make DFATMOINSTDIR="${pkgdir}/usr" ATMODRIVER=atmodriver.so dfatmoinstall
 }
 
@@ -51,7 +50,7 @@ package_vdr-dfatmo() {
   _plugname=$(echo $pkgname | sed 's/vdr-//g')
   backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd "${srcdir}/DFAtmo-${pkgver}"
   make VDRDESTDIR="${pkgdir}" vdrinstall
   install -Dm644 "${srcdir}/45-df10ch.rules" "${pkgdir}/usr/lib/udev/rules.d/45-df10ch.rules"
 
@@ -65,6 +64,6 @@ package_kodi-addon-dfatmo() {
   conflicts=('xbmc-addon-dfatmo')
   depends=('dfatmo' 'kodi')
 
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd "${srcdir}/DFAtmo-${pkgver}"
   make XBMCDESTDIR="$pkgdir/usr/share/kodi/addons/script.dfatmo" xbmcinstall
 }
