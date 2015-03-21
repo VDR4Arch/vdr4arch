@@ -1,6 +1,6 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-tvguideng
-pkgver=0.0.2
+pkgver=0.0.3
 _vdrapi=2.2.0
 pkgrel=1
 pkgdesc="highly customizable 2D EPG viewer plugin."
@@ -9,10 +9,9 @@ arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=("vdr-api=$_vdrapi" 'vdr-skindesigner')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
-source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$pkgver.tar.bz2"
-        "tvguideng-fix_empty_channelgroup_crash.diff::http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/patch/?id=108d8e57849f43f7728fd748a3162abba7b95c9a")
+source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$pkgver.tar.bz2")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('3d4d7a7ddc859632469aaaef3e19942c'
+md5sums=('2e285d6de8f32d06ce75aea712c77230'
          '7786cd20382037772050b14119b44d5d')
 
 prepare() {
