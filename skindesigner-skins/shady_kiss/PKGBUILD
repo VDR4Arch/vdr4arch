@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 _srcname=shady_KISS
 pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
-_gitver=c1f8db416fe108fa002fb3b3301c0bb2ce7a8a4a
-pkgver=20150225
+_gitver=2fd9f383bba66dddf79cd7411997fdb116e87b90
+pkgver=20150327
 pkgrel=1
 pkgdesc="Shady_KISS Skin for SkinDesigner"
 arch=('any')
