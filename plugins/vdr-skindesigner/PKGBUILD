@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase='vdr-skindesigner'
 pkgname=($pkgbase skindesigner-{blackhole,metrixhd,nopacity})
-pkgver=0.3.3
+pkgver=0.3.4
 _vdrapi=2.2.0
 pkgrel=1
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
@@ -13,7 +13,7 @@ source=("http://projects.vdr-developer.org/git/vdr-plugin-skindesigner.git/snaps
         'skindesigner-use-opensans-font.diff'
         "50-$_plugname.conf")
 options=('!emptydirs')
-md5sums=('411518e0f3232a1d1b3b429e25768eb2'
+md5sums=('dd81f8f2f8ed56b0c56f49a7434df5a2'
          '861e1814ccf3b7d2b69908fc76b60967'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
