@@ -30,6 +30,7 @@ build() {
 
   cd libskindesignerapi
   make PREFIX='/usr'
+  ln -s libskindesignerapi.so.* libskindesignerapi.so
   cd ..
 
   export LIBS="-L$PWD/libskindesignerapi"
