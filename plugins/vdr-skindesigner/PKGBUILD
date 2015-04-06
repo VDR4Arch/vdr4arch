@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase='vdr-skindesigner'
 pkgname=($pkgbase skindesigner-{blackhole,metrixhd,nopacity})
-pkgver=0.4.1
+pkgver=0.4.2
 _vdrapi=2.2.0
 pkgrel=1
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
@@ -13,27 +13,17 @@ source=("http://projects.vdr-developer.org/git/vdr-plugin-skindesigner.git/snaps
         'skindesigner-use-opensans-font.diff'
         "50-$_plugname.conf")
 options=('!emptydirs')
-md5sums=('31b1b9b3e3b2661f69918639390cc4be'
+md5sums=('eb32628d7e921d6e22ffa51b120b01e2'
          '861e1814ccf3b7d2b69908fc76b60967'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
 prepare() {
   cd "${srcdir}/vdr-plugin-$_plugname-$pkgver"
   patch -p1 -i "$srcdir/skindesigner-use-opensans-font.diff"
-
-  sed -i 's/libskindesignerapi/libskindesignerapi\/libskindesignerapi\.pc/g' Makefile
-  sed -i 's/<libskindesignerapi\/skindesignerapi.h>/"libskindesignerapi\/skindesignerapi.h"/g' *.c *.h
 }
 
 build() {
   cd "${srcdir}/vdr-plugin-$_plugname-$pkgver"
-
-  cd libskindesignerapi
-  make PREFIX='/usr'
-  ln -s libskindesignerapi.so.* libskindesignerapi.so
-  cd ..
-
-  export LIBS="-L$PWD/libskindesignerapi"
   make
 }
 
@@ -45,9 +35,6 @@ package_vdr-skindesigner() {
   backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 
   cd "${srcdir}/vdr-plugin-$_plugname-$pkgver"
-  make DESTDIR="$pkgdir" install
-
-  cd libskindesignerapi
   make DESTDIR="$pkgdir" PREFIX='/usr' install
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
