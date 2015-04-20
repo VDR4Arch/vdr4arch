@@ -1,11 +1,10 @@
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 # Contributor: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgbase=dfatmo
-pkgname=('dfatmo' 'vdr-dfatmo')
-[[ "$CARCH" = "x86_64" ]] || [[ "$CARCH" = "i686" ]] && pkgname+=('kodi-addon-dfatmo')
+pkgname=('dfatmo' 'vdr-dfatmo' 'kodi-addon-dfatmo')
 pkgver=0.4.0
 _vdrapi=2.2.0
-pkgrel=11
+pkgrel=12
 epoch=1
 url="https://github.com/durchflieger/${pkgbase}"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
