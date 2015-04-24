@@ -1,7 +1,7 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 pkgname=vdr-rpihddevice
-pkgver=0.0.11_37_gdf4e38a
-_gitver=df4e38ae264bea41448f35ae9f617da91c1a6019
+pkgver=0.0.11_42_g19c2143
+_gitver=19c214381b9c006a218e31c6c3e4aaa695e6c98f
 _vdrapi=2.2.0
 pkgrel=1
 pkgdesc="Output device for Raspberry Pi"
