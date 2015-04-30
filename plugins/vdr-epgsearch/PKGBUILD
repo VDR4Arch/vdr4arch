@@ -3,12 +3,12 @@ pkgname=vdr-epgsearch
 pkgver=1.0.1.beta5
 _vdrapi=2.2.0
 epoch=1
-pkgrel=17
+pkgrel=18
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-depends=('gcc-libs' 'pcre' "vdr-api=${_vdrapi}")
+depends=('gcc-libs' "vdr-api=${_vdrapi}")
 optdepends=('msmtp: To send notification mails (Simpler replacement for sendmail)'
             'ssmtp: To send notification mails (Another simpler replacement for sendmail)')
 _plugname=$(echo $pkgname | sed 's/vdr-//g')
@@ -40,7 +40,7 @@ prepare() {
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
-  make
+  make REGEXLIB='' #Empty REGEXLIB to force regex.h from glibc
 }
 
 
