@@ -3,8 +3,8 @@
 _pkgbase="media_build_experimental"
 pkgname="media-build-experimental-dkms"
 pkgdesc="Oliver Endriss experimental media tree as DKMS"
-pkgver=r434.1969cdc5388b
-pkgrel=2
+pkgver=r500.ada40c8874d5
+pkgrel=1
 arch=("i686" "x86_64")
 url="http://linuxtv.org/hg/~endriss/media_build_experimental"
 license=("GPL")
