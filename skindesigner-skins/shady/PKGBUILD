@@ -1,8 +1,8 @@
 # Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
 _srcname=shady
 pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
-_gitver=35488c127e0b2bd923c1a890e2539820f3904017
-pkgver=20150222
+_gitver=2efab4b0c8e46b657cd97eccbfe815057552ebeb
+pkgver=20150516
 pkgrel=1
 pkgdesc="Shady Skin for SkinDesigner"
 arch=('any')
@@ -14,6 +14,11 @@ source=("git://github.com/tomsax56/shady.git#commit=$_gitver"
         'shady-use-opensans-font.diff')
 md5sums=('SKIP'
          '98837f84adae023465616837ac38d2f4')
+
+pkgver() {
+  cd "$srcdir/${_srcname}"
+  git log -1 --date=short --format=%cd | tr -d -
+}
 
 prepare() {
   cd "$srcdir/${_srcname}"
