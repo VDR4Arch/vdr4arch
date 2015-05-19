@@ -1,0 +1,16 @@
+# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+pkgname=vdrctl
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Tool which adds/removes symlinks or lists the available or active plugins of vdr"
+url="https://github.com/CReimer/vdrctl"
+arch=('any')
+license=('GPL3')
+depends=('perl' 'vdr')
+source=("https://github.com/CReimer/$pkgname/archive/v$pkgver.tar.gz")
+md5sums=('3ec22b89b7f02980738535d86262ac57')
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  install -Dm755 vdrctl "$pkgdir/usr/bin/vdrctl"
+}
