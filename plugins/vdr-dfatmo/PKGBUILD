@@ -1,5 +1,7 @@
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
-# Contributor: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# Contributor: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgbase=dfatmo
 pkgname=('dfatmo' 'vdr-dfatmo' 'kodi-addon-dfatmo')
 pkgver=0.4.0

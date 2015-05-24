@@ -1,4 +1,6 @@
-# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
+# Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-softhddevice
 pkgver=0.6.1rc1_51_gf0d31ad
 epoch=1

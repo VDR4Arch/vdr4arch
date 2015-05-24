@@ -1,3 +1,5 @@
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
 # Maintainer: George Kranis https://github.com/gkranis/vdr4arch
 pkgname=vdr-eepg
 pkgver=0.0.5_187_gd7dc614

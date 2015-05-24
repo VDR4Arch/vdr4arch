@@ -1,4 +1,6 @@
-# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
+# Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=yausbir_lirc
 pkgver=20140415
 _gitver=4fbc03d5d8b6a28abc3f3f054739cd22cd9f753b

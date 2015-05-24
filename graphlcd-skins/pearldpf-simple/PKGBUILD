@@ -1,4 +1,6 @@
-# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
+# Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=pearldpf-simple
 pkgver=20140301
 _gitver=d2a403b46d1e2f77b4a7ddffa12ed6f0d847d0d2

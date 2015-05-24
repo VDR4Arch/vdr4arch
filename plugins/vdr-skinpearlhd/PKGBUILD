@@ -1,4 +1,6 @@
-# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
+# Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-skinpearlhd
 pkgver=0.0.1_28_g9899940
 _gitver=9899940a4920e77d1d6c14a3b1bb16be47f5045d

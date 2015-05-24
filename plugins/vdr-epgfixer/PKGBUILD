@@ -1,4 +1,6 @@
-# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
+# Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-epgfixer
 pkgver=0.3.1_18_g1ad4aaf
 _gitver=1ad4aaffdc820af7e0a0f8c45a4beea4f3f10421

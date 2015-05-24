@@ -1,4 +1,6 @@
-# Maintainer: Christopher Reimer <vdr4arch[at]creimer[dot]net>
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
+# Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 _srcname=anthra_1920_FSE
 pkgname=text2skin-$(echo ${_srcname//_/-} | tr '[:upper:]' '[:lower:]')
 pkgver=0.1.3

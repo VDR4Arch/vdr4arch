@@ -1,3 +1,5 @@
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-restfulapi
 pkgver=0.2.2.0

@@ -1,3 +1,5 @@
+# This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
+
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=irctl
 pkgver=0.1
