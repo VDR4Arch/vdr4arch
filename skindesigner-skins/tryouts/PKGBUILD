@@ -3,8 +3,8 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 _srcname=tryouts
 pkgname=skindesigner-$(echo $_srcname | tr '[:upper:]' '[:lower:]')
-pkgver=0.0.2_20_ga4c4586
-_gitver=a4c4586f4d967d276f80d38aefabf78e14d7325f
+pkgver=0.0.2_21_g2740a50
+_gitver=2740a5078752ae0178304904a96f61d74608ea6d
 pkgrel=1
 pkgdesc="TryoutsHD Skin for SkinDesigner"
 arch=('any')
