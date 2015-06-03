@@ -1,21 +1,26 @@
 # This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
-pkgbase='vdr-skindesigner'
-pkgname=($pkgbase skindesigner-{blackhole,metrixhd,nopacity})
-pkgver=0.4.8
+pkgname='vdr-skindesigner'
+pkgver=0.5.1
 _vdrapi=2.2.0
 pkgrel=1
+  pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
 url="http://projects.vdr-developer.org/projects/skin-nopacity"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-makedepends=('git' 'librsvg' 'vdr')
-_plugname=$(echo $pkgbase | sed 's/vdr-//g')
+depends=('git' 'librsvg' 'unzip' "vdr-api=${_vdrapi}" 'wget')
+optdepends=('vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
+            'vdr-tvscraper: To display scraped images in various EPG views')
+conflicts=(skindesigner-{blackhole,holo,metrixhd,nopacity,shady,shady_kiss,skinelchi,tryouts})
+replaces=(skindesigner-{blackhole,holo,metrixhd,nopacity,shady,shady_kiss,skinelchi,tryouts})
+_plugname=$(echo $pkgname | sed 's/vdr-//g')
 source=("http://projects.vdr-developer.org/git/vdr-plugin-skindesigner.git/snapshot/vdr-plugin-$_plugname-$pkgver.tar.bz2"
         'skindesigner-use-opensans-font.diff'
         "50-$_plugname.conf")
+backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
-md5sums=('83ce29f192727a27c60412a86143aa68'
+md5sums=('c0ddb60b3f21d1a0ae8eb90f0ed769ef'
          '861e1814ccf3b7d2b69908fc76b60967'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
@@ -29,66 +34,19 @@ build() {
   make
 }
 
-package_vdr-skindesigner() {
-  pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
-  depends=('librsvg' "vdr-api=${_vdrapi}")
-  optdepends=('vdr-scraper2vdr: To display scraped images in various EPG views (requires epgd)'
-              'vdr-tvscraper: To display scraped images in various EPG views')
-  backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-
+package() {
   cd "${srcdir}/vdr-plugin-$_plugname-$pkgver"
   make DESTDIR="$pkgdir" PREFIX='/usr' install
 
+  mkdir -p "$pkgdir/var/lib/vdr/plugins/skindesigner/"
+  ln -s /usr/share/vdr/plugins/skindesigner/dtd "$pkgdir/var/lib/vdr/plugins/skindesigner/dtd"
+
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
-  rm -r "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
-  rm -r "$pkgdir/var/lib/vdr/themes"
 
   cd "$pkgdir/usr/lib/vdr/plugins/skindesigner/scripts"
   mv temperatures.default temperatures
   rm README temperatures.*
-}
-
-package_skindesigner-blackhole() {
-  arch=('any')
-  pkgdesc="Blackhole Skin for SkinDesigner"
-  depends=('ttf-sourcesanspro' 'vdr-skindesigner')
-
-  cd "${srcdir}/vdr-plugin-$_plugname-$pkgver"
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
-  cp -r skins/blackhole "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/"
-
-  mkdir -p "$pkgdir/var/lib/vdr/themes"
-  cp -r themes/blackhole-* "$pkgdir/var/lib/vdr/themes"
 
   chown -R 666:666 "$pkgdir/var/lib/vdr"
 }
 
-package_skindesigner-metrixhd() {
-  arch=('any')
-  pkgdesc="MetrixHD Skin for SkinDesigner"
-  depends=('ttf-opensans' 'vdr-skindesigner')
-
-  cd "${srcdir}/vdr-plugin-$_plugname-$pkgver"
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
-  cp -r skins/metrixhd "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/"
-
-  mkdir -p "$pkgdir/var/lib/vdr/themes"
-#   cp -r themes/metrixhd-* "$pkgdir/var/lib/vdr/themes"
-
-  chown -R 666:666 "$pkgdir/var/lib/vdr"
-}
-
-package_skindesigner-nopacity() {
-  arch=('any')
-  pkgdesc="nOpacity Skin for SkinDesigner"
-  depends=('vdr-skindesigner')
-
-  cd "${srcdir}/vdr-plugin-$_plugname-$pkgver"
-  mkdir -p "$pkgdir/usr/share/vdr/plugins/skindesigner/skins"
-  cp -r skins/nopacity "$pkgdir/usr/share/vdr/plugins/skindesigner/skins/"
-
-  mkdir -p "$pkgdir/var/lib/vdr/themes"
-  cp -r themes/nopacity-* "$pkgdir/var/lib/vdr/themes"
-
-  chown -R 666:666 "$pkgdir/var/lib/vdr"
-}
