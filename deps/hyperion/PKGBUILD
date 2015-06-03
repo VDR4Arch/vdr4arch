@@ -10,7 +10,7 @@ url="http://code.google.com/p/boblight/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('libusbx' 'python' 'qt4')
-makedepends=('cmake' 'doxygen')
+makedepends=('cmake' 'doxygen' 'git')
 source=("git://github.com/tvdzwan/hyperion.git#commit=$_gitrev"
         "${pkgname}d.service")
 md5sums=('SKIP'
