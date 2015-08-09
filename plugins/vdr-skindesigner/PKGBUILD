@@ -22,7 +22,6 @@ install="$pkgname.install"
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
 md5sums=('dfb4e27d252e8a37b0299420b60fa4f6'
-         'a1da3ea66c4a425dcfd3e24037510e39'
          'bab4227c649d778e4b05483535afda0b'
          'ebc6537bf0d3e604c59884ec408f7e9c')
 
