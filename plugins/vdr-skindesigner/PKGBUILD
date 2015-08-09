@@ -2,7 +2,7 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname='vdr-skindesigner'
-pkgver=0.6.3
+pkgver=0.7.0
 _vdrapi=2.2.0
 pkgrel=1
 pkgdesc="Highly customizable native true color skin for the Video Disc Recorder"
@@ -16,14 +16,21 @@ conflicts=(skindesigner-{blackhole,holo,metrixhd,nopacity,shady,shady_kiss,skine
 replaces=(skindesigner-{blackhole,holo,metrixhd,nopacity,shady,shady_kiss,skinelchi,tryouts})
 _plugname=${pkgname//vdr-/}
 source=("http://projects.vdr-developer.org/git/vdr-plugin-skindesigner.git/snapshot/vdr-plugin-$_plugname-$pkgver.tar.bz2"
+        'skindesigner-fix_for_vdr_2.2.0.diff::http://projects.vdr-developer.org/git/vdr-plugin-skindesigner.git/patch/?id=c0ab674dfba4f6b8dd62bd5b7b7b8a254ae59eab'
         '99-skindesigner.conf'
         "50-$_plugname.conf")
 install="$pkgname.install"
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
-md5sums=('36103d7483fc01d8290c4efb66369787'
+md5sums=('77995cfb9a817a5dcbc77b446bcbb861'
+         'a1da3ea66c4a425dcfd3e24037510e39'
          'bab4227c649d778e4b05483535afda0b'
          'ebc6537bf0d3e604c59884ec408f7e9c')
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-$_plugname-$pkgver"
+  patch -p1 -i "$srcdir/skindesigner-fix_for_vdr_2.2.0.diff"
+}
 
 build() {
   cd "${srcdir}/vdr-plugin-$_plugname-$pkgver"
