@@ -20,6 +20,7 @@ pkgbase = vdr-text2skin
 	source = patch-3
 	source = patch-4
 	source = static-std-string.diff
+	source = text2skin-vdr2.3.1compat.diff
 	md5sums = SKIP
 	md5sums = 5615fceb3b7597405402d1b817f8bc22
 	md5sums = 7ec3aae93025ed5608daf5c81dfcc234
@@ -27,6 +28,7 @@ pkgbase = vdr-text2skin
 	md5sums = 5a747b0e163790fa63d226be175985d9
 	md5sums = b8a5f802acbfc062b381cbcda2fba08d
 	md5sums = 54b2e7002138bbacea52cc149387a710
+	md5sums = 4d405bd731fcdee57dffd1c8d5afc6a6
 
 pkgname = vdr-text2skin
 
