@@ -1,0 +1,24 @@
+pkgbase = vdr-vnsiserver
+	pkgdesc = VDR plugin to handle XBMC clients
+	pkgver = 1.2.1_39_ge0fd853
+	pkgrel = 2
+	epoch = 2
+	url = https://github.com/FernetMenta/vdr-plugin-vnsiserver
+	arch = x86_64
+	arch = i686
+	arch = arm
+	arch = armv6h
+	arch = armv7h
+	license = GPL2
+	makedepends = git
+	depends = gcc-libs
+	depends = vdr-api=2.3.1
+	backup = etc/vdr/conf.avail/50-vnsiserver.conf
+	backup = var/lib/vdr/plugins/vnsiserver/allowed_hosts.conf
+	source = git+https://github.com/FernetMenta/vdr-plugin-vnsiserver.git#commit=e0fd85313ac6a75a31d2382927af45cf72b5bbf6
+	source = 50-vnsiserver.conf
+	md5sums = SKIP
+	md5sums = 833dd896fd81db4a39d2138416b3004d
+
+pkgname = vdr-vnsiserver
+

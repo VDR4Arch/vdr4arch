@@ -2,7 +2,7 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr
-pkgver=2.2.0
+pkgver=2.3.1
 pkgrel=1
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
@@ -15,9 +15,9 @@ optdepends=('lirc-utils: remote control support'
             'xlogin: To start X11')
 replaces=('runvdr-extreme')
 conflicts=('runvdr-extreme')
-provides=("vdr-api=2.2.0")
+provides=("vdr-api=2.3.1")
 install='vdr.install'
-source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
+source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
         '00-vdr.conf' '50-dvbsddevice.conf' '50-hello.conf' '50-pictures.conf' '50-rcu.conf'
         '60-create-dvb-device-units.rules'
@@ -36,7 +36,7 @@ backup=("etc/vdr/conf.avail/"50-dvb{s,h}ddevice.conf
         'var/lib/vdr/scr.conf'
         'var/lib/vdr/sources.conf'
         'var/lib/vdr/svdrphosts.conf')
-md5sums=('8853f64c0fc3d41ffd3b4bfc6f0a14b7'
+md5sums=('391c2ed60e2f7d24563fe3ed5854bc4f'
          '301c9b9766ed5182b07f1debc79abc21'
          'de3dcdea1a4282211c6dac370019548b'
          '9cb821ebb6a25e603f9c32bafabde362'

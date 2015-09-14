@@ -4,8 +4,8 @@
 pkgname=vdr-epg2vdr
 pkgver=0.1.12
 _gitver=57766287256873ab843f1366258e139b5ccf9dbb
-_vdrapi=2.2.0
-pkgrel=4
+_vdrapi=2.3.1
+pkgrel=5
 pkgdesc="Used to retrieve EPG data into the VDR"
 url="http://projects.vdr-developer.org/projects/plg-epg2vdr"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
