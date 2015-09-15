@@ -17,7 +17,9 @@ pkgbase = vdr-epg2vdr
 	depends = vdr-api=2.3.1
 	backup = etc/vdr/conf.avail/50-epg2vdr.conf
 	source = git://projects.vdr-developer.org/vdr-plugin-epg2vdr.git#commit=57766287256873ab843f1366258e139b5ccf9dbb
+	source = epg2vdr-vdr2.3.1compat.diff
 	md5sums = SKIP
+	md5sums = d9f919125516c5446cef3e387f3a6967
 
 pkgname = vdr-epg2vdr
 
