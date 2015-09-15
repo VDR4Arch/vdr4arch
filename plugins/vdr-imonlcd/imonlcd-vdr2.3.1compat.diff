@@ -1,0 +1,38 @@
+diff -ruN imonlcd-1.0.1.orig/watch.c imonlcd-1.0.1/watch.c
+--- imonlcd-1.0.1.orig/watch.c	2015-09-15 22:23:17.180086223 +0200
++++ imonlcd-1.0.1/watch.c	2015-09-15 22:25:04.684325451 +0200
+@@ -140,7 +140,8 @@
+   }
+ 
+   if(this->isopen()) {
+-    cTimer* t = Timers.GetNextActiveTimer();    
++    LOCK_TIMERS_READ;
++    cTimer* t = (cTimer*) Timers->GetNextActiveTimer();    
+ 
+     switch(nExitMode) {
+       case eOnExitMode_NEXTTIMER: {
+@@ -849,7 +850,8 @@
+     m_eVideoMode = eVideoNone;
+     m_eAudioMode = eAudioNone;
+ 
+-    cChannel * ch = Channels.GetByNumber(ChannelNumber);
++    LOCK_CHANNELS_READ;
++    cChannel * ch = (cChannel*) Channels->GetByNumber(ChannelNumber);
+     if(ch) {
+       chID = ch->GetChannelID();
+       chPresentTime = 0;
+@@ -871,11 +873,10 @@
+ 
+     bool bChanged = false;
+     const cEvent * p = NULL;
+-    cSchedulesLock schedulesLock;
+-    const cSchedules * schedules = cSchedules::Schedules(schedulesLock);
+-    if (chID.Valid() && schedules)
++    LOCK_SCHEDULES_READ;
++    if (chID.Valid() && Schedules)
+     {
+-        const cSchedule * schedule = schedules->GetSchedule(chID);
++        const cSchedule * schedule = Schedules->GetSchedule(chID);
+         if (schedule)
+         {
+             if ((p = schedule->GetPresentEvent()) != NULL)
