@@ -12,11 +12,11 @@ license=('GPL2')
 depends=('libcec' 'pugixml' "vdr-api=${_vdrapi}")
 _plugname=${pkgname//vdr-/}
 source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
-        'cecremote-vdr2.3.1compat.diff'
+        'cecremote-vdr2.3.1compat.diff::http://git.uli-eckhardt.de/?p=vdr-plugin-cecremote.git;a=patch;h=601b1ea2911ebc7b60cdb2910c8e856aeb420be3'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('060927a8f1fc07bd6613abd0a4e331c6'
-         '5773e1baf2b7c25313477dc0b87eaa82'
+         'f45ff0334c3db48b7394ed60ee951e23'
          'b07791e9ca361d41d58f2017fdcec70b')
 
 prepare() {
