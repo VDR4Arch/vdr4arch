@@ -47,6 +47,9 @@ prepare() {
   # Enable VA-API
   sed -i 's/#VAAPI/VAAPI/g' Makefile
   sed -i 's/#OPENGL/OPENGL/g' Makefile
+  
+  # Disable PIP or now. It's incompatible with vdr 2.3.1
+  sed -i '/DUSE_PIP/d' Makefile
 }
 
 build() {
