@@ -1,0 +1,31 @@
+diff --git a/state.c b/state.c
+index 23be6d1..1981a39 100644
+--- a/state.c
++++ b/state.c
+@@ -676,7 +676,8 @@ void cGraphLCDState::UpdateChannelInfo(void)
+ 
+     mutex.Lock();
+ 
+-    cChannel * ch = Channels.GetByNumber(mChannel.number);
++    LOCK_CHANNELS_READ;
++    const cChannel * ch = Channels->GetByNumber(mChannel.number);
+     if (ch)
+     {
+         mChannel.id = ch->GetChannelID();
+@@ -738,12 +739,12 @@ void cGraphLCDState::UpdateEventInfo(void)
+     mFollowing.shortText = "";
+     mFollowing.description = "";
+ 
+-    const cSchedules * schedules = cSchedules::Schedules(schedulesLock);
++    LOCK_SCHEDULES_READ;
+     if (mChannel.id.Valid())
+     {
+-        if (schedules)
+-        {
+-            const cSchedule * schedule = schedules->GetSchedule(mChannel.id);
++         if (Schedules)
++         {
++            const cSchedule * schedule = Schedules->GetSchedule(mChannel.id);
+             if (schedule)
+             {
+                 if ((present = schedule->GetPresentEvent()) != NULL)
