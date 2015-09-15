@@ -1,0 +1,93 @@
+diff -ruN devstatus-0.4.1.orig/devstatus.c devstatus-0.4.1/devstatus.c
+--- devstatus-0.4.1.orig/devstatus.c	2015-09-14 20:32:49.969925411 +0200
++++ devstatus-0.4.1/devstatus.c	2015-09-15 21:43:28.251022618 +0200
+@@ -53,10 +53,11 @@
+ 
+ cChannel* getTunedChannel(cDevice *d)  {
+    int channelNo;
++   LOCK_CHANNELS_READ;
+    cChannel *channel = NULL;
+ 
+-   for (channelNo = 1; channelNo <= Channels.MaxNumber(); channelNo++) {
+-      if( (channel = Channels.GetByNumber(channelNo)) ) {
++   for (channelNo = 1; channelNo <= Channels->MaxNumber(); channelNo++) {
++      if( (channel = (cChannel*) Channels->GetByNumber(channelNo)) ) {
+          if (d->IsTunedToTransponder(channel)) {
+            return channel;
+          }
+@@ -77,9 +78,9 @@
+    cChannel *channel = NULL;
+    cChannel *resChannel = NULL;
+    int oldQRG = getTunedFrequency(device);
+-            
+-   for (channelNo = 1; channelNo <= Channels.MaxNumber(); channelNo++) {
+-      if( (channel = Channels.GetByNumber(channelNo)) ) {
++   LOCK_CHANNELS_READ;
++   for (channelNo = 1; channelNo <= Channels->MaxNumber(); channelNo++) {
++      if( (channel = (cChannel*) Channels->GetByNumber(channelNo)) ) {
+           if( device->ProvidesSource( channel->Source() ) ) { // same source (DVB-T, -S, ...)
+              if( !ISTRANSPONDER(channel->Frequency(),oldQRG) ) {  //not the same transponder
+                if( channel->Frequency()*direction > oldQRG*direction ) {  
+@@ -152,7 +153,7 @@
+   int GetChannelNr()  { return ChannelNr; }
+   bool IsChannel() { return ChannelNr != 0; }
+   bool HasDevice() { return DeviceNr >= 0; }
+-  cChannel* GetChannel()  { return Channels.GetByNumber(ChannelNr); }
++  cChannel* GetChannel()  { LOCK_CHANNELS_READ; return (cChannel*) Channels->GetByNumber(ChannelNr); }
+   cDevice* GetDevice() { return cDevice::GetDevice(DeviceNr); };
+ };
+ 
+@@ -275,8 +276,9 @@
+                  int channelNo;
+                  cChannel *channel = NULL;
+        
+-                 for (channelNo = 1; channelNo <= Channels.MaxNumber(); channelNo++) {
+-                    if( (channel = Channels.GetByNumber(channelNo)) ) {
++                 LOCK_CHANNELS_READ;
++                 for (channelNo = 1; channelNo <= Channels->MaxNumber(); channelNo++) {
++                    if( (channel = (cChannel*) Channels->GetByNumber(channelNo)) ) {
+                        if (d->IsTunedToTransponder(channel)) {
+                             bool currentLive = channelNo == d->CurrentChannel() 
+                                                && (i == cDevice::ActualDevice()->CardIndex());
+@@ -346,9 +348,10 @@
+     eOSState Play(char* file) {
+             // Play the selected recording 
+             cRecording* recordingFound = NULL;
+-            for(cRecording* recording = Recordings.First(); recording; recording = Recordings.Next(recording))
++            LOCK_RECORDINGS_READ;
++            for(const cRecording* recording = Recordings->First(); recording; recording = Recordings->Next(recording))
+                 if (strstr(recording->Title(), file))
+-                    recordingFound = recording;
++                    recordingFound = (cRecording*)recording;
+             if (!recordingFound)
+                 return osContinue;
+ #if VDRVERSNUM >= 10728
+@@ -401,7 +404,8 @@
+                     ri = (cMenuRecItem*)Get(Current());
+                     if (ri->Selectable()) {
+                         if (ri->IsChannel()) {
+-                            Channels.SwitchTo(ri->GetChannelNr());
++                            LOCK_CHANNELS_WRITE;
++                            Channels->SwitchTo(ri->GetChannelNr());
+                             Write(); //repaint; maybe 'Live' has changed
+                             return osContinue;
+                         } else
+@@ -633,7 +637,8 @@
+ #endif
+     if (Name) {
+         // insert new timers currently recording in TimersRecording
+-        for (cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti))
++        LOCK_TIMERS_READ;
++        for (const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti))
+             if (ti->Recording()) {
+                 // check if this is a new entry
+                 bool bFound = false;
+@@ -642,7 +647,7 @@
+                         bFound = true;
+ 
+                 if (bFound) continue; // already handled
+-                CurrentRecordings.Add(new cRecObj(Name, Device, ti));
++                CurrentRecordings.Add(new cRecObj(Name, Device, (cTimer*)ti));
+                 update=1;
+                 return;
+             }
