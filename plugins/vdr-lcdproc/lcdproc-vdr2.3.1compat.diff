@@ -1,0 +1,18 @@
+diff --git a/lcd.c b/lcd.c
+index bfbccea..aa3d2c3 100644
+--- a/lcd.c
++++ b/lcd.c
+@@ -850,10 +850,10 @@ void cLcd::Action(void) { // LCD output thread
+ 		  }
+ 
+ 		  if ( time(NULL) > nextLcdUpdate ) {
+-			  cChannel *channel = Channels.GetByNumber(primaryDvbApi->CurrentChannel());
++                          LOCK_CHANNELS_READ;
++			  cChannel *channel = (cChannel*) Channels->GetByNumber(primaryDvbApi->CurrentChannel());
+ 			  const cEvent *Present = NULL;
+-			  cSchedulesLock schedulesLock;
+-			  const cSchedules *Schedules = cSchedules::Schedules(schedulesLock);
++                          LOCK_SCHEDULES_READ;
+ 			  if (Schedules) {
+ 				  const cSchedule *Schedule = Schedules->GetSchedule(channel->GetChannelID());
+ 				  if (Schedule) {
