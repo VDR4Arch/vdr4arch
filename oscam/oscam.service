@@ -1,5 +1,6 @@
 [Unit]
 Description=Open Source Conditional Access Module
+Wants=pcscd.service
 
 [Service]
 Type=simple

@@ -10,14 +10,17 @@ pkgbase = oscam
 	arch = armv6h
 	arch = armv7h
 	license = GPL3
+	makedepends = pcsclite
 	depends = libusb
 	depends = openssl
+	optdepends = pcsclite: for use with PC/SC readers
+	optdepends = ccid: PC/SC reader generic driver
 	noextract = oscam-10991.zip
 	source = oscam-10991.zip::http://www.streamboard.tv/oscam/changeset/10991/trunk?old_path=%2F&old=10991&format=zip
 	source = oscam.service
 	source = oscam.sysuser
 	md5sums = 6e9c658742aa18be4c18859bd5b6b8d8
-	md5sums = 0de56c99e34a6bdb7f4dc6349478a920
+	md5sums = 596b902e3f4a66d39e7f993437feec74
 	md5sums = be0d9d7a5fdd8cf4918c4ea91cebd989
 
 pkgname = oscam
