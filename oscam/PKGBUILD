@@ -9,13 +9,16 @@ url="http://www.streamboard.tv/oscam"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL3')
 depends=('libusb' 'openssl')
+makedepends=('pcsclite')
+optdepends=('pcsclite: for use with PC/SC readers'
+            'ccid: PC/SC reader generic driver')
 install='oscam.install'
 source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
         'oscam.service'
         'oscam.sysuser')
 noextract=("${pkgname}-${pkgver}.zip")
 md5sums=('6e9c658742aa18be4c18859bd5b6b8d8'
-         '0de56c99e34a6bdb7f4dc6349478a920'
+         '596b902e3f4a66d39e7f993437feec74'
          'be0d9d7a5fdd8cf4918c4ea91cebd989')
 
 prepare() {
@@ -31,6 +34,7 @@ build() {
   make CONF_DIR=/var/lib/oscam \
        USE_SSL=1 \
        USE_LIBUSB=1 \
+       USE_PCSC=1 \
        OSCAM_BIN=oscam \
        LIST_SMARGO_BIN=list_smargo \
        SVN_REV=$pkgver
