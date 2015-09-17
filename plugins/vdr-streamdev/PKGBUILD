@@ -16,10 +16,12 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=${pkgbase//vdr-/}
 source=("git://projects.vdr-developer.org/vdr-plugin-streamdev.git#commit=$_gitver"
+        'streamdev-vdr2.3.1compat.diff'
         "http://projects.vdr-developer.org/attachments/download/1844/vdr-plugin-streamdev-filter-patch.diff"
         "http://projects.vdr-developer.org/attachments/download/1853/vdr-plugin-streamdev-filter-patch2.diff"
         "50-$_plugname-server.conf")
 md5sums=('SKIP'
+         '589101516162e965d127a09ea90ab925'
          'a1e4b3807ede87b810abc973666a88eb'
          'e0ddaa269ce0727dd2e434a417b42bf5'
          '8c352d8ee7401eeb34fe5ab82e791a21')
@@ -35,6 +37,7 @@ prepare() {
   patch -p1 -i "$srcdir/vdr-plugin-streamdev-filter-patch.diff"
   patch -p1 -i "$srcdir/vdr-plugin-streamdev-filter-patch2.diff"
   sed -i 's/m_Buffer\[4096\]/m_Buffer\[8192\]/' client/filter.c
+  patch -p1 -i "$srcdir/streamdev-vdr2.3.1compat.diff"
 }
 
 build() {

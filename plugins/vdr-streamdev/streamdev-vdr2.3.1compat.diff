@@ -1,0 +1,940 @@
+diff --git a/client/filter.c b/client/filter.c
+index 8606770..805162c 100644
+--- a/client/filter.c
++++ b/client/filter.c
+@@ -160,7 +160,7 @@ int cStreamdevFilters::OpenFilter(u_short Pid, u_char Tid, u_char Mask) {
+ 	cStreamdevFilter *f = new cStreamdevFilter(Pid, Tid, Mask);
+ 	int fh = f->ReadPipe();
+ 
+-	Lock();
++	cThread::Lock();
+ 	Add(f);
+ 	Unlock();
+ 
+diff --git a/server/componentIGMP.c b/server/componentIGMP.c
+index 7398c67..3df0332 100644
+--- a/server/componentIGMP.c
++++ b/server/componentIGMP.c
+@@ -107,17 +107,18 @@ cComponentIGMP::~cComponentIGMP(void)
+ 
+ cMulticastGroup* cComponentIGMP::FindGroup(in_addr_t Group) const
+ {
+-	cMulticastGroup *group = m_Groups.First();
++	const cMulticastGroup *group = m_Groups.First();
+ 	while (group && group->group != Group)
+ 		group = m_Groups.Next(group);
+-	return group;
++	return (cMulticastGroup*) group;
+ }
+ 
+ bool cComponentIGMP::Initialize(void)
+ {
+ 	if (cServerComponent::Initialize() && IGMPMembership(IGMP_ALL_ROUTER))
+ 	{
+-		for (cChannel *channel = Channels.First(); channel; channel = Channels.Next(channel))
++		LOCK_CHANNELS_READ;
++		for (const cChannel *channel = Channels->First(); channel; channel = Channels->Next(channel))
+ 		{
+ 			if (channel->GroupSep())
+ 				continue;
+@@ -146,7 +147,8 @@ void cComponentIGMP::Destruct(void)
+ 		Cancel(-1);
+ 		m_CondWait.Signal();
+ 		Cancel(2);
+-		for (cChannel *channel = Channels.First(); channel; channel = Channels.Next(channel))
++		LOCK_CHANNELS_READ;
++		for (const cChannel *channel = Channels->First(); channel; channel = Channels->Next(channel))
+ 		{
+ 			if (channel->GroupSep())
+ 				continue;
+@@ -432,9 +434,10 @@ cServerConnection* cComponentIGMP::IGMPStartMulticast(cMulticastGroup* Group)
+ 	in_addr_t g = ntohl(Group->group);
+ 	if (g > MULTICAST_PRIV_MIN && g <= MULTICAST_PRIV_MAX) {
+ 		cThreadLock lock;
+-		cChannel *channel = Channels.GetByNumber(g - MULTICAST_PRIV_MIN);
++		LOCK_CHANNELS_READ;
++		const cChannel *channel = Channels->GetByNumber(g - MULTICAST_PRIV_MIN);
+ 		const cList<cServerConnection>& clients = cStreamdevServer::Clients(lock);
+-		cServerConnection *s = clients.First();
++		const cServerConnection *s = clients.First();
+ 		while (s) {
+ 			if (s->RemoteIpAddr() == Group->group)
+ 				break;
+@@ -442,7 +445,7 @@ cServerConnection* cComponentIGMP::IGMPStartMulticast(cMulticastGroup* Group)
+ 		}
+ 		if (!s) {
+ 			conn = NewClient();
+-			if (!((cConnectionIGMP *)conn)->SetChannel(channel, Group->group)) {
++			if (!((cConnectionIGMP *)conn)->SetChannel((cChannel*) channel, Group->group)) {
+ 				DELETENULL(conn);
+ 			}
+ 		}
+@@ -454,7 +457,7 @@ void cComponentIGMP::IGMPStopMulticast(cMulticastGroup* Group)
+ {
+ 	cThreadLock lock;
+ 	const cList<cServerConnection>& clients = cStreamdevServer::Clients(lock);
+-	for (cServerConnection *s = clients.First(); s; s = clients.Next(s)) {
++	for (cServerConnection *s = (cServerConnection*) clients.First(); s; s = (cServerConnection*) clients.Next(s)) {
+ 		if (s->RemoteIpAddr() == Group->group)
+ 			s->Close();
+ 	}
+diff --git a/server/connection.c b/server/connection.c
+index 56be407..b24a4e5 100644
+--- a/server/connection.c
++++ b/server/connection.c
+@@ -46,14 +46,16 @@ const cChannel* cServerConnection::ChannelFromString(const char *String, int *Ap
+ 		int temp = strtol(String, NULL, 10);
+ 		if (temp == 0)
+ 			temp = cDevice::CurrentChannel();
+-		if (temp >= 1 && temp <= Channels.MaxNumber())
+-			channel = Channels.GetByNumber(temp);
++		LOCK_CHANNELS_READ;
++		if (temp >= 1 && temp <= Channels->MaxNumber())
++			channel = Channels->GetByNumber(temp);
+ 	} else {
+-		channel = Channels.GetByChannelID(tChannelID::FromString(string));
++		LOCK_CHANNELS_READ;
++		channel = Channels->GetByChannelID(tChannelID::FromString(string));
+ 
+ 		if (channel == NULL) {
+ 			int i = 1;
+-			while ((channel = Channels.GetByNumber(i, 1)) != NULL) {
++			while ((channel = Channels->GetByNumber(i, 1)) != NULL) {
+ 				if (String == channel->Name())
+ 					break;
+ 
+diff --git a/server/connectionHTTP.c b/server/connectionHTTP.c
+index 922bd04..f9e026e 100644
+--- a/server/connectionHTTP.c
++++ b/server/connectionHTTP.c
+@@ -523,8 +523,8 @@ RecPlayer* cConnectionHTTP::RecPlayerFromString(const char *FileBase, const char
+ 			ino_t inode = (ino_t) strtoull(p + 1, &p, 0);
+ 			if (*p == 0 && inode > 0) {
+ 				struct stat st;
+-				cThreadLock RecordingsLock(&Recordings);
+-				for (cRecording *rec = Recordings.First(); rec; rec = Recordings.Next(rec)) {
++				LOCK_RECORDINGS_READ;
++				for (const cRecording *rec = Recordings->First(); rec; rec = Recordings->Next(rec)) {
+ 					if (stat(rec->FileName(), &st) == 0 && st.st_dev == (dev_t) l && st.st_ino == inode)
+ 						recPlayer = new RecPlayer(rec->FileName());
+ 				}
+@@ -532,8 +532,8 @@ RecPlayer* cConnectionHTTP::RecPlayerFromString(const char *FileBase, const char
+ 		}
+ 		else if (*p == 0) {
+ 			// get recording by index
+-			cThreadLock RecordingsLock(&Recordings);
+-			cRecording *rec = Recordings.Get((int) l - 1);
++			LOCK_RECORDINGS_READ;
++			cRecording *rec = (cRecording*) Recordings->Get((int) l - 1);
+ 			if (rec)
+ 				recPlayer = new RecPlayer(rec->FileName());
+ 		}
+diff --git a/server/connectionVTP.c b/server/connectionVTP.c
+index 05c49ee..8d9f876 100644
+--- a/server/connectionVTP.c
++++ b/server/connectionVTP.c
+@@ -58,8 +58,6 @@ public:
+ 
+ cLSTEHandler::cLSTEHandler(cConnectionVTP *Client, const char *Option):
+ 		m_Client(Client),
+-		m_SchedulesLock(new cSchedulesLock(false, 500)),
+-		m_Schedules(cSchedules::Schedules(*m_SchedulesLock)),
+ 		m_Schedule(NULL),
+ 		m_Event(NULL),
+ 		m_Errno(0),
+@@ -131,11 +129,12 @@ cLSTEHandler::cLSTEHandler(cConnectionVTP *Client, const char *Option):
+ 					break;
+ 				}
+ 			} else if (!m_Schedule) {
+-				cChannel* Channel = NULL;
++				LOCK_CHANNELS_READ;
++				const cChannel* Channel = NULL;
+ 				if (isnumber(p))
+-					Channel = Channels.GetByNumber(strtol(Option, NULL, 10));
++					Channel = Channels->GetByNumber(strtol(Option, NULL, 10));
+ 				else
+-					Channel = Channels.GetByChannelID(tChannelID::FromString(
++					Channel = Channels->GetByChannelID(tChannelID::FromString(
+ 					                                  Option));
+ 				if (Channel) {
+ 					m_Schedule = m_Schedules->GetSchedule(Channel->GetChannelID());
+@@ -215,7 +214,8 @@ bool cLSTEHandler::Next(bool &Last)
+ 	switch (m_State) {
+ 	case Channel:
+ 		if (m_Schedule != NULL) {
+-			cChannel *channel = Channels.GetByChannelID(m_Schedule->ChannelID(),
++			LOCK_CHANNELS_READ;
++			const cChannel *channel = Channels->GetByChannelID(m_Schedule->ChannelID(),
+ 			                                            true);
+ 			if (channel != NULL) {
+ 				m_State = Event;
+@@ -371,12 +371,13 @@ cLSTCHandler::cLSTCHandler(cConnectionVTP *Client, const char *Option):
+ 		m_Errno(0),
+ 		m_Traverse(false)
+ {
+-	if (!Channels.Lock(false, 500)) {
++	LOCK_CHANNELS_READ;
++	if (!Channels) {
+ 		m_Errno = 451;
+ 		m_Error = "Channels are being modified - try again";
+ 	} else if (*Option) {
+ 		if (isnumber(Option)) {
+-			m_Channel = Channels.GetByNumber(strtol(Option, NULL, 10));
++			m_Channel = Channels->GetByNumber(strtol(Option, NULL, 10));
+ 			if (m_Channel == NULL) {
+ 				m_Errno = 501;
+ 				m_Error = cString::sprintf("Channel \"%s\" not defined", Option);
+@@ -386,21 +387,21 @@ cLSTCHandler::cLSTCHandler(cConnectionVTP *Client, const char *Option):
+ 			int i = 1;
+ 			m_Traverse = true;
+ 			m_Option = strdup(Option);
+-			while (i <= Channels.MaxNumber()) {
+-				m_Channel = Channels.GetByNumber(i, 1);
++			while (i <= Channels->MaxNumber()) {
++				m_Channel = Channels->GetByNumber(i, 1);
+ 				if (strcasestr(m_Channel->Name(), Option) != NULL)
+ 					break;
+ 				i = m_Channel->Number() + 1;
+ 			}
+ 
+-			if (i > Channels.MaxNumber()) {
++			if (i > Channels->MaxNumber()) {
+ 				m_Errno = 501;
+ 				m_Error = cString::sprintf("Channel \"%s\" not defined", Option);
+ 				return;
+ 			}
+ 		}
+-	} else if (Channels.MaxNumber() >= 1) {
+-		m_Channel = Channels.GetByNumber(1, 1);
++	} else if (Channels->MaxNumber() >= 1) {
++		m_Channel = Channels->GetByNumber(1, 1);
+ 		m_Traverse = true;
+ 	} else {
+ 		m_Errno = 550;
+@@ -410,7 +411,7 @@ cLSTCHandler::cLSTCHandler(cConnectionVTP *Client, const char *Option):
+ 
+ cLSTCHandler::~cLSTCHandler()
+ {
+-	Channels.Unlock();
++// 	Channels->Unlock();
+ 	if (m_Option != NULL)
+ 		free(m_Option);
+ }
+@@ -435,8 +436,9 @@ bool cLSTCHandler::Next(bool &Last)
+ 	Last = true;
+ 	if (m_Traverse) {
+ 		int i = m_Channel->Number() + 1;
+-		while (i <= Channels.MaxNumber()) {
+-			m_Channel = Channels.GetByNumber(i, 1);
++		LOCK_CHANNELS_READ;
++		while (i <= Channels->MaxNumber()) {
++			m_Channel = Channels->GetByNumber(i, 1);
+ 			if (m_Channel != NULL) {
+ 				if (m_Option == NULL || strcasestr(m_Channel->Name(), 
+ 												   m_Option) != NULL)
+@@ -448,7 +450,7 @@ bool cLSTCHandler::Next(bool &Last)
+ 			}
+ 		}
+ 
+-		if (i < Channels.MaxNumber() + 1)
++		if (i < Channels->MaxNumber() + 1)
+ 			Last = false;
+ 	}
+ 
+@@ -479,9 +481,10 @@ cLSTTHandler::cLSTTHandler(cConnectionVTP *Client, const char *Option):
+ 		m_Errno(0),
+ 		m_Traverse(false)
+ {
++	LOCK_TIMERS_READ;
+ 	if (*Option) {
+ 		if (isnumber(Option)) {
+-			m_Timer = Timers.Get(strtol(Option, NULL, 10) - 1);
++			m_Timer = (cTimer*) Timers->Get(strtol(Option, NULL, 10) - 1);
+ 			if (m_Timer == NULL) {
+ 				m_Errno = 501;
+ 				m_Error = cString::sprintf("Timer \"%s\" not defined", Option);
+@@ -490,10 +493,10 @@ cLSTTHandler::cLSTTHandler(cConnectionVTP *Client, const char *Option):
+ 			m_Errno = 501;
+ 			m_Error = cString::sprintf("Error in timer number \"%s\"", Option);
+ 		}
+-	} else if (Timers.Count()) {
++	} else if (Timers->Count()) {
+ 		m_Traverse = true;
+ 		m_Index = 0;
+-		m_Timer = Timers.Get(m_Index);
++		m_Timer = (cTimer*) Timers->Get(m_Index);
+ 		if (m_Timer == NULL) {
+ 			m_Errno = 501;
+ 			m_Error = cString::sprintf("Timer \"%d\" not found", m_Index + 1);
+@@ -519,7 +522,8 @@ bool cLSTTHandler::Next(bool &Last)
+ 
+ 	bool result;
+ 	char *buffer;
+-	Last = !m_Traverse || m_Index >= Timers.Count() - 1;
++	LOCK_TIMERS_READ;
++	Last = !m_Traverse || m_Index >= Timers->Count() - 1;
+ 	buffer = strdup(*m_Timer->ToText());
+ 	buffer[strlen(buffer) - 1] = '\0'; // strip \n
+ 	result = m_Client->Respond(Last ? 250 : -250, "%d %s", m_Timer->Index() + 1,
+@@ -527,7 +531,7 @@ bool cLSTTHandler::Next(bool &Last)
+ 	free(buffer);
+ 
+ 	if (m_Traverse && !Last) {
+-		m_Timer = Timers.Get(++m_Index);
++		m_Timer = (cTimer*) Timers->Get(++m_Index);
+ 		if (m_Timer == NULL) {
+ 			m_Errno = 501;
+ 			m_Error = cString::sprintf("Timer \"%d\" not found", m_Index + 1);
+@@ -570,9 +574,10 @@ cLSTRHandler::cLSTRHandler(cConnectionVTP *Client, const char *Option):
+ 		m_State(Recording),
+ 		m_CurrentComponent(0)
+ {
++	LOCK_RECORDINGS_READ;
+ 	if (*Option) {
+ 		if (isnumber(Option)) {
+-			m_Recording = Recordings.Get(strtol(Option, NULL, 10) - 1);
++			m_Recording = (cRecording*) Recordings->Get(strtol(Option, NULL, 10) - 1);
+ 			m_Event = m_Recording->Info()->GetEvent();
+ 			m_Info = true;
+ 			if (m_Recording == NULL) {
+@@ -585,10 +590,10 @@ cLSTRHandler::cLSTRHandler(cConnectionVTP *Client, const char *Option):
+ 			m_Error = cString::sprintf("Error in Recording number \"%s\"", Option);
+ 		}
+ 	} 
+-	else if (Recordings.Count()) {
++	else if (Recordings->Count()) {
+ 		m_Traverse = true;
+ 		m_Index = 0;
+-		m_Recording = Recordings.Get(m_Index);
++		m_Recording = (cRecording*) Recordings->Get(m_Index);
+ 		if (m_Recording == NULL) {
+ 			m_Errno = 501;
+ 			m_Error = cString::sprintf("Recording \"%d\" not found", m_Index + 1);
+@@ -691,11 +696,12 @@ bool cLSTRHandler::Next(bool &Last)
+ 	}
+ 	else {
+ 		bool result;
+-		Last = !m_Traverse || m_Index >= Recordings.Count() - 1;
++		LOCK_RECORDINGS_READ;
++		Last = !m_Traverse || m_Index >= Recordings->Count() - 1;
+ 		result = m_Client->Respond(Last ? 250 : -250, "%d %s", m_Recording->Index() + 1, m_Recording->Title(' ', true));
+ 
+ 		if (m_Traverse && !Last) {
+-			m_Recording = Recordings.Get(++m_Index);
++			m_Recording = (cRecording*) Recordings->Get(++m_Index);
+ 			if (m_Recording == NULL) {
+ 				m_Errno = 501;
+ 				m_Error = cString::sprintf("Recording \"%d\" not found", m_Index + 1);
+@@ -1145,7 +1151,8 @@ bool cConnectionVTP::CmdPLAY(char *Opts)
+ {
+ 	if (*Opts) {
+ 		if (isnumber(Opts)) {
+-			cRecording *recording = Recordings.Get(strtol(Opts, NULL, 10) - 1);
++			LOCK_RECORDINGS_READ;
++			cRecording *recording = (cRecording*) Recordings->Get(strtol(Opts, NULL, 10) - 1);
+ 			if (recording) {
+ 				if (m_RecPlayer) {
+ 					delete m_RecPlayer;
+@@ -1391,10 +1398,11 @@ bool cConnectionVTP::CmdSTAT(const char *Option)
+ 			Reply(250, "VDR: %s | Streamdev: %s", VDRVERSION, VERSION);
+ 		}
+ 		else if (strcasecmp(Option, "RECORDS") == 0) {
+-			bool recordings = Recordings.Load();
+-			Recordings.Sort();
+-			if (recordings) {
+-				cRecording *recording = Recordings.Last();
++			LOCK_RECORDINGS_WRITE;
++// 			bool recordings = Recordings->Load();
++			Recordings->Sort();
++			if (Recordings) {
++				cRecording *recording = (cRecording*) Recordings->Last();
+ 				Reply(250, "%d", recording->Index() + 1);
+ 			}
+ 			else {
+@@ -1402,10 +1410,12 @@ bool cConnectionVTP::CmdSTAT(const char *Option)
+ 			}
+ 		}
+ 		else if (strcasecmp(Option, "CHANNELS") == 0) {
+-			Reply(250, "%d", Channels.MaxNumber());
++			LOCK_CHANNELS_READ;
++			Reply(250, "%d", Channels->MaxNumber());
+ 		}
+ 		else if (strcasecmp(Option, "TIMERS") == 0) {
+-			Reply(250, "%d", Timers.Count());
++			LOCK_TIMERS_READ;
++			Reply(250, "%d", Timers->Count());
+ 		}
+ 		else if (strcasecmp(Option, "CHARSET") == 0) {
+ 			Reply(250, "%s", cCharSetConv::SystemCharacterTable());
+@@ -1433,7 +1443,8 @@ bool cConnectionVTP::CmdMODT(const char *Option)
+ 		int n = strtol(Option, &tail, 10);
+ 		if (tail && tail != Option) {
+ 			tail = skipspace(tail);
+-			cTimer *timer = Timers.Get(n - 1);
++			LOCK_TIMERS_WRITE;
++			cTimer *timer = (cTimer*) Timers->Get(n - 1);
+ 			if (timer) {
+ 				cTimer t = *timer;
+ 				if (strcasecmp(tail, "ON") == 0)
+@@ -1445,7 +1456,7 @@ bool cConnectionVTP::CmdMODT(const char *Option)
+ 					EXIT_WRAPPER();
+ 				}
+ 				*timer = t;
+-				Timers.SetModified();
++				Timers->SetModified();
+ 				isyslog("timer %s modified (%s)", *timer->ToDescr(), 
+ 				        timer->HasFlags(tfActive) ? "active" : "inactive");
+ 				Reply(250, "%d %s", timer->Index() + 1, *timer->ToText());
+@@ -1464,10 +1475,11 @@ bool cConnectionVTP::CmdNEWT(const char *Option)
+ 	if (*Option) {
+ 		cTimer *timer = new cTimer;
+ 		if (timer->Parse(Option)) {
+-			cTimer *t = Timers.GetTimer(timer);
++			LOCK_TIMERS_WRITE;
++			cTimer *t = Timers->GetTimer(timer);
+ 			if (!t) {
+-				Timers.Add(timer);
+-				Timers.SetModified();
++				Timers->Add(timer);
++				Timers->SetModified();
+ 				isyslog("timer %s added", *timer->ToDescr());
+ 				Reply(250, "%d %s", timer->Index() + 1, *timer->ToText());
+ 				EXIT_WRAPPER();
+@@ -1512,21 +1524,24 @@ bool cConnectionVTP::CmdDELT(const char *Option)
+ 			}
+ 		}
+ 
+-		cTimer *timer = Timers.Get(number);
+-			if (timer) {
+-			if (timer->Recording()) {
++		LOCK_TIMERS_WRITE;
++		cTimer *Timer = (cTimer*) Timers->Get(number);
++			if (Timer) {
++			if (Timer->Recording()) {
+ 				if (force) {
+-					timer->Skip();
+-					cRecordControls::Process(time(NULL));
++					if (!Timer->Remote()) {
++						Timer->Skip();
++						cRecordControls::Process(Timers, time(NULL));
++					}
+ 				}
+ 				else {
+ 					Reply(550, "Timer \"%i\" is recording", number);
+ 					EXIT_WRAPPER();
+ 				}
+ 			}
+-					isyslog("deleting timer %s", *timer->ToDescr());
+-					Timers.Del(timer);
+-					Timers.SetModified();
++					isyslog("deleting timer %s", *Timer->ToDescr());
++					Timers->Del(Timer);
++					Timers->SetModified();
+ 			Reply(250, "Timer \"%i\" deleted", number);
+ 				} else
+ 			Reply(501, "Timer \"%i\" not defined", number);
+@@ -1538,7 +1553,8 @@ bool cConnectionVTP::CmdDELT(const char *Option)
+ bool cConnectionVTP::CmdNEXT(const char *Option)
+ {
+ 	INIT_WRAPPER();
+-	cTimer *t = Timers.GetNextActiveTimer();
++	LOCK_TIMERS_READ;
++	cTimer *t = (cTimer*) Timers->GetNextActiveTimer();
+ 	if (t) {
+ 		time_t Start = t->StartTime();
+ 		int Number = t->Index() + 1;
+@@ -1562,12 +1578,13 @@ bool cConnectionVTP::CmdNEWC(const char *Option)
+ 	if (*Option) {
+ 		cChannel ch;
+ 		if (ch.Parse(Option)) {
+-			if (Channels.HasUniqueChannelID(&ch)) {
++			LOCK_CHANNELS_WRITE;
++			if (Channels->HasUniqueChannelID(&ch)) {
+ 				cChannel *channel = new cChannel;
+ 				*channel = ch;
+-				Channels.Add(channel);
+-				Channels.ReNumber();
+-				Channels.SetModified(true);
++				Channels->Add(channel);
++				Channels->ReNumber();
++				Channels->SetModified();
+ 				isyslog("new channel %d %s", channel->Number(), *channel->ToText());
+ 				Reply(250, "%d %s", channel->Number(), *channel->ToText());
+ 			}
+@@ -1593,15 +1610,17 @@ bool cConnectionVTP::CmdMODC(const char *Option)
+ 		int n = strtol(Option, &tail, 10);
+ 		if (tail && tail != Option) {
+ 			tail = skipspace(tail);
+-			if (!Channels.BeingEdited()) {
+-				cChannel *channel = Channels.GetByNumber(n);
++			LOCK_CHANNELS_WRITE;
++// 			if (!Channels->BeingEdited()) {
++			Channels->SetExplicitModify();
++				cChannel *channel = (cChannel*) Channels->GetByNumber(n);
+ 				if (channel) {
+ 					cChannel ch;
+ 					if (ch.Parse(tail)) {
+-						if (Channels.HasUniqueChannelID(&ch, channel)) {
++						if (Channels->HasUniqueChannelID(&ch, channel)) {
+ 							*channel = ch;
+-							Channels.ReNumber();
+-							Channels.SetModified(true);
++							Channels->ReNumber();
++							Channels->SetModified();
+ 							isyslog("modifed channel %d %s", channel->Number(), *channel->ToText());
+ 							Reply(250, "%d %s", channel->Number(), *channel->ToText());
+ 						}
+@@ -1616,10 +1635,10 @@ bool cConnectionVTP::CmdMODC(const char *Option)
+ 				else {
+ 					Reply(501, "Channel \"%d\" not defined", n);
+ 				}
+-			}
+-			else {
+-				Reply(550, "Channels are being edited - try again later");
+-			}
++// 			}
++// 			else {
++// 				Reply(550, "Channels are being edited - try again later");
++// 			}
+ 		}
+ 		else {
+ 			Reply(501, "Error in channel number");
+@@ -1635,7 +1654,11 @@ bool cConnectionVTP::CmdMOVC(const char *Option)
+ {
+ 	INIT_WRAPPER();
+ 	if (*Option) {
+-		if (!Channels.BeingEdited() && !Timers.BeingEdited()) {
++		LOCK_CHANNELS_WRITE;
++		Channels->SetExplicitModify();
++		LOCK_TIMERS_WRITE;
++		Timers->SetExplicitModify();
++// 		if (!Channels.BeingEdited() && !Timers.BeingEdited()) {
+ 			char *tail;
+ 			int From = strtol(Option, &tail, 10);
+ 			if (tail && tail != Option) {
+@@ -1643,20 +1666,20 @@ bool cConnectionVTP::CmdMOVC(const char *Option)
+ 				if (tail && tail != Option) {
+ 					int To = strtol(tail, NULL, 10);
+ 					int CurrentChannelNr = cDevice::CurrentChannel();
+-					cChannel *CurrentChannel = Channels.GetByNumber(CurrentChannelNr);
+-					cChannel *FromChannel = Channels.GetByNumber(From);
++					cChannel *CurrentChannel = (cChannel*) Channels->GetByNumber(CurrentChannelNr);
++					cChannel *FromChannel = (cChannel*) Channels->GetByNumber(From);
+ 					if (FromChannel) {
+-						cChannel *ToChannel = Channels.GetByNumber(To);
++						cChannel *ToChannel = (cChannel*) Channels->GetByNumber(To);
+ 						if (ToChannel) {
+ 							int FromNumber = FromChannel->Number();
+ 							int ToNumber = ToChannel->Number();
+ 							if (FromNumber != ToNumber) {
+-								Channels.Move(FromChannel, ToChannel);
+-								Channels.ReNumber();
+-								Channels.SetModified(true);
++								Channels->Move(FromChannel, ToChannel);
++								Channels->ReNumber();
++								Channels->SetModified();
+ 								if (CurrentChannel && CurrentChannel->Number() != CurrentChannelNr) {
+ 									if (!cDevice::PrimaryDevice()->Replaying() || cDevice::PrimaryDevice()->Transferring()) {
+-										Channels.SwitchTo(CurrentChannel->Number());
++										Channels->SwitchTo(CurrentChannel->Number());
+ 									}
+ 									else {
+ 										cDevice::SetCurrentChannel(CurrentChannel);
+@@ -1685,10 +1708,10 @@ bool cConnectionVTP::CmdMOVC(const char *Option)
+ 				Reply(501, "Error in channel number");
+ 			}
+ 		}
+-		else {
+-			Reply(550, "Channels or timers are being edited - try again later");
+-		}
+-	}
++// 		else {
++// 			Reply(550, "Channels or timers are being edited - try again later");
++// 		}
++// 	}
+ 	else {
+ 		Reply(501, "Missing channel number");
+ 	}
+@@ -1700,31 +1723,34 @@ bool cConnectionVTP::CmdDELC(const char *Option)
+ 	INIT_WRAPPER();
+ 	if (*Option) {
+ 		if (isnumber(Option)) {
+-			if (!Channels.BeingEdited()) {
+-				cChannel *channel = Channels.GetByNumber(strtol(Option, NULL, 10));
++			LOCK_CHANNELS_WRITE;
++			Channels->SetExplicitModify();
++// 			if (!Channels.BeingEdited()) {
++				cChannel *channel = (cChannel*) Channels->GetByNumber(strtol(Option, NULL, 10));
+ 				if (channel) {
+-					for (cTimer *timer = Timers.First(); timer; timer = Timers.Next(timer)) {
++					LOCK_TIMERS_READ;
++					for (const cTimer *timer = Timers->First(); timer; timer = Timers->Next(timer)) {
+ 						if (timer->Channel() == channel) {
+ 							Reply(550, "Channel \"%s\" is in use by timer %d", Option, timer->Index() + 1);
+ 							return false;
+ 						}
+ 					}
+ 					int CurrentChannelNr = cDevice::CurrentChannel();
+-					cChannel *CurrentChannel = Channels.GetByNumber(CurrentChannelNr);
++					cChannel *CurrentChannel = Channels->GetByNumber(CurrentChannelNr);
+ 					if (CurrentChannel && channel == CurrentChannel) {
+-						int n = Channels.GetNextNormal(CurrentChannel->Index());
++						int n = Channels->GetNextNormal(CurrentChannel->Index());
+ 						if (n < 0)
+-							n = Channels.GetPrevNormal(CurrentChannel->Index());
+-						CurrentChannel = Channels.Get(n);
++							n = Channels->GetPrevNormal(CurrentChannel->Index());
++						CurrentChannel = Channels->Get(n);
+ 						CurrentChannelNr = 0; // triggers channel switch below
+ 					}
+-					Channels.Del(channel);
+-					Channels.ReNumber();
+-					Channels.SetModified(true);
++					Channels->Del(channel);
++					Channels->ReNumber();
++					Channels->SetModified();
+ 					isyslog("channel %s deleted", Option);
+ 					if (CurrentChannel && CurrentChannel->Number() != CurrentChannelNr) {
+ 						if (!cDevice::PrimaryDevice()->Replaying() || cDevice::PrimaryDevice()->Transferring())
+-							Channels.SwitchTo(CurrentChannel->Number());
++							Channels->SwitchTo(CurrentChannel->Number());
+ 						else
+ 							cDevice::SetCurrentChannel(CurrentChannel);
+ 					}
+@@ -1733,9 +1759,9 @@ bool cConnectionVTP::CmdDELC(const char *Option)
+ 				else
+ 					Reply(501, "Channel \"%s\" not defined", Option);
+ 			}
+-			else
+-				Reply(550, "Channels are being edited - try again later");
+-		}
++// 			else
++// 				Reply(550, "Channels are being edited - try again later");
++// 		}
+ 		else
+ 			Reply(501, "Error in channel number \"%s\"", Option);
+ 	}
+@@ -1750,13 +1776,14 @@ bool cConnectionVTP::CmdDELR(const char *Option)
+ 	INIT_WRAPPER();
+ 	if (*Option) {
+ 		if (isnumber(Option)) {
+-			cRecording *recording = Recordings.Get(strtol(Option, NULL, 10) - 1);
++			LOCK_RECORDINGS_WRITE;
++			cRecording *recording = (cRecording*) Recordings->Get(strtol(Option, NULL, 10) - 1);
+ 			if (recording) {
+ 				cRecordControl *rc = cRecordControls::GetRecordControl(recording->FileName());
+ 				if (!rc) {
+ 					if (recording->Delete()) {
+ 						Reply(250, "Recording \"%s\" deleted", Option);
+-						::Recordings.DelByName(recording->FileName());
++						Recordings->DelByName(recording->FileName());
+ 					}
+ 					else
+ 						Reply(554, "Error while deleting recording!");
+@@ -1765,7 +1792,7 @@ bool cConnectionVTP::CmdDELR(const char *Option)
+ 					Reply(550, "Recording \"%s\" is in use by timer %d", Option, rc->Timer()->Index() + 1);
+ 			}
+ 			else
+-				Reply(550, "Recording \"%s\" not found%s", Option, Recordings.Count() ? "" : " (use LSTR before deleting)");
++				Reply(550, "Recording \"%s\" not found%s", Option, Recordings->Count() ? "" : " (use LSTR before deleting)");
+ 		}
+ 		else
+ 			Reply(501, "Error in recording number \"%s\"", Option);
+diff --git a/server/livestreamer.c b/server/livestreamer.c
+index 41befe4..2dfdc6f 100644
+--- a/server/livestreamer.c
++++ b/server/livestreamer.c
+@@ -31,7 +31,7 @@ private:
+ 	cStreamdevLiveStreamer *m_Streamer;
+ 
+ protected:
+-	virtual void Receive(uchar *Data, int Length);
++	virtual void Receive(const uchar *Data, int Length);
+ 
+ public:
+ 	cStreamdevLiveReceiver(cStreamdevLiveStreamer *Streamer, const cChannel *Channel, int Priority, const int *Pids);
+@@ -53,7 +53,7 @@ cStreamdevLiveReceiver::~cStreamdevLiveReceiver()
+ 	Detach();
+ }
+ 
+-void cStreamdevLiveReceiver::Receive(uchar *Data, int Length) {
++void cStreamdevLiveReceiver::Receive(const uchar *Data, int Length) {
+ 	m_Streamer->Receive(Data, Length);
+ }
+ 
+@@ -250,7 +250,8 @@ void cStreamdevPatFilter::Process(u_short Pid, u_char Tid, const u_char *Data, i
+ 			SI::PAT::Association assoc;
+ 			for (SI::Loop::Iterator it; pat.associationLoop.getNext(assoc, it); ) {
+ 				if (!assoc.isNITPid()) {
+-					const cChannel *Channel =  Channels.GetByServiceID(Source(), Transponder(), assoc.getServiceId());
++					LOCK_CHANNELS_READ;
++					const cChannel *Channel =  Channels->GetByServiceID(Source(), Transponder(), assoc.getServiceId());
+ 					if (Channel && (Channel == m_Channel)) {
+ 						int prevPmtPid = pmtPid;
+ 						if (0 != (pmtPid = assoc.getPid())) {
+@@ -541,7 +542,7 @@ bool cStreamdevLiveStreamer::SetChannel(eStreamType StreamType, const int* Apid,
+ 	}
+ }
+ 
+-void cStreamdevLiveStreamer::Receive(uchar *Data, int Length)
++void cStreamdevLiveStreamer::Receive(const uchar *Data, int Length)
+ {
+ 	int p = m_ReceiveBuffer->PutTS(Data, Length);
+ 	if (p != Length)
+@@ -682,9 +683,10 @@ void cStreamdevLiveStreamer::MainThreadHook()
+ 	}
+ 	if (m_SwitchLive) {
+ 		// switched away live TV. Try previous channel on other device first
+-		if (!Channels.SwitchTo(cDevice::CurrentChannel())) {
++		LOCK_CHANNELS_READ;
++		if (!Channels->SwitchTo(cDevice::CurrentChannel())) {
+ 			// switch to streamdev channel otherwise
+-			Channels.SwitchTo(m_Channel->Number());
++			Channels->SwitchTo(m_Channel->Number());
+ 			Skins.Message(mtInfo, tr("Streaming active"));
+ 		}
+ 		if (m_Device)
+diff --git a/server/livestreamer.h b/server/livestreamer.h
+index b525c7b..800b754 100644
+--- a/server/livestreamer.h
++++ b/server/livestreamer.h
+@@ -64,7 +64,7 @@ public:
+ 	void GetSignal(int *DevNum, int *Strength, int *Quality) const;
+ 	virtual cString ToText() const;
+ 	
+-	void Receive(uchar *Data, int Length);
++	void Receive(const uchar *Data, int Length);
+ 	virtual bool IsReceiving(void) const;
+ 
+ 	virtual void Attach(void);
+diff --git a/server/menu.c b/server/menu.c
+index d5f0c7e..9dbd402 100644
+--- a/server/menu.c
++++ b/server/menu.c
+@@ -14,7 +14,7 @@
+ cStreamdevServerMenu::cStreamdevServerMenu(): cOsdMenu(tr("Streamdev Connections"), 4, 20) {
+ 	cThreadLock lock;
+ 	const cList<cServerConnection>& clients = cStreamdevServer::Clients(lock);
+-	for (cServerConnection *s = clients.First(); s; s = clients.Next(s))
++	for (const cServerConnection *s = clients.First(); s; s = clients.Next(s))
+ 		Add(new cOsdItem(s->ToText('\t')));
+ 	SetHelpKeys();
+ 	Display();
+@@ -33,7 +33,7 @@ eOSState cStreamdevServerMenu::Disconnect() {
+ 		cThreadLock lock;
+ 		const cList<cServerConnection>& clients = cStreamdevServer::Clients(lock);
+ 		const char *text = item->Text();
+-		for (cServerConnection *s = clients.First(); s; s = clients.Next(s)) {
++		for (cServerConnection *s = (cServerConnection*) clients.First(); s; s = (cServerConnection*) clients.Next(s)) {
+ 			if (!strcmp(text, s->ToText('\t'))) {
+ 				s->Close();
+ 				Del(Current());
+diff --git a/server/menuHTTP.c b/server/menuHTTP.c
+index 05315ea..9d3a7ac 100644
+--- a/server/menuHTTP.c
++++ b/server/menuHTTP.c
+@@ -6,10 +6,11 @@
+ #include "server/menuHTTP.h"
+ 
+ //**************************** cRecordingIterator **************
+-cRecordingsIterator::cRecordingsIterator(eStreamType StreamType): RecordingsLock(&Recordings)
++cRecordingsIterator::cRecordingsIterator(eStreamType StreamType)
+ {	
+ 	streamType = StreamType;
+-	first = NextSuitable(Recordings.First());
++	LOCK_RECORDINGS_READ;
++	first = NextSuitable(Recordings->First());
+ 	current = NULL;
+ }
+ 
+@@ -20,20 +21,22 @@ const cRecording* cRecordingsIterator::NextSuitable(const cRecording *Recording)
+ 		bool isPes = Recording->IsPesRecording();
+ 		if (!isPes || (isPes && streamType == stPES))
+ 			break;
+-		Recording = Recordings.Next(Recording);
++		LOCK_RECORDINGS_READ;
++		Recording = Recordings->Next(Recording);
+ 	}
+ 	return Recording;
+ }
+ 
+ bool cRecordingsIterator::Next()
+ {
++	LOCK_RECORDINGS_READ;
+ 	if (first)
+ 	{
+ 		current = first;
+ 		first = NULL;
+ 	}
+ 	else
+-		current = NextSuitable(Recordings.Next(current));
++		current = NextSuitable(Recordings->Next(current));
+ 	return current;
+ }
+ 
+@@ -71,9 +74,10 @@ const cString cChannelIterator::ItemId() const
+ 		if (current->GroupSep())
+ 		{
+ 			int index = 0;
+-			for (int curr = Channels.GetNextGroup(-1); curr >= 0; curr = Channels.GetNextGroup(curr))
++			LOCK_CHANNELS_READ;
++			for (int curr = Channels->GetNextGroup(-1); curr >= 0; curr = Channels->GetNextGroup(curr))
+ 			{
+-				if (Channels.Get(curr) == current)
++				if (Channels->Get(curr) == current)
+ 					return itoa(index);
+ 				index++;
+ 			}
+@@ -92,44 +96,48 @@ const cChannel* cChannelIterator::GetGroup(const char* GroupId)
+ 	if (GroupId)
+ 	{
+ 		int Index = atoi(GroupId);
+-		group = Channels.GetNextGroup(-1);
++		LOCK_CHANNELS_READ;
++		group = Channels->GetNextGroup(-1);
+ 		while (Index-- && group >= 0)
+-			group = Channels.GetNextGroup(group);
++			group = Channels->GetNextGroup(group);
+ 	}
+-	return group >= 0 ? Channels.Get(group) : NULL;
++	LOCK_CHANNELS_READ;
++	return group >= 0 ? Channels->Get(group) : NULL;
+ }
+ 
+ 
+ //**************************** cListAll **************
+-cListAll::cListAll(): cChannelIterator(Channels.First())
++LOCK_CHANNELS_READ;
++cListAll::cListAll(): cChannelIterator(Channels->First())
+ {}
+ 
+ const cChannel* cListAll::NextChannel(const cChannel *Channel)
+ {
+ 	if (Channel)
+-		Channel = SkipFakeGroups(Channels.Next(Channel));
++		LOCK_CHANNELS_READ;
++		Channel = SkipFakeGroups(Channels->Next(Channel));
+ 	return Channel;
+ }
+ 
+ //**************************** cListChannels **************
+-cListChannels::cListChannels(): cChannelIterator(Channels.Get(Channels.GetNextNormal(-1)))
++cListChannels::cListChannels(): cChannelIterator(Channels->Get(Channels->GetNextNormal(-1)))
+ {}
+ 
+ const cChannel* cListChannels::NextChannel(const cChannel *Channel)
+ {
+ 	if (Channel)
+-		Channel = Channels.Get(Channels.GetNextNormal(Channel->Index()));
++		Channel = Channels->Get(Channels->GetNextNormal(Channel->Index()));
+ 	return Channel;
+ }
+ 
+ // ********************* cListGroups ****************
+-cListGroups::cListGroups(): cChannelIterator(Channels.Get(Channels.GetNextGroup(-1)))
++cListGroups::cListGroups(): cChannelIterator(Channels->Get(Channels->GetNextGroup(-1)))
+ {}
+ 
+ const cChannel* cListGroups::NextChannel(const cChannel *Channel)
+ {
+ 	if (Channel)
+-		Channel = Channels.Get(Channels.GetNextGroup(Channel->Index()));
++		Channel = Channels->Get(Channels->GetNextGroup(Channel->Index()));
+ 	return Channel;
+ }
+ //
+@@ -140,7 +148,7 @@ cListGroup::cListGroup(const char *GroupId): cChannelIterator(GetNextChannelInGr
+ const cChannel* cListGroup::GetNextChannelInGroup(const cChannel *Channel)
+ {
+ 	if (Channel)
+-		Channel = SkipFakeGroups(Channels.Next(Channel));
++		Channel = SkipFakeGroups(Channels->Next(Channel));
+ 	return Channel && !Channel->GroupSep() ? Channel : NULL;
+ }
+ 
+@@ -150,10 +158,10 @@ const cChannel* cListGroup::NextChannel(const cChannel *Channel)
+ }
+ //
+ // ********************* cListTree ****************
+-cListTree::cListTree(const char *SelectedGroupId): cChannelIterator(Channels.Get(Channels.GetNextGroup(-1)))
++cListTree::cListTree(const char *SelectedGroupId): cChannelIterator(Channels->Get(Channels->GetNextGroup(-1)))
+ {
+ 	selectedGroup = GetGroup(SelectedGroupId);
+-	currentGroup = Channels.Get(Channels.GetNextGroup(-1));
++	currentGroup = Channels->Get(Channels->GetNextGroup(-1));
+ }
+ 
+ const cChannel* cListTree::NextChannel(const cChannel *Channel)
+@@ -161,14 +169,14 @@ const cChannel* cListTree::NextChannel(const cChannel *Channel)
+ 	if (currentGroup == selectedGroup)
+ 	{
+ 		if (Channel)
+-			Channel = SkipFakeGroups(Channels.Next(Channel));
++			Channel = SkipFakeGroups(Channels->Next(Channel));
+ 		if (Channel && Channel->GroupSep())
+ 			currentGroup = Channel;
+ 	}
+ 	else
+ 	{
+ 		if (Channel)
+-			Channel = Channels.Get(Channels.GetNextGroup(Channel->Index()));
++			Channel = Channels->Get(Channels->GetNextGroup(Channel->Index()));
+ 		currentGroup = Channel;
+ 	}
+ 	return Channel;
+diff --git a/server/menuHTTP.h b/server/menuHTTP.h
+index 91a00b1..f3dc586 100644
+--- a/server/menuHTTP.h
++++ b/server/menuHTTP.h
+@@ -208,8 +208,9 @@ class cRssMenuList: public cMenuList
+ 
+ inline const cChannel* cChannelIterator::SkipFakeGroups(const cChannel* Group)
+ {
++	LOCK_CHANNELS_READ;
+ 	while (Group && Group->GroupSep() && !*Group->Name())
+-		Group = Channels.Next(Group);
++		Group = Channels->Next(Group);
+ 	return Group;
+ }
+ 
+diff --git a/server/streamdev-server.c b/server/streamdev-server.c
+index 33d08a5..3ac0063 100644
+--- a/server/streamdev-server.c
++++ b/server/streamdev-server.c
+@@ -164,7 +164,7 @@ void cPluginStreamdevServer::MainThreadHook(void)
+ 
+ 	cMutexLock lock;
+ 	const cList<cMainThreadHookSubscriber>& subs = cMainThreadHookSubscriber::Subscribers(lock);
+-	for (cMainThreadHookSubscriber *s = subs.First(); s; s = subs.Next(s))
++	for (cMainThreadHookSubscriber *s = (cMainThreadHookSubscriber*) subs.First(); s; s = (cMainThreadHookSubscriber*) subs.Next(s))
+ 		s->MainThreadHook();
+ }
+ 
+@@ -200,14 +200,14 @@ cString cPluginStreamdevServer::SVDRPCommand(const char *Command, const char *Op
+ 		reply = "";
+ 		cThreadLock lock;
+ 		const cList<cServerConnection>& clients = cStreamdevServer::Clients(lock);
+-		cServerConnection *s = clients.First();
++		cServerConnection *s = (cServerConnection*) clients.First();
+ 		if (!s)
+ 		{
+ 			reply = "no client connected";
+ 			ReplyCode = 550;
+ 		} else
+ 		{
+-			for (; s; s = clients.Next(s))
++			for (; s; s = (cServerConnection*) clients.Next(s))
+ 			{
+ 				reply = cString::sprintf("%s%p: %s\n", (const char*) reply, s, (const char *) s->ToText());
+ 			}
+@@ -224,8 +224,8 @@ cString cPluginStreamdevServer::SVDRPCommand(const char *Command, const char *Op
+ 		{
+ 			cThreadLock lock;
+ 			const cList<cServerConnection>& clients = cStreamdevServer::Clients(lock);
+-			cServerConnection *s = clients.First();
+-			for (; s && s != client; s = clients.Next(s));
++			cServerConnection *s = (cServerConnection*) clients.First();
++			for (; s && s != client; s = (cServerConnection*) clients.Next(s));
+ 
+ 			if (!s)
+ 			{
