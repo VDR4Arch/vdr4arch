@@ -3,33 +3,41 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=oscam
 pkgver=10991
-pkgrel=1
+_gitrev=a4b9ba217fe7ca85624b6c1b40744ff866e22e54
+pkgrel=2
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.streamboard.tv/oscam"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL3')
 depends=('libusb' 'openssl')
-makedepends=('pcsclite')
+makedepends=('git' 'pcsclite')
 optdepends=('pcsclite: for use with PC/SC readers'
             'ccid: PC/SC reader generic driver')
 install='oscam.install'
-source=("${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
+source=("git+http://www.oscam.cc/git/oscam-mirror#commit=$_gitrev"
         'oscam.service'
         'oscam.sysuser')
-noextract=("${pkgname}-${pkgver}.zip")
-md5sums=('6e9c658742aa18be4c18859bd5b6b8d8'
+# "${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
+# noextract=("${pkgname}-${pkgver}.zip")
+md5sums=('SKIP'
          '596b902e3f4a66d39e7f993437feec74'
          'be0d9d7a5fdd8cf4918c4ea91cebd989')
 
-prepare() {
-  cat "${pkgname}-${pkgver}.zip" | bsdtar -xf -
-
-  cd "$srcdir/trunk"
-  chmod +x config.sh webif/pages_mkdep
+pkgver() {
+  cd "$srcdir/$pkgname-mirror"
+  git log -1 | grep git-svn-id | cut -d'@' -f2 | cut -d' ' -f1
 }
+         
+# prepare() {
+#   cat "${pkgname}-${pkgver}.zip" | bsdtar -xf -
+
+#   cd "$srcdir/trunk"
+#   chmod +x config.sh webif/pages_mkdep
+# }
 
 build() {
-  cd "$srcdir/trunk"
+  cd "$srcdir/$pkgname-mirror"
+#   cd "$srcdir/trunk"
 
   make CONF_DIR=/var/lib/oscam \
        USE_SSL=1 \
@@ -41,7 +49,8 @@ build() {
 }
 
 package() {
-  cd "$srcdir/trunk"
+  cd "$srcdir/$pkgname-mirror"
+#   cd "$srcdir/trunk"
 
   #Install binaries
   install -Dm755 oscam "$pkgdir/usr/bin/oscam"
