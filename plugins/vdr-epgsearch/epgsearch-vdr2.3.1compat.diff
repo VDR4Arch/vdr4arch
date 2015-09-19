@@ -1,0 +1,1999 @@
+diff --git a/blacklist.c b/blacklist.c
+index f6fd471..9addee4 100644
+--- a/blacklist.c
++++ b/blacklist.c
+@@ -47,8 +47,9 @@ cBlacklist::cBlacklist(void)
+     startTime = 0000;
+     stopTime = 2359;
+     useChannel = false;
+-    channelMin = Channels.GetByNumber(cDevice::CurrentChannel());
+-    channelMax = Channels.GetByNumber(cDevice::CurrentChannel());
++    LOCK_CHANNELS_READ;
++    channelMin = (cChannel*) Channels->GetByNumber(cDevice::CurrentChannel());
++    channelMax = (cChannel*) Channels->GetByNumber(cDevice::CurrentChannel());
+     channelGroup = NULL;
+     useCase = false;
+     mode = 0;
+@@ -331,7 +332,8 @@ bool cBlacklist::Parse(const char *s)
+ 			char *channelMaxbuffer = NULL;
+ 			int channels = sscanf(value, "%m[^|]|%m[^|]", &channelMinbuffer, &channelMaxbuffer);
+ #endif
+-			channelMin = Channels.GetByChannelID(tChannelID::FromString(channelMinbuffer), true, true);
++                        LOCK_CHANNELS_READ;
++			channelMin = (cChannel*) Channels->GetByChannelID(tChannelID::FromString(channelMinbuffer), true, true);
+ 			if (!channelMin)
+ 			{
+ 			    LogFile.eSysLog("ERROR: channel %s not defined", channelMinbuffer);
+@@ -342,7 +344,8 @@ bool cBlacklist::Parse(const char *s)
+ 			    channelMax = channelMin;
+ 			else
+ 			{
+-			    channelMax = Channels.GetByChannelID(tChannelID::FromString(channelMaxbuffer), true, true);
++                            LOCK_CHANNELS_READ;
++			    channelMax = (cChannel*) Channels->GetByChannelID(tChannelID::FromString(channelMaxbuffer), true, true);
+ 			    if (!channelMax)
+ 			    {
+ 				LogFile.eSysLog("ERROR: channel %s not defined", channelMaxbuffer);
+@@ -518,9 +521,9 @@ cEvent * cBlacklist::GetEventByBlacklist(const cSchedule *schedules, const cEven
+   cEvent *p1 = NULL;
+ 
+   if (Start)
+-      p1 = schedules->Events()->Next(Start);
++      p1 = (cEvent*) schedules->Events()->Next(Start);
+   else
+-      p1 = schedules->Events()->First();
++      p1 = (cEvent*) schedules->Events()->First();
+ 
+   time_t tNow=time(NULL);
+   char* szTest = NULL;
+@@ -545,7 +548,7 @@ cEvent * cBlacklist::GetEventByBlacklist(const cSchedule *schedules, const cEven
+       maxSearchDuration = maxDuration/100*60 + maxDuration%100;
+   }
+ 
+-  for (cEvent *p = p1; p; p = schedules->Events()->Next(p))
++  for (cEvent *p = p1; p; p = (cEvent*)schedules->Events()->Next(p))
+   {
+      if(!p)
+      {
+@@ -633,21 +636,20 @@ cSearchResults* cBlacklist::Run(cSearchResults* pSearchResults, int MarginStop)
+ {
+     LogFile.Log(3,"start search for blacklist '%s'", search);
+ 
+-    cSchedulesLock schedulesLock;
+-    const cSchedules *schedules;
+-    schedules = cSchedules::Schedules(schedulesLock);
+-    if(!schedules) {
++    LOCK_SCHEDULES_READ;
++    if(!Schedules) {
+ 	LogFile.Log(1,"schedules are currently locked! try again later.");
+ 	return NULL;
+     }
+ 
+-    const cSchedule *Schedule = schedules->First();
++    const cSchedule *Schedule = Schedules->First();
+ 
+     while (Schedule) {
+-	cChannel* channel = Channels.GetByChannelID(Schedule->ChannelID(),true,true);
++        LOCK_CHANNELS_READ;
++	cChannel* channel = (cChannel*) Channels->GetByChannelID(Schedule->ChannelID(),true,true);
+ 	if (!channel)
+ 	{
+-	    Schedule = (const cSchedule *)schedules->Next(Schedule);
++	    Schedule = (const cSchedule *)Schedules->Next(Schedule);
+ 	    continue;
+ 	}
+ 
+@@ -655,7 +657,7 @@ cSearchResults* cBlacklist::Run(cSearchResults* pSearchResults, int MarginStop)
+ 	{
+ 	    if (channelMin->Number() > channel->Number() || channelMax->Number() < channel->Number())
+ 	    {
+-		Schedule = (const cSchedule *)schedules->Next(Schedule);
++		Schedule = (const cSchedule *)Schedules->Next(Schedule);
+ 		continue;
+ 	    }
+ 	}
+@@ -664,7 +666,7 @@ cSearchResults* cBlacklist::Run(cSearchResults* pSearchResults, int MarginStop)
+ 	    cChannelGroup* group = ChannelGroups.GetGroupByName(channelGroup);
+ 	    if (!group || !group->ChannelInGroup(channel))
+ 	    {
+-		Schedule = (const cSchedule *)schedules->Next(Schedule);
++		Schedule = (const cSchedule *)Schedules->Next(Schedule);
+ 		continue;
+ 	    }
+ 	}
+@@ -673,7 +675,7 @@ cSearchResults* cBlacklist::Run(cSearchResults* pSearchResults, int MarginStop)
+ 	{
+ 	    if (channel->Ca() >= CA_ENCRYPTED_MIN)
+ 	    {
+-		Schedule = (const cSchedule *)schedules->Next(Schedule);
++		Schedule = (const cSchedule *)Schedules->Next(Schedule);
+ 		continue;
+ 	    }
+ 	}
+@@ -682,13 +684,13 @@ cSearchResults* cBlacklist::Run(cSearchResults* pSearchResults, int MarginStop)
+         do {
+ 	    const cEvent* event = GetEventByBlacklist(Schedule, pPrevEvent, MarginStop);
+ 	    pPrevEvent = event;
+-	    if (event && Channels.GetByChannelID(event->ChannelID(),true,true))
++	    if (event && Channels->GetByChannelID(event->ChannelID(),true,true))
+ 	    {
+ 		if (!pSearchResults) pSearchResults = new cSearchResults;
+ 		pSearchResults->Add(new cSearchResult(event, this));
+ 	    }
+         } while(pPrevEvent);
+-        Schedule = (const cSchedule *)schedules->Next(Schedule);
++        Schedule = (const cSchedule *)Schedules->Next(Schedule);
+     }
+     LogFile.Log(3,"found %d event(s) for blacklist '%s'", pSearchResults?pSearchResults->Count():0, search);
+ 
+diff --git a/changrp.c b/changrp.c
+index 66cd6a1..a1efbfb 100644
+--- a/changrp.c
++++ b/changrp.c
+@@ -82,7 +82,8 @@ bool cChannelGroup::Parse(const char *s)
+ #endif
+ 		if (numChannels == 1)
+ 		{
+-		    cChannel* channel = Channels.GetByChannelID(tChannelID::FromString(channelbuffer), true, true);
++                    LOCK_CHANNELS_READ;
++		    cChannel* channel = (cChannel*) Channels->GetByChannelID(tChannelID::FromString(channelbuffer), true, true);
+ 		    if (channel)
+ 		    {
+ 			cChannelGroupItem* channelitem = new cChannelGroupItem(channel);
+@@ -129,14 +130,15 @@ const char *cChannelGroup::ToText(void)
+ 
+ int* cChannelGroup::CreateChannelSel()
+ {
+-    int* channelSel = (int*) malloc(Channels.Count() * sizeof(int));
+-    cChannel* channel = Channels.First();
++    LOCK_CHANNELS_READ;
++    int* channelSel = (int*) malloc(Channels->Count() * sizeof(int));
++    cChannel* channel = (cChannel*) Channels->First();
+     int index = 0;
+     while (channel)
+     {
+ 	if (channel->GroupSep())
+ 	{
+-	    channel = Channels.Next(channel);
++	    channel = (cChannel*) Channels->Next(channel);
+ 	    continue;
+ 	}
+ 	channelSel[index] = 0;
+@@ -151,7 +153,7 @@ int* cChannelGroup::CreateChannelSel()
+ 	    channelInGroup = channels.Next(channelInGroup);
+ 	}
+ 	index++;
+-	channel = Channels.Next(channel);
++	channel = (cChannel*) Channels->Next(channel);
+     }
+     return channelSel;
+ }
+@@ -159,7 +161,8 @@ int* cChannelGroup::CreateChannelSel()
+ void cChannelGroup::CreateChannelList(int* channelSel)
+ {
+     channels.Clear();
+-    cChannel* channel = Channels.First();
++    LOCK_CHANNELS_READ;
++    cChannel* channel = (cChannel*) Channels->First();
+     int index = 0;
+     while (channel)
+     {
+@@ -169,7 +172,7 @@ void cChannelGroup::CreateChannelList(int* channelSel)
+ 		channels.Add(new cChannelGroupItem(channel));
+ 	    index++;
+ 	}
+-	channel = Channels.Next(channel);
++	channel = (cChannel*) Channels->Next(channel);
+     }
+ }
+ 
+@@ -432,17 +435,18 @@ void cMenuEditChannelGroup::Set()
+     Clear();
+ 
+     Add(new cMenuEditStrItem( tr("Group name"), name, sizeof(group->name), trVDR(FileNameChars)));
+-    cChannel* channel = Channels.First();
++    LOCK_CHANNELS_READ;
++    cChannel* channel = (cChannel*) Channels->First();
+     int index = 0;
+     while (channel)
+     {
+ 	if (channel->GroupSep())
+ 	{
+-	    channel = Channels.Next(channel);
++	    channel = (cChannel*) Channels->Next(channel);
+ 	    continue;
+ 	}
+ 	Add(new cMenuEditBoolItem( CHANNELNAME(channel), &channelSel[index++], trVDR("no"), trVDR("yes")));
+-	channel = Channels.Next(channel);
++	channel = (cChannel*) Channels->Next(channel);
+     }
+ 
+     SetCurrent(Get(current));
+@@ -507,19 +511,20 @@ eOSState cMenuEditChannelGroup::ProcessKey(eKeys Key)
+ 	  case kGreen:
+ 	  case kYellow:
+ 	  {
+-	      cChannel* channel = Channels.First();
++              LOCK_CHANNELS_READ;
++	      cChannel* channel = (cChannel*) Channels->First();
+ 	      int index = 0;
+ 	      while (channel)
+ 	      {
+ 		  if (channel->GroupSep())
+ 		  {
+-		      channel = Channels.Next(channel);
++		      channel = (cChannel*) Channels->Next(channel);
+ 		      continue;
+ 		  }
+ 
+ 		  channelSel[index] = (Key == kGreen?1:(Key == kRed?1-channelSel[index]:0));
+ 		  index++;
+-		  channel = Channels.Next(channel);
++		  channel = (cChannel*) Channels->Next(channel);
+ 	      }
+ 	      Set();
+ 	      Display();
+diff --git a/conflictcheck.c b/conflictcheck.c
+index eb7fa57..3b4b5d1 100644
+--- a/conflictcheck.c
++++ b/conflictcheck.c
+@@ -73,9 +73,8 @@ const cEvent* cConflictCheckTimerObj::Event()
+ 
+ const cEvent* cConflictCheckTimerObj::SetEventFromSchedule()
+ {
+-    cSchedulesLock SchedulesLock;
+-    const cSchedules* Schedules = NULL;
+-    if (!(Schedules = cSchedules::Schedules(SchedulesLock)))
++    LOCK_SCHEDULES_READ;
++    if (!(Schedules))
+ 	return NULL;
+ 
+     const cSchedule *Schedule = Schedules->GetSchedule(timer->Channel());
+@@ -263,12 +262,13 @@ cList<cConflictCheckTimerObj>* cConflictCheck::CreateCurrentTimerList()
+     // collect single event timers
+     time_t tMax = 0;
+     cTimer* ti = NULL;
+-    for (ti = Timers.First(); ti; ti = Timers.Next(ti))
++    LOCK_TIMERS_READ;
++    for (const cTimer* ti = Timers->First(); ti; ti = Timers->Next(ti))
+     {
+ 	tMax = max(tMax, ti->StartTime());
+ 	if (!ti->IsSingleEvent()) continue;
+         // already recording?
+-	int deviceNr = gl_recStatusMonitor->TimerRecDevice(ti)-1;
++	int deviceNr = gl_recStatusMonitor->TimerRecDevice((cTimer*)ti)-1;
+ 
+         // create a copy of this timer
+         cTimer* clone = new cTimer(*ti);
+@@ -291,7 +291,7 @@ cList<cConflictCheckTimerObj>* cConflictCheck::CreateCurrentTimerList()
+     // collect repeating timers from now until the date of the timer with tMax
+     time_t maxCheck = time(NULL) + min(14,EPGSearchConfig.checkMaxDays) * SECSINDAY;
+     tMax = max(tMax, maxCheck);
+-    for (ti = Timers.First(); ti; ti = Timers.Next(ti))
++    for (const cTimer* ti = Timers->First(); ti; ti = Timers->Next(ti))
+     {
+ 	if (ti->IsSingleEvent()) continue;
+ 	time_t day = time(NULL);
+@@ -305,7 +305,7 @@ cList<cConflictCheckTimerObj>* cConflictCheck::CreateCurrentTimerList()
+ 		{
+ #ifndef DEBUG_CONFL
+ 		    if (ti->Recording())
+-		        deviceNr = gl_recStatusMonitor->TimerRecDevice(ti)-1;
++		        deviceNr = gl_recStatusMonitor->TimerRecDevice((cTimer*)ti)-1;
+ #else
+ 		    if (Start + ti->StopTime() - ti->StartTime() > time(NULL))
+ 			deviceNr = 0;
+diff --git a/conflictcheck.h b/conflictcheck.h
+index 089c367..31e779f 100644
+--- a/conflictcheck.h
++++ b/conflictcheck.h
+@@ -59,7 +59,7 @@ class cConflictCheckTimerObj : public cTimerObj
+     const cEvent* Event();
+     const cEvent* SetEventFromSchedule();
+     int Matches(const cEvent *Event, int *Overlap) const;
+-    cTimer* OrigTimer() {return Timers.GetTimer(timer); }
++    cTimer* OrigTimer() {LOCK_TIMERS_WRITE; return Timers->GetTimer(timer); }
+ };
+ 
+ class TimerObjSort
+diff --git a/conflictcheck_thread.c b/conflictcheck_thread.c
+index d224ccf..c45b8eb 100644
+--- a/conflictcheck_thread.c
++++ b/conflictcheck_thread.c
+@@ -102,11 +102,8 @@ void cConflictCheckThread::Action(void)
+ 	if (now >= nextUpdate || m_forceUpdate)
+ 	{
+ 	    m_forceUpdate = false;
+-	    if (Timers.BeingEdited())
+-	    {
+-		Wait.Wait(1000);
+-		continue;
+-	    }
++	    LOCK_TIMERS_WRITE;
++	    Timers->SetExplicitModify();
+ 	    LogFile.iSysLog("timer conflict check started");
+ 
+ 	    cConflictCheck conflictCheck;
+diff --git a/epgsearch.c b/epgsearch.c
+index 83a12b6..1102f65 100644
+--- a/epgsearch.c
++++ b/epgsearch.c
+@@ -157,8 +157,9 @@ bool cPluginEpgsearch::ProcessArgs(int argc, char *argv[])
+       if (atoi(argv[3]) > 0)
+       {
+          SearchExt->useChannel = true;
+-         SearchExt->channelMin = Channels.GetByNumber(atoi(argv[3]));
+-         SearchExt->channelMax = Channels.GetByNumber(atoi(argv[3]));
++         LOCK_CHANNELS_READ;
++         SearchExt->channelMin = (cChannel*) Channels->GetByNumber(atoi(argv[3]));
++         SearchExt->channelMax = (cChannel*) Channels->GetByNumber(atoi(argv[3]));
+       }
+       SearchExt->mode = atoi(argv[4]);
+       SearchExt->useTitle = atoi(argv[5]);
+@@ -238,8 +239,9 @@ bool cPluginEpgsearch::Service(const char *Id, void *Data)
+       if (searchData->channelNr > 0)
+       {
+          SearchExt->useChannel = true;
+-         SearchExt->channelMin = Channels.GetByNumber(searchData->channelNr);
+-         SearchExt->channelMax = Channels.GetByNumber(searchData->channelNr);
++         LOCK_CHANNELS_READ;
++         SearchExt->channelMin = (cChannel*) Channels->GetByNumber(searchData->channelNr);
++         SearchExt->channelMax = (cChannel*) Channels->GetByNumber(searchData->channelNr);
+       }
+       SearchExt->mode = searchData->mode;
+       SearchExt->useTitle = searchData->useTitle;
+@@ -333,8 +335,9 @@ bool cPluginEpgsearch::Service(const char *Id, void *Data)
+       if (searchData->channelNr > 0)
+       {
+          SearchExt->useChannel = true;
+-         SearchExt->channelMin = Channels.GetByNumber(searchData->channelNr);
+-         SearchExt->channelMax = Channels.GetByNumber(searchData->channelNr);
++         LOCK_CHANNELS_READ;
++         SearchExt->channelMin = (cChannel*) Channels->GetByNumber(searchData->channelNr);
++         SearchExt->channelMax = (cChannel*) Channels->GetByNumber(searchData->channelNr);
+       }
+       SearchExt->mode = searchData->mode;
+       SearchExt->useTitle = searchData->useTitle;
+@@ -511,8 +514,9 @@ cOsdObject *cPluginEpgsearch::DoInitialSearch(char* rcFilename)
+       if (rcFile.ChannelNr != -1)
+       {
+          SearchExt->useChannel = true;
+-         SearchExt->channelMin = Channels.GetByNumber(rcFile.ChannelNr);
+-         SearchExt->channelMax = Channels.GetByNumber(rcFile.ChannelNr);
++         LOCK_CHANNELS_READ;
++         SearchExt->channelMin = (cChannel*) Channels->GetByNumber(rcFile.ChannelNr);
++         SearchExt->channelMax = (cChannel*) Channels->GetByNumber(rcFile.ChannelNr);
+       }
+       SearchExt->mode = rcFile.SearchMode;
+       SearchExt->useTitle = rcFile.UseTitle;
+diff --git a/epgsearchext.c b/epgsearchext.c
+index 9d11c3b..3876e8c 100644
+--- a/epgsearchext.c
++++ b/epgsearchext.c
+@@ -58,8 +58,9 @@ cSearchExt::cSearchExt(void)
+    startTime = 0000;
+    stopTime = 2359;
+    useChannel = false;
+-   channelMin = Channels.GetByNumber(cDevice::CurrentChannel());
+-   channelMax = Channels.GetByNumber(cDevice::CurrentChannel());
++   LOCK_CHANNELS_READ;
++   channelMin = (cChannel*) Channels->GetByNumber(cDevice::CurrentChannel());
++   channelMax = (cChannel*) Channels->GetByNumber(cDevice::CurrentChannel());
+    channelGroup = NULL;
+    useCase = false;
+    mode = 0;
+@@ -228,7 +229,7 @@ cSearchExt& cSearchExt::operator= (const cSearchExt &SearchExt)
+    recordingsKeep = templ->recordingsKeep;
+    blacklistMode = templ->blacklistMode;
+    blacklists.Clear();
+-   cBlacklistObject* blacklistObj = templ->blacklists.First();
++   const cBlacklistObject* blacklistObj = templ->blacklists.First();
+    while(blacklistObj)
+    {
+       blacklists.Add(new cBlacklistObject(blacklistObj->blacklist));
+@@ -480,7 +481,8 @@ bool cSearchExt::Parse(const char *s)
+                         char *channelMaxbuffer = NULL;
+                         int channels = sscanf(value, "%m[^|]|%m[^|]", &channelMinbuffer, &channelMaxbuffer);
+ #endif
+-                        channelMin = Channels.GetByChannelID(tChannelID::FromString(channelMinbuffer), true, true);
++                        LOCK_CHANNELS_READ;
++                        channelMin = (cChannel*) Channels->GetByChannelID(tChannelID::FromString(channelMinbuffer), true, true);
+                         if (!channelMin)
+                         {
+                            LogFile.eSysLog("ERROR: channel '%s' not defined", channelMinbuffer);
+@@ -492,7 +494,8 @@ bool cSearchExt::Parse(const char *s)
+                            channelMax = channelMin;
+                         else
+                         {
+-                           channelMax = Channels.GetByChannelID(tChannelID::FromString(channelMaxbuffer), true, true);
++                           LOCK_CHANNELS_READ;
++                           channelMax = (cChannel*) Channels->GetByChannelID(tChannelID::FromString(channelMaxbuffer), true, true);
+                            if (!channelMax)
+                            {
+                               LogFile.eSysLog("ERROR: channel '%s' not defined", channelMaxbuffer);
+@@ -867,9 +870,9 @@ cEvent * cSearchExt::GetEventBySearchExt(const cSchedule *schedules, const cEven
+ 
+    const cList<cEvent>* Events = schedules->Events();
+    if (Start)
+-      p1 = Events->Next(Start);
++      p1 = (cEvent*) Events->Next(Start);
+    else
+-      p1 = Events->First();
++      p1 = (cEvent*) Events->First();
+ 
+    time_t tNow=time(NULL);
+    char* searchText = strdup(search);
+@@ -893,7 +896,7 @@ cEvent * cSearchExt::GetEventBySearchExt(const cSchedule *schedules, const cEven
+    if (!useCase)
+       ToLower(searchText);
+ 
+-   for (cEvent *p = p1; p; p = Events->Next(p))
++   for (const cEvent *p = p1; p; p = Events->Next(p))
+    {
+       if(!p)
+       {
+@@ -998,7 +1001,7 @@ cEvent * cSearchExt::GetEventBySearchExt(const cSchedule *schedules, const cEven
+ 
+          if (useExtEPGInfo && !MatchesExtEPGInfo(p))
+             continue;
+-         pe=p;
++         pe=(cEvent*) p;
+          break;
+       }
+    }
+@@ -1011,10 +1014,8 @@ cSearchResults* cSearchExt::Run(int PayTVMode, bool inspectTimerMargin, int eval
+ {
+    LogFile.Log(3,"start search for search timer '%s'", search);
+ 
+-   cSchedulesLock schedulesLock;
+-   const cSchedules *schedules;
+-   schedules = cSchedules::Schedules(schedulesLock);
+-   if(!schedules) {
++   LOCK_SCHEDULES_READ;
++   if(!Schedules) {
+       LogFile.Log(1,"schedules are currently locked! try again later.");
+       return NULL;
+    }
+@@ -1026,16 +1027,17 @@ cSearchResults* cSearchExt::Run(int PayTVMode, bool inspectTimerMargin, int eval
+       noPayTV = (PayTVMode == 1);
+ 
+    time_t tNow=time(NULL);
+-   const cSchedule *Schedule = schedules->First();
++   const cSchedule *Schedule = Schedules->First();
+    cSearchResults* pSearchResults = pPrevResults;
+    cSearchResults* pBlacklistResults = GetBlacklistEvents(inspectTimerMargin?MarginStop:0);
+ 
+    int counter = 0;
+    while (Schedule) {
+-      cChannel* channel = Channels.GetByChannelID(Schedule->ChannelID(),true,true);
++      LOCK_CHANNELS_READ;
++      cChannel* channel = (cChannel*) Channels->GetByChannelID(Schedule->ChannelID(),true,true);
+       if (!channel)
+       {
+-         Schedule = (const cSchedule *)schedules->Next(Schedule);
++         Schedule = (const cSchedule *)Schedules->Next(Schedule);
+          continue;
+       }
+ 
+@@ -1043,7 +1045,7 @@ cSearchResults* cSearchExt::Run(int PayTVMode, bool inspectTimerMargin, int eval
+       {
+          if (channelMin->Number() > channel->Number() || channelMax->Number() < channel->Number())
+          {
+-            Schedule = (const cSchedule *)schedules->Next(Schedule);
++            Schedule = (const cSchedule *)Schedules->Next(Schedule);
+             continue;
+          }
+       }
+@@ -1052,7 +1054,7 @@ cSearchResults* cSearchExt::Run(int PayTVMode, bool inspectTimerMargin, int eval
+          cChannelGroup* group = ChannelGroups.GetGroupByName(channelGroup);
+          if (!group || !group->ChannelInGroup(channel))
+          {
+-            Schedule = (const cSchedule *)schedules->Next(Schedule);
++            Schedule = (const cSchedule *)Schedules->Next(Schedule);
+             continue;
+          }
+       }
+@@ -1061,7 +1063,7 @@ cSearchResults* cSearchExt::Run(int PayTVMode, bool inspectTimerMargin, int eval
+       {
+          if (channel->Ca() >= CA_ENCRYPTED_MIN)
+          {
+-            Schedule = (const cSchedule *)schedules->Next(Schedule);
++            Schedule = (const cSchedule *)Schedules->Next(Schedule);
+             continue;
+          }
+       }
+@@ -1070,7 +1072,7 @@ cSearchResults* cSearchExt::Run(int PayTVMode, bool inspectTimerMargin, int eval
+       {
+          if (channel->Ca() >= CA_ENCRYPTED_MIN)
+          {
+-            Schedule = (const cSchedule *)schedules->Next(Schedule);
++            Schedule = (const cSchedule *)Schedules->Next(Schedule);
+             continue;
+          }
+       }
+@@ -1084,7 +1086,8 @@ cSearchResults* cSearchExt::Run(int PayTVMode, bool inspectTimerMargin, int eval
+             if (tNow + evalLimitMins*60 <= event->EndTime())
+                break;
+          }
+-         if (event && Channels.GetByChannelID(event->ChannelID(),true,true))
++         LOCK_CHANNELS_READ;
++         if (event && Channels->GetByChannelID(event->ChannelID(),true,true))
+          {
+             if (pBlacklistResults && pBlacklistResults->Lookup(event))
+             {
+@@ -1096,7 +1099,7 @@ cSearchResults* cSearchExt::Run(int PayTVMode, bool inspectTimerMargin, int eval
+             counter++;
+          }
+       } while(pPrevEvent);
+-      Schedule = (const cSchedule *)schedules->Next(Schedule);
++      Schedule = (const cSchedule *)Schedules->Next(Schedule);
+    }
+    LogFile.Log(3,"found %d event(s) for search timer '%s'", counter, search);
+ 
+@@ -1337,30 +1340,30 @@ bool cSearchExt::MatchesExtEPGInfo(const cEvent* e)
+ 
+ void cSearchExt::OnOffTimers(bool bOn)
+ {
+-   for (cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti))
++   LOCK_TIMERS_READ;
++   for (cTimer *ti = (cTimer*)Timers->First(); ti; ti = (cTimer*)Timers->Next(ti))
+    {
+       if (((!bOn && ti->HasFlags(tfActive)) || (bOn && !ti->HasFlags(tfActive))) && TriggeredFromSearchTimerID(ti) == ID)
+          ti->OnOff();
+    }
+-   Timers.SetModified();
+ }
+ 
+ void cSearchExt::DeleteAllTimers()
+ {
+    cList<cTimerObj> DelTimers;
+-   cTimer *ti = Timers.First();
++   LOCK_TIMERS_WRITE;
++   cTimer *ti = (cTimer*) Timers->First();
+    while(ti)
+    {
+       if (!ti->Recording() && TriggeredFromSearchTimerID(ti) == ID)
+       {
+-         cTimer* tiNext = Timers.Next(ti);
++         cTimer* tiNext = (cTimer*) Timers->Next(ti);
+          LogFile.iSysLog("deleting timer %s", *ti->ToDescr());
+-         Timers.Del(ti);
+-         Timers.SetModified();
++         Timers->Del(ti);
+          ti = tiNext;
+       }
+       else
+-         ti = Timers.Next(ti);
++         ti = (cTimer*) Timers->Next(ti);
+    };
+ }
+ 
+@@ -1369,7 +1372,8 @@ cTimerObjList* cSearchExt::GetTimerList(cTimerObjList* timerList)
+    if (!timerList)
+       timerList = new cTimerObjList;
+ 
+-   for (cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti))
++   LOCK_TIMERS_READ;
++   for (const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti))
+    {
+       if (TriggeredFromSearchTimerID(ti) == ID)
+       {
+@@ -1384,7 +1388,7 @@ cTimerObjList* cSearchExt::GetTimerList(cTimerObjList* timerList)
+             }
+          }
+          if (!found)
+-            timerList->Add(new cTimerObj(ti));
++            timerList->Add(new cTimerObj((cTimer*) ti));
+       }
+    }
+    return timerList;
+@@ -1395,7 +1399,8 @@ int cSearchExt::GetCountRecordings()
+ {
+    int countRecs = 0;
+ 
+-   for (cRecording *recording = Recordings.First(); recording; recording = Recordings.Next(recording))
++   LOCK_RECORDINGS_READ;
++   for (const cRecording *recording = Recordings->First(); recording; recording = Recordings->Next(recording))
+    {
+       if (recording->IsEdited()) continue; // ignore recordings edited
+       if (!recording->Info()) continue;
+diff --git a/epgsearchsvdrp.c b/epgsearchsvdrp.c
+index f181013..3239f0a 100644
+--- a/epgsearchsvdrp.c
++++ b/epgsearchsvdrp.c
+@@ -232,7 +232,9 @@ cString cPluginEpgsearch::SVDRPCommand(const char *Command, const char *Option,
+             {
+                LogFile.Log(1,"search '%s' deleted via SVDRP", search->search);
+                cMutexLock SearchExtsLock(&SearchExts);
+-               if (delTimers && !Timers.BeingEdited())
++               LOCK_TIMERS_WRITE;
++               Timers->SetExplicitModify();
++               if (delTimers)
+                   search->DeleteAllTimers();
+                SearchExts.Del(search);
+                SearchExts.Save();
+@@ -562,13 +564,15 @@ cString cPluginEpgsearch::SVDRPCommand(const char *Command, const char *Option,
+ 
+             eTimerMatch timerMatch;
+             bool hasTimer = false;
+-            if (Timers.GetMatch(pEvent, &timerMatch))
++	    LOCK_TIMERS_READ;
++            if (Timers->GetMatch(pEvent, &timerMatch))
+                hasTimer = (timerMatch == tmFull);
+ 
+             if (!result->search->useAsSearchTimer)
+                result->needsTimer = false;
+ 
+-            cChannel *channel = Channels.GetByChannelID(pEvent->ChannelID(), true,true);
++            LOCK_CHANNELS_READ;
++            const cChannel *channel = Channels->GetByChannelID(pEvent->ChannelID(), true,true);
+             int timerMode = hasTimer?1:(result->needsTimer?2:0);
+ 
+             string title = pEvent->Title()?ReplaceAll(pEvent->Title(), "|", "!^pipe!^"):"";
+@@ -1043,7 +1047,8 @@ cString cPluginEpgsearch::SVDRPCommand(const char *Command, const char *Option,
+                   ReplyCode = 901;
+                   return cString::sprintf("invalid channel id");
+                }
+-               cChannel *ch = Channels.GetByChannelID(chID,true,true);
++               LOCK_CHANNELS_READ;
++               const cChannel *ch = Channels->GetByChannelID(chID,true,true);
+                if (!ch)
+                {
+                   ReplyCode = 901;
+@@ -1054,11 +1059,12 @@ cString cPluginEpgsearch::SVDRPCommand(const char *Command, const char *Option,
+             else
+             {
+                string sBuffer;
+-               for (int i = 0; i < Channels.Count(); i++)
++               LOCK_CHANNELS_READ;
++               for (int i = 0; i < Channels->Count(); i++)
+                {
+-                  cChannel* ch = Channels.Get(i);
++                  const cChannel* ch = Channels->Get(i);
+                   if (ch && !ch->GroupSep())
+-                     sBuffer += string(*ch->GetChannelID().ToString()) + string(": ") + NumToString(DefTimerCheckModes.GetMode(ch)) + string((i<Channels.Count()-1)?"\n":"");
++                     sBuffer += string(*ch->GetChannelID().ToString()) + string(": ") + NumToString(DefTimerCheckModes.GetMode(ch)) + string((i<Channels->Count()-1)?"\n":"");
+                }
+                return sBuffer.c_str();
+             }
+diff --git a/epgsearchtools.c b/epgsearchtools.c
+index 6f7485a..ce355a2 100644
+--- a/epgsearchtools.c
++++ b/epgsearchtools.c
+@@ -527,8 +527,7 @@ const cEvent* GetEvent(cTimer* timer)
+    for (int seconds = 0; seconds <= 3; seconds++)
+    {
+       {
+-         cSchedulesLock SchedulesLock;
+-         const cSchedules *Schedules = cSchedules::Schedules(SchedulesLock);
++         LOCK_SCHEDULES_READ;
+          if (Schedules) {
+             const cSchedule *Schedule = Schedules->GetSchedule(channel->GetChannelID());
+             if (Schedule) {
+@@ -709,7 +708,8 @@ int ChannelNrFromEvent(const cEvent* pEvent)
+ {
+    if (!pEvent)
+       return -1;
+-   cChannel* channel = Channels.GetByChannelID(pEvent->ChannelID(), true, true);
++   LOCK_CHANNELS_READ;
++   const cChannel* channel = Channels->GetByChannelID(pEvent->ChannelID(), true, true);
+    if (!channel)
+       return -1;
+    else
+diff --git a/epgsearchtools.h b/epgsearchtools.h
+index dc68f8b..be00edf 100644
+--- a/epgsearchtools.h
++++ b/epgsearchtools.h
+@@ -70,7 +70,7 @@ using std::string;
+ #undef CONFIGDIR
+ #define CONFIGDIR (!ConfigDir?cPlugin::ConfigDirectory():ConfigDir)
+ 
+-#define CHNUMWIDTH  (numdigits(Channels.MaxNumber()) + 2)
++#define CHNUMWIDTH  (numdigits(Channels->MaxNumber()) + 2)
+ 
+ #define SHORTTEXT(EVENT) \
+   (EVENT && EPGSearchConfig.showShortText && !isempty((EVENT)->ShortText()))?" ~ ":"", \
+diff --git a/mail.c b/mail.c
+index 65c9caa..ecc2074 100644
+--- a/mail.c
++++ b/mail.c
+@@ -50,7 +50,8 @@ string cMailTimerNotification::Format(const string& templ) const
+     if (!pEvent) return "";
+ 
+     eTimerMatch TimerMatch = tmNone;
+-    cTimer* pTimer = Timers.GetMatch(pEvent, &TimerMatch);
++    LOCK_TIMERS_READ;
++    const cTimer* pTimer = Timers->GetMatch(pEvent, &TimerMatch);
+     if (!pTimer) return "";
+ 
+     string result = templ;
+@@ -70,18 +71,18 @@ string cMailTimerNotification::Format(const string& templ) const
+ 
+ const cEvent* cMailTimerNotification::GetEvent() const
+ {
+-    cSchedulesLock schedulesLock;
+-    const cSchedules *schedules = cSchedules::Schedules(schedulesLock);
+-    if (!schedules) return NULL;
+-    const cSchedule *schedule = schedules->GetSchedule(channelID);
++    LOCK_SCHEDULES_READ;
++    if (!Schedules) return NULL;
++    const cSchedule *schedule = Schedules->GetSchedule(channelID);
+     if (!schedule) return NULL;
+     return schedule->GetEvent(eventID);
+ }
+ 
+ bool cMailTimerNotification::operator< (const cMailTimerNotification &N) const
+ {
+-    const cChannel* channel = Channels.GetByChannelID(channelID,true,true);
+-    const cChannel* channelOther = Channels.GetByChannelID(N.channelID,true,true);
++    LOCK_CHANNELS_READ;
++    const cChannel* channel = Channels->GetByChannelID(channelID,true,true);
++    const cChannel* channelOther = Channels->GetByChannelID(N.channelID,true,true);
+     if (!channel || !channelOther)
+ 	return false;
+     const cEvent* event = GetEvent();
+@@ -121,8 +122,9 @@ cMailDelTimerNotification::cMailDelTimerNotification(const string& Formatted, tC
+ 
+ bool cMailDelTimerNotification::operator< (const cMailDelTimerNotification &N) const
+ {
+-    const cChannel* channel = Channels.GetByChannelID(channelID,true,true);
+-    const cChannel* channelOther = Channels.GetByChannelID(N.channelID,true,true);
++    LOCK_CHANNELS_READ;
++    const cChannel* channel = Channels->GetByChannelID(channelID,true,true);
++    const cChannel* channelOther = Channels->GetByChannelID(N.channelID,true,true);
+     if (!channel || !channelOther)
+ 	return false;
+     if (channel != channelOther)
+diff --git a/menu_blacklistedit.c b/menu_blacklistedit.c
+index 4173cdb..79217c0 100644
+--- a/menu_blacklistedit.c
++++ b/menu_blacklistedit.c
+@@ -351,17 +351,18 @@ eOSState cMenuBlacklistEdit::ProcessKey(eKeys Key)
+ 	    case kOk:
+ 		if (data.useChannel==1)
+ 		{
+-		    cChannel *ch = Channels.GetByNumber(channelMin);
++		    LOCK_CHANNELS_READ;
++		    const cChannel *ch = Channels->GetByNumber(channelMin);
+ 		    if (ch)
+-			data.channelMin = ch;
++			data.channelMin = (cChannel*) ch;
+ 		    else
+ 		    {
+ 		      ERROR(tr("*** Invalid Channel ***"));
+ 		      break;
+ 		    }
+-		    ch = Channels.GetByNumber(channelMax);
++		    ch = Channels->GetByNumber(channelMax);
+ 		    if (ch)
+-			data.channelMax = ch;
++			data.channelMax = (cChannel*) ch;
+ 		    else
+ 		    {
+ 		      ERROR(tr("*** Invalid Channel ***"));
+diff --git a/menu_commands.c b/menu_commands.c
+index 174cf7f..269ea3a 100644
+--- a/menu_commands.c
++++ b/menu_commands.c
+@@ -102,7 +102,8 @@ void cMenuSearchCommands::LoadCommands()
+ 
+ eOSState cMenuSearchCommands::Switch(void)
+ {
+-   cChannel *channel = Channels.GetByChannelID(event->ChannelID(), true, true);
++   LOCK_CHANNELS_READ;
++   const cChannel *channel = Channels->GetByChannelID(event->ChannelID(), true, true);
+    if (channel && cDevice::PrimaryDevice()->SwitchChannel(channel, true))
+       return osEnd;
+    else
+@@ -122,7 +123,8 @@ eOSState cMenuSearchCommands::Record(void)
+    if (!event) return osContinue;
+ 
+    eTimerMatch timerMatch = tmNone;
+-   cTimer* timer = Timers.GetMatch(event, &timerMatch);
++   LOCK_TIMERS_WRITE;
++   cTimer* timer = (cTimer*) Timers->GetMatch(event, &timerMatch);
+    if (timerMatch == tmFull)
+    {
+       if (EPGSearchConfig.useVDRTimerEditMenu)
+@@ -133,7 +135,7 @@ eOSState cMenuSearchCommands::Record(void)
+ 
+    timer = new cTimer(event);
+    PrepareTimerFile(event, timer);
+-   cTimer *t = Timers.GetTimer(timer);
++   cTimer *t = Timers->GetTimer(timer);
+ 
+    if (EPGSearchConfig.onePressTimerCreation == 0 || t || (!t && event->StartTime() - (Setup.MarginStart+2) * 60 < time(NULL)))
+    {
+@@ -170,9 +172,9 @@ eOSState cMenuSearchCommands::Record(void)
+ #endif
+ 
+       SetAux(timer, fullaux);
+-      Timers.Add(timer);
++      Timers->Add(timer);
+       timer->Matches();
+-      Timers.SetModified();
++      Timers->SetModified();
+ 
+       LogFile.iSysLog("timer %s added (active)", *timer->ToDescr());
+       return osBack;
+@@ -232,7 +234,8 @@ eOSState cMenuSearchCommands::CreateSearchTimer(void)
+ 
+    cSearchExt* pNew = new cSearchExt;
+    strcpy(pNew->search, event->Title());
+-   pNew->channelMin = pNew->channelMax = Channels.GetByChannelID(event->ChannelID());
++   LOCK_CHANNELS_READ;
++   pNew->channelMin = pNew->channelMax = (cChannel*) Channels->GetByChannelID(event->ChannelID());
+    return AddSubMenu(new cMenuEditSearchExt(pNew, true, false, true));
+ }
+ 
+@@ -280,12 +283,13 @@ eOSState cMenuSearchCommands::Execute(void)
+ 	buffer = cString::sprintf("%s...", command->Title());
+ 	Skins.Message(mtStatus, buffer);
+ 
++	LOCK_CHANNELS_READ;
+ 	buffer = cString::sprintf("'%s' %ld %ld %d '%s' '%s'",
+ 				  EscapeString(event->Title()).c_str(),
+ 				  event->StartTime(),
+ 				  event->EndTime(),
+ 				  ChannelNrFromEvent(event),
+-				  EscapeString(Channels.GetByChannelID(event->ChannelID(), true, true)->Name()).c_str(),
++				  EscapeString(Channels->GetByChannelID(event->ChannelID(), true, true)->Name()).c_str(),
+ 				  EscapeString(event->ShortText()?event->ShortText():"").c_str());
+ 	const char *Result = command->Execute(buffer);
+ 	Skins.Message(mtStatus, NULL);
+diff --git a/menu_conflictcheck.c b/menu_conflictcheck.c
+index 562842e..644d5a9 100644
+--- a/menu_conflictcheck.c
++++ b/menu_conflictcheck.c
+@@ -268,7 +268,8 @@ eOSState cMenuConflictCheckDetails::ToggleTimer(cConflictCheckTimerObj* TimerObj
+ {
+   if (!TimerObj || !TimerObj->OrigTimer()) return osContinue;
+   TimerObj->OrigTimer()->OnOff();
+-  Timers.SetModified();
++  LOCK_TIMERS_WRITE;
++  Timers->SetModified();
+   Update();
+   Display();
+   return osContinue;
+@@ -293,15 +294,17 @@ eOSState cMenuConflictCheckDetails::DeleteTimer(cConflictCheckTimerObj* TimerObj
+       if (timer->Recording()) {
+ 	if (Interface->Confirm(trVDR("Timer still recording - really delete?"))) {
+ 	  timer->Skip();
+-	  cRecordControls::Process(time(NULL));
++	  LOCK_TIMERS_READ;
++	  cRecordControls::Process((cTimers*) Timers, time(NULL));
+ 	}
+ 	else
+ 	  return osContinue;
+       }
+       LogFile.iSysLog("deleting timer %s", *timer->ToDescr());
+-      Timers.Del(timer);
++      LOCK_TIMERS_WRITE;
++      Timers->Del(timer);
+       cOsdMenu::Del(Current());
+-      Timers.SetModified();
++      Timers->SetModified();
+       Display();
+       return osBack;
+     }
+@@ -319,7 +322,8 @@ eOSState cMenuConflictCheckDetails::ShowSummary()
+     const cEvent *ei = curTimerObj->Event();
+     if (ei)
+     {
+-	cChannel *channel = Channels.GetByChannelID(ei->ChannelID(), true, true);
++	LOCK_CHANNELS_READ;
++	const cChannel *channel = Channels->GetByChannelID(ei->ChannelID(), true, true);
+ 	if (channel)
+ 	    return AddSubMenu(new cMenuEventSearchSimple(ei, eventObjects));
+     }
+@@ -408,7 +412,8 @@ eOSState cMenuConflictCheckDetails::ProcessKey(eKeys Key)
+ 		for (it = timerObj->concurrentTimers->begin(); it != timerObj->concurrentTimers->end(); ++it)
+ 		{
+ 		    bool found = false;
+-		    for(cTimer* checkT = Timers.First(); checkT; checkT = Timers.Next(checkT))
++		    LOCK_TIMERS_READ;
++		    for(const cTimer* checkT = Timers->First(); checkT; checkT = Timers->Next(checkT))
+ 		    {
+ 			checkT->Matches();
+ 			if (checkT == (*it)->OrigTimer()) // ok -> found, check for changes
+diff --git a/menu_deftimercheckmethod.c b/menu_deftimercheckmethod.c
+index 0476211..dcba6fd 100644
+--- a/menu_deftimercheckmethod.c
++++ b/menu_deftimercheckmethod.c
+@@ -142,9 +142,10 @@ void cMenuDefTimerCheckMethod::Set()
+     Clear();
+ 
+     delete modes;
+-    modes = new int[Channels.Count()];
++    LOCK_CHANNELS_READ;
++    modes = new int[Channels->Count()];
+     int i=0;
+-    for (cChannel *channel = Channels.First(); channel; channel = Channels.Next(channel), i++)
++    for (const cChannel *channel = Channels->First(); channel; channel = Channels->Next(channel), i++)
+     {
+ 	if (!channel->GroupSep() && *channel->Name())
+ 	{
+@@ -164,7 +165,8 @@ eOSState cMenuDefTimerCheckMethod::ProcessKey(eKeys Key)
+ 	    case kOk:
+ 	    {
+ 		int i=0;
+-		for (cChannel *channel = Channels.First(); channel; channel = Channels.Next(channel), i++)
++		LOCK_CHANNELS_READ;
++		for (const cChannel *channel = Channels->First(); channel; channel = Channels->Next(channel), i++)
+ 		    if (!channel->GroupSep() && *channel->Name())
+ 			DefTimerCheckModes.SetMode(channel, modes[i]);
+ 		DefTimerCheckModes.Save();
+diff --git a/menu_dirselect.c b/menu_dirselect.c
+index 2fc24a8..8e9dd7c 100644
+--- a/menu_dirselect.c
++++ b/menu_dirselect.c
+@@ -132,9 +132,8 @@ void cMenuDirSelect::CreateDirSet(bool extraDirs)
+     directorySet.clear();
+ 
+     // add distinct directories from current recordings
+-    if (Recordings.Count() == 0)
+-	Recordings.Load();
+-    for (cRecording *recording = Recordings.First(); recording; recording = Recordings.Next(recording))
++    LOCK_RECORDINGS_READ;
++    for (const cRecording *recording = Recordings->First(); recording; recording = Recordings->Next(recording))
+     {
+ 	if (recording->HierarchyLevels() > 0)
+ 	{
+@@ -156,7 +155,8 @@ void cMenuDirSelect::CreateDirSet(bool extraDirs)
+ 	}
+     }
+     // add distinct directories from current timers
+-    for (cTimer *timer = Timers.First(); timer; timer = Timers.Next(timer))
++    LOCK_TIMERS_READ;
++    for (const cTimer *timer = Timers->First(); timer; timer = Timers->Next(timer))
+     {
+ 	char* dir = strdup(timer->File());
+ 	// strip the trailing name dir
+diff --git a/menu_event.c b/menu_event.c
+index 77a03a6..55225fb 100644
+--- a/menu_event.c
++++ b/menu_event.c
+@@ -84,7 +84,8 @@ void cMenuEventSearch::Set()
+ 
+    if (event)
+    {
+-      cChannel *channel = Channels.GetByChannelID(event->ChannelID(), true, true);
++      LOCK_CHANNELS_READ;
++      const cChannel *channel = Channels->GetByChannelID(event->ChannelID(), true, true);
+       bool canSwitch = false;
+       if (channel)
+       {
+@@ -96,7 +97,8 @@ void cMenuEventSearch::Set()
+       cEventObj* eventObjNext = GetNext(event);
+ 
+       eTimerMatch timerMatch = tmNone;
+-      Timers.GetMatch(event, &timerMatch);
++      LOCK_TIMERS_READ;
++      Timers->GetMatch(event, &timerMatch);
+       const char* szRed = trVDR("Button$Record");
+       if (timerMatch == tmFull)
+          szRed = trVDR("Button$Timer");
+@@ -111,10 +113,11 @@ void cMenuEventSearch::Set()
+       }
+       else if (surfMode == SurfModeChannel)
+       {
++         LOCK_CHANNELS_READ;
+          if (eventObjPrev && eventObjPrev->Event())
+-            szGreen = strdup(CHANNELNAME(Channels.GetByChannelID(eventObjPrev->Event()->ChannelID(), true, true)));
++            szGreen = strdup(CHANNELNAME(Channels->GetByChannelID(eventObjPrev->Event()->ChannelID(), true, true)));
+          if (eventObjNext && eventObjNext->Event())
+-            szYellow = strdup(CHANNELNAME(Channels.GetByChannelID(eventObjNext->Event()->ChannelID(), true, true)));
++            szYellow = strdup(CHANNELNAME(Channels->GetByChannelID(eventObjNext->Event()->ChannelID(), true, true)));
+          SetHelp(szRed, szGreen, szYellow, canSwitch ? trVDR("Button$Switch") : NULL);
+       }
+    }
+@@ -236,7 +239,8 @@ void cMenuEventSearchSimple::Set()
+ 
+    if (event)
+    {
+-      cChannel *channel = Channels.GetByChannelID(event->ChannelID(), true, true);
++      LOCK_CHANNELS_READ;
++      const cChannel *channel = Channels->GetByChannelID(event->ChannelID(), true, true);
+       if (channel)
+       {
+          SetTitle(channel->Name());
+diff --git a/menu_favorites.c b/menu_favorites.c
+index d2dce45..d322f29 100644
+--- a/menu_favorites.c
++++ b/menu_favorites.c
+@@ -122,8 +122,9 @@ eOSState cMenuFavorites::OnYellow()
+       cMenuSearchResultsItem *item = (cMenuSearchResultsItem *)Get(Current());
+       if (item && item->event)
+       {
+-         cChannel *channel = Channels.GetByChannelID(item->event->ChannelID(), true, true);
+-         cMenuWhatsOnSearch::scheduleChannel = channel;
++         LOCK_CHANNELS_READ;
++         const cChannel *channel = Channels->GetByChannelID(item->event->ChannelID(), true, true);
++         cMenuWhatsOnSearch::scheduleChannel = (cChannel*) channel;
+          cMenuWhatsOnSearch::currentShowMode = showNow;
+       }
+       toggleKeys = 0;
+diff --git a/menu_main.c b/menu_main.c
+index 5203e35..4596c9b 100644
+--- a/menu_main.c
++++ b/menu_main.c
+@@ -58,12 +58,12 @@ cMenuSearchMain::cMenuSearchMain(void)
+   shiftTime = 0;
+   InWhatsOnMenu = false;
+   InFavoritesMenu = false;
+-  cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
+-  schedules = cSchedules::Schedules(schedulesLock);
++  LOCK_CHANNELS_READ;
++  const cChannel *channel = Channels->GetByNumber(cDevice::CurrentChannel());
+   if (channel) {
+     cMenuWhatsOnSearch::SetCurrentChannel(channel->Number());
+     if (EPGSearchConfig.StartMenu == 0 || forceMenu != 0)
+-      PrepareSchedule(channel);
++      PrepareSchedule((cChannel*) channel);
+     SetHelpKeys();
+     cMenuWhatsOnSearch::currentShowMode = showNow;
+     //    timeb tnow;
+@@ -180,7 +180,8 @@ eOSState cMenuSearchMain::Record(void)
+       if (item->timerMatch == tmFull)
+       {
+ 	  eTimerMatch tm = tmNone;
+-	  cTimer *timer = Timers.GetMatch(item->event, &tm);
++	  LOCK_TIMERS_READ;
++	  cTimer *timer = (cTimer*) Timers->GetMatch(item->event, &tm);
+ 	  if (timer)
+ 	    {
+ 	      if (EPGSearchConfig.useVDRTimerEditMenu)
+@@ -192,7 +193,8 @@ eOSState cMenuSearchMain::Record(void)
+ 
+      cTimer *timer = new cTimer(item->event);
+      PrepareTimerFile(item->event, timer);
+-     cTimer *t = Timers.GetTimer(timer);
++     LOCK_TIMERS_WRITE;
++     cTimer *t = (cTimer*) Timers->GetTimer(timer);
+      if (EPGSearchConfig.onePressTimerCreation == 0 || t || !item->event || (!t && item->event && item->event->StartTime() - (Setup.MarginStart+2) * 60 < time(NULL)))
+      {
+ 	 if (t)
+@@ -229,10 +231,10 @@ eOSState cMenuSearchMain::Record(void)
+ #endif
+ 
+ 	 SetAux(timer, fullaux);
+-	 Timers.Add(timer);
++	 Timers->Add(timer);
+ 	 gl_timerStatusMonitor->SetConflictCheckAdvised();
+ 	 timer->Matches();
+-	 Timers.SetModified();
++	 Timers->SetModified();
+ 	 LogFile.iSysLog("timer %s added (active)", *timer->ToDescr());
+ 
+ 	 if (HasSubMenu())
+@@ -249,7 +251,8 @@ eOSState cMenuSearchMain::Switch(void)
+ {
+   cMenuMyScheduleItem *item = (cMenuMyScheduleItem *)Get(Current());
+   if (item) {
+-     cChannel *channel = Channels.GetByChannelID(item->event->ChannelID(), true, true);
++     LOCK_CHANNELS_READ;
++     const cChannel *channel = Channels->GetByChannelID(item->event->ChannelID(), true, true);
+      if (channel && cDevice::PrimaryDevice()->SwitchChannel(channel, true))
+         return osEnd;
+      }
+@@ -306,8 +309,9 @@ void cMenuSearchMain::SetHelpKeys(bool Force)
+ 	  SetHelp((EPGSearchConfig.redkeymode==0?(hasTimer?trVDR("Button$Timer"):trVDR("Button$Record")):tr("Button$Commands")), trVDR("Button$Now"), trVDR("Button$Next"), EPGSearchConfig.bluekeymode==0?trVDR("Button$Switch"):tr("Button$Search"));
+ 	else
+ 	  {
+-	    const char* szGreenToggled = CHANNELNAME(Channels.GetByNumber(currentChannel-1,-1));
+-	    const char* szYellowToggled = CHANNELNAME(Channels.GetByNumber(currentChannel+1,1));
++	    LOCK_CHANNELS_READ;
++	    const char* szGreenToggled = CHANNELNAME(Channels->GetByNumber(currentChannel-1,-1));
++	    const char* szYellowToggled = CHANNELNAME(Channels->GetByNumber(currentChannel+1,1));
+ 
+ 	    SetHelp((EPGSearchConfig.redkeymode==1?(hasTimer?trVDR("Button$Timer"):trVDR("Button$Record")):tr("Button$Commands")), (EPGSearchConfig.toggleGreenYellow==0?trVDR("Button$Now"):szGreenToggled), (EPGSearchConfig.toggleGreenYellow==0?trVDR("Button$Next"):szYellowToggled), EPGSearchConfig.bluekeymode==1?trVDR("Button$Switch"):tr("Button$Search"));
+ 
+@@ -319,8 +323,9 @@ void cMenuSearchMain::SetHelpKeys(bool Force)
+ eOSState cMenuSearchMain::Shift(int iMinutes)
+ {
+     shiftTime += iMinutes;
+-    cChannel *channel = Channels.GetByNumber(currentChannel);
+-    PrepareSchedule(channel);
++    LOCK_CHANNELS_READ;
++    const cChannel *channel = Channels->GetByNumber(currentChannel);
++    PrepareSchedule((cChannel*) channel);
+     Display();
+     SetHelpKeys();
+     return osContinue;
+@@ -433,7 +438,8 @@ eOSState cMenuSearchMain::ProcessKey(eKeys Key)
+ 			 cMenuMyScheduleItem* Item = (cMenuMyScheduleItem *)Get(Current());
+ 			 if (Item && Item->event)
+ 			 {
+-			     cChannel *channel = Channels.GetByChannelID(Item->event->ChannelID(), true, true);
++			     LOCK_CHANNELS_READ;
++			     const cChannel *channel = Channels->GetByChannelID(Item->event->ChannelID(), true, true);
+ 			     if (channel)
+ 				 ChannelNr = channel->Number();
+ 			 }
+@@ -451,10 +457,11 @@ eOSState cMenuSearchMain::ProcessKey(eKeys Key)
+ 		 }
+ 		 else
+ 		 {
+-		     cChannel *channel = Channels.GetByNumber(currentChannel-1,-1);
++		     LOCK_CHANNELS_READ;
++		     const cChannel *channel = Channels->GetByNumber(currentChannel-1,-1);
+ 
+ 		     if (channel) {
+-			 PrepareSchedule(channel);
++			 PrepareSchedule((cChannel*) channel);
+ 			 if (channel->Number() != cDevice::CurrentChannel()) {
+ 			     otherChannel = channel->Number();
+ 			 }
+@@ -483,9 +490,10 @@ eOSState cMenuSearchMain::ProcessKey(eKeys Key)
+ 		 }
+ 		 else
+ 		 {
+-		     cChannel *channel = Channels.GetByNumber(currentChannel+1,1);
++		     LOCK_CHANNELS_READ;
++		     const cChannel *channel = Channels->GetByNumber(currentChannel+1,1);
+ 		     if (channel) {
+-			 PrepareSchedule(channel);
++			 PrepareSchedule((cChannel*) channel);
+ 			 if (channel->Number() != cDevice::CurrentChannel()) {
+ 			     otherChannel = channel->Number();
+ 			 }
+diff --git a/menu_myedittimer.c b/menu_myedittimer.c
+index a6529a4..e327d9b 100644
+--- a/menu_myedittimer.c
++++ b/menu_myedittimer.c
+@@ -76,7 +76,6 @@ cMenuMyEditTimer::cMenuMyEditTimer(cTimer *Timer, bool New, const cEvent* Event,
+ 	Set();
+ 	SetHelp(addIfConfirmed?NULL:trVDR("Button$Delete"), NULL, NULL, NULL);
+     }
+-  Timers.IncBeingEdited();
+ }
+ 
+ void cMenuMyEditTimer::SplitFile()
+@@ -162,7 +161,8 @@ void cMenuMyEditTimer::Set()
+     }
+     else if (IsSingleEvent() && event)
+     {
+-	checkmode = DefTimerCheckModes.GetMode(Channels.GetByNumber(channel));
++	LOCK_CHANNELS_READ;
++	checkmode = DefTimerCheckModes.GetMode(Channels->GetByNumber(channel));
+ 	char* checkmodeAux = GetAuxValue(timer, "update");
+ 	if (checkmodeAux)
+ 	{
+@@ -196,7 +196,6 @@ cMenuMyEditTimer::~cMenuMyEditTimer()
+ {
+   if (timer && addIfConfirmed)
+      delete timer; // apparently it wasn't confirmed
+-  Timers.DecBeingEdited();
+ }
+ 
+ void cMenuMyEditTimer::HandleSubtitle()
+@@ -238,15 +237,17 @@ eOSState cMenuMyEditTimer::DeleteTimer()
+ 	    if (timer->Recording()) {
+ 		if (Interface->Confirm(trVDR("Timer still recording - really delete?"))) {
+ 		    timer->Skip();
+-		    cRecordControls::Process(time(NULL));
++		    LOCK_TIMERS_READ;
++		    cRecordControls::Process((cTimers*) Timers, time(NULL));
+ 		}
+ 		else
+ 		    return osContinue;
+ 	    }
+ 	    LogFile.iSysLog("deleting timer %s", *timer->ToDescr());
+-	    Timers.Del(timer);
++	    LOCK_TIMERS_WRITE;
++	    Timers->Del(timer);
+ 	    gl_timerStatusMonitor->SetConflictCheckAdvised();
+-	    Timers.SetModified();
++	    Timers->SetModified();
+ 	    return osBack;
+         }
+     }
+@@ -324,7 +325,8 @@ eOSState cMenuMyEditTimer::ProcessKey(eKeys Key)
+ 	{
+ 	    case kOk:
+ 	    {
+-		cChannel *ch = Channels.GetByNumber(channel);
++	        LOCK_CHANNELS_READ;
++		const cChannel *ch = Channels->GetByNumber(channel);
+ 		if (!ch)
+ 		{
+ 		  ERROR(tr("*** Invalid Channel ***"));
+@@ -405,12 +407,14 @@ eOSState cMenuMyEditTimer::ProcessKey(eKeys Key)
+                     free(tmpFile);
+                     free(tmpDir);
+ 
++                    LOCK_TIMERS_WRITE;
+                     if (addIfConfirmed)
+-                      Timers.Add(timer);
+-                    timer->SetEventFromSchedule();
++                      Timers->Add(timer);
++		    LOCK_SCHEDULES_READ;
++                    timer->SetEventFromSchedule(Schedules);
+                     timer->Matches();
+                     gl_timerStatusMonitor->SetConflictCheckAdvised();
+-                    Timers.SetModified();
++                    Timers->SetModified();
+                     addIfConfirmed = false;
+                 } else {
+ 		    free(tmpFile);
+diff --git a/menu_quicksearch.c b/menu_quicksearch.c
+index 069d5d8..61d1304 100644
+--- a/menu_quicksearch.c
++++ b/menu_quicksearch.c
+@@ -248,17 +248,18 @@ eOSState cMenuQuickSearch::ProcessKey(eKeys Key)
+ 	    case kOk:
+ 		if (data.useChannel==1)
+ 		{
+-		    cChannel *ch = Channels.GetByNumber(channelMin);
++		    LOCK_CHANNELS_READ;
++		    const cChannel *ch = Channels->GetByNumber(channelMin);
+ 		    if (ch)
+-			data.channelMin = ch;
++			data.channelMin = (cChannel*) ch;
+ 		    else
+ 		    {
+ 		      ERROR(tr("*** Invalid Channel ***"));
+ 		      break;
+ 		    }
+-		    ch = Channels.GetByNumber(channelMax);
++		    ch = Channels->GetByNumber(channelMax);
+ 		    if (ch)
+-			data.channelMax = ch;
++			data.channelMax = (cChannel*) ch;
+ 		    else
+ 		    {
+ 		      ERROR(tr("*** Invalid Channel ***"));
+diff --git a/menu_searchedit.c b/menu_searchedit.c
+index e44e8c8..928d3d3 100644
+--- a/menu_searchedit.c
++++ b/menu_searchedit.c
+@@ -643,17 +643,18 @@ eOSState cMenuEditSearchExt::ProcessKey(eKeys Key)
+          case kOk:
+             if (data.useChannel==1)
+             {
+-               cChannel *ch = Channels.GetByNumber(channelMin);
++               LOCK_CHANNELS_READ;
++               const cChannel *ch = Channels->GetByNumber(channelMin);
+                if (ch)
+-                  data.channelMin = ch;
++                  data.channelMin = (cChannel*) ch;
+                else
+                {
+ 		 ERROR(tr("*** Invalid Channel ***"));
+ 		 break;
+                }
+-               ch = Channels.GetByNumber(channelMax);
++               ch = Channels->GetByNumber(channelMax);
+                if (ch)
+-                  data.channelMax = ch;
++                  data.channelMax = (cChannel*) ch;
+                else
+                {
+ 		 ERROR(tr("*** Invalid Channel ***"));
+diff --git a/menu_searchresults.c b/menu_searchresults.c
+index dd46d95..f5fc4ff 100644
+--- a/menu_searchresults.c
++++ b/menu_searchresults.c
+@@ -81,7 +81,8 @@ bool cMenuSearchResultsItem::Update(bool Force)
+    bool OldInSwitchList = inSwitchList;
+    bool hasMatch = false;
+    cTimer* timer = NULL;
+-   if (event) timer = Timers.GetMatch(event, &timerMatch);
++   LOCK_TIMERS_WRITE;
++   if (event) timer = Timers->GetMatch(event, &timerMatch);
+    if (event) inSwitchList = (SwitchTimers.InSwitchList(event)!=NULL);
+    if (timer) hasMatch = true;
+ 
+@@ -187,7 +188,8 @@ cMenuSearchResultsItem::cMenuSearchResultsItem(cRecording *Recording)
+ void cMenuSearchResultsItem::SetMenuItem(cSkinDisplayMenu *DisplayMenu, int Index, bool Current, bool Selectable)
+ {
+ #if APIVERSNUM >= 10733
+-  cChannel *channel = event?Channels.GetByChannelID(event->ChannelID(), true, true):NULL;
++  LOCK_CHANNELS_READ;
++  const cChannel *channel = event?Channels->GetByChannelID(event->ChannelID(), true, true):NULL;
+   if (!event)
+      DisplayMenu->SetItem(Text(), Index, Current, Selectable);
+   else if (!DisplayMenu->SetItemEvent(event, Index, Current, Selectable, channel, true, timerMatch))
+@@ -240,7 +242,8 @@ eOSState cMenuSearchResults::Record(void)
+       if (item->timerMatch == tmFull)
+       {
+          eTimerMatch tm = tmNone;
+-         cTimer *timer = Timers.GetMatch(item->event, &tm);
++         LOCK_TIMERS_WRITE;
++         cTimer *timer = Timers->GetMatch(item->event, &tm);
+          if (timer)
+ 	   {
+ 	     if (EPGSearchConfig.useVDRTimerEditMenu)
+@@ -252,7 +255,8 @@ eOSState cMenuSearchResults::Record(void)
+ 
+       cTimer *timer = new cTimer(item->event);
+       PrepareTimerFile(item->event, timer);
+-      cTimer *t = Timers.GetTimer(timer);
++      LOCK_TIMERS_WRITE;
++      cTimer *t = Timers->GetTimer(timer);
+       if (EPGSearchConfig.onePressTimerCreation == 0 || t || !item->event || (!t && item->event && item->event->StartTime() - (Setup.MarginStart+2) * 60 < time(NULL)))
+       {
+          if (t)
+@@ -290,10 +294,10 @@ eOSState cMenuSearchResults::Record(void)
+ #endif
+ 
+          SetAux(timer, fullaux);
+-         Timers.Add(timer);
++         Timers->Add(timer);
+ 	 gl_timerStatusMonitor->SetConflictCheckAdvised();
+          timer->Matches();
+-         Timers.SetModified();
++         Timers->SetModified();
+          LogFile.iSysLog("timer %s added (active)", *timer->ToDescr());
+ 
+          if (HasSubMenu())
+@@ -312,7 +316,8 @@ eOSState cMenuSearchResults::Switch(void)
+    UpdateCurrent();
+    cMenuSearchResultsItem *item = (cMenuSearchResultsItem *)Get(Current());
+    if (item) {
+-      cChannel *channel = Channels.GetByChannelID(item->event->ChannelID(), true, true);
++      LOCK_CHANNELS_READ;
++      const cChannel *channel = Channels->GetByChannelID(item->event->ChannelID(), true, true);
+       if (channel && cDevice::PrimaryDevice()->SwitchChannel(channel, true))
+          return osEnd;
+    }
+@@ -342,7 +347,8 @@ eOSState cMenuSearchResults::ShowSummary()
+       const cEvent *ei = ((cMenuSearchResultsItem *)Get(Current()))->event;
+       if (ei)
+       {
+-         cChannel *channel = Channels.GetByChannelID(ei->ChannelID(), true, true);
++         LOCK_CHANNELS_READ;
++         const cChannel *channel = Channels->GetByChannelID(ei->ChannelID(), true, true);
+          if (channel)
+             return AddSubMenu(new cMenuEventSearch(ei, eventObjects));
+       }
+@@ -773,7 +779,8 @@ bool cMenuSearchResultsForRecs::BuildList()
+ 
+    int current = Current();
+    Clear();
+-   for (cRecording *recording = Recordings.First(); recording; recording = Recordings.Next(recording)) {
++   LOCK_RECORDINGS_READ;
++   for (const cRecording *recording = Recordings->First(); recording; recording = Recordings->Next(recording)) {
+      const cRecordingInfo *recInfo = recording->Info();
+      if (!recInfo) continue;
+      string s1 = (recInfo && recInfo->Title())?recInfo->Title():"";
+@@ -812,7 +819,7 @@ bool cMenuSearchResultsForRecs::BuildList()
+        if (tmp)
+        {
+            pArray=tmp;
+-           pArray[num++] = recording;
++           pArray[num++] = (cRecording*) recording;
+        }
+      }
+    }
+@@ -831,10 +838,11 @@ bool cMenuSearchResultsForRecs::BuildList()
+ 
+ cRecording *cMenuSearchResultsForRecs::GetRecording(cMenuSearchResultsItem *Item)
+ {
+-   cRecording *recording = Recordings.GetByName(Item->FileName());
++   LOCK_RECORDINGS_READ;
++   const cRecording *recording = Recordings->GetByName(Item->FileName());
+    if (!recording)
+      ERROR(tr("Error while accessing recording!"));
+-   return recording;
++   return (cRecording*) recording;
+ }
+ 
+ eOSState cMenuSearchResultsForRecs::Play(void)
+diff --git a/menu_switchtimers.c b/menu_switchtimers.c
+index 1a8139a..b0720f4 100644
+--- a/menu_switchtimers.c
++++ b/menu_switchtimers.c
+@@ -136,7 +136,8 @@ void cMenuSwitchTimerItem::Set()
+     tm *tm = localtime_r(&startTime, &tm_r);
+     strftime(datebuf, sizeof(datebuf), "%d.%m", tm);
+ 
+-    cChannel* channel = Channels.GetByChannelID(switchTimer->channelID,true,true);
++    LOCK_CHANNELS_READ;
++    const cChannel* channel = Channels->GetByChannelID(switchTimer->channelID,true,true);
+ 
+     msprintf(&buffer, "%s\t%d\t%s\t%s\t%d\'\t%s~%s", switchTimer->mode==1?"":">", channel?channel->Number():-1, datebuf, TIMESTRING(startTime), switchTimer->switchMinsBefore, event->Title()?event->Title():"", event->ShortText()?event->ShortText():"");
+     SetText(buffer, false);
+diff --git a/menu_templateedit.c b/menu_templateedit.c
+index f1c02b3..508981a 100644
+--- a/menu_templateedit.c
++++ b/menu_templateedit.c
+@@ -187,17 +187,18 @@ eOSState cMenuEditTemplate::ProcessKey(eKeys Key)
+          case kOk:
+             if (data.useChannel==1)
+             {
+-               cChannel *ch = Channels.GetByNumber(channelMin);
++               LOCK_CHANNELS_READ;
++               const cChannel *ch = Channels->GetByNumber(channelMin);
+                if (ch)
+-                  data.channelMin = ch;
++                  data.channelMin = (cChannel*) ch;
+                else
+                {
+ 		 ERROR(tr("*** Invalid Channel ***"));
+ 		 break;
+                }
+-               ch = Channels.GetByNumber(channelMax);
++               ch = Channels->GetByNumber(channelMax);
+                if (ch)
+-                  data.channelMax = ch;
++                  data.channelMax = (cChannel*) ch;
+                else
+                {
+ 		 ERROR(tr("*** Invalid Channel ***"));
+diff --git a/menu_timersdone.c b/menu_timersdone.c
+index a239892..77bc877 100644
+--- a/menu_timersdone.c
++++ b/menu_timersdone.c
+@@ -44,7 +44,8 @@ void cMenuTimerDoneItem::Set(void)
+    tm *tm = localtime_r(&timerDone->start, &tm_r);
+    strftime(buf, sizeof(buf), "%d.%m.%y %H:%M", tm);
+ 
+-   const cChannel* ch = Channels.GetByChannelID(timerDone->channelID, true, true);
++   LOCK_CHANNELS_READ;
++   const cChannel* ch = Channels->GetByChannelID(timerDone->channelID, true, true);
+    msprintf(&buffer, "%d\t%s\t%s~%s", ch?ch->Number():0, buf, timerDone->title.c_str(), timerDone->shorttext.c_str());
+    SetText(buffer, false);
+ }
+diff --git a/menu_whatson.c b/menu_whatson.c
+index daa4359..0e2c3c8 100644
+--- a/menu_whatson.c
++++ b/menu_whatson.c
+@@ -81,7 +81,8 @@ bool cMenuMyScheduleItem::Update(bool Force)
+    bool OldInSwitchList = inSwitchList;
+    bool hasMatch = false;
+    cTimer* timer = NULL;
+-   if (event) timer = Timers.GetMatch(event, &timerMatch);
++   LOCK_TIMERS_WRITE;
++   if (event) timer = Timers->GetMatch(event, &timerMatch);
+    if (event) inSwitchList = (SwitchTimers.InSwitchList(event)!=NULL);
+    if (timer) hasMatch = true;
+ 
+@@ -429,7 +430,8 @@ void cMenuWhatsOnSearch::LoadSchedules()
+    if (currentChannel > maxChannel)
+       maxChannel = 0;
+ 
+-   for (cChannel *Channel = Channels.First(); Channel; Channel = Channels.Next(Channel))
++   LOCK_CHANNELS_READ;
++   for (const cChannel *Channel = Channels->First(); Channel; Channel = Channels->Next(Channel))
+    {
+       if (!Channel->GroupSep())
+       {
+@@ -466,13 +468,13 @@ void cMenuWhatsOnSearch::LoadSchedules()
+ 	     if (!EPGSearchConfig.showEmptyChannels && !Event)
+             continue;
+ 
+-	     Add(new cMenuMyScheduleItem(Event, Channel, currentShowMode, currentTemplate), Channel->Number() == currentChannel);
++	     Add(new cMenuMyScheduleItem(Event, (cChannel*) Channel, currentShowMode, currentTemplate), Channel->Number() == currentChannel);
+          if (Event) eventObjects.Add(Event);
+       }
+       else
+       {
+ 	if (EPGSearchConfig.showChannelGroups && strlen(Channel->Name()))
+-	  Add(new cMenuMyScheduleSepItem(NULL, Channel));
++	  Add(new cMenuMyScheduleSepItem(NULL, (cChannel*) Channel));
+       }
+    }
+ }
+@@ -571,7 +573,8 @@ eOSState cMenuWhatsOnSearch::Record(void)
+       if (item->timerMatch == tmFull)
+       {
+          eTimerMatch tm = tmNone;
+-         cTimer *timer = Timers.GetMatch(item->event, &tm);
++         LOCK_TIMERS_WRITE;
++         cTimer *timer = Timers->GetMatch(item->event, &tm);
+          if (timer)
+ 	   {
+ 	     if (EPGSearchConfig.useVDRTimerEditMenu)
+@@ -590,7 +593,8 @@ eOSState cMenuWhatsOnSearch::Record(void)
+       else
+          timer = new cTimer(false, false, item->channel);
+ 
+-      cTimer *t = Timers.GetTimer(timer);
++      LOCK_TIMERS_WRITE;
++      cTimer *t = Timers->GetTimer(timer);
+       if (EPGSearchConfig.onePressTimerCreation == 0 || t || !item->event || (!t && item->event && item->event->StartTime() - (Setup.MarginStart+2) * 60 < time(NULL)))
+       {
+          if (t)
+@@ -627,10 +631,10 @@ eOSState cMenuWhatsOnSearch::Record(void)
+          fullaux = UpdateAuxValue(fullaux, "pin-plugin", aux);
+ #endif
+          SetAux(timer, fullaux);
+-         Timers.Add(timer);
++         Timers->Add(timer);
+ 	 gl_timerStatusMonitor->SetConflictCheckAdvised();
+          timer->Matches();
+-         Timers.SetModified();
++         Timers->SetModified();
+          LogFile.iSysLog("timer %s added (active)", *timer->ToDescr());
+ 
+          if (HasSubMenu())
+@@ -725,7 +729,8 @@ eOSState cMenuWhatsOnSearch::Shift(int iMinutes)
+    if (mi)
+    {
+       currentChannel = mi->channel->Number();
+-      scheduleChannel = Channels.GetByNumber(currentChannel);
++      LOCK_CHANNELS_READ;
++      scheduleChannel = (cChannel*) Channels->GetByNumber(currentChannel);
+    }
+    LoadSchedules();
+    Display();
+@@ -741,7 +746,8 @@ eOSState cMenuWhatsOnSearch::ShowSummary()
+       const cEvent *ei = ((cMenuMyScheduleItem *)Get(Current()))->event;
+       if (ei)
+       {
+-         cChannel *channel = Channels.GetByChannelID(ei->ChannelID(), true, true);
++         LOCK_CHANNELS_READ;
++         const cChannel *channel = Channels->GetByChannelID(ei->ChannelID(), true, true);
+          if (channel)
+             return AddSubMenu(new cMenuEventSearch(ei, eventObjects, SurfModeChannel));
+       }
+@@ -866,7 +872,8 @@ eOSState cMenuWhatsOnSearch::ProcessKey(eKeys Key)
+                   if (mi && mi->Selectable())
+                   {
+                      currentChannel = mi->channel->Number();
+-                     scheduleChannel = Channels.GetByNumber(currentChannel);
++                     LOCK_CHANNELS_READ;
++                     scheduleChannel = (cChannel*) Channels->GetByNumber(currentChannel);
+                   }
+                }
+                else
+diff --git a/pending_notifications.c b/pending_notifications.c
+index 4ce480f..2702d1f 100644
+--- a/pending_notifications.c
++++ b/pending_notifications.c
+@@ -121,7 +121,8 @@ const char *cPendingNotification::ToText(void) const
+ 	free(buffer);
+     buffer = NULL;
+ 
+-    cChannel *channel = Channels.GetByChannelID(channelID, true, true);
++    LOCK_CHANNELS_READ;
++    const cChannel *channel = Channels->GetByChannelID(channelID, true, true);
+     if (!channel)
+ 	LogFile.Log(3,"invalid channel in pending notifications!");
+ 
+diff --git a/recdone.c b/recdone.c
+index 7270c67..99ce4dd 100644
+--- a/recdone.c
++++ b/recdone.c
+@@ -200,7 +200,8 @@ const char *cRecDone::ToText(void)
+ 	free(buffer);
+     buffer = NULL;
+ 
+-    cChannel *channel = Channels.GetByChannelID(channelID, true, true);
++    LOCK_CHANNELS_READ;
++    const cChannel *channel = Channels->GetByChannelID(channelID, true, true);
+     if (!channel)
+ 	LogFile.Log(3,"invalid channel in recs done!");
+ 
+@@ -226,7 +227,8 @@ bool cRecDone::Save(FILE *f)
+ 
+ int cRecDone::ChannelNr()
+ {
+-    cChannel* channel = Channels.GetByChannelID(channelID, true, true);
++    LOCK_CHANNELS_READ;
++    const cChannel* channel = Channels->GetByChannelID(channelID, true, true);
+     if (!channel)
+ 	return -1;
+     else
+diff --git a/recstatus.c b/recstatus.c
+index 8e6afd8..06a3007 100644
+--- a/recstatus.c
++++ b/recstatus.c
+@@ -49,7 +49,8 @@ void cRecStatusMonitor::Recording(const cDevice *Device, const char *Name, const
+       if (EPGSearchConfig.checkTimerConflOnRecording)
+          cConflictCheckThread::Init((cPluginEpgsearch*)cPluginManager::GetPlugin("epgsearch"), true);
+ 
+-      for (cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti))
++      LOCK_TIMERS_READ;
++      for (const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti))
+          if (ti->Recording())
+          {
+             // check if this is a new entry
+@@ -71,7 +72,7 @@ void cRecStatusMonitor::Recording(const cDevice *Device, const char *Name, const
+                continue;
+             }
+ 
+-            cRecDoneTimerObj* timerObj = new cRecDoneTimerObj(ti, Device->DeviceNumber());
++            cRecDoneTimerObj* timerObj = new cRecDoneTimerObj((cTimer*) ti, Device->DeviceNumber());
+             TimersRecording.Add(timerObj);
+ 
+             cSearchExt* search = TriggeredFromSearchTimer(ti);
+@@ -83,7 +84,7 @@ void cRecStatusMonitor::Recording(const cDevice *Device, const char *Name, const
+             const cEvent* event = ti->Event();
+             if (!event)
+             {
+-               event = GetEvent(ti);
++               event = GetEvent((cTimer*) ti);
+                if (event)
+                   LogFile.Log(3,"timer had no event: assigning '%s'", event->Title());
+             }
+@@ -95,7 +96,7 @@ void cRecStatusMonitor::Recording(const cDevice *Device, const char *Name, const
+             time_t now = time(NULL);
+             if (vpsUsed || now < ti->StartTime() + 60) // allow a delay of one minute
+             {
+-               timerObj->recDone = new cRecDone(ti, event, search);
++               timerObj->recDone = new cRecDone((cTimer*) ti, event, search);
+                return;
+             }
+             else
+@@ -113,7 +114,8 @@ void cRecStatusMonitor::Recording(const cDevice *Device, const char *Name, const
+       {
+          // check if timer still exists
+          bool found = false;
+-         for (cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti))
++         LOCK_TIMERS_READ;
++         for (const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti))
+             if (ti == tiR->timer)
+             {
+                found = true;
+@@ -130,12 +132,13 @@ void cRecStatusMonitor::Recording(const cDevice *Device, const char *Name, const
+                // check if recording has ended before timer end
+ 
+                bool complete = true;
+-	       cRecording *pRecording = Recordings.GetByName(Filename);
++	       LOCK_RECORDINGS_READ;
++	       const cRecording *pRecording = Recordings->GetByName(Filename);
+ 	       long timerLengthSecs = tiR->timer->StopTime()-tiR->timer->StartTime();
+ 	       int recFraction = 100;
+ 	       if (pRecording && timerLengthSecs)
+ 	       {
+-		  int recLen = RecLengthInSecs(pRecording);
++		  int recLen = RecLengthInSecs((cRecording*) pRecording);
+ 		  recFraction = double(recLen) * 100 / timerLengthSecs;
+ 	       }
+ 	       bool vpsUsed = tiR->timer->HasFlags(tfVps) && tiR->timer->Event() && tiR->timer->Event()->Vps();
+diff --git a/searchtimer_thread.c b/searchtimer_thread.c
+index 34d625f..37a1db5 100644
+--- a/searchtimer_thread.c
++++ b/searchtimer_thread.c
+@@ -101,7 +101,8 @@ void cSearchTimerThread::Stop(void) {
+ 
+ cTimer *cSearchTimerThread::GetTimer(cSearchExt *searchExt, const cEvent *pEvent, bool& bTimesMatchExactly)
+ {
+-   cChannel *channel = Channels.GetByChannelID(pEvent->ChannelID(), true, true);
++   LOCK_CHANNELS_READ;
++   const cChannel *channel = Channels->GetByChannelID(pEvent->ChannelID(), true, true);
+    if (!channel)
+       return NULL;
+ 
+@@ -129,7 +130,8 @@ cTimer *cSearchTimerThread::GetTimer(cSearchExt *searchExt, const cEvent *pEvent
+ 
+    tm *tmStartEv = localtime_r(&eStart, &tm_r);
+ 
+-   for (cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti))
++   LOCK_TIMERS_READ;
++   for (const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti))
+    {
+       if (ti->Channel() != channel)
+          continue;
+@@ -151,7 +153,7 @@ cTimer *cSearchTimerThread::GetTimer(cSearchExt *searchExt, const cEvent *pEvent
+          if (abs(testVpsStop - timerVpsStop) > AllowedDiff * 60) continue;
+ 
+          bTimesMatchExactly = (testVpsStart == timerVpsStart && testVpsStop == timerVpsStop);
+-         return ti;
++         return (cTimer*) ti;
+       }
+       else
+       {
+@@ -166,7 +168,7 @@ cTimer *cSearchTimerThread::GetTimer(cSearchExt *searchExt, const cEvent *pEvent
+          bTimesMatchExactly = (abs(tStart -eStart) < 60 && abs(tStop - eStop) < 60);
+ 
+          if (abs(tStart - eStart) < AllowedDiff * 60 && abs(tStop - eStop) < AllowedDiff * 60) // accept a difference of max 10 min., but only if the event duration is more than 10 minutes
+-            return ti;
++            return (cTimer*) ti;
+       }
+    }
+    return NULL;
+@@ -228,11 +230,8 @@ void cSearchTimerThread::Action(void)
+ 	    while(EITScanner.Active() && m_Active && Running());
+   	    LogFile.Log(1,"EPG scan finished");
+ 	 }
+-         if (Timers.BeingEdited())
+-         {
+-            Wait.Wait(1000);
+-            continue;
+-         }
++         LOCK_TIMERS_WRITE;
++         Timers->SetExplicitModify();
+          LogFile.iSysLog("search timer update started");
+ 
+          UserVars.ResetCache(); // reset internal cache of user vars
+@@ -274,7 +273,8 @@ void cSearchTimerThread::Action(void)
+                if (!pEvent)
+                   continue;
+ 
+-               cChannel *channel = Channels.GetByChannelID(pEvent->ChannelID(), true, true);
++               LOCK_CHANNELS_READ;
++               const cChannel *channel = Channels->GetByChannelID(pEvent->ChannelID(), true, true);
+                if (!channel)
+                   continue;
+ 
+@@ -497,7 +497,8 @@ void cSearchTimerThread::Action(void)
+                   cTimer* t = tObj->timer;
+                   // timer could have been deleted meanwhile, so check if its still there
+                   bool found = false;
+-                  for(cTimer* checkT = Timers.First(); checkT; checkT = Timers.Next(checkT))
++                  LOCK_TIMERS_READ;
++                  for(const cTimer* checkT = Timers->First(); checkT; checkT = Timers->Next(checkT))
+                      if (checkT == t)
+                      {
+                         found = true;
+@@ -773,9 +774,9 @@ void cSearchTimerThread::DelRecording(int index)
+ void cSearchTimerThread::CheckExpiredRecs()
+ {
+    LogFile.Log(1, "check for expired recordings started");
+-   cThreadLock RecordingsLock(&Recordings);
++   LOCK_RECORDINGS_READ;
+    cList<cRecordingObj> DelRecordings;
+-   for (cRecording *recording = Recordings.First(); recording && m_Active; recording = Recordings.Next(recording))
++   for (const cRecording *recording = Recordings->First(); recording && m_Active; recording = Recordings->Next(recording))
+    {
+ #if APIVERSNUM < 10721
+       LogFile.Log(3, "check recording %s from %s for expiration", recording->Name(), DAYDATETIME(recording->start));
+@@ -821,7 +822,7 @@ void cSearchTimerThread::CheckExpiredRecs()
+       int daysBetween = int(double((now - recording->Start())) / (60*60*24));
+ #endif
+       if (daysBetween  >= search->delAfterDays)
+-         DelRecordings.Add(new cRecordingObj(recording, search));
++         DelRecordings.Add(new cRecordingObj((cRecording*) recording, search));
+       else
+          LogFile.Log(3, "recording will expire in %d days, search timer %s", search->delAfterDays - daysBetween, search->search);
+    }
+@@ -849,7 +850,8 @@ void cSearchTimerThread::CheckExpiredRecs()
+          if (!recording->Delete())
+             LogFile.Log(1, "error deleting recording!");
+          else
+-            ::Recordings.DelByName(recording->FileName());
++            LOCK_RECORDINGS_WRITE;
++            Recordings->DelByName(recording->FileName());
+       }
+       else
+          LogFile.Log(1, "recording already in use by a timer!");
+@@ -899,15 +901,13 @@ void cSearchTimerThread::CheckManualTimers()
+ {
+    LogFile.Log(1, "manual timer check started");
+ 
+-   cSchedulesLock schedulesLock;
+-   const cSchedules *schedules;
+-   schedules = cSchedules::Schedules(schedulesLock);
++   LOCK_TIMERS_READ;
+ 
+-   for (cTimer *ti = Timers.First(); ti && m_Active; ti = Timers.Next(ti))
++   for (const cTimer *ti = Timers->First(); ti && m_Active; ti = Timers->Next(ti))
+    {
+       if (TriggeredFromSearchTimerID(ti) != -1) continue; // manual timer?
+ 
+-      if (TimerWasModified(ti))
++      if (TimerWasModified((cTimer*) ti))
+       {
+ 	LogFile.Log(2,"timer for '%s' (%s, channel %s) modified by user - won't be touched", ti->File(), DAYDATETIME(ti->StartTime()), CHANNELNAME(ti->Channel()));
+ 	continue; // don't update timers modified by user
+@@ -925,7 +925,8 @@ void cSearchTimerThread::CheckManualTimers()
+       if (updateMethod && atoi(updateMethod) == UPD_EVENTID) // by event ID?
+       {
+          // get the channels schedule
+-         const cSchedule* schedule = schedules->GetSchedule(ti->Channel());
++         LOCK_SCHEDULES_READ;
++         const cSchedule* schedule = Schedules->GetSchedule(ti->Channel());
+          if (schedule)
+          {
+             tEventID eventID = 0;
+@@ -948,12 +949,13 @@ void cSearchTimerThread::CheckManualTimers()
+       if (updateMethod && atoi(updateMethod) == UPD_CHDUR) // by channel and time?
+       {
+          // get the channels schedule
+-         const cSchedule* schedule = schedules->GetSchedule(ti->Channel());
++         LOCK_SCHEDULES_READ;
++         const cSchedule* schedule = Schedules->GetSchedule(ti->Channel());
+          if (schedule)
+          {
+             // collect all events touching the old timer margins
+             cSearchResults eventlist;
+-            for (cEvent *testevent = schedule->Events()->First(); testevent; testevent = schedule->Events()->Next(testevent))
++            for (const cEvent *testevent = schedule->Events()->First(); testevent; testevent = schedule->Events()->Next(testevent))
+             {
+                if (testevent->StartTime() < ti->StopTime() && testevent->EndTime() > ti->StartTime())
+                   eventlist.Add(new cSearchResult(testevent, (const cSearchExt*)NULL));
+@@ -1013,9 +1015,7 @@ void cSearchTimerThread::CheckEPGHours()
+ 
+   time_t checkTime = time(NULL) + EPGSearchConfig.checkEPGHours * 60 * 60;
+ 
+-  cSchedulesLock schedulesLock;
+-  const cSchedules *schedules;
+-  schedules = cSchedules::Schedules(schedulesLock);
++  LOCK_SCHEDULES_READ;
+ 
+   cChannelGroup channelsWithSmallEPG;
+   cChannelGroupItem* channelInGroup = channelGroup->channels.First();
+@@ -1023,7 +1023,7 @@ void cSearchTimerThread::CheckEPGHours()
+     {
+       cChannel* channel = channelInGroup->channel;
+       // get the channels schedule
+-      const cSchedule* schedule = schedules->GetSchedule(channel);
++      const cSchedule* schedule = Schedules->GetSchedule(channel);
+       if (!schedule || !schedule->GetEventAround(checkTime))
+ 	{
+ 	  LogFile.Log(3,"less than %d hours of EPG for channel %s!", EPGSearchConfig.checkEPGHours, channel->Name());
+diff --git a/services.c b/services.c
+index c714a14..c752cbf 100644
+--- a/services.c
++++ b/services.c
+@@ -145,13 +145,15 @@ std::list<std::string> cEpgsearchServiceHandler::TranslateResults(cSearchResults
+ 
+          eTimerMatch timerMatch;
+          bool hasTimer = false;
+-         if (Timers.GetMatch(pEvent, &timerMatch))
++         LOCK_TIMERS_WRITE;
++         if (Timers->GetMatch(pEvent, &timerMatch))
+             hasTimer = (timerMatch == tmFull);
+ 
+          if (!result->search->useAsSearchTimer)
+             result->needsTimer = false;
+ 
+-         cChannel *channel = Channels.GetByChannelID(pEvent->ChannelID(), true, true);
++         LOCK_CHANNELS_READ;
++         const cChannel *channel = Channels->GetByChannelID(pEvent->ChannelID(), true, true);
+          int timerMode = hasTimer?1:(result->needsTimer?2:0);
+ 
+          std::string title = pEvent->Title()?ReplaceAll(pEvent->Title(), "|", "!^pipe!^"):"";
+diff --git a/switchtimer.c b/switchtimer.c
+index 20c017b..af0c721 100644
+--- a/switchtimer.c
++++ b/switchtimer.c
+@@ -114,10 +114,9 @@ const cEvent* cSwitchTimer::Event()
+   const cEvent* event = NULL;
+   if (startTime > now)
+   {
+-      cSchedulesLock schedulesLock;
+-      const cSchedules* schedules = cSchedules::Schedules(schedulesLock);
+-      if (!schedules) return NULL;
+-      const cSchedule *Schedule = schedules->GetSchedule(channelID);
++      LOCK_SCHEDULES_READ;
++      if (!Schedules) return NULL;
++      const cSchedule *Schedule = Schedules->GetSchedule(channelID);
+       if (Schedule)
+       {
+ 	  event = Schedule->GetEvent(eventID, startTime);
+@@ -136,7 +135,8 @@ cString cSwitchTimer::ToText(bool& ignore)
+ 	ignore = true;
+ 	return NULL;
+     }
+-    cChannel *channel = Channels.GetByChannelID(channelID, true, true);
++    LOCK_CHANNELS_READ;
++    const cChannel *channel = Channels->GetByChannelID(channelID, true, true);
+     if (!channel) return NULL;
+     cString buffer = cString::sprintf("%s:%u:%ld:%d:%d:%d",
+ 				      CHANNELSTRING(channel), eventID,
+diff --git a/switchtimer_thread.c b/switchtimer_thread.c
+index b027b4b..6fb59a2 100644
+--- a/switchtimer_thread.c
++++ b/switchtimer_thread.c
+@@ -81,14 +81,14 @@ void cSwitchTimerThread::Action(void)
+       if (now >= nextUpdate)
+       {
+          LogFile.Log(3,"locking switch timers");
+-         SwitchTimers.Lock();
+          LogFile.Log(3,"switch timer check started");
+          cSwitchTimer* switchTimer = SwitchTimers.First();
+          while (switchTimer && m_Active && Running())
+          {
+             if (switchTimer->startTime - now < switchTimer->switchMinsBefore*60 + MSG_DELAY + 1)
+             {
+-               cChannel *channel = Channels.GetByChannelID(switchTimer->channelID, true, true);
++               LOCK_CHANNELS_READ;
++               const cChannel *channel = Channels->GetByChannelID(switchTimer->channelID, true, true);
+                bool doSwitch = (switchTimer->mode == 0);
+                bool doAsk = (switchTimer->mode == 2);
+ 	       bool doUnmute = switchTimer->unmute;
+diff --git a/templatefile.c b/templatefile.c
+index 44ade92..ffe171d 100644
+--- a/templatefile.c
++++ b/templatefile.c
+@@ -210,6 +210,7 @@ bool cTemplFile::Parse(const char *Name, const char *Value)
+ void cTemplFile::PrepareDefaultTemplates()
+ {
+     char channelnr[20] = "";
++    LOCK_CHANNELS_READ;
+     sprintf(channelnr, "%%chnr%%:%d|", CHNUMWIDTH);
+ 
+     bool text2skin = !(strcmp(Setup.OSDSkin, "soppalusikka") == 0 ||
+diff --git a/timer_thread.c b/timer_thread.c
+index 306d10a..00d1e51 100644
+--- a/timer_thread.c
++++ b/timer_thread.c
+@@ -89,11 +89,8 @@ void cTimerThread::Action(void)
+             m_Active=false;
+             break;
+         }
+-	if (Timers.BeingEdited())
+-	{
+-	    sleepSec(1);
+-	    continue;
+-	}
++	LOCK_TIMERS_WRITE;
++	Timers->SetExplicitModify();
+ 	bool bSuccess = SendViaSVDRP(m_cmd);
+ 	if (!bSuccess)
+ 	{
+diff --git a/timerdone.c b/timerdone.c
+index b00679c..bc4a7ae 100644
+--- a/timerdone.c
++++ b/timerdone.c
+@@ -126,7 +126,8 @@ bool cTimerDone::Parse(const char *s)
+ 
+ cString cTimerDone::ToText(void) const
+ {
+-   cChannel *channel = Channels.GetByChannelID(channelID, true, true);
++   LOCK_CHANNELS_READ;
++   const cChannel *channel = Channels->GetByChannelID(channelID, true, true);
+    string info = string(DAYDATETIME(start)) + " - " + string(channel?channel->Name():"");
+ 
+    cString buffer = cString::sprintf("%s:%ld:%ld:%d:%s:%s:%s",
+@@ -147,8 +148,7 @@ bool cTimerDone::Save(FILE *f)
+ 
+ const cEvent* cTimerDone::GetEvent() const
+ {
+-   cSchedulesLock schedulesLock;
+-   const cSchedules* Schedules = cSchedules::Schedules(schedulesLock);
++   LOCK_SCHEDULES_READ;
+    if (!Schedules) return NULL;
+    const cSchedule *Schedule = Schedules->GetSchedule(channelID);
+    if (!Schedule) return NULL;
+diff --git a/uservars.h b/uservars.h
+index 9366af0..1677661 100644
+--- a/uservars.h
++++ b/uservars.h
+@@ -176,7 +176,8 @@ public:
+     string Evaluate(const cEvent* e, bool escapeStrings = false)
+ 	{
+ 	    if (!e) return "";
+-	    cChannel *channel = Channels.GetByChannelID(e->ChannelID(), true);
++            LOCK_CHANNELS_READ;
++	    cChannel *channel = (cChannel*) Channels->GetByChannelID(e->ChannelID(), true);
+ 	    if (!channel) return "";
+ 
+ 	    string res(channel->GetChannelID().ToString());
+@@ -415,7 +416,8 @@ public:
+     string Evaluate(const cEvent* e, bool escapeStrings = false)
+ 	{
+ 	    if (!e) return "";
+-	    cChannel *channel = Channels.GetByChannelID(e->ChannelID(), true);
++            LOCK_CHANNELS_READ;
++	    cChannel *channel = (cChannel*) Channels->GetByChannelID(e->ChannelID(), true);
+ 	    string res = channel?channel->ShortName(true):"";
+ 	    if (escapeStrings) return "'" + EscapeString(res) + "'"; else return res;
+ 	}
+@@ -427,7 +429,8 @@ public:
+     string Evaluate(const cEvent* e, bool escapeStrings = false)
+ 	{
+ 	    if (!e) return "";
+-	    cChannel *channel = Channels.GetByChannelID(e->ChannelID(), true);
++            LOCK_CHANNELS_READ;
++	    cChannel *channel = (cChannel*) Channels->GetByChannelID(e->ChannelID(), true);
+ 	    string res = channel?channel->Name():"";
+ 	    if (escapeStrings) return "'" + EscapeString(res) + "'"; else return res;
+ 	}
+@@ -439,7 +442,8 @@ class cChannelDataVar : public cInternalVar {
+     string Evaluate(const cEvent* e, bool escapeStrings = false)
+ 	{
+ 	    if (!e) return "";
+-	    cChannel *channel = Channels.GetByChannelID(e->ChannelID(), true);
++            LOCK_CHANNELS_READ;
++	    cChannel *channel = (cChannel*) Channels->GetByChannelID(e->ChannelID(), true);
+ 	    return channel?CHANNELSTRING(channel):"";
+ 	}
+ };
+@@ -451,9 +455,10 @@ public:
+ 	{
+ 	    if (!e) return "";
+ 	    ostringstream os;
+-	    cChannel *channel = Channels.GetByChannelID(e->ChannelID(), true);
++            LOCK_CHANNELS_READ;
++	    cChannel *channel = (cChannel*) Channels->GetByChannelID(e->ChannelID(), true);
+ 	    while(channel && !channel->GroupSep())
+-	      channel = Channels.Prev(channel);
++	      channel = (cChannel*) Channels->Prev(channel);
+ 	    if (!channel || !channel->Name()) return "";
+ 	    string grpName = channel->Name();
+ 	    if (escapeStrings) return "'" + EscapeString(grpName) + "'"; else return grpName;

@@ -27,6 +27,7 @@ pkgbase = vdr-epgsearch
 	backup = var/lib/vdr/plugins/epgsearch/epgsearchupdmail-html.templ
 	backup = var/lib/vdr/plugins/epgsearch/epgsearchupdmail.templ
 	source = git://projects.vdr-developer.org/vdr-plugin-epgsearch.git#commit=a908daa4c5c6edd6c560ed96939358b4352e9b42
+	source = epgsearch-vdr2.3.1compat.diff
 	source = 50-epgsearch.conf
 	md5sums = SKIP
 	md5sums = 9a936790ce844d011d8bbb3bf13ec336
