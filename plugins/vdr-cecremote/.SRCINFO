@@ -14,10 +14,8 @@ pkgbase = vdr-cecremote
 	depends = vdr-api=2.3.1
 	backup = etc/vdr/conf.avail/50-cecremote.conf
 	source = http://www.uli-eckhardt.de/vdr/download/vdr-cecremote-1.3.1.tgz
-	source = cecremote-vdr2.3.1compat.diff::http://git.uli-eckhardt.de/?p=vdr-plugin-cecremote.git;a=patch;h=601b1ea2911ebc7b60cdb2910c8e856aeb420be3
 	source = 50-cecremote.conf
 	md5sums = 2d9980eea13edcebec5abaaf168fb0db
-	md5sums = f45ff0334c3db48b7394ed60ee951e23
 	md5sums = b07791e9ca361d41d58f2017fdcec70b
 
 pkgname = vdr-cecremote
