@@ -1,5 +1,7 @@
 [Unit]
 Description=Video Disk Recorder
+After=network-online.target
+Wants=network-online.target
 After=oscam.service
 After=sundtek.service
 After=xlogin@vdr.service
