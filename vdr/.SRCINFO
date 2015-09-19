@@ -1,7 +1,7 @@
 pkgbase = vdr
 	pkgdesc = 'open' digital satellite receiver and timer controlled video disk recorder
 	pkgver = 2.3.1
-	pkgrel = 2
+	pkgrel = 3
 	url = http://tvdr.de/
 	install = vdr.install
 	arch = x86_64
@@ -42,6 +42,7 @@ pkgbase = vdr
 	backup = var/lib/vdr/sources.conf
 	backup = var/lib/vdr/svdrphosts.conf
 	source = ftp://ftp.tvdr.de/vdr/Developer/vdr-2.3.1.tar.bz2
+	source = vdr-2.3.1-fixcrashdelrec.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=38664
 	source = vdr-2.3.1-grantrecursivewritelocks.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=38669
 	source = MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330
 	source = 00-vdr.conf
@@ -56,6 +57,7 @@ pkgbase = vdr
 	source = vdr.service
 	source = vdr.sysuser
 	md5sums = 391c2ed60e2f7d24563fe3ed5854bc4f
+	md5sums = 7e08238fc7e0d30b797ac3508c1c0c9e
 	md5sums = 3eebcb2ceeafba8e1752b4b16963f510
 	md5sums = 301c9b9766ed5182b07f1debc79abc21
 	md5sums = de3dcdea1a4282211c6dac370019548b

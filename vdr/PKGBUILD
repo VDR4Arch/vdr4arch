@@ -3,7 +3,7 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr
 pkgver=2.3.1
-pkgrel=2
+pkgrel=3
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -18,6 +18,7 @@ conflicts=('runvdr-extreme')
 provides=("vdr-api=2.3.1")
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/Developer/${pkgname}-${pkgver}.tar.bz2"
+        'vdr-2.3.1-fixcrashdelrec.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=38664'
         'vdr-2.3.1-grantrecursivewritelocks.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=38669'
         'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
         '00-vdr.conf' '50-dvbsddevice.conf' '50-hello.conf' '50-pictures.conf' '50-rcu.conf'
@@ -38,6 +39,7 @@ backup=("etc/vdr/conf.avail/"50-dvb{s,h}ddevice.conf
         'var/lib/vdr/sources.conf'
         'var/lib/vdr/svdrphosts.conf')
 md5sums=('391c2ed60e2f7d24563fe3ed5854bc4f'
+         '7e08238fc7e0d30b797ac3508c1c0c9e'
          '3eebcb2ceeafba8e1752b4b16963f510'
          '301c9b9766ed5182b07f1debc79abc21'
          'de3dcdea1a4282211c6dac370019548b'
@@ -63,12 +65,12 @@ prepare() {
   echo 'SDNOTIFY     = 1' >> Make.config
   echo 'LIRC_DEVICE  = /run/lirc/lircd' >> Make.config
 
+  patch -p1 -i "$srcdir/vdr-2.3.1-fixcrashdelrec.diff"
   patch -p1 -i "$srcdir/vdr-2.3.1-grantrecursivewritelocks.diff"
 
   sed -i 's/NULL, 0, true/NULL, 0, OpenSubMenus/g' "$srcdir/MainMenuHooks-v1_0_2.diff"
   patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
 
-  sed -i '/define DEPRECATED_VIDEOSYSTEM/d' device.h
   sed -i '/define DEPRECATED_VDR_CHARSET_OVERRIDE/d' vdr.c
 }
 
