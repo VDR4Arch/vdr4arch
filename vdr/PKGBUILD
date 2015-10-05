@@ -3,7 +3,7 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr
 pkgver=2.3.1
-pkgrel=4
+pkgrel=5
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -68,7 +68,7 @@ prepare() {
   sed -i 's/NULL, 0, true/NULL, 0, OpenSubMenus/g' "$srcdir/MainMenuHooks-v1_0_2.diff"
   patch -p1 -i "$srcdir/MainMenuHooks-v1_0_2.diff"
 
-  sed -i '/define DEPRECATED_VDR_CHARSET_OVERRIDE/d' vdr.c
+  sed -i 's/\/\/#define DEPRECATED_GETBITMAP/#define DEPRECATED_GETBITMAP/' osd.h
 }
 
 build() {
