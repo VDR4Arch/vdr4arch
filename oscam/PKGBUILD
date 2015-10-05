@@ -2,17 +2,16 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=oscam
-pkgver=11034
-_gitrev=50ada64406d07aafbf3209220247cbbb3c4ee23c
+pkgver=11036
+_gitrev=8e98c1b019aab634b3c96d9f1efc8a6305017720
 pkgrel=1
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.streamboard.tv/oscam"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL3')
-depends=('libusb' 'openssl')
-makedepends=('git' 'pcsclite')
-optdepends=('pcsclite: for use with PC/SC readers'
-            'ccid: PC/SC reader generic driver')
+depends=('libusb' 'openssl' 'pcsclite')
+makedepends=('git')
+optdepends=('ccid: PC/SC reader generic driver')
 install='oscam.install'
 source=("git+http://www.oscam.cc/git/oscam-mirror#commit=$_gitrev"
         'oscam.service'
