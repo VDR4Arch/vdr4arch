@@ -1,0 +1,23 @@
+pkgbase = vdr-skinsoppalusikka
+	pkgdesc = Standalone skin providing the good old "ElchiAIO" looks
+	pkgver = 2.2.1
+	pkgrel = 2
+	url = http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/
+	arch = x86_64
+	arch = i686
+	arch = arm
+	arch = armv6h
+	arch = armv7h
+	license = GPL2
+	depends = gcc-libs
+	depends = vdr-api=2.3.1
+	backup = etc/vdr/conf.avail/50-skinsoppalusikka.conf
+	source = http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/files/vdr-skinsoppalusikka-2.2.1.tgz
+	source = https://github.com/rofafor/vdr-plugin-skinsoppalusikka/commit/54896b4ecf5381b5823c6f03b62f58902cf3581b.diff
+	source = 50-skinsoppalusikka.conf
+	md5sums = a5fa88ec9a3b56bdeefbec6449e37ce5
+	md5sums = 5c3854c9f49bc0aee510311a9687ebe3
+	md5sums = bd9d1d8599cb554fe4a59ceeb08662d8
+
+pkgname = vdr-skinsoppalusikka
+

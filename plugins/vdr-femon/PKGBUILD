@@ -11,15 +11,21 @@ arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=${pkgname//vdr-/}
-source=("http://www.saunalahti.fi/~rahrenbe/vdr/femon/files/$pkgname-$pkgver.tgz")
+source=("http://www.saunalahti.fi/~rahrenbe/vdr/femon/files/$pkgname-$pkgver.tgz"
+        "https://github.com/rofafor/vdr-plugin-femon/commit/c13f98a62217b4fdc7ffde0ca5e3e1496f903b96.diff")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('9a9d2a553dc72b96a6c8a810ba3c7456')
+md5sums=('9a9d2a553dc72b96a6c8a810ba3c7456'
+         '7363f6f0861b08d3ed3069c613b728dc')
+
+prepare() {
+  cd "${srcdir}/${_plugname}-${pkgver}"
+  patch -p1 -i "$srcdir/c13f98a62217b4fdc7ffde0ca5e3e1496f903b96.diff"
+}
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"
   make GITTAG=''
 }
-
 
 package() {
   cd "${srcdir}/${_plugname}-${pkgver}"

@@ -12,10 +12,17 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=${pkgname//vdr-/}
 source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapshot/vdr-plugin-$_plugname-$pkgver.tar.bz2"
+        "https://github.com/rofafor/vdr-plugin-osdteletext/commit/421ecf1b8a1267ba21693d069a0093ca19af2bd1.diff"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('2d35232f2273d6093061f44d9965ae8a'
+         '8f3faa619edc5b667337f6c704e64fc9'
          '4e47fd8f77cea06d30e07486b7fd9d6e')
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  patch -p1 -i "$srcdir/421ecf1b8a1267ba21693d069a0093ca19af2bd1.diff"
+}
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
