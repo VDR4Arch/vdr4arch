@@ -13,10 +13,8 @@ pkgbase = vdr-chanman
 	depends = vdr-api=2.3.1
 	backup = etc/vdr/conf.avail/50-chanman.conf
 	source = http://projects.vdr-developer.org/attachments/download/1004/vdr-plugin-chanman-0.0.10.tar.gz
-	source = chanman-vdr2.3.1compat.diff
 	source = vdr-chanman-Makefile::http://projects.vdr-developer.org/git/vdr-plugin-chanman.git/plain/chanman/Makefile
 	md5sums = ad5928dd686377e98b6de13017e8aaab
-	md5sums = 7c1f1a0574e39b66dd5f4a70146e97e1
 	md5sums = 55c42f218df5a456bb4570083ec414ef
 
 pkgname = vdr-chanman

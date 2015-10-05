@@ -16,14 +16,12 @@ _plugname=${pkgname//vdr-/}
 source=("http://projects.vdr-developer.org/attachments/download/1327/$pkgname-$pkgver.tgz"
         'imonlcd-linker_fix.diff::http://projects.vdr-developer.org/git/vdr-plugin-imonlcd.git/patch/?id=fa47d6df0902d3ac1e4f326be4f2e578fd0f5f19'
         'imonlcd-fix_replay_time.diff::http://projects.vdr-developer.org/git/vdr-plugin-imonlcd.git/patch/?id=4f8c014e73e9ba11172d6070d8a123f9da20361f'
-        'imonlcd-vdr2.3.1compat.diff'
         '92-imonlcd.rules'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('a7f2d49355758d2ccc33ea21dbadc3de'
          '260e88452dda6327d532ee61d5c3c45e'
          'bf67023030f3d5547441e41a709bc7e0'
-         'b77d87910e154cca266e35f1bc8af665'
          '4f012281b8a7025e99067e9945aabda0'
          'bdd88de7c03a24e7a42573b40ed7da32')
 
@@ -31,7 +29,6 @@ prepare() {
   cd "$srcdir/$_plugname-$pkgver"
   patch -p1 -i "$srcdir/imonlcd-linker_fix.diff"
   patch -p1 -i "$srcdir/imonlcd-fix_replay_time.diff"
-  patch -p1 -i "$srcdir/imonlcd-vdr2.3.1compat.diff"
 }
 
 build() {

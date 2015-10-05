@@ -13,16 +13,9 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 optdepends=('remoteosd: Add/edit/remove timers on local and peer VDR or move timers between them'
             'remotetimers: Access menu of peer')
 _plugname=${pkgname//vdr-/}
-source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz"
-        'peer-vdr2.3.1compat.diff')
+source=("http://vdr.schmirler.de/$_plugname/$pkgname-$pkgver.tgz")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('6a50045f82d3a5784cb26d7e6cf4fb39'
-         '736b2fcadbdb79e9679f694564ff6473')
-
-prepare() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
-  patch -p1 -i "$srcdir/peer-vdr2.3.1compat.diff"
-}
+md5sums=('6a50045f82d3a5784cb26d7e6cf4fb39')
 
 build() {
   cd "${srcdir}/${_plugname}-${pkgver}"

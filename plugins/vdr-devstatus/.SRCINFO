@@ -13,10 +13,8 @@ pkgbase = vdr-devstatus
 	depends = vdr-api=2.3.1
 	backup = etc/vdr/conf.avail/50-devstatus.conf
 	source = http://www.u32.de/download/vdr-devstatus-0.4.1.tgz
-	source = devstatus-vdr2.3.1compat.diff
 	source = devstatus.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=31264
 	md5sums = 503452532add3d4a37f2aa0b4a4488b7
-	md5sums = 135181cb3e374779f6bfe48708c45353
 	md5sums = ba40b25c09cb365ff1e0d4a8db1507af
 
 pkgname = vdr-devstatus

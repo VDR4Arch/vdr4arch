@@ -18,10 +18,8 @@ pkgbase = vdr-tvscraper
 	backup = etc/vdr/conf.avail/50-tvscraper.conf
 	backup = var/lib/vdr/plugins/tvscraper/override.conf
 	source = http://projects.vdr-developer.org/attachments/download/1742/vdr-tvscraper-0.2.0.tgz
-	source = tvscraper-vdr2.3.1compat.diff
 	source = 50-tvscraper.conf
 	md5sums = b379098b70fdd3a472c77708eab4d82e
-	md5sums = 07da578559104c03c0b2749ec1588699
 	md5sums = 33dc17067410095e383835b2ee714a68
 
 pkgname = vdr-tvscraper

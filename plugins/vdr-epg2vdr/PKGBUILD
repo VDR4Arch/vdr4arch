@@ -13,21 +13,14 @@ license=('GPL2')
 depends=('libmariadbclient' 'libutil-linux' "vdr-api=${_vdrapi}")
 makedepends=('git' 'imlib2' 'libxslt')
 _plugname=${pkgname//vdr-/}
-source=("git://projects.vdr-developer.org/vdr-plugin-epg2vdr.git#commit=$_gitver"
-        'epg2vdr-vdr2.3.1compat.diff')
+source=("git://projects.vdr-developer.org/vdr-plugin-epg2vdr.git#commit=$_gitver")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('SKIP'
-         'd9f919125516c5446cef3e387f3a6967')
+md5sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
   git tag -a 0.1.12 -m 'Added Tag' 57766287256873ab843f1366258e139b5ccf9dbb 2> /dev/null
   git describe --tags | sed 's/-/_/g'
-}
-
-prepare() {
-  cd "${srcdir}/vdr-plugin-${_plugname}"
-  patch -p1 -i "$srcdir/epg2vdr-vdr2.3.1compat.diff"
 }
 
 build() {

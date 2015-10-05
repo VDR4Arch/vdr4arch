@@ -15,11 +15,9 @@ pkgbase = vdr-lcdproc
 	optdepends = lcdproc: to use local displays
 	backup = etc/vdr/conf.avail/50-lcdproc.conf
 	source = git://projects.vdr-developer.org/vdr-plugin-lcdproc.git#commit=0c548975b2d66d860180c79d58235a8923641a0c
-	source = lcdproc-vdr2.3.1compat.diff
 	source = 50-lcdproc.conf
 	source = 92-lcdproc.rules
 	md5sums = SKIP
-	md5sums = 919f0571976da9c3221a12f5ffc55d2f
 	md5sums = 0221e0b8878d56e3a057ac37a9c853cf
 	md5sums = 67d1e0de8e90e0d4e9e977ddfd952442
 

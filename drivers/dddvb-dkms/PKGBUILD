@@ -30,6 +30,7 @@ prepare() {
   cd "$srcdir/$_pkgbase-$pkgver"
   sed -i '/eth_rebuild_header/d' dvb-core/dvb_net.c
   sed -i '/apps/d' Makefile
+  sed -i 's/CONFIG_DVB_OCTONET=m//' Makefile
 }
 
 build() {

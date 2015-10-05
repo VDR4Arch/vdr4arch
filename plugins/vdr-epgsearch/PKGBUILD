@@ -14,10 +14,8 @@ license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 optdepends=('msmtp: To send notification mails (Simpler replacement for sendmail)'
             'ssmtp: To send notification mails (Another simpler replacement for sendmail)')
-makedepends=('git')
 _plugname=${pkgname//vdr-/}
 source=("git://projects.vdr-developer.org/vdr-plugin-$_plugname.git#commit=$_gitver"
-        'epgsearch-vdr2.3.1compat.diff'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-conflictcheckonly.conf"
         "etc/vdr/conf.avail/50-$_plugname.conf"
@@ -32,7 +30,6 @@ backup=("etc/vdr/conf.avail/50-conflictcheckonly.conf"
         'var/lib/vdr/plugins/epgsearch/epgsearchupdmail.templ')
 options=('!emptydirs')
 md5sums=('SKIP'
-         '86456a416bd3bdbc4215e26b45150ecd'
          '9a936790ce844d011d8bbb3bf13ec336')
 
 pkgver() {
@@ -44,7 +41,6 @@ pkgver() {
 prepare() {
   cd "${srcdir}/vdr-plugin-$_plugname"
   sed -i 's/^Menu/# Menu/g' conf/epgsearchmenu.conf
-  patch -p1 -i "$srcdir/epgsearch-vdr2.3.1compat.diff"
 }
 
 build() {
