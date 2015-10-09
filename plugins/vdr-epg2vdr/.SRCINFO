@@ -1,7 +1,7 @@
 pkgbase = vdr-epg2vdr
 	pkgdesc = Used to retrieve EPG data into the VDR
-	pkgver = 0.1.12
-	pkgrel = 5
+	pkgver = 0.1.13
+	pkgrel = 2
 	url = http://projects.vdr-developer.org/projects/plg-epg2vdr
 	arch = x86_64
 	arch = i686
@@ -16,7 +16,7 @@ pkgbase = vdr-epg2vdr
 	depends = libutil-linux
 	depends = vdr-api=2.3.1
 	backup = etc/vdr/conf.avail/50-epg2vdr.conf
-	source = git://projects.vdr-developer.org/vdr-plugin-epg2vdr.git#commit=57766287256873ab843f1366258e139b5ccf9dbb
+	source = git://projects.vdr-developer.org/vdr-plugin-epg2vdr.git#commit=9add62903ad50bd7be7cc2853c1abd3027d819d8
 	md5sums = SKIP
 
 pkgname = vdr-epg2vdr
