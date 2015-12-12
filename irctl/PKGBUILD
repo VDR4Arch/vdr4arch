@@ -3,7 +3,7 @@
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=irctl
 pkgver=0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Command-line utilty to query and set properties of common remote control receivers"
 url="https://github.com/olebowle/$pkgname"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

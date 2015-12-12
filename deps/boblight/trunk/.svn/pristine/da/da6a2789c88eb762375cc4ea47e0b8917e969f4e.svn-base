@@ -1,0 +1,37 @@
+#config file for ambioder
+
+[global]
+interface 127.0.0.1
+port      19333
+
+[device]
+name            device1
+type            ambioder
+output          /dev/ttyUSB0
+channels        3
+precision       255
+interval        20000
+rate            19200
+debug           off #turn this on to see what is sent over the serial port
+delayafteropen	100000
+
+
+[color]
+name            red
+rgb             FF0000
+
+[color]
+name            green
+rgb             00FF00
+
+[color]
+name            blue
+rgb             0000FF
+
+[light]
+name            light1
+color           red     device1 1
+color           green   device1 2
+color           blue    device1 3
+hscan           0 100
+vscan           0 100

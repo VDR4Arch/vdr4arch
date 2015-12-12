@@ -1,0 +1,550 @@
+[global]
+
+[device]
+name 		iBeLight
+channels	198
+type		ibelight
+interval	20000
+#bus            1
+#address        12
+#debug          on
+
+[color]
+name		red
+rgb		FF0000
+
+[color]
+name		green
+rgb		00FF00
+
+[color]
+name		blue
+rgb		0000FF
+
+[light]
+name            bottom1
+color           green   iBeLight 1
+color           red     iBeLight 2
+color           blue    iBeLight 3
+hscan           45.00 50
+vscan           50 100
+
+[light]
+name            bottom2
+color           green   iBeLight 4
+color           red     iBeLight 5
+color           blue    iBeLight 6
+hscan           40.00 45.00
+vscan           50 100
+
+[light]
+name            bottom3
+color           green   iBeLight 7
+color           red     iBeLight 8
+color           blue    iBeLight 9
+hscan           35.00 40.00
+vscan           50 100
+
+[light]
+name            bottom4
+color           green   iBeLight 10
+color           red     iBeLight 11
+color           blue    iBeLight 12
+hscan           30.00 35.00
+vscan           50 100
+
+[light]
+name            bottom5
+color           green   iBeLight 13
+color           red     iBeLight 14
+color           blue    iBeLight 15
+hscan           25.00 30.00
+vscan           50 100
+
+[light]
+name            bottom6
+color           green   iBeLight 16
+color           red     iBeLight 17
+color           blue    iBeLight 18
+hscan           20.00 25.00
+vscan           50 100
+
+[light]
+name            bottom7
+color           green   iBeLight 19
+color           red     iBeLight 20
+color           blue    iBeLight 21
+hscan           15.00 20.00
+vscan           50 100
+
+[light]
+name            bottom8
+color           green   iBeLight 22
+color           red     iBeLight 23
+color           blue    iBeLight 24
+hscan           10.00 15.00
+vscan           50 100
+
+[light]
+name            bottom9
+color           green   iBeLight 25
+color           red     iBeLight 26
+color           blue    iBeLight 27
+hscan           5.00 10.00
+vscan           50 100
+
+[light]
+name            bottom10
+color           green   iBeLight 28
+color           red     iBeLight 29
+color           blue    iBeLight 30
+hscan           0 5.00
+vscan           50 100
+
+[light]
+name            left1
+color           green   iBeLight 31
+color           red     iBeLight 32
+color           blue    iBeLight 33
+hscan           0 50
+vscan           91.67 100
+
+[light]
+name            left2
+color           green   iBeLight 34
+color           red     iBeLight 35
+color           blue    iBeLight 36
+hscan           0 50
+vscan           83.34 91.67
+
+[light]
+name            left3
+color           green   iBeLight 37
+color           red     iBeLight 38
+color           blue    iBeLight 39
+hscan           0 50
+vscan           75.01 83.34
+
+[light]
+name            left4
+color           green   iBeLight 40
+color           red     iBeLight 41
+color           blue    iBeLight 42
+hscan           0 50
+vscan           66.68 75.01
+
+[light]
+name            left5
+color           green   iBeLight 43
+color           red     iBeLight 44
+color           blue    iBeLight 45
+hscan           0 50
+vscan           58.35 66.68
+
+[light]
+name            left6
+color           green   iBeLight 46
+color           red     iBeLight 47
+color           blue    iBeLight 48
+hscan           0 50
+vscan           50.02 58.35
+
+[light]
+name            left7
+color           green   iBeLight 49
+color           red     iBeLight 50
+color           blue    iBeLight 51
+hscan           0 50
+vscan           41.69 50.02
+
+[light]
+name            left8
+color           green   iBeLight 52
+color           red     iBeLight 53
+color           blue    iBeLight 54
+hscan           0 50
+vscan           33.36 41.69
+
+[light]
+name            left9
+color           green   iBeLight 55
+color           red     iBeLight 56
+color           blue    iBeLight 57
+hscan           0 50
+vscan           25.03 33.36
+
+[light]
+name            left10
+color           green   iBeLight 58
+color           red     iBeLight 59
+color           blue    iBeLight 60
+hscan           0 50
+vscan           16.70 25.03
+
+[light]
+name            left11
+color           green   iBeLight 61
+color           red     iBeLight 62
+color           blue    iBeLight 63
+hscan           0 50
+vscan           8.37 16.70
+
+[light]
+name            left12
+color           green   iBeLight 64
+color           red     iBeLight 65
+color           blue    iBeLight 66
+hscan           0 50
+vscan           .04 8.37
+
+[light]
+name            top1
+color           green   iBeLight 67
+color           red     iBeLight 68
+color           blue    iBeLight 69
+hscan           0 4.54
+vscan           0 50
+
+[light]
+name            top2
+color           green   iBeLight 70
+color           red     iBeLight 71
+color           blue    iBeLight 72
+hscan           4.54 9.08
+vscan           0 50
+
+[light]
+name            top3
+color           green   iBeLight 73
+color           red     iBeLight 74
+color           blue    iBeLight 75
+hscan           9.08 13.62
+vscan           0 50
+
+[light]
+name            top4
+color           green   iBeLight 76
+color           red     iBeLight 77
+color           blue    iBeLight 78
+hscan           13.62 18.16
+vscan           0 50
+
+[light]
+name            top5
+color           green   iBeLight 79
+color           red     iBeLight 80
+color           blue    iBeLight 81
+hscan           18.16 22.70
+vscan           0 50
+
+[light]
+name            top6
+color           green   iBeLight 82
+color           red     iBeLight 83
+color           blue    iBeLight 84
+hscan           22.70 27.24
+vscan           0 50
+
+[light]
+name            top7
+color           green   iBeLight 85
+color           red     iBeLight 86
+color           blue    iBeLight 87
+hscan           27.24 31.78
+vscan           0 50
+
+[light]
+name            top8
+color           green   iBeLight 88
+color           red     iBeLight 89
+color           blue    iBeLight 90
+hscan           31.78 36.32
+vscan           0 50
+
+[light]
+name            top9
+color           green   iBeLight 91
+color           red     iBeLight 92
+color           blue    iBeLight 93
+hscan           36.32 40.86
+vscan           0 50
+
+[light]
+name            top10
+color           green   iBeLight 94
+color           red     iBeLight 95
+color           blue    iBeLight 96
+hscan           40.86 45.40
+vscan           0 50
+
+[light]
+name            top11
+color           green   iBeLight 97
+color           red     iBeLight 98
+color           blue    iBeLight 99
+hscan           45.40 49.94
+vscan           0 50
+
+[light]
+name            top12
+color           green   iBeLight 100
+color           red     iBeLight 101
+color           blue    iBeLight 102
+hscan           49.94 54.48
+vscan           0 50
+
+[light]
+name            top13
+color           green   iBeLight 103
+color           red     iBeLight 104
+color           blue    iBeLight 105
+hscan           54.48 59.02
+vscan           0 50
+
+[light]
+name            top14
+color           green   iBeLight 106
+color           red     iBeLight 107
+color           blue    iBeLight 108
+hscan           59.02 63.56
+vscan           0 50
+
+[light]
+name            top15
+color           green   iBeLight 109
+color           red     iBeLight 110
+color           blue    iBeLight 111
+hscan           63.56 68.10
+vscan           0 50
+
+[light]
+name            top16
+color           green   iBeLight 112
+color           red     iBeLight 113
+color           blue    iBeLight 114
+hscan           68.10 72.64
+vscan           0 50
+
+[light]
+name            top17
+color           green   iBeLight 115
+color           red     iBeLight 116
+color           blue    iBeLight 117
+hscan           72.64 77.18
+vscan           0 50
+
+[light]
+name            top18
+color           green   iBeLight 118
+color           red     iBeLight 119
+color           blue    iBeLight 120
+hscan           77.18 81.72
+vscan           0 50
+
+[light]
+name            top19
+color           green   iBeLight 121
+color           red     iBeLight 122
+color           blue    iBeLight 123
+hscan           81.72 86.26
+vscan           0 50
+
+[light]
+name            top20
+color           green   iBeLight 124
+color           red     iBeLight 125
+color           blue    iBeLight 126
+hscan           86.26 90.80
+vscan           0 50
+
+[light]
+name            top21
+color           green   iBeLight 127
+color           red     iBeLight 128
+color           blue    iBeLight 129
+hscan           90.80 95.34
+vscan           0 50
+
+[light]
+name            top22
+color           green   iBeLight 130
+color           red     iBeLight 131
+color           blue    iBeLight 132
+hscan           95.34 99.88
+vscan           0 50
+
+[light]
+name            right1
+color           green   iBeLight 133
+color           red     iBeLight 134
+color           blue    iBeLight 135
+hscan           50 100
+vscan           0 8.33
+
+[light]
+name            right2
+color           green   iBeLight 136
+color           red     iBeLight 137
+color           blue    iBeLight 138
+hscan           50 100
+vscan           8.33 16.66
+
+[light]
+name            right3
+color           green   iBeLight 139
+color           red     iBeLight 140
+color           blue    iBeLight 141
+hscan           50 100
+vscan           16.66 24.99
+
+[light]
+name            right4
+color           green   iBeLight 142
+color           red     iBeLight 143
+color           blue    iBeLight 144
+hscan           50 100
+vscan           24.99 33.32
+
+[light]
+name            right5
+color           green   iBeLight 145
+color           red     iBeLight 146
+color           blue    iBeLight 147
+hscan           50 100
+vscan           33.32 41.65
+
+[light]
+name            right6
+color           green   iBeLight 148
+color           red     iBeLight 149
+color           blue    iBeLight 150
+hscan           50 100
+vscan           41.65 49.98
+
+[light]
+name            right7
+color           green   iBeLight 151
+color           red     iBeLight 152
+color           blue    iBeLight 153
+hscan           50 100
+vscan           49.98 58.31
+
+[light]
+name            right8
+color           green   iBeLight 154
+color           red     iBeLight 155
+color           blue    iBeLight 156
+hscan           50 100
+vscan           58.31 66.64
+
+[light]
+name            right9
+color           green   iBeLight 157
+color           red     iBeLight 158
+color           blue    iBeLight 159
+hscan           50 100
+vscan           66.64 74.97
+
+[light]
+name            right10
+color           green   iBeLight 160
+color           red     iBeLight 161
+color           blue    iBeLight 162
+hscan           50 100
+vscan           74.97 83.30
+
+[light]
+name            right11
+color           green   iBeLight 163
+color           red     iBeLight 164
+color           blue    iBeLight 165
+hscan           50 100
+vscan           83.30 91.63
+
+[light]
+name            right12
+color           green   iBeLight 166
+color           red     iBeLight 167
+color           blue    iBeLight 168
+hscan           50 100
+vscan           91.63 99.96
+
+[light]
+name            bottom11
+color           green   iBeLight 169
+color           red     iBeLight 170
+color           blue    iBeLight 171
+hscan           95.00 100
+vscan           50 100
+
+[light]
+name            bottom12
+color           green   iBeLight 172
+color           red     iBeLight 173
+color           blue    iBeLight 174
+hscan           90.00 95.00
+vscan           50 100
+
+[light]
+name            bottom13
+color           green   iBeLight 175
+color           red     iBeLight 176
+color           blue    iBeLight 177
+hscan           85.00 90.00
+vscan           50 100
+
+[light]
+name            bottom14
+color           green   iBeLight 178
+color           red     iBeLight 179
+color           blue    iBeLight 180
+hscan           80.00 85.00
+vscan           50 100
+
+[light]
+name            bottom15
+color           green   iBeLight 181
+color           red     iBeLight 182
+color           blue    iBeLight 183
+hscan           75.00 80.00
+vscan           50 100
+
+[light]
+name            bottom16
+color           green   iBeLight 184
+color           red     iBeLight 185
+color           blue    iBeLight 186
+hscan           70.00 75.00
+vscan           50 100
+
+[light]
+name            bottom17
+color           green   iBeLight 187
+color           red     iBeLight 188
+color           blue    iBeLight 189
+hscan           65.00 70.00
+vscan           50 100
+
+[light]
+name            bottom18
+color           green   iBeLight 190
+color           red     iBeLight 191
+color           blue    iBeLight 192
+hscan           60.00 65.00
+vscan           50 100
+
+[light]
+name            bottom19
+color           green   iBeLight 193
+color           red     iBeLight 194
+color           blue    iBeLight 195
+hscan           55.00 60.00
+vscan           50 100
+
+[light]
+name            bottom20
+color           green   iBeLight 196
+color           red     iBeLight 197
+color           blue    iBeLight 198
+hscan           50.00 55.00
+vscan           50 100

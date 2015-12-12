@@ -4,7 +4,7 @@
 pkgname=vdr-osdteletext
 pkgver=0.9.5
 _vdrapi=2.2.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Displays teletext pages directly on VDR's OSD"
 url="http://projects.vdr-developer.org/projects/plg-osdteletext"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

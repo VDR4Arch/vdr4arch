@@ -4,7 +4,7 @@
 pkgname=vdr-vdrtva
 pkgver=0.3.6
 _vdrapi=2.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Automatic 'series record' function. Written for UK Freeview"
 url="http://projects.vdr-developer.org/projects/vdrtva"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

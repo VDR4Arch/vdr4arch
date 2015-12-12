@@ -1,0 +1,61 @@
+[global]
+interface	127.0.0.1
+port		19333
+
+[device]
+name		arduino
+output		/dev/ttyUSB0
+channels	12
+type		momo
+interval	20000
+rate		38400
+prefix		55 AA
+
+#arduino bootloader runs when opening the serial port for the first time
+#delay transmission one second after opening so we don't send shit to the bootloader
+delayafteropen  1000000
+#debug		on
+
+[color]
+name		red
+rgb		FF0000
+
+[color]
+name		green
+rgb		00FF00
+
+[color]
+name		blue
+rgb		0000FF
+
+[light]
+name		right
+color		red 	arduino 1
+color		green 	arduino 2
+color		blue 	arduino 3
+hscan		50 100
+vscan		0 100
+
+[light]
+name		left
+color		red     arduino 4
+color		green   arduino 5
+color		blue    arduino 6
+hscan		0 50
+vscan		0 100
+
+[light]
+name		top
+color		red 	arduino 7
+color		green 	arduino 8
+color		blue 	arduino 9
+hscan		0 100
+vscan		0 50
+
+[light]
+name		bottom
+color		red     arduino 10
+color		green   arduino 11
+color		blue    arduino 12
+hscan		0 100
+vscan		50 100

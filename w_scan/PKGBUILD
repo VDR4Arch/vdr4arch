@@ -3,7 +3,7 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=w_scan
 pkgver=20141122
-pkgrel=1
+pkgrel=2
 pkgdesc="Small channel scan tool for vdr"
 url="http://wirbel.htpc-forum.de/w_scan/index2.html"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

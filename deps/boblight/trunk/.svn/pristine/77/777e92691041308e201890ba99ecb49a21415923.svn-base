@@ -1,0 +1,43 @@
+#config file for LPD8806
+
+[global]
+interface       127.0.0.1
+port            19333
+
+[device]
+name            device1
+type            lpd8806
+output          /dev/spidev0.0
+channels        6
+interval        20000
+rate            1000000
+debug           off #turn this on to see what it's doing with the serial port
+
+[color]
+name            red
+rgb             FF0000
+
+[color]
+name            green
+rgb             00FF00
+
+[color]
+name            blue
+rgb             0000FF
+
+[light]
+name            light1
+color           red     device1 1
+color           green   device1 2
+color           blue    device1 3
+hscan           0 100
+vscan           0 100
+
+[light]
+name            light2
+color           red     device1 4
+color           green   device1 5
+color           blue    device1 6
+hscan           0 100
+vscan           0 100
+

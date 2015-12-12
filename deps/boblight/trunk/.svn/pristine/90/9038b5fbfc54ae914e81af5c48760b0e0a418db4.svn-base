@@ -1,0 +1,239 @@
+[global]
+
+[device]
+name 		ambilight
+channels	30
+type		lightpack
+interval	20000
+serial      649323139323515111C0
+#bus           1
+#address       6
+#debug       true 
+
+[device]
+name 		ambilight2
+channels	30
+type		lightpack
+interval	20000
+serial      5437231893F351C11700
+#bus           1
+#address       7
+#debug       true 
+
+
+[color]
+name		red
+rgb		FF0000
+
+[color]
+name		green
+rgb		00FF00
+
+[color]
+name		blue
+rgb		0000FF
+
+[color]
+name		red9
+rgb		FF0000
+adjust          0.9
+
+[color]
+name		green9
+rgb		00FF00
+adjust          0.9
+
+[color]
+name		blue9
+rgb		0000FF
+adjust          0.9
+
+[color]
+name		red8
+rgb		FF0000
+adjust          0.8
+
+[color]
+name		green8
+rgb		00FF00
+adjust          0.8
+
+[color]
+name		blue8
+rgb		0000FF
+adjust          0.8
+
+[color]
+name		red7
+rgb		FF0000
+adjust          0.7
+
+[color]
+name		green7
+rgb		00FF00
+adjust          0.7
+
+[color]
+name		blue7
+rgb		0000FF
+adjust          0.7
+
+[light]
+name            1
+color           red     ambilight2 28
+color           green   ambilight2 29
+color           blue    ambilight2 30
+hscan           32 48
+vscan           83.33 100
+
+[light]
+name            2
+color           red     ambilight2 25
+color           green   ambilight2 26
+color           blue    ambilight2 27
+hscan           17 32
+vscan           83.33 100
+
+[light]
+name            3
+color           red     ambilight 28
+color           green   ambilight 29
+color           blue    ambilight 30
+hscan           0 16.67
+vscan           75 100
+
+[light]
+name            4
+color           red     ambilight 19
+color           green   ambilight 20
+color           blue    ambilight 21
+hscan           0 16.67
+vscan           50 75
+
+[light]
+name            5
+color           red     ambilight 16
+color           green   ambilight 17
+color           blue    ambilight 18
+hscan           0 16.67
+vscan           25 50
+
+[light]
+name            6
+color           red     ambilight 22
+color           green   ambilight 23
+color           blue    ambilight 24
+hscan           0 16.67
+vscan           0 25
+
+[light]
+name            7
+color           red     ambilight 25
+color           green   ambilight 26
+color           blue    ambilight 27
+hscan           0 16.67
+vscan           0 16.67
+
+[light]
+name            8
+color           red2    ambilight2 19
+color           green2  ambilight2 20
+color           blue2   ambilight2 21
+hscan           16.67 33.33
+vscan           0 16.67
+
+[light]
+name            9
+color           red     ambilight2 16
+color           green   ambilight2 17
+color           blue    ambilight2 18
+hscan           33.33 50
+vscan           0 16.67
+
+[light]
+name            10
+color           red     ambilight 1
+color           green   ambilight 2
+color           blue    ambilight 3
+hscan           50 66.67
+vscan           0 16.67
+
+[light]
+name            11
+color           red     ambilight 10
+color           green   ambilight 11
+color           blue    ambilight 12
+hscan           66.67 83.33
+vscan           0 16.67
+
+[light]
+name            12
+color           red     ambilight 7
+color           green   ambilight 8
+color           blue    ambilight 9
+hscan           83.33 100
+vscan           0 16.67
+
+[light]
+name            13
+color           red     ambilight 13
+color           green   ambilight 14
+color           blue    ambilight 15
+hscan           83.33 100
+vscan           0 25
+
+[light]
+name            14
+color           red     ambilight2 4
+color           green   ambilight2 5
+color           blue    ambilight2 6
+hscan           83.33 100
+vscan           25 50
+
+[light]
+name            15
+color           red     ambilight2 1
+color           green   ambilight2 2
+color           blue    ambilight2 3
+hscan           83.33 100
+vscan           50 75
+
+[light]
+name            16
+color           red     ambilight2 7
+color           green   ambilight2 8
+color           blue    ambilight2 9
+hscan           83.33 100
+vscan           75 100
+
+[light]
+name            17
+color           red     ambilight2 10
+color           green   ambilight2 11
+color           blue    ambilight2 12
+hscan           69 83
+vscan           83.33 100
+
+[light]
+name            18
+color           red     ambilight2 13
+color           green   ambilight2 14
+color           blue    ambilight2 15
+hscan           52 69
+vscan           83.33 100
+
+[light]
+name            _18
+color           red     ambilight2 22
+color           green   ambilight2 23
+color           blue    ambilight2 24
+hscan           0 0
+vscan           0 0
+
+[light]
+name            _2
+color           red     ambilight 4
+color           green   ambilight 5
+color           blue    ambilight 6
+hscan           0 0
+vscan           0 0
