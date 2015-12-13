@@ -8,8 +8,8 @@ pkgdesc="Firmware for Linux4Media devices"
 url="http://www.linux4media.de/"
 arch=('any')
 license=('custom')
-source=('http://www.digitaldevices.de/download/ngene_15.fw'
-        'http://www.digitaldevices.de/download/ngene_18.fw'
+source=('https://github.com/OpenELEC/dvb-firmware/raw/master/firmware/ngene_15.fw'
+        'http://l4m-daten.de/downloads/firmware/dvb-s2/linux/all/ngene_18.fw'
         'LICENSE')
 md5sums=('d798d5a757121174f0dbc5f2833c0c85'
          'ebce3ea769a53e3e0b0197c3b3f127e3'
