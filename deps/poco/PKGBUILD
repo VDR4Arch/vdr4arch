@@ -4,7 +4,7 @@
 
 pkgname=poco
 pkgver=1.6.0
-pkgrel=1
+pkgrel=2
 pkgdesc="C++ class libraries for network-centric, portable applications, complete edition"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 url="http://www.pocoproject.org"

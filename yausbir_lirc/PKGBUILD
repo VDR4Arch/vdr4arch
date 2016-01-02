@@ -4,7 +4,7 @@
 pkgname=yausbir_lirc
 pkgver=20140415
 _gitver=4fbc03d5d8b6a28abc3f3f054739cd22cd9f753b
-pkgrel=1
+pkgrel=2
 pkgdesc="Small UDP LIRC daemon for yausbir"
 url="https://github.com/M-Reimer/yausbir_lirc/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

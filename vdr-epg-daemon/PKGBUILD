@@ -5,7 +5,7 @@ pkgbase=vdr-epg-daemon
 pkgname=('epgd' 'mariadb-epglv')
 pkgver=0.2.2
 _gitver=e2230b6e8d0121233dc8861ceea3e6669fed8f57
-pkgrel=1
+pkgrel=2
 url='http://projects.vdr-developer.org/projects/vdr-epg-daemon'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
@@ -44,7 +44,7 @@ package_epgd() {
 package_mariadb-epglv() {
   pkgdesc='epglv plugin for mysql/mariadb'
   depends=('libmariadbclient')
-  backup=("$(mysql_config --plugindir | cut -d/ -f2-)/mysqlepglv.so")
+  backup=("usr/lib/mysql/plugin/mysqlepglv.so")
   install='mariadb-epglv.install'
   cd "$srcdir/$pkgbase"
   install -Dm755 epglv/mysqlepglv.so "$pkgdir/$(mysql_config --plugindir)/mysqlepglv.so"

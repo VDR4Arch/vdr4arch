@@ -3,7 +3,7 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-osdteletext
 pkgver=0.9.5
-_vdrapi=2.3.1
+_vdrapi=2.2.0
 pkgrel=3
 pkgdesc="Displays teletext pages directly on VDR's OSD"
 url="http://projects.vdr-developer.org/projects/plg-osdteletext"
@@ -15,8 +15,7 @@ source=("http://projects.vdr-developer.org/git/vdr-plugin-$_plugname.git/snapsho
         "https://github.com/rofafor/vdr-plugin-osdteletext/commit/421ecf1b8a1267ba21693d069a0093ca19af2bd1.diff"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('2d35232f2273d6093061f44d9965ae8a'
-         '8f3faa619edc5b667337f6c704e64fc9'
+md5sums=('5e578b222ab55c3e7fffd06a1b0a306d'
          '4e47fd8f77cea06d30e07486b7fd9d6e')
 
 prepare() {

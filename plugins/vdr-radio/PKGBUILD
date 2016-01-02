@@ -3,7 +3,7 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-radio
 pkgver=1.0.0
-_vdrapi=2.3.1
+_vdrapi=2.2.0
 pkgrel=17
 pkgdesc="Display an background image while the vdr is switched to radio channels"
 url="http://www.egal-vdr.de/plugins/"
