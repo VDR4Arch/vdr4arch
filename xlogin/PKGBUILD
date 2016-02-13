@@ -2,9 +2,9 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=xlogin
-pkgver=20160114
-_gitver=97667d7efe826c762d2b789ad5afc2c2516e44da
-pkgrel=2
+pkgver=20160202
+_gitver=a578cf2c9e9bd5fb1c602baa2d8013ea2a1838fe
+pkgrel=1
 pkgdesc="Login to X without a desktop manager."
 arch=('any')
 url="https://github.com/joukewitteveen/xlogin"
