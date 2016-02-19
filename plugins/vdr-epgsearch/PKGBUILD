@@ -35,8 +35,10 @@ md5sums=('SKIP'
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-$_plugname"
-  git tag -a 1.0.1.beta5 -m 'Added Tag' 7fea7fca409bf75cba18ba5f07c4fe8a3bd72e75 2> /dev/null
-  git describe --tags | sed 's/-/_/g'
+  (
+    git tag -a 1.0.1.beta5 -m 'Added Tag' 7fea7fca409bf75cba18ba5f07c4fe8a3bd72e75 2> /dev/null
+    git describe --tags | sed 's/-/_/g'
+  )
 }
 
 prepare() {
