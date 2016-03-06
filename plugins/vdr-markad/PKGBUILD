@@ -2,11 +2,11 @@
 
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-markad
-pkgver=0.1.4_37_gc55f43f
+pkgver=0.1.4_40_g74e2a8c
 epoch=1
-_gitver=c55f43f413dff8740f99d684e8879835d4409920
+_gitver=74e2a8c5382fa8bfacd12274899112724a1e0d51
 _vdrapi=2.2.0
-pkgrel=11
+pkgrel=1
 pkgdesc="automatic advertisement detection"
 url="http://projects.vdr-developer.org/projects/plg-markad"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -19,7 +19,7 @@ source=("git://projects.vdr-developer.org/vdr-plugin-markad.git#commit=$_gitver"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
-         '08bcee84be9c8837a9fd0d86121b21b2'
+         'b34797cc15aac8cd75828d265283f728'
          'c0d6383c9c9b8ee6c34af19179676bf3')
 
 pkgver() {
