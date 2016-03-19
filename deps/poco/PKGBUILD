@@ -3,28 +3,26 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 
 pkgname=poco
-pkgver=1.6.0
-pkgrel=2
+pkgver=1.7.1
+pkgrel=1
 pkgdesc="C++ class libraries for network-centric, portable applications, complete edition"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 url="http://www.pocoproject.org"
 license=('custom:boost')
 depends=('expat' 'libmariadbclient' 'sqlite' 'unixodbc')
 makedepends=('chrpath')
-source=("http://pocoproject.org/releases/${pkgname}-${pkgver}/${pkgname}-${pkgver}-all.tar.gz"
-        'poco-1.6.0-patch-for-libpcre.diff')
-md5sums=('4fed893d4ca57db98b0e10d82545232a'
-         '04bb7e95f2def859312903995db17593')
+source=("http://pocoproject.org/releases/${pkgname}-${pkgver}/${pkgname}-${pkgver}-all.tar.gz")
+md5sums=('774b68dd9706f1d2d7eaa6c75f855f95')
 
-prepare() {
-  cd "${srcdir}/${pkgname}-${pkgver}-all"
-  patch -p1 -i "$srcdir/poco-1.6.0-patch-for-libpcre.diff"
-}
+# prepare() {
+#   cd "${srcdir}/${pkgname}-${pkgver}-all"
+#   patch -p1 -i "$srcdir/poco-1.6.0-patch-for-libpcre.diff"
+# }
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}-all"
-  ./configure --prefix=/usr --no-samples --no-tests --unbundled
-  make ODBCLIBDIR="/usr/lib"
+  ./configure --prefix=/usr --no-samples --no-tests --unbundled --cflags="$CFLAGS"
+  make ODBCLIBDIR="/usr/lib" POCO_TARGET_OSARCH="$CARCH"
 }
 
 package() {
