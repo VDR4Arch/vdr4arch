@@ -1,0 +1,52 @@
+diff --git a/softhddev.c b/softhddev.c
+index 1759109..a27ee33 100644
+--- a/softhddev.c
++++ b/softhddev.c
+@@ -89,7 +89,7 @@ static char VdpauDecoder = 1;		///< vdpau decoder used
+ extern int ConfigAudioBufferTime;	///< config size ms of audio buffer
+ extern int ConfigVideoClearOnSwitch;	//<  clear decoder on channel switch
+ char ConfigStartX11Server;		///< flag start the x11 server
+-static char ConfigStartSuspended;	///< flag to start in suspend mode
++static signed char ConfigStartSuspended;	///< flag to start in suspend mode
+ static char ConfigFullscreen;		///< fullscreen modus
+ static const char *X11ServerArguments;	///< default command arguments
+ static char ConfigStillDecoder;		///< hw/sw decoder for still picture
+diff --git a/softhddevice.cpp b/softhddevice.cpp
+index b3467a5..ef0cd4b 100644
+--- a/softhddevice.cpp
++++ b/softhddevice.cpp
+@@ -171,7 +171,7 @@ static volatile int DoMakePrimary;	///< switch primary device to this
+ #define NOT_SUSPENDED		0	///< not suspend mode
+ #define SUSPEND_NORMAL		1	///< normal suspend mode
+ #define SUSPEND_DETACHED	2	///< detached suspend mode
+-static char SuspendMode;		///< suspend mode
++static signed char SuspendMode;		///< suspend mode
+ 
+ //////////////////////////////////////////////////////////////////////////////
+ 
+diff --git a/video.c b/video.c
+index a5b3a5a..bcfcbef 100644
+--- a/video.c
++++ b/video.c
+@@ -332,7 +332,7 @@ static const VideoModule NoopModule;	///< forward definition of noop module
+     /// selected video module
+ static const VideoModule *VideoUsedModule = &NoopModule;
+ 
+-char VideoHardwareDecoder = -1;		///< flag use hardware decoder
++signed char VideoHardwareDecoder = -1;		///< flag use hardware decoder
+ 
+ static char VideoSurfaceModesChanged;	///< flag surface modes changed
+ 
+diff --git a/video.h b/video.h
+index fa3e44f..0587393 100644
+--- a/video.h
++++ b/video.h
+@@ -37,7 +37,7 @@ typedef struct __video_stream__ VideoStream;
+ //	Variables
+ //----------------------------------------------------------------------------
+ 
+-extern char VideoHardwareDecoder;	///< flag use hardware decoder
++extern signed char VideoHardwareDecoder;	///< flag use hardware decoder
+ extern char VideoIgnoreRepeatPict;	///< disable repeat pict warning
+ extern int VideoAudioDelay;		///< audio/video delay
+ extern char ConfigStartX11Server;	///< flag start the x11 server

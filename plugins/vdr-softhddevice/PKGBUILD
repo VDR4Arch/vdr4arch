@@ -16,10 +16,12 @@ optdepends=('nvidia: Required for VDPAU decoding')
 makedepends=('git' 'glu' )
 _plugname=${pkgname//vdr-/}
 source=("git://projects.vdr-developer.org/vdr-plugin-softhddevice.git#commit=$_gitver"
-        "50-$_plugname.conf")
+        "50-$_plugname.conf"
+        "unsigned.patch")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
-         'f6ef6cb0bf17c5a28f858e5306776d27')
+         'f6ef6cb0bf17c5a28f858e5306776d27'
+         '15e7b8c5cdcdb4bfbde0d3307941ed83')
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
@@ -41,6 +43,10 @@ prepare() {
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
+  case "$CARCH" in
+	arm|armv6h|armv7h)
+		patch -p1 -i "${srcdir}/unsigned.patch";;
+  esac
   make
 }
 
