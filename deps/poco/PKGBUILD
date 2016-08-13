@@ -3,7 +3,7 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 
 pkgname=poco
-pkgver=1.7.1
+pkgver=1.7.4
 pkgrel=1
 pkgdesc="C++ class libraries for network-centric, portable applications, complete edition"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -12,12 +12,7 @@ license=('custom:boost')
 depends=('expat' 'libmariadbclient' 'sqlite' 'unixodbc')
 makedepends=('chrpath')
 source=("http://pocoproject.org/releases/${pkgname}-${pkgver}/${pkgname}-${pkgver}-all.tar.gz")
-md5sums=('774b68dd9706f1d2d7eaa6c75f855f95')
-
-# prepare() {
-#   cd "${srcdir}/${pkgname}-${pkgver}-all"
-#   patch -p1 -i "$srcdir/poco-1.6.0-patch-for-libpcre.diff"
-# }
+md5sums=('4c9833b99877cd371fcac66e7b98566e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}-all"
