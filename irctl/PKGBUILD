@@ -3,14 +3,21 @@
 # Maintainer: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=irctl
 pkgver=0.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Command-line utilty to query and set properties of common remote control receivers"
-url="https://github.com/olebowle/$pkgname"
+url="https://github.com/olebowle/irctl"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL3')
 depends=('gcc-libs' 'glibc')
-source=("https://github.com/olebowle/$pkgname/archive/v$pkgver.tar.gz")
-md5sums=('0929605217869276d359b636f60575a1')
+source=("https://github.com/olebowle/$pkgname/archive/v$pkgver.tar.gz"
+        'irctl-0.1-add_missing_code_blocks.patch')
+md5sums=('0929605217869276d359b636f60575a1'
+         '6e15d82957a77abfa738b7cac3096fa2')
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  patch -p1 -i "$srcdir/irctl-0.1-add_missing_code_blocks.patch"
+}
 
 build() {
   cd "$pkgname-$pkgver"
