@@ -2,8 +2,9 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=kodi-addon-pvr-vdr-vnsi
-pkgver=2.6.3
-_gitver=98673d3a8860fc1af3e8455911d1b700999ade13
+pkgver=1.11.19
+# Note: Use commits from "Jarvis" branch for Kodi 16
+_gitver=5d54ac0c420e97d48fe9d77f07ccb42d347be980
 pkgrel=1
 url="https://github.com/kodi-pvr/pvr.vdr.vnsi"
 arch=('x86_64' 'i686' 'armv6h' 'armv7h')
@@ -19,13 +20,24 @@ pkgver() {
   grep '  version' addon.xml.in | cut -d'"' -f2
 }
 
+prepare() {
+  cd "${srcdir}/pvr.vdr.vnsi"
+
+  # "libplatform" got renamed to "p8-platform" with version 2.0
+  sed -i 's/{platform/{p8-platform/g' CMakeLists.txt
+  sed -i 's/(platform/(p8-platform/g' CMakeLists.txt
+  sed -i 's/"platform/"p8-platform/g' src/{*.cpp,*.h}
+  sed -i 's/PLATFORM/P8PLATFORM/g' src/{*.cpp,*.h}
+}
+
 build() {
   mkdir -p "${srcdir}/pvr.vdr.vnsi/build"
   cd "${srcdir}/pvr.vdr.vnsi/build"
 
   cmake -DCMAKE_INSTALL_PREFIX="/usr" \
         -DCMAKE_INSTALL_LIBDIR=/usr/lib/kodi \
-        -DCMAKE_BUILD_TYPE=Release ..
+        -DCMAKE_BUILD_TYPE=Release \
+        ..
 
   make
 }

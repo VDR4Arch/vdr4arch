@@ -1,6 +1,6 @@
 pkgbase = kodi-addon-pvr-vdr-vnsi
 	pkgdesc = PVR add-on for XBMC to add VDR as a TV/PVR Backend
-	pkgver = 2.6.3
+	pkgver = 1.11.19
 	pkgrel = 1
 	url = https://github.com/kodi-pvr/pvr.vdr.vnsi
 	arch = x86_64
@@ -12,7 +12,7 @@ pkgbase = kodi-addon-pvr-vdr-vnsi
 	makedepends = git
 	makedepends = kodi-platform
 	depends = kodi
-	source = git+https://github.com/kodi-pvr/pvr.vdr.vnsi.git#commit=98673d3a8860fc1af3e8455911d1b700999ade13
+	source = git+https://github.com/kodi-pvr/pvr.vdr.vnsi.git#commit=5d54ac0c420e97d48fe9d77f07ccb42d347be980
 	md5sums = SKIP
 
 pkgname = kodi-addon-pvr-vdr-vnsi
