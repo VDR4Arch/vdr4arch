@@ -19,11 +19,11 @@ license=('GPL')
 depends=('systemd' 'xorg-server' 'xorg-xinit' 'kodi' 'polkit')
 replaces=('xbmc-standalone-service')
 install=readme.install
-source=("https://github.com/graysky2/$pkgname/archive/v$pkgver.tar.gz")
-sha256sums=('a165a66e976bb1a6ac622618887c2f9699acd84d8790af517b85a66bf5e0474c')
+source=("kodi.service")
+sha256sums=('84f547e62cdc5e950dd8d41db95ef40b780c177052fa3b61d0c10def59c5ef53')
 
 package() {
-	install -Dm644 "$srcdir/$pkgname-$pkgver/init/kodi.service" \
+	install -Dm644 "$srcdir/kodi.service" \
 		"$pkgdir/usr/lib/systemd/system/kodi.service"
 	install -dm 700 "$pkgdir"/var/lib/kodi
 	chown 420:420 "$pkgdir"/var/lib/kodi

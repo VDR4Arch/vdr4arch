@@ -13,8 +13,8 @@ pkgbase = kodi-standalone-service
 	depends = kodi
 	depends = polkit
 	replaces = xbmc-standalone-service
-	source = https://github.com/graysky2/kodi-standalone-service/archive/v1.8.tar.gz
-	sha256sums = a165a66e976bb1a6ac622618887c2f9699acd84d8790af517b85a66bf5e0474c
+	source = kodi.service
+	sha256sums = 84f547e62cdc5e950dd8d41db95ef40b780c177052fa3b61d0c10def59c5ef53
 
 pkgname = kodi-standalone-service
 
