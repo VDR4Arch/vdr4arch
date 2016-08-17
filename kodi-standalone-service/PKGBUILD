@@ -20,7 +20,7 @@ depends=('systemd' 'xorg-server' 'xorg-xinit' 'kodi' 'polkit')
 replaces=('xbmc-standalone-service')
 install=readme.install
 source=("kodi.service")
-sha256sums=('84f547e62cdc5e950dd8d41db95ef40b780c177052fa3b61d0c10def59c5ef53')
+sha256sums=('7f3f95bdabfd52816a62f10e9f0e576e8bd182970b09b480ba3be1b50d34c58b')
 
 package() {
 	install -Dm644 "$srcdir/kodi.service" \
