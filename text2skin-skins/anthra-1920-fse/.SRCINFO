@@ -1,0 +1,14 @@
+pkgbase = text2skin-anthra-1920-fse
+	pkgdesc = Dark, anthracite skins for Klaus Schmidingers VDR
+	pkgver = 0.1.3
+	pkgrel = 2
+	url = http://www.anthra.de/
+	arch = any
+	groups = text2skin-anthra
+	license = GPL2
+	depends = vdr-text2skin
+	source = http://www.anthra.de/anthra-skins/anthra_1920_FSE-0.1.3.tar.xz
+	md5sums = 37e03f246ac6b51912f8ac1e39330e1b
+
+pkgname = text2skin-anthra-1920-fse
+
