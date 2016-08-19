@@ -26,7 +26,7 @@ for PKG in ${PACKAGES}; do
       -e "W: Dependency included and not needed ('vdr-api')" \
       -e "W: Dependency included and not needed ('linux')" \
       -e "W: File name .* contains non standard characters" \
-      -e "E: File .* is owned by .*:\(vdr\|420\)" \
+      -e "E: File .* is owned by .*:\(vdr\|666\|kodi\|420\)" \
       -e "dkms W: File (usr/src.* exists in a non-standard directory")
     echo "$REPORT" >&2
     if grep -q 'E:' <<<"$REPORT"; then
