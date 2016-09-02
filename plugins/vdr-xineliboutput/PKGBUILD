@@ -10,7 +10,7 @@ pkgrel=2
 url="http://www.sourceforge.net/projects/xineliboutput"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-makedepends=('git' 'glu')
+makedepends=('dbus-glib' 'git' 'glu' 'libextractor' 'libxrandr' 'mesa' "vdr-api=${_vdrapi}" 'xine-lib' 'libcec')
 _plugname=${pkgname//vdr-/}
 source=("git://git.code.sf.net/p/xineliboutput/git#commit=$_gitver"
         'xineliboutput_fix_vdrversion_check.diff'
