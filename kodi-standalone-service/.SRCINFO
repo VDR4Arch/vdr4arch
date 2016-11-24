@@ -1,7 +1,7 @@
 pkgbase = kodi-standalone-service
 	pkgdesc = Systemd service and user to run kodi in stand-alone mode
 	pkgver = 1.8
-	pkgrel = 5
+	pkgrel = 6
 	url = https://wiki.archlinux.org/index.php/Kodi#Kodi-standalone-service
 	install = readme.install
 	arch = x86_64
