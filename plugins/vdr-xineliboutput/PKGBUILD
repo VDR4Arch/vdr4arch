@@ -6,11 +6,11 @@ pkgname=(vdr-xineliboutput xineliboutput-frontends xineliboutput-xineplug)
 pkgver=1.1.0.55.g9027ea1
 _gitver=9027ea1737b966386916da27207e8bf92f24cfe0
 _vdrapi=2.2.0
-pkgrel=2
+pkgrel=3
 url="http://www.sourceforge.net/projects/xineliboutput"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-makedepends=('dbus-glib' 'git' 'glu' 'libextractor' 'libxrandr' 'mesa' "vdr-api=${_vdrapi}" 'xine-lib' 'libcec')
+makedepends=('dbus-glib' 'git' 'glu' 'libextractor' 'libxrandr' 'mesa' "vdr-api=${_vdrapi}" 'xine-lib')
 _plugname=${pkgname//vdr-/}
 source=("git://git.code.sf.net/p/xineliboutput/git#commit=$_gitver"
         'xineliboutput_fix_vdrversion_check.diff'
@@ -31,7 +31,7 @@ prepare() {
 
 build() {
   cd "${srcdir}/git"
-  ./configure
+  ./configure --disable-libcec
   make
 }
 
@@ -67,7 +67,7 @@ package_xineliboutput-frontends() {
 
 package_xineliboutput-xineplug() {
   pkgdesc="Neccessary xine plugins for remote frontends or local VDR output"
-  depends=('dbus-glib' 'libextractor' 'libbluray' 'libxrandr' 'mesa' 'libcec' 'xine-lib')
+  depends=('dbus-glib' 'libextractor' 'libbluray' 'libxrandr' 'mesa' 'xine-lib')
   optdepends=('nvidia: Required for VDPAU decoding'
               'xorg-server: Required for software decoding')
   cd "${srcdir}/git"
