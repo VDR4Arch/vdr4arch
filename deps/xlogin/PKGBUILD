@@ -2,8 +2,8 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=xlogin
-pkgver=20160202
-_gitver=a578cf2c9e9bd5fb1c602baa2d8013ea2a1838fe
+pkgver=20160928
+_gitver=6e566b5b399005c4f62e6c275f91a3625baa1bef
 pkgrel=1
 pkgdesc="Login to X without a desktop manager."
 arch=('any')
@@ -15,9 +15,13 @@ source=("git+https://github.com/joukewitteveen/xlogin.git#commit=$_gitver")
 backup=('etc/X11/xinit/xinitrc.d/25-xlogin')
 md5sums=('SKIP')
 
+pkgver() {
+  cd "$srcdir/$pkgname"
+  git log --date=iso -1 | sed -rn -e 's/-//g' -e 's/Date:\s+([0-9]+).*/\1/p'
+}
+
 prepare() {
   cd "$srcdir/$pkgname"
-  sed -i '/PAMName/d' xlogin@.service.in
 }
 
 package() {
