@@ -8,7 +8,7 @@ pkgdesc="Configures VDR service to autostart an X.org server"
 url="https://github.com/vdr4arch"
 arch=('any')
 license=('GPL3')
-depends=('xlogin', 'vdr')
+depends=('xlogin' 'vdr')
 source=('vdr-xorg.conf')
 md5sums=('0af05daea932e0af59654d98606a0550')
 
