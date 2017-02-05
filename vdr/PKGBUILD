@@ -8,7 +8,7 @@ pkgdesc="'open' digital satellite receiver and timer controlled video disk recor
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-depends=('libcap' 'libjpeg-turbo' 'libsystemd' 'perl' 'ttf-font')
+depends=('fontconfig' 'libcap' 'libjpeg-turbo' 'libsystemd' 'perl' 'ttf-font')
 makedepends=('systemd') #libsystemd should be enough but the pkg-config file is missing in the libsystemd package
 optdepends=('lirc-utils: remote control support'
             'ncurses: skincurses plugin'
