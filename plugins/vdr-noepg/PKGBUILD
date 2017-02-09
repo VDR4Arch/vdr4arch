@@ -4,8 +4,8 @@
 pkgname=vdr-noepg
 pkgver=0.0.4
 _gitver=b18cfff51a8d7722cc7f8ae511596714995f6c92
-_vdrapi=2.2.0
-pkgrel=2
+_vdrapi=2.3.2
+pkgrel=3
 pkgdesc="Replace the noepg-patch with the new cEpgHandler of vdr >= 1.7.26"
 url="https://github.com/flensrocker/vdr-plugin-noepg"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

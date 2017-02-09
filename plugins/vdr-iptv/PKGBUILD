@@ -3,8 +3,8 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-iptv
 pkgver=2.2.1
-_vdrapi=2.2.0
-pkgrel=3
+_vdrapi=2.3.2
+pkgrel=4
 pkgdesc="Integrates multicast IPTV transport streams seamlessly into VDR"
 url="http://www.saunalahti.fi/~rahrenbe/vdr/iptv/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

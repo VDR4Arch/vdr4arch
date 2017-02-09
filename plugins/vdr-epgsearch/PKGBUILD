@@ -4,7 +4,7 @@
 pkgname=vdr-epgsearch
 pkgver=1.0.1.beta5.r14.g0b09f90
 _gitver=0b09f90f361454d1d422cc750ee84359f11bd378
-_vdrapi=2.2.0
+_vdrapi=2.3.2
 epoch=1
 pkgrel=2
 pkgdesc="Searchtimer and replacement of the VDR program menu"

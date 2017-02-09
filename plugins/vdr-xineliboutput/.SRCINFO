@@ -1,6 +1,6 @@
 pkgbase = xineliboutput
 	pkgver = 1.1.0.119.g2889fd9
-	pkgrel = 3
+	pkgrel = 4
 	url = http://www.sourceforge.net/projects/xineliboutput
 	arch = x86_64
 	arch = i686
@@ -16,7 +16,7 @@ pkgbase = xineliboutput
 	makedepends = libextractor
 	makedepends = libxrandr
 	makedepends = mesa
-	makedepends = vdr-api=2.2.0
+	makedepends = vdr-api=2.3.2
 	makedepends = xine-lib
 	source = git://git.code.sf.net/p/xineliboutput/git#commit=2889fd9e3cef1f39484ae68c647c5c7e53d22946
 	source = xineliboutput_fix_vdrversion_check.diff

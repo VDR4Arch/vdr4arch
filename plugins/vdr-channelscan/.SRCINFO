@@ -1,14 +1,14 @@
 pkgbase = vdr-channelscan
 	pkgdesc = Channel scanner for VDR
 	pkgver = 1.0.0
-	pkgrel = 1
+	pkgrel = 2
 	url = http://www.forum.free-x.de/wbb/index.php?page=Thread&threadID=1745
 	arch = i686
 	arch = x86_64
 	license = GPL2
 	makedepends = git
 	depends = bzip2
-	depends = vdr-api=2.2.0
+	depends = vdr-api=2.3.2
 	depends = zlib
 	backup = etc/vdr/conf.avail/50-channelscan.conf
 	source = git+https://bitbucket.org/ua0lnj/channelscan.git#tag=1.0.0

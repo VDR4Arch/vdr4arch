@@ -11,7 +11,7 @@ pkgbase = vdr-ddci2
 	license = GPL2
 	makedepends = git
 	depends = gcc-libs
-	depends = vdr-api=2.2.0
+	depends = vdr-api=2.3.2
 	backup = etc/vdr/conf.avail/50-ddci2.conf
 	source = git+https://github.com/jasmin-j/vdr-plugin-ddci2.git#commit=056fd68990eab7610fa421b384262edc79c3f13c
 	source = 50-ddci2.conf
