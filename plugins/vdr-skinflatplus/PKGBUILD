@@ -10,7 +10,7 @@ pkgdesc="Simple and slim skin for VDR"
 url="http://projects.vdr-developer.org/projects/plg-skinflatplus"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-depends=('graphicsmagick' "vdr-api=${_vdrapi}")
+depends=('fontconfig' 'graphicsmagick' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=${pkgname//vdr-/}
 source=("git://projects.vdr-developer.org/skin-flatplus.git#commit=$_gitver"

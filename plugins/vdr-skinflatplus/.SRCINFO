@@ -10,6 +10,7 @@ pkgbase = vdr-skinflatplus
 	arch = armv7h
 	license = GPL2
 	makedepends = git
+	depends = fontconfig
 	depends = graphicsmagick
 	depends = vdr-api=2.2.0
 	backup = etc/epgd/eventsview-flatplus.sql

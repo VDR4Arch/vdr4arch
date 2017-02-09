@@ -11,7 +11,7 @@ pkgdesc="skin based on the Enigma text2skin addon"
 url="http://andreas.vdr-developer.org/enigmang/index.html"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
-depends=('gcc-libs' "vdr-api=${_vdrapi}")
+depends=('freetype2' 'gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=${pkgname//vdr-/}
 source=("git://projects.vdr-developer.org/vdr-plugin-skinenigmang.git#commit=$_gitver"

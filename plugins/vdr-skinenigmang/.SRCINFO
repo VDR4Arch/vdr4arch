@@ -11,6 +11,7 @@ pkgbase = vdr-skinenigmang
 	arch = armv7h
 	license = GPL2
 	makedepends = git
+	depends = freetype2
 	depends = gcc-libs
 	depends = vdr-api=2.2.0
 	backup = etc/vdr/conf.avail/50-skinenigmang.conf
