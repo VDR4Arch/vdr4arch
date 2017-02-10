@@ -1,27 +1,3 @@
-diff --git a/command/demux.h b/command/demux.h
-index 8385b3e..11e101a 100644
---- a/command/demux.h
-+++ b/command/demux.h
-@@ -284,7 +284,6 @@ private:
-     int ptype;
-     int stream;
-     int lasterror;
--    bool h264;
- public:
-     cPES2ES(int PacketType, const char *QueueName="PES2ES", int QueueSize=32768);
-     ~cPES2ES();
-diff --git a/command/markad-standalone.cpp b/command/markad-standalone.cpp
-index 4ca71cd..9b41193 100644
---- a/command/markad-standalone.cpp
-+++ b/command/markad-standalone.cpp
-@@ -1594,7 +1594,6 @@ time_t cMarkAdStandalone::GetBroadcastStart(time_t start, int fd)
- bool cMarkAdStandalone::CheckLogo()
- {
-     if (!macontext.Config) return false;
--    if (!macontext.Config->logoDirectory) return false;
-     if (!macontext.Info.ChannelName) return false;
-     int len=strlen(macontext.Info.ChannelName);
-     if (!len) return false;
 diff --git a/plugin/Makefile b/plugin/Makefile
 index 2f51502..550c1f2 100644
 --- a/plugin/Makefile
