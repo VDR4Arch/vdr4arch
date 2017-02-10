@@ -6,7 +6,7 @@ pkgver=1.0.1.beta5.r14.g0b09f90
 _gitver=0b09f90f361454d1d422cc750ee84359f11bd378
 _vdrapi=2.2.0
 epoch=1
-pkgrel=1
+pkgrel=2
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -17,6 +17,7 @@ optdepends=('msmtp: To send notification mails (Simpler replacement for sendmail
 makedepends=('git')
 _plugname=${pkgname//vdr-/}
 source=("git://projects.vdr-developer.org/vdr-plugin-$_plugname.git#commit=$_gitver"
+        "vdr-2.3.2-epgsearch-1.0.1.beta5~git20150715_v2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=40540"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-conflictcheckonly.conf"
         "etc/vdr/conf.avail/50-$_plugname.conf"
@@ -31,6 +32,7 @@ backup=("etc/vdr/conf.avail/50-conflictcheckonly.conf"
         'var/lib/vdr/plugins/epgsearch/epgsearchupdmail.templ')
 options=('!emptydirs')
 md5sums=('SKIP'
+         '102aad2fd9a6d6381eb73af28dab0f76'
          '9a936790ce844d011d8bbb3bf13ec336')
 
 pkgver() {
@@ -50,6 +52,7 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/vdr-plugin-$_plugname"
+  patch -p1 -i "$srcdir/vdr-2.3.2-epgsearch-1.0.1.beta5~git20150715_v2.diff"
   sed -i 's/^Menu/# Menu/g' conf/epgsearchmenu.conf
 }
 

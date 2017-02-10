@@ -1,7 +1,7 @@
 pkgbase = vdr-epgsearch
 	pkgdesc = Searchtimer and replacement of the VDR program menu
 	pkgver = 1.0.1.beta5.r14.g0b09f90
-	pkgrel = 1
+	pkgrel = 2
 	epoch = 1
 	url = http://winni.vdr-developer.org/epgsearch
 	arch = x86_64
@@ -28,8 +28,10 @@ pkgbase = vdr-epgsearch
 	backup = var/lib/vdr/plugins/epgsearch/epgsearchupdmail-html.templ
 	backup = var/lib/vdr/plugins/epgsearch/epgsearchupdmail.templ
 	source = git://projects.vdr-developer.org/vdr-plugin-epgsearch.git#commit=0b09f90f361454d1d422cc750ee84359f11bd378
+	source = vdr-2.3.2-epgsearch-1.0.1.beta5~git20150715_v2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=40540
 	source = 50-epgsearch.conf
 	md5sums = SKIP
+	md5sums = 102aad2fd9a6d6381eb73af28dab0f76
 	md5sums = 9a936790ce844d011d8bbb3bf13ec336
 
 pkgname = vdr-epgsearch
