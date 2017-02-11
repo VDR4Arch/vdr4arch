@@ -6,7 +6,7 @@ pkgname=(vdr-xineliboutput xineliboutput-frontends xineliboutput-xineplug)
 pkgver=1.1.0.119.g2889fd9
 _gitver=2889fd9e3cef1f39484ae68c647c5c7e53d22946
 _vdrapi=2.2.0
-pkgrel=1
+pkgrel=2
 url="http://www.sourceforge.net/projects/xineliboutput"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
@@ -37,7 +37,7 @@ build() {
 
 package_vdr-xineliboutput() {
   pkgdesc="X11 and Linux framebuffer front-end for VDR"
-  depends=("vdr-api=${_vdrapi}" 'libextractor' 'libbluray')
+  depends=("vdr-api=${_vdrapi}" 'libextractor' 'libbluray' 'avahi')
   optdepends=('xineliboutput-xineplug: local output device'
               'xineliboutput-frontends: remote output device')
   backup=("etc/vdr/conf.avail/50-$_plugname.conf"
