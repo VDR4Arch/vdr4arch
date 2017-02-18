@@ -20,10 +20,6 @@ pkgver() {
   git log --date=iso -1 | sed -rn -e 's/-//g' -e 's/Date:\s+([0-9]+).*/\1/p'
 }
 
-prepare() {
-  cd "$srcdir/$pkgname"
-}
-
 package() {
   cd "$srcdir/$pkgname"
   make DESTDIR="$pkgdir" install
