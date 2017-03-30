@@ -1,7 +1,7 @@
 pkgbase = vdr-neutrinoepg
 	pkgdesc = Neat EPG-Viewer for VDR
 	pkgver = 0.3.6
-	pkgrel = 15
+	pkgrel = 16
 	url = http://projects.vdr-developer.org/projects/plg-neutrinoepg
 	arch = x86_64
 	arch = i686
@@ -11,7 +11,7 @@ pkgbase = vdr-neutrinoepg
 	license = GPL2
 	makedepends = patchutils
 	depends = gcc-libs
-	depends = vdr-api=2.3.2
+	depends = vdr-api=2.3.3
 	backup = etc/vdr/conf.avail/50-neutrinoepg.conf
 	source = http://projects.vdr-developer.org/attachments/download/1475/neutrinoepg-0.3.6.tar.gz
 	source = vdr-2.3.2-neutrinoepg.diff::https://projects.vdr-developer.org/git/vdr-plugin-neutrinoepg.git/patch/?id=ad017d88d94f888246f4a66d178273b9626ad107&id2=4fec4bcb560d4bd1e81585a0a4dfc7c4f31f6863

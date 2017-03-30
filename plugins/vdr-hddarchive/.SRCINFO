@@ -1,7 +1,7 @@
 pkgbase = vdr-hddarchive
 	pkgdesc = Brings the archive-hdd functionality to VDR.
 	pkgver = 0.0.1.r6.gd014d52
-	pkgrel = 2
+	pkgrel = 3
 	epoch = 1
 	url = http://projects.vdr-developer.org/projects/show/plg-hddarchive
 	install = vdr-hddarchive.install
@@ -14,7 +14,7 @@ pkgbase = vdr-hddarchive
 	makedepends = git
 	depends = bash
 	depends = gcc-libs
-	depends = vdr-api=2.3.2
+	depends = vdr-api=2.3.3
 	backup = etc/vdr/conf.avail/50-hddarchive.conf
 	source = git://projects.vdr-developer.org/vdr-plugin-hddarchive.git#commit=d014d52dcb3790bd1ba38fe7b6fb0c4136364148
 	source = hddarchive-default_settings.diff

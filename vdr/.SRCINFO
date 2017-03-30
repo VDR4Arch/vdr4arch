@@ -1,6 +1,6 @@
 pkgbase = vdr
 	pkgdesc = 'open' digital satellite receiver and timer controlled video disk recorder
-	pkgver = 2.3.2
+	pkgver = 2.3.3
 	pkgrel = 1
 	url = http://tvdr.de/
 	install = vdr.install
@@ -20,7 +20,7 @@ pkgbase = vdr
 	optdepends = lirc-utils: remote control support
 	optdepends = ncurses: skincurses plugin
 	optdepends = xlogin: To start X11
-	provides = vdr-api=2.3.2
+	provides = vdr-api=2.3.3
 	conflicts = runvdr-extreme
 	replaces = runvdr-extreme
 	backup = etc/vdr/conf.avail/50-epgtableid0.conf
@@ -37,8 +37,7 @@ pkgbase = vdr
 	backup = var/lib/vdr/scr.conf
 	backup = var/lib/vdr/sources.conf
 	backup = var/lib/vdr/svdrphosts.conf
-	source = ftp://ftp.tvdr.de/vdr/Developer/vdr-2.3.2.tar.bz2
-	source = vdr-2.3.2-fixrecordingshandlerlock-2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=40509
+	source = ftp://ftp.tvdr.de/vdr/Developer/vdr-2.3.3.tar.bz2
 	source = MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330
 	source = 00-vdr.conf
 	source = 50-hello.conf
@@ -49,8 +48,7 @@ pkgbase = vdr
 	source = shutdown-wrapper.c
 	source = vdr.service
 	source = vdr.sysuser
-	md5sums = 6dbb208ea3d59658a18912b49af175b3
-	md5sums = af0d4d0a8d97ae569de8b59d9a2a8674
+	md5sums = 73182b570bcf5a67ab56f7734e479631
 	md5sums = 301c9b9766ed5182b07f1debc79abc21
 	md5sums = de3dcdea1a4282211c6dac370019548b
 	md5sums = fc450f75037b8712673db4969a1dd758

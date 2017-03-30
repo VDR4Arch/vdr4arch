@@ -1,7 +1,7 @@
 pkgbase = vdr-tvguide
 	pkgdesc = highly customizable 2D EPG viewer plugin.
 	pkgver = 1.2.2
-	pkgrel = 11
+	pkgrel = 12
 	epoch = 1
 	url = http://projects.vdr-developer.org/projects/plg-tvguide
 	arch = x86_64
@@ -13,7 +13,7 @@ pkgbase = vdr-tvguide
 	makedepends = git
 	depends = graphicsmagick
 	depends = libpng
-	depends = vdr-api=2.3.2
+	depends = vdr-api=2.3.3
 	backup = etc/vdr/conf.avail/50-tvguide.conf
 	source = http://projects.vdr-developer.org/attachments/download/1701/vdr-tvguide-1.2.2.tgz
 	source = 50-tvguide.conf

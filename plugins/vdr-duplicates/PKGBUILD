@@ -3,8 +3,8 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-duplicates
 pkgver=0.1.0
-_vdrapi=2.3.2
-pkgrel=3
+_vdrapi=2.3.3
+pkgrel=4
 pkgdesc="Shows duplicate recordings"
 url="http://tolleri.net/vdr/plugins/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

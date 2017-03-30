@@ -1,11 +1,11 @@
 pkgbase = vdr-api
 	pkgdesc = Dummy package to fix dependency resolution with AUR helpers
-	pkgver = 2.3.2
+	pkgver = 2.3.3
 	pkgrel = 1
 	url = https://github.com/vdr4arch
 	arch = any
 	license = GPL2
-	depends = vdr=2.3.2
+	depends = vdr=2.3.3
 
 pkgname = vdr-api
 

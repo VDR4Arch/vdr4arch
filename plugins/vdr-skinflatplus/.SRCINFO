@@ -1,7 +1,7 @@
 pkgbase = vdr-skinflatplus
 	pkgdesc = Simple and slim skin for VDR
 	pkgver = 0.6.0
-	pkgrel = 2
+	pkgrel = 3
 	url = http://projects.vdr-developer.org/projects/plg-skinflatplus
 	arch = x86_64
 	arch = i686
@@ -12,7 +12,7 @@ pkgbase = vdr-skinflatplus
 	makedepends = git
 	depends = fontconfig
 	depends = graphicsmagick
-	depends = vdr-api=2.3.2
+	depends = vdr-api=2.3.3
 	backup = etc/epgd/eventsview-flatplus.sql
 	backup = etc/vdr/conf.avail/50-skinflatplus.conf
 	backup = var/lib/vdr/plugins/skinflatplus/configs/MV_default

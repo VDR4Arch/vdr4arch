@@ -1,7 +1,7 @@
 pkgbase = vdr-suspendoutput
 	pkgdesc = Output device that does nothing
 	pkgver = 2.0.0
-	pkgrel = 11
+	pkgrel = 12
 	url = http://phivdr.dyndns.org/vdr/vdr-dummydevice/
 	arch = x86_64
 	arch = i686
@@ -11,7 +11,7 @@ pkgbase = vdr-suspendoutput
 	license = GPL2
 	makedepends = ffmpeg
 	depends = gcc-libs
-	depends = vdr-api=2.3.2
+	depends = vdr-api=2.3.3
 	backup = etc/vdr/conf.avail/50-suspendoutput.conf
 	source = http://phivdr.dyndns.org/vdr/vdr-suspendoutput/vdr-suspendoutput-2.0.0.tgz
 	source = 10_suspendoutput_vdr-2.1.x_compat.patch::http://www.minidvblinux.de/git/?a=blob&p=vdr-plugin-suspendoutput&h=e9f9bc511668b6d884a000db29b01d970bc5095d

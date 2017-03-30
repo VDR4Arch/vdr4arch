@@ -1,7 +1,7 @@
 pkgbase = vdr-markad
 	pkgdesc = automatic advertisement detection
 	pkgver = 0.1.4_44_g3681d3a
-	pkgrel = 2
+	pkgrel = 3
 	epoch = 1
 	url = http://projects.vdr-developer.org/projects/plg-markad
 	arch = x86_64
@@ -12,7 +12,7 @@ pkgbase = vdr-markad
 	license = GPL2
 	makedepends = git
 	depends = ffmpeg
-	depends = vdr-api=2.3.2
+	depends = vdr-api=2.3.3
 	backup = etc/vdr/conf.avail/50-markad.conf
 	source = git://projects.vdr-developer.org/vdr-plugin-markad.git#commit=3681d3a18383c238870de7d1ec1f1f9c8079cf89
 	source = vdr-2.3.2-markad-0.1.4.git20160925_v2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=40533
