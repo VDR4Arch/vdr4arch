@@ -4,7 +4,7 @@
 pkgname=oscam
 pkgver=11213
 _gitrev=64c739f95fe4f6f9dbf0d6693606743185c15ff6
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.streamboard.tv/oscam"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -15,12 +15,14 @@ optdepends=('ccid: PC/SC reader generic driver')
 install='oscam.install'
 source=("git+http://www.oscam.cc/git/oscam-mirror#commit=$_gitrev"
         "oscam-remove-sslv3.diff"
+        "http://www.streamboard.tv/oscam/raw-attachment/ticket/4590/reader-cryptoworks.patch"
         'oscam.service'
         'oscam.sysuser')
 # "${pkgname}-${pkgver}.zip::http://www.streamboard.tv/oscam/changeset/${pkgver}/trunk?old_path=%2F&old=${pkgver}&format=zip"
 # noextract=("${pkgname}-${pkgver}.zip")
 md5sums=('SKIP'
          '6dbe54b15419308a343bea08aad6d65c'
+         'cb51eea8f5da9f6bfe5a0a3709831aaa'
          '596b902e3f4a66d39e7f993437feec74'
          'be0d9d7a5fdd8cf4918c4ea91cebd989')
 
@@ -36,6 +38,7 @@ prepare() {
 #   chmod +x config.sh webif/pages_mkdep
   cd "$srcdir/$pkgname-mirror"
   patch -p1 -i "$srcdir/oscam-remove-sslv3.diff"
+  patch -p1 -i "$srcdir/reader-cryptoworks.patch"
 }
 
 build() {
