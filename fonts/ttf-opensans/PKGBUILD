@@ -3,8 +3,7 @@
 # Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
 
 pkgname=ttf-opensans
-pkgver=20141207
-_hgver=22f992ba322aa0ca815568c8484b620b40170deb
+pkgver=20160516
 pkgrel=1
 pkgdesc="Google Fonts Open Sans"
 arch=('any')
@@ -12,17 +11,17 @@ license=('Apache')
 url="http://www.google.com/fonts/specimen/Open+Sans"
 depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
 install=$pkgname.install
-source=(https://github.com/google/fonts/raw/master/apache/opensans/OpenSans-{Bold,BoldItalic,ExtraBold,ExtraBoldItalic,Italic,Light,LightItalic,Regular,Semibold,SemiboldItalic}.ttf)
-md5sums=('50145685042b4df07a1fd19957275b81'
-         '78b08a68d05d5fabb0b8effd51bf6ade'
-         '8bac22ed4fd7c8a30536be18e2984f84'
-         '73d6bb0d4f596a91992e6be32e82e3bc'
-         'c7dcce084c445260a266f92db56f5517'
-         '1bf71be111189e76987a4bb9b3115cb7'
-         '6943fb6fd4200f3d073469325c6acdc9'
-         '629a55a7e793da068dc580d184cc0e31'
-         '33f225b8f5f7d6b34a0926f58f96c1e9'
-         '73f7301a9cd7a086295401eefe0c998f')
+source=(https://github.com/google/fonts/raw/master/apache/opensans/OpenSans-{Bold,BoldItalic,ExtraBold,ExtraBoldItalic,Italic,Light,LightItalic,Regular,SemiBold,SemiBoldItalic}.ttf)
+md5sums=('f5331cb6372b6c0d8baf2dd7e200498c'
+         'f40598dd8ea8593e91ab28aa48130cf1'
+         '49f89e34d03233b1f27788f75df7a40a'
+         '617beb2703a6fccd227ab45754d73440'
+         'bf243bcbf81560535385c47725f57dfe'
+         '9ff12f694e5951a6f51a9d63b05062e7'
+         '54b4443404115cef4af765596ccf0ed3'
+         'd7d5d4588a9f50c99264bc12e4892a7c'
+         'e1c83f9474e0cc1d84a13c6d1ddf3ca5'
+         'fc17ea62c914b2aaa9e89ecc519a8cb3')
 
 package() {
   cd $srcdir
