@@ -66,7 +66,7 @@ pkgbase = vdr
 	md5sums = 3565ca5ad9be5c75f66478f0796b120d
 	md5sums = dd20f932b846b5f50ac455b65e9432ad
 	md5sums = 7cad811b4ac5ee6c0b5496d006f1e0ee
-	md5sums = 64979737d26758a75dda488b323c293c
+	md5sums = 6c021358f299dca9ef7bbeb163312690
 	md5sums = 59ce04d1d01bf92bf6cfc0b74223191c
 
 pkgname = vdr
