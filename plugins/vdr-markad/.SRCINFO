@@ -15,7 +15,7 @@ pkgbase = vdr-markad
 	depends = vdr-api=2.2.0
 	backup = etc/vdr/conf.avail/50-markad.conf
 	source = git://projects.vdr-developer.org/vdr-plugin-markad.git#commit=3681d3a18383c238870de7d1ec1f1f9c8079cf89
-	source = vdr-2.3.2-markad-0.1.4.git20160925_v2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=40533
+	source = vdr-2.3.2-markad-0.1.4.git20160925_v2.diff::https://www.vdr-portal.de/index.php?attachment/40533
 	source = vdr-markad-newmakefile.diff
 	source = 50-markad.conf
 	md5sums = SKIP

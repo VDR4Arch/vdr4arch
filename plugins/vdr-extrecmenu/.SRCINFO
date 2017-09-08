@@ -15,7 +15,7 @@ pkgbase = vdr-extrecmenu
 	depends = vdr-api=2.2.0
 	backup = etc/vdr/conf.avail/50-extrecmenu.conf
 	source = git://projects.vdr-developer.org/vdr-plugin-extrecmenu.git#commit=77d10faec3c7b0abe25ba3b161dc3b4e2cad042b
-	source = epgsearch-newmakefile-vdr-1.7.36.tgz::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=32667
+	source = epgsearch-newmakefile-vdr-1.7.36.tgz::https://www.vdr-portal.de/index.php?attachment/32667
 	md5sums = SKIP
 	md5sums = da93e7d1b5b6b59bcbee8730c9b9e97a
 

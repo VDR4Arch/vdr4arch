@@ -18,7 +18,7 @@ conflicts=('runvdr-extreme')
 provides=("vdr-api=2.2.0")
 install='vdr.install'
 source=("ftp://ftp.tvdr.de/vdr/${pkgname}-${pkgver}.tar.bz2"
-        'MainMenuHooks-v1_0_2.diff::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=30330'
+        'MainMenuHooks-v1_0_2.diff::https://www.vdr-portal.de/index.php?attachment/30330'
         '00-vdr.conf' '50-dvbsddevice.conf' '50-hello.conf' '50-pictures.conf' '50-rcu.conf'
         '60-create-dvb-device-units.rules'
         'gen-sddropin'

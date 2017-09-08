@@ -10,7 +10,7 @@ arch=('any')
 url="http://projects.vdr-developer.org/projects/skin-narrowhd"
 depends=('vdr-text2skin')
 license=('GPL2')
-source=("${_srcname}_v$pkgver.zip::http://www.vdr-portal.de/index.php?page=Attachment&attachmentID=35935")
+source=("${_srcname}_v$pkgver.zip::https://www.vdr-portal.de/index.php?attachment/35935")
 md5sums=('0f7d704a698fb3868fd6b7f2484fa21a')
 
 prepare() {
