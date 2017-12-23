@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
   };
   // Drop whatever working directory the caller set for us and go HOME
   chdir("/root");
-  // Get root and execute shutdown.sh
+  // Get root and execute setwakeup.sh
   setuid(0);
   execve(REAL_PATH, argv, envParms);
   return 0;
