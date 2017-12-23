@@ -28,7 +28,7 @@ pkgbase = vdr-softhddevice
 	source = https://github.com/louisbraun/softhddevice-openglosd/compare/48fbfa9f...3ed09d43.diff
 	source = 50-softhddevice.conf
 	md5sums = SKIP
-	md5sums = 242140449340814374442b4a92df2f33
+	md5sums = 5dc3d680794ae6293a7ba03de1d29c57
 	md5sums = f6ef6cb0bf17c5a28f858e5306776d27
 
 pkgname = vdr-softhddevice
