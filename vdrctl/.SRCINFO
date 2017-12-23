@@ -8,7 +8,7 @@ pkgbase = vdrctl
 	depends = perl
 	depends = pkg-config
 	depends = vdr
-	source = https://github.com/CReimer/vdrctl/archive/v0.1.1.tar.gz
+	source = vdrctl-0.1.1.tar.gz::https://github.com/CReimer/vdrctl/archive/v0.1.1.tar.gz
 	md5sums = ccca8b2ea13bc485fdd6f194d27273a2
 
 pkgname = vdrctl

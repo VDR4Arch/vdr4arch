@@ -11,7 +11,7 @@ pkgbase = irctl
 	license = GPL3
 	depends = gcc-libs
 	depends = glibc
-	source = https://github.com/olebowle/irctl/archive/v0.1.1.tar.gz
+	source = irctl-0.1.1.tar.gz::https://github.com/olebowle/irctl/archive/v0.1.1.tar.gz
 	md5sums = 994f3b0e0423afde8c87b522641e02a7
 
 pkgname = irctl
