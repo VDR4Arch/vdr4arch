@@ -1,5 +1,5 @@
 pkgbase = vdr-epg-daemon
-	pkgver = 1.1.90
+	pkgver = 1.1.124
 	pkgrel = 1
 	url = http://projects.vdr-developer.org/projects/vdr-epg-daemon
 	arch = x86_64
@@ -18,8 +18,8 @@ pkgbase = vdr-epg-daemon
 	makedepends = libmicrohttpd
 	makedepends = libxslt
 	makedepends = python
-	source = https://projects.vdr-developer.org/git/vdr-epg-daemon.git/snapshot/vdr-epg-daemon-1.1.90.tar.bz2
-	md5sums = 6d959f9a0ed8556f8bf1b4885dfb0d46
+	source = https://projects.vdr-developer.org/git/vdr-epg-daemon.git/snapshot/vdr-epg-daemon-1.1.124.tar.bz2
+	md5sums = f8dc626a271dd913d4fe1711bff4d3e1
 
 pkgname = epgd
 	pkgdesc = write epg data to a mysql database
