@@ -3,7 +3,8 @@
 # Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
 
 pkgname=ttf-opensans
-pkgver=20160516
+pkgver=20171219
+_gitver=5f860df52f1f37108203c4b7a10d9e4e1aa5199d
 pkgrel=1
 pkgdesc="Google Fonts Open Sans"
 arch=('any')
@@ -11,7 +12,7 @@ license=('Apache')
 url="http://www.google.com/fonts/specimen/Open+Sans"
 depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
 install=$pkgname.install
-source=(https://github.com/google/fonts/raw/master/apache/opensans/OpenSans-{Bold,BoldItalic,ExtraBold,ExtraBoldItalic,Italic,Light,LightItalic,Regular,SemiBold,SemiBoldItalic}.ttf)
+source=(https://github.com/google/fonts/raw/$_gitver/apache/opensans/OpenSans-{Bold,BoldItalic,ExtraBold,ExtraBoldItalic,Italic,Light,LightItalic,Regular,SemiBold,SemiBoldItalic}.ttf)
 md5sums=('f5331cb6372b6c0d8baf2dd7e200498c'
          'f40598dd8ea8593e91ab28aa48130cf1'
          '49f89e34d03233b1f27788f75df7a40a'
