@@ -21,6 +21,7 @@ package_epgd() {
   pkgdesc='write epg data to a mysql database'
   depends=('curl' 'imlib2' 'jansson' 'libarchive' 'libmariadbclient' 'libmicrohttpd' 'libxslt' 'python')
   cd "$srcdir/$pkgbase-$pkgver"
+  make -j1 PREFIX=/usr INIT_SYSTEM=none DESTDIR="$pkgdir" install
   make PREFIX=/usr INIT_SYSTEM=none DESTDIR="$pkgdir" install
   install -Dm644 contrib/epgd.service "$pkgdir/usr/lib/systemd/system/epgd.service"
   rm "$pkgdir/usr/lib/mysql/plugin/mysqlepglv.so"
