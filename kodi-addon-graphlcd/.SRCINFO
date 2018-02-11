@@ -1,6 +1,6 @@
 pkgbase = kodi-addon-graphlcd
 	pkgdesc = Kodi service addon to interface with graphlcd
-	pkgver = 1.0.0
+	pkgver = 2.0.0
 	pkgrel = 1
 	url = https://github.com/M-Reimer/script.service.graphlcd
 	arch = x86_64
@@ -9,8 +9,8 @@ pkgbase = kodi-addon-graphlcd
 	depends = python2
 	depends = kodi
 	depends = graphlcd-base
-	source = https://github.com/M-Reimer/script.service.graphlcd/archive/v1.0.0.tar.gz
-	md5sums = b1256cdd942f7766e5a4c2ed0001ff4e
+	source = https://github.com/M-Reimer/script.service.graphlcd/archive/v2.0.0.tar.gz
+	md5sums = 601be3158a08293a3eec82c41d893095
 
 pkgname = kodi-addon-graphlcd
 

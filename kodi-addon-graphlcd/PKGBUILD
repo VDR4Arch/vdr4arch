@@ -2,7 +2,7 @@
 
 # Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
 pkgname=kodi-addon-graphlcd
-pkgver=1.0.0
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="Kodi service addon to interface with graphlcd"
 url="https://github.com/M-Reimer/script.service.graphlcd"
@@ -10,7 +10,7 @@ arch=('x86_64' 'i686')
 license=('GPL3')
 depends=('python2' 'kodi' 'graphlcd-base')
 source=("https://github.com/M-Reimer/script.service.graphlcd/archive/v${pkgver}.tar.gz")
-md5sums=('b1256cdd942f7766e5a4c2ed0001ff4e')
+md5sums=('601be3158a08293a3eec82c41d893095')
 
 build() {
   cd "${srcdir}/script.service.graphlcd-$pkgver"
