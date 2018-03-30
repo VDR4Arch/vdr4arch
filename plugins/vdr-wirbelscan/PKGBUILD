@@ -11,7 +11,7 @@ arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=${pkgname//vdr-/}
-source=("http://wirbel.htpc-forum.de/$_plugname/$pkgname-$pkgver.tgz"
+source=("http://sources.libreelec.tv/mirror/vdr-plugin-wirbelscan/vdr-plugin-wirbelscan-0.0.9.tgz"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('5536179eab190edeaf71078dfae576dd'
