@@ -1,7 +1,7 @@
 pkgbase = vdr-duplicates
 	pkgdesc = Shows duplicate recordings
 	pkgver = 0.1.0
-	pkgrel = 2
+	pkgrel = 3
 	url = http://tolleri.net/vdr/plugins/
 	arch = x86_64
 	arch = i686
@@ -10,7 +10,7 @@ pkgbase = vdr-duplicates
 	arch = armv7h
 	license = GPL2
 	depends = gcc-libs
-	depends = vdr-api=2.2.0
+	depends = vdr-api=2.4.0
 	backup = etc/vdr/conf.avail/50-duplicates.conf
 	source = http://tolleri.net/vdr/plugins/vdr-duplicates-0.1.0.tgz
 	md5sums = a7bf122811c080f0a928dc7b9f9cd842

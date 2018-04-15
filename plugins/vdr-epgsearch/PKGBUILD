@@ -7,9 +7,9 @@ pkgver=2.2.0.r5.g9a88fe3
 #       VDR 2.3.x needs commits from "master" branch!
 #       Don't mix between them! There is no "universal" version any more!
 _gitver=9a88fe383b470066bc5ff9376cbac674dd556874
-_vdrapi=2.2.0
+_vdrapi=2.4.0
 epoch=1
-pkgrel=1
+pkgrel=2
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')

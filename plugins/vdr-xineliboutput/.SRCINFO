@@ -1,6 +1,6 @@
 pkgbase = xineliboutput
 	pkgver = 2.0.0.3.g46f0f1d
-	pkgrel = 1
+	pkgrel = 2
 	url = http://www.sourceforge.net/projects/xineliboutput
 	arch = x86_64
 	arch = i686
@@ -16,7 +16,7 @@ pkgbase = xineliboutput
 	makedepends = libextractor
 	makedepends = libxrandr
 	makedepends = mesa
-	makedepends = vdr-api=2.2.0
+	makedepends = vdr-api=2.4.0
 	makedepends = xine-lib
 	source = git://git.code.sf.net/p/xineliboutput/git#commit=46f0f1dd61e759c523a86280f8ec6c5f1b40ce72
 	source = xineliboutput_fix_vdrversion_check.diff
@@ -30,7 +30,7 @@ pkgname = vdr-xineliboutput
 	depends = avahi
 	depends = libextractor
 	depends = libbluray
-	depends = vdr-api=2.2.0
+	depends = vdr-api=2.4.0
 	optdepends = xineliboutput-xineplug: local output device
 	optdepends = xineliboutput-frontends: remote output device
 	backup = etc/vdr/conf.avail/50-xineliboutput.conf
