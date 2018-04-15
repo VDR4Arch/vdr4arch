@@ -2,14 +2,14 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-epgsearch
-pkgver=2.2.0.r5.g9a88fe3
+pkgver=2.3.1.r46.g5887e0a
 # Note: Only use commits from branch "vdr-2.2.x" here.
 #       VDR 2.3.x needs commits from "master" branch!
 #       Don't mix between them! There is no "universal" version any more!
-_gitver=9a88fe383b470066bc5ff9376cbac674dd556874
+_gitver=5887e0a7d8ccaa626b559aac303e9e4d7a729769
 _vdrapi=2.4.0
 epoch=1
-pkgrel=2
+pkgrel=1
 pkgdesc="Searchtimer and replacement of the VDR program menu"
 url="http://winni.vdr-developer.org/epgsearch"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -38,6 +38,7 @@ md5sums=('SKIP'
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
+  git tag v2.3.1 -f d5f1c62fc4e9dae271b916f9a143e40e6621d339
   git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g;s/^v//'
 }
 
