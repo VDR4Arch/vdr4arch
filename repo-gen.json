@@ -13,7 +13,6 @@
   "plugins/vdr-radio",
   "plugins/vdr-zappilot",
   "plugins/vdr-ddci2",
-  "plugins/vdr-dvbapi",
   "plugins/vdr-wirbelscan",
   "plugins/vdr-chanman",
   "plugins/vdr-remotetimers",
