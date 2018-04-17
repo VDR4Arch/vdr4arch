@@ -17,8 +17,6 @@ source=("https://github.com/manio/vdr-plugin-dvbapi/archive/v$pkgver.tar.gz"
         "https://github.com/manio/vdr-plugin-dvbapi/commit/7d51cc457823156d446d06c6ae40f850958fa735.diff")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 sha256sums=('0014cd9fbf40d10f630c4aa9b2e60c9dca44d4cdab27529da3e47be9a9c01e13'
-            '42ccd3a8e0bfc9fa1aae7e657d16ef8fb3da25790ddba683fb41e847dfd656bc'
-            'b40aa756def4f33dc203a2b72d99599ab26df7018e2d58b6b41eea57f5b35714'
             'f82b647e34048e983a9a3254524443f92c19a3d003387c4c430375f0be7a3a76')
 
 prepare() {
