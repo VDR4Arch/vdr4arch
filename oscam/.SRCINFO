@@ -15,7 +15,7 @@ pkgbase = oscam
 	depends = openssl
 	depends = pcsclite
 	optdepends = ccid: PC/SC reader generic driver
-	source = oscam::svn+https://www.streamboard.tv/svn/oscam/trunk#revision=11420
+	source = oscam::svn+http://www.streamboard.tv/svn/oscam/trunk#revision=11420
 	source = oscam.service
 	source = oscam.sysuser
 	md5sums = SKIP

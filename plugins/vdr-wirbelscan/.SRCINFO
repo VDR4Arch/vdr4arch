@@ -1,6 +1,6 @@
 pkgbase = vdr-wirbelscan
 	pkgdesc = Performs a channel scans for DVB-T, DVB-C and DVB-S
-	pkgver = 0.0.9
+	pkgver = 2017.06.04
 	pkgrel = 8
 	url = http://wirbel.htpc-forum.de/wirbelscan/index2.html
 	arch = x86_64
@@ -12,9 +12,9 @@ pkgbase = vdr-wirbelscan
 	depends = gcc-libs
 	depends = vdr-api=2.4.0
 	backup = etc/vdr/conf.avail/50-wirbelscan.conf
-	source = http://sources.libreelec.tv/mirror/vdr-plugin-wirbelscan/vdr-plugin-wirbelscan-0.0.9.tgz
+	source = http://wirbel.htpc-forum.de/wirbelscan/vdr-wirbelscan-dev-2017.06.04.tgz
 	source = 50-wirbelscan.conf
-	md5sums = 5536179eab190edeaf71078dfae576dd
+	md5sums = 4fd1df45997bad5dce90db10665b860c
 	md5sums = cb2ff89d8c275d790cf613d4cf9fa180
 
 pkgname = vdr-wirbelscan

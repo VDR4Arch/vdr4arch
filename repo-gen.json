@@ -12,14 +12,12 @@
   "plugins/vdr-radio",
   "plugins/vdr-zappilot",
   "plugins/vdr-ddci2",
-  "plugins/vdr-wirbelscan",
   "plugins/vdr-chanman",
   "plugins/vdr-remotetimers",
   "plugins/vdr-zaphistory",
   "plugins/vdr-duplicates",
   "plugins/vdr-peer",
   "plugins/vdr-loadepg",
-  "plugins/vdr-scraper2vdr",
   "plugins/vdr-skinenigmang",
   "plugins/vdr-skinpearlhd",
   "plugins/vdr-hddarchive",
@@ -28,6 +26,7 @@
   "plugins/vdr-vompserver",
   "plugins/vdr-noepg",
   "plugins/vdr-epgfixer",
+  "plugins/vdr-text2skin",
   "deps/udisks"
 ]
 }
