@@ -2,7 +2,6 @@
 "repo_name": "vdr4arch",
 "sign": true,
 "skip_directories": [
-  "plugins/vdr-tvguideng",
   "plugins/vdr-softhddevice",
   "plugins/vdr-favorites",
   "plugins/vdr-channellists",
@@ -22,7 +21,6 @@
   "plugins/vdr-skinpearlhd",
   "plugins/vdr-hddarchive",
   "plugins/vdr-tvscraper",
-  "plugins/vdr-tvguide",
   "plugins/vdr-vompserver",
   "plugins/vdr-noepg",
   "plugins/vdr-epgfixer",

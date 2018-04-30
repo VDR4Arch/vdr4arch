@@ -13,7 +13,9 @@ pkgbase = vdr-zappilot
 	depends = vdr-api=2.4.0
 	backup = etc/vdr/conf.avail/50-zappilot.conf
 	source = http://projects.vdr-developer.org/attachments/download/1318/vdr-zappilot-0.0.5.tgz
+	source = zappilot-0.0.5-vdr-2.3.1-porting.diff
 	md5sums = 0774d4093fc6158dc321e52b336aa2ab
+	md5sums = 6acf67f7e5f84d2965ba6826f91124f3
 
 pkgname = vdr-zappilot
 
