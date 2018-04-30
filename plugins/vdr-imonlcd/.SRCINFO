@@ -1,7 +1,7 @@
 pkgbase = vdr-imonlcd
 	pkgdesc = shows information about the current state of VDR on iMON LCD
 	pkgver = 1.0.2
-	pkgrel = 2
+	pkgrel = 3
 	epoch = 1
 	url = http://projects.vdr-developer.org/projects/show/plg-imonlcd
 	arch = x86_64
@@ -15,9 +15,11 @@ pkgbase = vdr-imonlcd
 	depends = vdr-api=2.4.0
 	backup = etc/vdr/conf.avail/50-imonlcd.conf
 	source = http://projects.vdr-developer.org/attachments/download/2086/vdr-imonlcd-1.0.2.tgz
+	source = Fix-release_every-lock-schedules.diff::https://projects.vdr-developer.org/git/vdr-plugin-imonlcd.git/patch/?id=6a03b80df7f18ebb06f160fbe1d2ef3061c4b97a
 	source = 92-imonlcd.rules
 	source = 50-imonlcd.conf
 	md5sums = e3155d98e5a0c461dd66b7b89e1880ec
+	md5sums = 0d73b1bb117f51d881a13f39ac31f1e6
 	md5sums = 4f012281b8a7025e99067e9945aabda0
 	md5sums = bdd88de7c03a24e7a42573b40ed7da32
 
