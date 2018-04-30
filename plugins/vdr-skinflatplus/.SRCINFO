@@ -1,7 +1,7 @@
 pkgbase = vdr-skinflatplus
 	pkgdesc = Simple and slim skin for VDR
-	pkgver = 0.6.0
-	pkgrel = 2
+	pkgver = 0.6.0.r12.g5a8c1819
+	pkgrel = 1
 	url = http://projects.vdr-developer.org/projects/plg-skinflatplus
 	arch = x86_64
 	arch = i686
@@ -18,7 +18,7 @@ pkgbase = vdr-skinflatplus
 	backup = var/lib/vdr/plugins/skinflatplus/configs/MV_default
 	backup = var/lib/vdr/plugins/skinflatplus/configs/default
 	backup = var/lib/vdr/plugins/skinflatplus/configs/fnu_default
-	source = git://projects.vdr-developer.org/skin-flatplus.git#commit=cd60fe82b3c0dd03b92b10cdc3135a0ef57f835a
+	source = git://projects.vdr-developer.org/skin-flatplus.git#commit=5a8c1819d963bc78c317b98dd2e77be68bad1549
 	source = 50-skinflatplus.conf
 	md5sums = SKIP
 	md5sums = 878594e0f5af2ab308e6ab86a9bf0136
