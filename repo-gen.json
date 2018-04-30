@@ -9,7 +9,6 @@
   "plugins/vdr-upnp",
   "plugins/vdr-neutrinoepg",
   "plugins/vdr-radio",
-  "plugins/vdr-zappilot",
   "plugins/vdr-ddci2",
   "plugins/vdr-chanman",
   "plugins/vdr-remotetimers",
