@@ -1,7 +1,7 @@
 pkgbase = vdr-wirbelscan
 	pkgdesc = Performs a channel scans for DVB-T, DVB-C and DVB-S
 	pkgver = 2017.06.04
-	pkgrel = 8
+	pkgrel = 9
 	url = http://wirbel.htpc-forum.de/wirbelscan/index2.html
 	arch = x86_64
 	arch = i686
