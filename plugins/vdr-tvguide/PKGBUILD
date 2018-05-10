@@ -26,6 +26,7 @@ md5sums=('1e811e1a99f68afd8f85f56fd416a0f1'
          '3caf2313b8794eaa525af664a7208b7a')
 
 prepare() {
+  cd "$srcdir/$_plugname-$pkgver"
   patch -i "${srcdir}/vdr-2.3.1-tvguide.diff"
   patch -i "${srcdir}/vdr-2.3.5-tvguide.diff"
   patch -i "${srcdir}/vdr-2.3.7-tvguide.diff"
