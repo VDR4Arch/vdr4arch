@@ -2,11 +2,8 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-epgsearch
-pkgver=2.3.1.r46.g5887e0a
-# Note: Only use commits from branch "vdr-2.2.x" here.
-#       VDR 2.3.x needs commits from "master" branch!
-#       Don't mix between them! There is no "universal" version any more!
-_gitver=5887e0a7d8ccaa626b559aac303e9e4d7a729769
+pkgver=2.4.0.r0.g84b59b8
+_gitver=84b59b81137887a48533cc897551bccf2e9e10f6
 _vdrapi=2.4.0
 epoch=1
 pkgrel=1
