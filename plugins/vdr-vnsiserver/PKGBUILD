@@ -2,11 +2,11 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-vnsiserver
-pkgver=1.5.2.r18.g02f1631
-_gitver=02f1631e482002da38f4df4d067cfe2e4c44d255
+pkgver=1.6.0.r0.g8c898d9
+_gitver=8c898d97504eb5400ae702a5b259723289a14e5c
 _vdrapi=2.4.0
 epoch=2
-pkgrel=2
+pkgrel=1
 url="https://github.com/FernetMenta/vdr-plugin-vnsiserver"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
