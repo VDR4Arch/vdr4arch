@@ -2,8 +2,8 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-vnsiserver
-pkgver=1.6.0.r6.g0b44ed8
-_gitver=0b44ed82c6636d21b1b6e9156a142f38fb07e4a8
+pkgver=1.6.0.r10.g5f63531
+_gitver=5f63531ebfa278c4f66d3f71297492fba9860704
 _vdrapi=2.4.0
 epoch=2
 pkgrel=1
