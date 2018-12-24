@@ -3,7 +3,7 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr
 pkgver=2.4.0
-pkgrel=6
+pkgrel=7
 pkgdesc="'open' digital satellite receiver and timer controlled video disk recorder"
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -80,6 +80,7 @@ prepare() {
   patch -p0 -i "$srcdir/vdr-2.4.0-04-fix-locking-channel-display-2.diff"
   patch -p0 -i "$srcdir/vdr-2.4.0-05-fix-shutdown.diff"
   patch -p0 -i "$srcdir/vdr-2.4.0-06-fix-channel-switch.diff"
+  patch -p0 -i "$srcdir/vdr-2.4.0-07-fix-disabling-mtd.diff"
 
   # Custom extensions
   sed -i 's/NULL, 0, true/NULL, 0, OpenSubMenus/g' "$srcdir/MainMenuHooks-v1_0_2.diff"
