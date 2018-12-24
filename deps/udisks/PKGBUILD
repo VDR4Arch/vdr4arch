@@ -3,7 +3,7 @@
 
 pkgname=udisks
 pkgver=1.0.5
-pkgrel=4
+pkgrel=5
 pkgdesc="Disk Management Service"
 arch=('i686' 'x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
@@ -12,12 +12,17 @@ depends=('systemd' 'util-linux' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit'
          'parted' 'device-mapper' 'libatasmart' 'lsof' 'libgudev')
 makedepends=('intltool' 'docbook-xsl')
 source=(http://hal.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz
-        drop-pci-db.patch)
+        drop-pci-db.patch
+        fix-glibc-2.27.patch)
 md5sums=('70d48dcfe523a74cd7c7fbbc2847fcdd'
-         '773cccd70afd18ace4332037feff67ec')
+         '773cccd70afd18ace4332037feff67ec'
+         '3efc5e125fa96b1e1d83764917fc254f')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+
+  # https://raw.githubusercontent.com/void-linux/void-packages/6fd04c0c3a42b9bd9a9ebd39137fce2dc10ddad8/srcpkgs/udisks/patches/fix-glibc-2.27.patch
+  patch -p0 -i "$srcdir/fix-glibc-2.27.patch"
 
   # https://bugs.freedesktop.org/show_bug.cgi?id=90778
   sed -i '1i #include <sys/stat.h>' src/helpers/job-drive-detach.c
