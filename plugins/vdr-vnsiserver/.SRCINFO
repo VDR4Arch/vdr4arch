@@ -1,6 +1,6 @@
 pkgbase = vdr-vnsiserver
 	pkgdesc = VDR plugin to handle XBMC clients
-	pkgver = 1.8.0.g49003f0
+	pkgver = 1.8.0.r0.g49003f0
 	pkgrel = 1
 	epoch = 2
 	url = https://github.com/FernetMenta/vdr-plugin-vnsiserver
