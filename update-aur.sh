@@ -74,9 +74,14 @@ mkdir -p "$AURCACHE" || exit 1
 
 # Loop over the package list
 for pkgbuilddir in "${PKGLIST[@]}"; do
-  echo "Syncing $pkgbuilddir" >&2
 
-  # Extract just the pkgbase (Requires .SRCINFO to be next to the PKGBUILD!)
+  # Extract the pkgbase (Requires .SRCINFO to be existent and up-to-date!)
+  pkgbuildmod=$(date +%s -r "$pkgbuilddir/PKGBUILD")
+  srcinfomod=$(date +%s -r "$pkgbuilddir/.SRCINFO" || echo 0)
+  if [ "$srcinfomod" -lt "$pkgbuildmod" ]; then
+    echo ".SRCINFO is outdated for $pkgbuilddir! Recreate first!" >&2
+    exit 1
+  fi
   pkgbase=$(sed -n 's/^pkgbase = //p' "$pkgbuilddir/.SRCINFO")
   if [ -z "$pkgbase" ]; then
     echo "Failed to get pkgbase for $pkgbuilddir" >&2
@@ -100,9 +105,10 @@ for pkgbuilddir in "${PKGLIST[@]}"; do
 
   # Compare the two timestamps.
   if [ "$aurcommit_time" -ge "$commit_time" ]; then
-    echo "  Nothing to do!" >&2
     continue
   fi
+
+  echo "Syncing $pkgbuilddir" >&2
 
   # Generate source tarball of our PKGBUILD
   pushd "$pkgbuilddir" >/dev/null || exit 1
