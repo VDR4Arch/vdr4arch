@@ -11,7 +11,7 @@ arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
 _plugname=${pkgname//vdr-/}
-source=("https://projects.vdr-developer.org/attachments/download/2170/vdr-duplicates-1.0.1.tgz")
+source=("https://projects.vdr-developer.org/attachments/download/2170/vdr-duplicates-${pkgver}.tgz")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('3c843fe76649743ab106b60508058d25')
 
