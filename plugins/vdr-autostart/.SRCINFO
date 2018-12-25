@@ -15,9 +15,9 @@ pkgbase = vdr-autostart
 	depends = vdr-api=2.4.0
 	backup = etc/vdr/conf.avail/50-autostart.conf
 	backup = var/lib/vdr/plugins/autostart/autostart.conf
-	source = https://git.uli-eckhardt.de/?p=vdr-plugin-autostart.git;a=snapshot;h=0.9.7;sf=tgz
+	source = https://www.uli-eckhardt.de/vdr/download/vdr-autostart-0.9.7.tgz
 	source = 50-autostart.conf
-	md5sums = 1f9ea5e5de49904c8143d1e5632d71d0
+	md5sums = c370f3c0dfa906b3670cfa2fcc5975ca
 	md5sums = bfac43507495484a347bf5ab6c158651
 
 pkgname = vdr-autostart

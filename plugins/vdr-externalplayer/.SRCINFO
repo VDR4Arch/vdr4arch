@@ -13,7 +13,7 @@ pkgbase = vdr-externalplayer
 	depends = vdr-api=2.4.0
 	backup = etc/vdr/conf.avail/50-externalplayer.conf
 	backup = var/lib/vdr/plugins/externalplayer.conf
-	source = http://www.uli-eckhardt.de/vdr/download/vdr-externalplayer-0.3.2.tgz
+	source = https://www.uli-eckhardt.de/vdr/download/vdr-externalplayer-0.3.2.tgz
 	source = 50-externalplayer.conf
 	source = externalplayer-fix-operator-mismatch.diff
 	md5sums = fe51ca255507db0ea4d4bc45ee43aee9

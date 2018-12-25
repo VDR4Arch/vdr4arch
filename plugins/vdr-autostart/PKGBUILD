@@ -12,25 +12,25 @@ license=('GPL2')
 depends=('libcdio' 'libdbus' 'libdvdread' "vdr-api=${_vdrapi}")
 _plugname=${pkgname//vdr-/}
 backup=("var/lib/vdr/plugins/$_plugname/cd.mpg")
-source=("https://git.uli-eckhardt.de/?p=vdr-plugin-autostart.git;a=snapshot;h=${pkgver};sf=tgz"
+source=("https://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf"
         "var/lib/vdr/plugins/$_plugname/$_plugname.conf")
-md5sums=('1f9ea5e5de49904c8143d1e5632d71d0'
+md5sums=('c370f3c0dfa906b3670cfa2fcc5975ca'
          'bfac43507495484a347bf5ab6c158651')
 
 prepare() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"*
+  cd "${srcdir}/${_plugname}-${pkgver}"
   sed -i 's/$(DESTDIR)//g' Makefile.inc
 }
 
 build() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"*
+  cd "${srcdir}/${_plugname}-${pkgver}"
   make
 }
 
 package() {
-  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"*
+  cd "${srcdir}/${_plugname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
   install -Dm644 contrib/$_plugname.conf "$pkgdir/var/lib/vdr/plugins/$_plugname/$_plugname.conf"

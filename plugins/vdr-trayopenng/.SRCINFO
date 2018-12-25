@@ -12,7 +12,7 @@ pkgbase = vdr-trayopenng
 	depends = gcc-libs
 	depends = vdr-api=2.4.0
 	backup = etc/vdr/conf.avail/50-trayopenng.conf
-	source = http://www.uli-eckhardt.de/vdr/download/vdr-trayopenng-1.0.2.tgz
+	source = https://www.uli-eckhardt.de/vdr/download/vdr-trayopenng-1.0.2.tgz
 	source = 50-trayopenng.conf
 	md5sums = ae4c69f50dd110d9d1e8775c91d36ff0
 	md5sums = bb78a9c125eeca84e7bbc7f9bd3c9081

@@ -12,7 +12,7 @@ pkgbase = vdr-cdplayer
 	depends = libcdio-paranoia
 	depends = vdr-api=2.4.0
 	backup = etc/vdr/conf.avail/50-cdplayer.conf
-	source = http://www.uli-eckhardt.de/vdr/download/vdr-cdplayer-1.2.4.tgz
+	source = https://www.uli-eckhardt.de/vdr/download/vdr-cdplayer-1.2.4.tgz
 	source = 50-cdplayer.conf
 	md5sums = 47b97a8e076bd5f808ee23179f982f18
 	md5sums = 44d03e8a2436daab8d9f31f444d494af

@@ -12,7 +12,7 @@ license=('GPL2')
 depends=('libcdio-paranoia' "vdr-api=${_vdrapi}")
 _plugname=${pkgname//vdr-/}
 backup=("var/lib/vdr/plugins/$_plugname/cd.mpg")
-source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
+source=("https://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('47b97a8e076bd5f808ee23179f982f18'
