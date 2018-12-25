@@ -11,26 +11,26 @@ arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('libcec' 'pugixml' "vdr-api=${_vdrapi}")
 _plugname=${pkgname//vdr-/}
-source=("http://www.uli-eckhardt.de/vdr/download/${pkgname}-${pkgver}.tgz"
+source=("https://git.uli-eckhardt.de/?p=vdr-plugin-cecremote.git;a=snapshot;h=V${pkgver};sf=tgz"
         "1.4.0-libcec4-fix.patch::https://git.uli-eckhardt.de/?p=vdr-plugin-cecremote.git;a=patch;h=c5edc353295d4b2ce3578c72d9093122e283e7c1"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
-md5sums=('79da34a720106604415b923a2f6d311e'
-         '312160519bcf334fee9676c0af6a8ed4'
+md5sums=('656e7d34bd0311a61dbf11256c045f65'
+         'a6cd3798a575073ca71a3df78ecb7244'
          'b07791e9ca361d41d58f2017fdcec70b')
 
 prepare() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}-V${pkgver}"*
   patch -p1 -i "$srcdir/1.4.0-libcec4-fix.patch"
 }
 
 build() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}-V${pkgver}"*
   make
 }
 
 package() {
-  cd "${srcdir}/${_plugname}-${pkgver}"
+  cd "${srcdir}/vdr-plugin-${_plugname}-V${pkgver}"*
   make DESTDIR="${pkgdir}" install
 
   chown -R 666:666 "$pkgdir/var/lib/vdr"
