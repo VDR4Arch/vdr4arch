@@ -75,7 +75,10 @@ build() {
     --enable-hwaccel=wmv3_vaapi \
     --enable-hwaccel=wmv3_vdpau \
     --enable-hwaccel=hevc_vaapi \
-    --enable-hwaccel=hevc_vdpau
+    --enable-hwaccel=hevc_vdpau \
+    --enable-decoder=ac3 \
+    --enable-decoder=eac3 \
+    --enable-decoder=mp2
   make
   make install
 
