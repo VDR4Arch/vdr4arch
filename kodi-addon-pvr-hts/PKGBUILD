@@ -2,15 +2,15 @@
 
 # Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
 pkgname=kodi-addon-pvr-hts
-pkgver=4.3.8
-_gitver=8b66ec3d80527f8803ba3b8db4abb34a18cfde54
-pkgrel=3
+pkgver=4.4.14
+_gitver=2b7348aff8172dd211d2cee608bdee711d995218
+pkgrel=1
 url="https://github.com/kodi-pvr/pvr.hts"
 arch=('x86_64' 'i686' 'armv6h' 'armv7h')
 license=('GPL2')
 pkgdesc="Kodi's Tvheadend HTSP client addon"
-depends=('kodi-devel')
-makedepends=('cmake' 'git' 'kodi-devel-dev' 'kodi-platform')
+depends=('kodi')
+makedepends=('cmake' 'git' 'kodi-dev' 'kodi-platform')
 source=("git+https://github.com/kodi-pvr/pvr.hts.git#commit=$_gitver")
 md5sums=('SKIP')
 
