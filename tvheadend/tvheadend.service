@@ -1,0 +1,17 @@
+[Unit]
+Description=Tvheadend - a TV streaming server and DVR
+After=syslog.target network.target auditd.service
+
+[Service]
+User=hts
+Group=video
+AmbientCapabilities=CAP_SYS_TIME
+RuntimeDirectory=tvheadend
+ExecStart=/usr/bin/tvheadend -f -p /run/tvheadend/tvheadend.pid -C -u hts -g video
+PIDFile=/run/tvheadend/tvheadend.pid
+Type=forking
+Restart=on-failure
+RestartSec=54s
+
+[Install]
+WantedBy=multi-user.target

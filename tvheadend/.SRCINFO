@@ -1,0 +1,34 @@
+pkgbase = tvheadend
+	pkgdesc = TV streaming server for Linux
+	pkgver = 4.2.6
+	pkgrel = 6
+	url = https://tvheadend.org/projects/tvheadend
+	install = tvheadend.install
+	arch = i686
+	arch = x86_64
+	arch = arm
+	arch = armv6h
+	arch = armv7h
+	arch = aarch64
+	license = GPL3
+	makedepends = git
+	makedepends = wget
+	makedepends = python
+	depends = avahi
+	depends = ffmpeg
+	depends = uriparser
+	depends = openssl
+	depends = tar
+	optdepends = xmltv: For an alternative source of programme listings
+	optdepends = libiconv: For conversion of character encodings
+	provides = tvheadend
+	conflicts = tvheadend-git
+	source = https://github.com/tvheadend/tvheadend/archive/v4.2.6.tar.gz
+	source = tvheadend.service
+	source = 0001-ffmpeg-3.5-fixes.patch
+	sha256sums = 09b4d4ff436a2006001ef3c3f38553dc4db3ea31bf9871b046a33180a0e8a8b9
+	sha256sums = 0fba50a4d8993aa32815ffcc7eac6b372a85f3334bd804571cc6c6cf0795fff1
+	sha256sums = 0481d7ab443639d2ffc2e13e7f3207b1489fafbe605b9fbe50d3a8d44acf5a38
+
+pkgname = tvheadend
+
