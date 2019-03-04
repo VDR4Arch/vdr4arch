@@ -1,7 +1,7 @@
 pkgbase = vdr-softhddevice
 	pkgdesc = software and GPU emulated HD output device plugin for VDR
 	pkgver = 0.6.1rc1_65_g6dfa88a
-	pkgrel = 3
+	pkgrel = 4
 	epoch = 1
 	url = http://projects.vdr-developer.org/projects/plg-softhddevice
 	arch = x86_64
