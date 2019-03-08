@@ -1,7 +1,7 @@
 pkgbase = vdr-softhdcuvid
 	pkgdesc = VDR output plugin with CUDA and Opengl
 	pkgver = 1.1.0.r10.g8682ab0
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/jojo61/vdr-plugin-softhdcuvid
 	arch = x86_64
 	license = AGPL3
@@ -9,6 +9,7 @@ pkgbase = vdr-softhdcuvid
 	makedepends = glm
 	makedepends = glu
 	makedepends = vulkan-headers
+	makedepends = cuda
 	depends = ffmpeg
 	depends = freeglut
 	depends = glew
@@ -16,7 +17,6 @@ pkgbase = vdr-softhdcuvid
 	depends = vdr-api=2.4.0
 	depends = xcb-util-wm
 	depends = xorg-server
-	depends = cuda
 	depends = nvidia>=410.48
 	depends = libplacebo>=1.7.0
 	optdepends = vdr-xorg: Recommended way to start X.org server together with VDR
