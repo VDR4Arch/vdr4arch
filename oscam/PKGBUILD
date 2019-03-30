@@ -2,7 +2,7 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=oscam
-pkgver=11425
+pkgver=11505
 pkgrel=1
 pkgdesc="Open Source Conditional Access Module software"
 url="http://www.streamboard.tv/oscam"
@@ -21,6 +21,11 @@ md5sums=('SKIP'
 
 build() {
   cd "$srcdir/$pkgname"
+
+  ./config.sh --enable \
+              WITH_SSL \
+              IPV6SUPPORT \
+              CARDREADER_SMARGO
 
   make CONF_DIR=/var/lib/oscam \
        USE_SSL=1 \
