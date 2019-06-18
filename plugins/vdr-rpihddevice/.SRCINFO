@@ -1,7 +1,7 @@
 pkgbase = vdr-rpihddevice
 	pkgdesc = Output device for Raspberry Pi
 	pkgver = 1.0.4
-	pkgrel = 1
+	pkgrel = 2
 	url = http://projects.vdr-developer.org/projects/plg-rpihddevice
 	arch = armv6h
 	arch = armv7h
@@ -10,7 +10,7 @@ pkgbase = vdr-rpihddevice
 	depends = ffmpeg
 	depends = mesa
 	depends = raspberrypi-firmware-tools
-	depends = vdr-api=2.4.0
+	depends = vdr-api=2.4.1
 	backup = etc/vdr/conf.avail/50-rpihddevice.conf
 	source = git://projects.vdr-developer.org/vdr-plugin-rpihddevice.git#commit=4744541fde542aa2193ffe6bdaa7c7762e7d1944
 	source = ffmpeg-new.patch
