@@ -1,7 +1,7 @@
 pkgbase = vdr-burn
 	pkgdesc = VDR plugin to create DVDs
 	pkgver = 0.3.0
-	pkgrel = 2
+	pkgrel = 3
 	epoch = 1
 	url = https://projects.vdr-developer.org/projects/plg-burn
 	arch = x86_64
@@ -19,7 +19,7 @@ pkgbase = vdr-burn
 	depends = mjpegtools
 	depends = lxdvdrip
 	depends = projectx
-	depends = vdr-api=2.4.0
+	depends = vdr-api=2.4.1
 	backup = etc/vdr/conf.avail/50-burn.conf
 	source = https://projects.vdr-developer.org/attachments/download/2028/vdr-burn-0.3.0.tgz
 	md5sums = bfb1847462eea781f98634eb04faab3a
