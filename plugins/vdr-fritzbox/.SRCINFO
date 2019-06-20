@@ -1,7 +1,7 @@
 pkgbase = vdr-fritzbox
 	pkgdesc = Connects to the Fritz!Box to inform you about incoming and outgoing calls
 	pkgver = 1.5.3
-	pkgrel = 19
+	pkgrel = 20
 	url = https://github.com/jowi24/vdr-fritz
 	arch = x86_64
 	arch = i686
@@ -11,7 +11,6 @@ pkgbase = vdr-fritzbox
 	license = GPL2
 	makedepends = boost
 	depends = boost-libs>=1.57.0
-	depends = commoncpp2
 	depends = libgcrypt
 	depends = vdr-api=2.4.1
 	backup = etc/vdr/conf.avail/50-fritzbox.conf
