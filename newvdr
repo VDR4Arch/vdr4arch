@@ -24,11 +24,12 @@ my $PLUGINSPATH = 'plugins';
   die ("Can't read vdr-api from '$VDRPKGBUILD'\n") unless ($vdrversion);
 
   # Loop over the plugins
+  open($fh, '<', 'repo-make.conf') or die($!);
+  my @plugindirs = grep(/^\Q$PLUGINSPATH\E\//, <$fh>);
+  close($fh);
+  chomp(@plugindirs);
   my $counter = 0;
-  opendir(my $dhplugins, $PLUGINSPATH) or die("Can't open path $PLUGINSPATH\n");
-  while (my $subdir = readdir($dhplugins)) {
-    next if ($subdir =~ /^\./);
-    my $plugindir = "$PLUGINSPATH/$subdir";
+  foreach my $plugindir (@plugindirs) {
     next unless (-d $plugindir);
 
     # Read full plugin PKGBUILD content
