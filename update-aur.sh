@@ -44,6 +44,7 @@ PKGLIST=( \
   'naludump' \
   'plugins/vdr-'* \
   'vdr' \
+  'vdr-git' \
   'vdr-api' \
   'vdr-addon-lifeguard' \
   'vdradmin-am' \
