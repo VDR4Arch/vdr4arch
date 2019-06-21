@@ -85,7 +85,7 @@ diff -ru vdr-1.6.0.orig/menu.c vdr-1.6.0/menu.c
 -    case osSchedule:   AddSubMenu(new cMenuSchedule); break;
 -    case osChannels:   AddSubMenu(new cMenuChannels); break;
 -    case osTimers:     AddSubMenu(new cMenuTimers); break;
--    case osRecordings: AddSubMenu(new cMenuRecordings(NULL, 0, true)); break;
+-    case osRecordings: AddSubMenu(new cMenuRecordings(NULL, 0, OpenSubMenus)); break;
 -    case osSetup:      AddSubMenu(new cMenuSetup); break;
 -    case osCommands:   AddSubMenu(new cMenuCommands(tr("Commands"), &Commands)); break;
 +    case osSchedule:
@@ -102,7 +102,7 @@ diff -ru vdr-1.6.0.orig/menu.c vdr-1.6.0/menu.c
 +        break;
 +    case osRecordings:
 +        if (!cPluginManager::CallFirstService("MainMenuHooksPatch-v1.0::osRecordings", &menu))
-+            menu = new cMenuRecordings(NULL, 0, true);
++            menu = new cMenuRecordings(NULL, 0, OpenSubMenus);
 +        break;
 +    case osSetup:      menu = new cMenuSetup; break;
 +    case osCommands:   menu = new cMenuCommands(tr("Commands"), &Commands); break;
