@@ -1,6 +1,6 @@
 pkgbase = vdr-git
 	pkgver = 2.4.1.r0.g32cea9d
-	pkgrel = 1
+	pkgrel = 2
 	url = http://tvdr.de/
 	arch = x86_64
 	arch = i686
@@ -55,6 +55,7 @@ pkgname = vdr-git
 	conflicts = runvdr-extreme
 	conflicts = vdr
 	replaces = runvdr-extreme
+	options = emptydirs
 	backup = etc/vdr/conf.d/00-vdr.conf
 	backup = var/lib/vdr/camresponses.conf
 	backup = var/lib/vdr/channels.conf
