@@ -18,7 +18,7 @@ pkgbase = xineliboutput
 	makedepends = mesa
 	makedepends = vdr-api=2.4.1
 	makedepends = xine-lib
-	source = git://git.code.sf.net/p/xineliboutput/git#commit=ba6aae8c11944f7d11b5d290d7905a010aba3944
+	source = xineliboutput::git://git.code.sf.net/p/xineliboutput/git#commit=ba6aae8c11944f7d11b5d290d7905a010aba3944
 	source = xineliboutput_fix_vdrversion_check.diff
 	source = 50-xineliboutput.conf
 	md5sums = SKIP
