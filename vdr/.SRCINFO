@@ -1,6 +1,6 @@
 pkgbase = vdr
 	pkgver = 2.4.1
-	pkgrel = 13
+	pkgrel = 14
 	url = http://tvdr.de/
 	arch = x86_64
 	arch = i686
@@ -53,6 +53,7 @@ pkgname = vdr
 	provides = vdr-api=2.4.1
 	conflicts = runvdr-extreme
 	replaces = runvdr-extreme
+	options = emptydirs
 	backup = etc/vdr/conf.d/00-vdr.conf
 	backup = var/lib/vdr/camresponses.conf
 	backup = var/lib/vdr/channels.conf
