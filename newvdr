@@ -9,11 +9,15 @@
 
 use strict;
 use warnings;
+use Cwd;
 
 my $VDRPKGBUILD = 'vdr/PKGBUILD';
 my $PLUGINSPATH = 'plugins';
 
 {
+  # Check privileges. Never run as root!
+  die("This script can't be executed as root!\n") if ($< == 0);
+
   # Read VDR's API version
   my $vdrversion;
   open(my $fh, '<', $VDRPKGBUILD) or die("Failed to read VDR PKGBUILD\n");
@@ -24,12 +28,11 @@ my $PLUGINSPATH = 'plugins';
   die ("Can't read vdr-api from '$VDRPKGBUILD'\n") unless ($vdrversion);
 
   # Loop over the plugins
-  open($fh, '<', 'repo-make.conf') or die($!);
-  my @plugindirs = grep(/^\Q$PLUGINSPATH\E\//, <$fh>);
-  close($fh);
-  chomp(@plugindirs);
   my $counter = 0;
-  foreach my $plugindir (@plugindirs) {
+  opendir(my $dhplugins, $PLUGINSPATH) or die("Can't open path $PLUGINSPATH\n");
+  while (my $subdir = readdir($dhplugins)) {
+    next if ($subdir =~ /^\./);
+    my $plugindir = "$PLUGINSPATH/$subdir";
     next unless (-d $plugindir);
 
     # Read full plugin PKGBUILD content
@@ -45,7 +48,7 @@ my $PLUGINSPATH = 'plugins';
       or die("Can't read pkgrel for $plugindir\n");
 
     # Anything to do for us?
-#     next if ($vdrapi eq $vdrversion);
+    next if ($vdrapi eq $vdrversion);
 
     # Count up pkgrel
     $pkgrel++;
@@ -59,6 +62,13 @@ my $PLUGINSPATH = 'plugins';
       or die("Can't write PKGBUILD in $plugindir\n");
     print $fh $pkgbuildcontent;
     close($fh);
+
+    # Update .SRCINFO as repo-make won't do it for "disabled" plugins
+    my $oldcwd = getcwd();
+    chdir($plugindir);
+    system('makepkg --nosign --printsrcinfo > .SRCINFO');
+    die("Failed to get SRCINFO with makepkg") if ($?);
+    chdir($oldcwd);
 
     # Count up
     $counter++;
