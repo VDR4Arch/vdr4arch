@@ -11,13 +11,12 @@ pkgname=kodi-standalone-service
 pkgver=1.8
 pkgrel=6
 pkgdesc="Systemd service and user to run kodi in stand-alone mode"
-# Arch ARM users do NOT attempt to use this package on Arch ARM!
-# This is only for x86_64 and i686. You have been warned.
-arch=('x86_64' 'i686')
+arch=('any')
 url="https://wiki.archlinux.org/index.php/Kodi#Kodi-standalone-service"
 license=('GPL')
 depends=('systemd' 'xorg-server' 'xorg-xinit' 'kodi' 'polkit')
 replaces=('xbmc-standalone-service')
+conflicts=('kodi-c1' 'kodi-c2' 'kodi-imx' 'kodi-odroid' 'kodi-rbp-git' 'kodi-rbp' 'kodi-rbp3' 'kodi-rbp4')
 install=readme.install
 source=("kodi.service")
 sha256sums=('7f3f95bdabfd52816a62f10e9f0e576e8bd182970b09b480ba3be1b50d34c58b')
