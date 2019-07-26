@@ -1,0 +1,33 @@
+pkgbase = minisatip
+	pkgdesc = SAT>IP server, tested with DVB-S, DVB-S2, DVB-T, DVB-T2, DVB-C, DVB-C2, ATSC and ISDB-T cards
+	pkgver = 1.0.0
+	pkgrel = 1
+	url = https://minisatip.org
+	install = minisatip.install
+	arch = x86_64
+	arch = i686
+	arch = arm
+	arch = armv6h
+	arch = armv7h
+	arch = aarch64
+	license = GPL2
+	depends = libdvbcsa
+	depends = linuxtv-dvb-apps
+	depends = openssl
+	depends = libmcli
+	optdepends = oscam: channels descrambling
+	conflicts = minisatip-git
+	backup = etc/conf.d/minisatip
+	source = minisatip-1.0.0.tar.gz::https://github.com/catalinii/minisatip/archive/1.0.0.tar.gz
+	source = fix-netceiver-build.patch::https://github.com/catalinii/minisatip/commit/ef8848ea.patch
+	source = minisatip.service
+	source = minisatip.sysuser
+	source = minisatip.conf
+	sha256sums = e6d477a0293a7383047a6404b628dfed7e7a3c6cee3f720ec024da3856794f71
+	sha256sums = 62f184e2bc119d08a66ac7b12e89cc31f3a95820493bfbbadd882d67902924a3
+	sha256sums = edb64f602d0e96d607dc4404e1be581d449acd1475d1c9681b304443c93b6df8
+	sha256sums = f6b2b61c99c94e693cee6cdd77360ab5a6299dde76dbe4b5fa36ad0dc098b383
+	sha256sums = 92969280f6c5fc376b69d18d2f72784ee640e5ee1219230faf89dc7da00666fc
+
+pkgname = minisatip
+

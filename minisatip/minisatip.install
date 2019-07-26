@@ -1,0 +1,5 @@
+post_remove() {
+	getent passwd minisatip &>/dev/null && userdel minisatip >/dev/null
+	getent group minisatip &>/dev/null && groupdel minisatip >/dev/null
+	return 0
+}

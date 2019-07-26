@@ -1,0 +1,14 @@
+pkgbase = libmcli
+	pkgdesc = Library and tools to access the REEL NetCeiver
+	pkgver = r189
+	pkgrel = 1
+	url = https://www.baycom.de/hardware/netceiver/
+	arch = x86_64
+	license = GPL2
+	makedepends = subversion
+	depends = libxml2
+	source = svn+https://svn.baycom.de/repos/vdr-mcli-plugin/#revision=189
+	sha256sums = SKIP
+
+pkgname = libmcli
+
