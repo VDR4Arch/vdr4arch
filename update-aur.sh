@@ -29,6 +29,7 @@
 PKGLIST=( \
   'deps/graphlcd-base' \
   'deps/libdvbcsa' \
+  'deps/libmcli' \
   'deps/perl-template-plugin-javascript' \
   'deps/serdisplib' \
   'deps/tntdb' \
