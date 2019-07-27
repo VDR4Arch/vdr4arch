@@ -25,22 +25,22 @@ sha256sums=('e6d477a0293a7383047a6404b628dfed7e7a3c6cee3f720ec024da3856794f71'
             '92969280f6c5fc376b69d18d2f72784ee640e5ee1219230faf89dc7da00666fc')
 
 prepare() {
-	cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${srcdir}/${pkgname}-${pkgver}
   patch -p1 -i "${srcdir}/fix-netceiver-build.patch"
 }
 
 build() {
-	cd ${srcdir}/${pkgname}-${pkgver}
-	./configure --with-mcli=/usr/include/libmcli
+  cd ${srcdir}/${pkgname}-${pkgver}
+  ./configure --with-mcli=/usr/include/libmcli
   make
 }
 
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
-	install -Dm644 ${srcdir}/minisatip.service ${pkgdir}/usr/lib/systemd/system/minisatip.service
-	install -Dm644 ${srcdir}/minisatip.sysuser ${pkgdir}/usr/lib/sysusers.d/minisatip.conf
-	install -Dm644 ${srcdir}/minisatip.conf ${pkgdir}/etc/conf.d/minisatip
-	install -Dm755 minisatip ${pkgdir}/usr/bin/minisatip
+  install -Dm644 ${srcdir}/minisatip.service ${pkgdir}/usr/lib/systemd/system/minisatip.service
+  install -Dm644 ${srcdir}/minisatip.sysuser ${pkgdir}/usr/lib/sysusers.d/minisatip.conf
+  install -Dm644 ${srcdir}/minisatip.conf ${pkgdir}/etc/conf.d/minisatip
+  install -Dm755 minisatip ${pkgdir}/usr/bin/minisatip
   mkdir -p "${pkgdir}/usr/share/minisatip/html"
-	cp -r html "${pkgdir}/usr/share/minisatip"
+  cp -r html "${pkgdir}/usr/share/minisatip"
 }
