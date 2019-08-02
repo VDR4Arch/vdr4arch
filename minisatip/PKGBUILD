@@ -1,10 +1,10 @@
+# Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
 # Maintainer: Tomasz Maciej Nowak <com[dot]gmail[at]tmn505>
-# Contributor: Manuel Reimer <manuel.reimer@gmx.de>
 
 pkgname='minisatip'
 pkgdesc='SAT>IP server, tested with DVB-S, DVB-S2, DVB-T, DVB-T2, DVB-C, DVB-C2, ATSC and ISDB-T cards'
 pkgver=1.0.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url='https://minisatip.org'
 license=('GPL2')
@@ -12,7 +12,6 @@ conflicts=('minisatip-git')
 depends=('libdvbcsa' 'linuxtv-dvb-apps' 'openssl' 'libmcli')
 optdepends=('oscam: channels descrambling')
 backup=('etc/conf.d/minisatip')
-install='minisatip.install'
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/catalinii/minisatip/archive/${pkgver}.tar.gz"
         'fix-netceiver-build.patch::https://github.com/catalinii/minisatip/commit/ef8848ea.patch'
         'minisatip.service'
@@ -21,7 +20,7 @@ source=("${pkgname}-${pkgver}.tar.gz::https://github.com/catalinii/minisatip/arc
 sha256sums=('e6d477a0293a7383047a6404b628dfed7e7a3c6cee3f720ec024da3856794f71'
             '62f184e2bc119d08a66ac7b12e89cc31f3a95820493bfbbadd882d67902924a3'
             'edb64f602d0e96d607dc4404e1be581d449acd1475d1c9681b304443c93b6df8'
-            'f6b2b61c99c94e693cee6cdd77360ab5a6299dde76dbe4b5fa36ad0dc098b383'
+            '7f4e7fde7ded632f88b30b7cd0481c78309f8191b40369ae323cbb7240fdc199'
             '92969280f6c5fc376b69d18d2f72784ee640e5ee1219230faf89dc7da00666fc')
 
 prepare() {
