@@ -4,25 +4,26 @@
 pkgname=tvheadend
 
 pkgver=4.2.8
-pkgrel=1
+pkgrel=2
 pkgdesc="TV streaming server for Linux"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://tvheadend.org/projects/tvheadend"
 license=('GPL3')
 depends=('avahi' 'uriparser' 'openssl' 'tar')
-makedepends=('git' 'wget' 'python')
-optdepends=('xmltv: For an alternative source of programme listings'
-	    'libiconv: For conversion of character encodings'
-)
-provides=('tvheadend')
+makedepends=('wget' 'python')
+optdepends=('xmltv: For an alternative source of programme listings')
 conflicts=('tvheadend-git')
 install=tvheadend.install
 
 source=("https://github.com/tvheadend/tvheadend/archive/v$pkgver.tar.gz"
         "tvheadend.service"
+        "tvheadend.sysusers"
+        "tvheadend.tmpfiles"
 )
 sha256sums=('1aef889373d5fad2a7bd2f139156d4d5e34a64b6d38b87b868a2df415f01f7ad'
-            '0fba50a4d8993aa32815ffcc7eac6b372a85f3334bd804571cc6c6cf0795fff1')
+            '0fba50a4d8993aa32815ffcc7eac6b372a85f3334bd804571cc6c6cf0795fff1'
+            'd8d63f20a568e16e94df8b427c690075162627dab5201ae3f9d4b65bf758f0d3'
+            'd0432be02e582955ccc610a5b28273ef1efe56eb102fe2f0cdd9907340044f1e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -49,4 +50,8 @@ package() {
 
   # Install service file
   install -Dm644 "${srcdir}/tvheadend.service" "$pkgdir/usr/lib/systemd/system/tvheadend.service"
+
+  # Install sysusers/tmpfiles
+  install -Dm644 "${srcdir}/tvheadend.sysusers" "${pkgdir}/usr/lib/sysusers.d/tvheadend.conf"
+  install -Dm644 "${srcdir}/tvheadend.tmpfiles" "${pkgdir}/usr/lib/tmpfiles.d/tvheadend.conf"
 }
