@@ -1,1 +1,1 @@
-d /var/lib/tvheadend 0755 hts hts - -
+d /var/lib/tvheadend 0770 hts hts - -

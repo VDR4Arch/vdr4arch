@@ -1,7 +1,7 @@
 pkgbase = tvheadend
 	pkgdesc = TV streaming server for Linux
 	pkgver = 4.2.8
-	pkgrel = 2
+	pkgrel = 3
 	url = https://tvheadend.org/projects/tvheadend
 	install = tvheadend.install
 	arch = i686
@@ -26,7 +26,7 @@ pkgbase = tvheadend
 	sha256sums = 1aef889373d5fad2a7bd2f139156d4d5e34a64b6d38b87b868a2df415f01f7ad
 	sha256sums = 0fba50a4d8993aa32815ffcc7eac6b372a85f3334bd804571cc6c6cf0795fff1
 	sha256sums = d8d63f20a568e16e94df8b427c690075162627dab5201ae3f9d4b65bf758f0d3
-	sha256sums = d0432be02e582955ccc610a5b28273ef1efe56eb102fe2f0cdd9907340044f1e
+	sha256sums = 4f805a90862d7999adbf082270199d2b5dd0b681711248135fd1e35ecea7aa38
 
 pkgname = tvheadend
 
