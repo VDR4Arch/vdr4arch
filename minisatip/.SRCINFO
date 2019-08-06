@@ -1,7 +1,7 @@
 pkgbase = minisatip
 	pkgdesc = SAT>IP server, tested with DVB-S, DVB-S2, DVB-T, DVB-T2, DVB-C, DVB-C2, ATSC and ISDB-T cards
 	pkgver = 1.0.0
-	pkgrel = 2
+	pkgrel = 3
 	url = https://minisatip.org
 	arch = x86_64
 	arch = i686
