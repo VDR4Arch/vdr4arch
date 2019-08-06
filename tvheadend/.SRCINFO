@@ -11,6 +11,7 @@ pkgbase = tvheadend
 	arch = armv7h
 	arch = aarch64
 	license = GPL3
+	makedepends = git
 	makedepends = wget
 	makedepends = python
 	depends = avahi
