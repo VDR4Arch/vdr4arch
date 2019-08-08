@@ -2,7 +2,7 @@
 pkgname=libmcli
 _svnver=189
 pkgver=r${_svnver}
-pkgrel=2
+pkgrel=1
 pkgdesc='Library and tools to access the REEL NetCeiver'
 url='https://www.baycom.de/hardware/netceiver/'
 arch=('x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
@@ -29,7 +29,7 @@ package() {
   cd "${srcdir}/vdr-mcli-plugin/mcast/"
 
   mkdir -p "${pkgdir}/usr/bin"
-  cp "tool/"{netcvlogview,netcvupdate} "${pkgdir}/usr/bin"
+  cp "tool/"{netcvdiag,netcvlogview,netcvupdate} "${pkgdir}/usr/bin"
 
   mkdir -p "${pkgdir}/usr/lib"
   cp "client/libmcli.so" "${pkgdir}/usr/lib"
