@@ -1,7 +1,7 @@
 pkgbase = minisatip
 	pkgdesc = SAT>IP server, tested with DVB-S, DVB-S2, DVB-T, DVB-T2, DVB-C, DVB-C2, ATSC and ISDB-T cards
 	pkgver = 1.0.0
-	pkgrel = 3
+	pkgrel = 4
 	url = https://minisatip.org
 	arch = x86_64
 	arch = i686
@@ -19,12 +19,14 @@ pkgbase = minisatip
 	backup = etc/conf.d/minisatip
 	source = minisatip-1.0.0.tar.gz::https://github.com/catalinii/minisatip/archive/1.0.0.tar.gz
 	source = fix-netceiver-build.patch::https://github.com/catalinii/minisatip/commit/ef8848ea.patch
+	source = minisatip-netceiver-api-socket.patch
 	source = minisatip.service
 	source = minisatip.sysuser
 	source = minisatip.conf
 	sha256sums = e6d477a0293a7383047a6404b628dfed7e7a3c6cee3f720ec024da3856794f71
 	sha256sums = 62f184e2bc119d08a66ac7b12e89cc31f3a95820493bfbbadd882d67902924a3
-	sha256sums = 98676314075a74c96ce8457558ab00ade20364dbbff838ad3114fa0f703835bf
+	sha256sums = 161303bed5df7721621cef0f36f92fd2bce06539f5c7a68c26cc24b05a8a46b4
+	sha256sums = e35a56f32aa3ac22b4b4d6e959e47d07268a6bec0fe8a9b0bfd8f87c89949f00
 	sha256sums = 7f4e7fde7ded632f88b30b7cd0481c78309f8191b40369ae323cbb7240fdc199
 	sha256sums = f7a28ad30d30c68ef54ba65cc562ce0d9a131f0ee2be20071cd93159f196946f
 
