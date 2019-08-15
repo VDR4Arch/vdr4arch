@@ -11,7 +11,10 @@ url="http://projects.vdr-developer.org/projects/skin-narrowhd"
 depends=('vdr-text2skin')
 license=('GPL2')
 source=("${_srcname}_v$pkgver.zip::https://www.vdr-portal.de/index.php?attachment/35935")
-md5sums=('0f7d704a698fb3868fd6b7f2484fa21a')
+sha256sums=('badbf64aecdde7883dce25ae8641de0707bdad89516fbaa6d251aef4fa35dd42')
+
+# SSL certificate on www.vdr-portal.de is regularly broken so don't check it
+DLAGENTS=('https::/usr/bin/curl -fLC - --retry 3 --retry-delay 3 --insecure -o %o %u')
 
 prepare() {
   cd "$srcdir/${_srcname}_v$pkgver"

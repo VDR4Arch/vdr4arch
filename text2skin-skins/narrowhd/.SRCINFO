@@ -7,7 +7,7 @@ pkgbase = text2skin-narrowhd
 	license = GPL2
 	depends = vdr-text2skin
 	source = NarrowHD_v0.2.zip::https://www.vdr-portal.de/index.php?attachment/35935
-	md5sums = 0f7d704a698fb3868fd6b7f2484fa21a
+	sha256sums = badbf64aecdde7883dce25ae8641de0707bdad89516fbaa6d251aef4fa35dd42
 
 pkgname = text2skin-narrowhd
 
