@@ -13,9 +13,9 @@ pkgbase = vdr-epgsync
 	depends = vdr-api=2.4.1
 	backup = etc/vdr/conf.avail/50-epgsync.conf
 	source = http://vdr.schmirler.de/epgsync/vdr-epgsync-1.0.1.tgz
-	source = vdr-2.3.2-epgsync-1.0.1_v2.diff::https://www.vdr-portal.de/index.php?attachment/40535
+	source = vdr-epgsync-vdr-2.3.2.patch
 	md5sums = 694024ecd7bb813d43620ded63fc3ab4
-	md5sums = 779d3c997ea2bdf667752affff102f75
+	md5sums = 24a386237052d15ceb7c78f51e28553d
 
 pkgname = vdr-epgsync
 
