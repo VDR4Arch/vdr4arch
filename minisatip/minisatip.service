@@ -1,7 +1,7 @@
 [Unit]
 Description=Mini SAT>IP server
 After=network-online.target
-Wants=oscam.service
+Wants=network-online.target oscam.service
 
 [Service]
 User=minisatip
