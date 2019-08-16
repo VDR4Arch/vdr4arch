@@ -32,6 +32,7 @@ PKGLIST=( \
   'deps/libmcli' \
   'deps/perl-template-plugin-javascript' \
   'deps/serdisplib' \
+  'deps/tnftp6' \
   'deps/tntdb' \
   'deps/tntnet' \
   'fonts/ttf-sourcesanspro' \
