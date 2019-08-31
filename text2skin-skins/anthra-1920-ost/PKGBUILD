@@ -3,8 +3,8 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 _srcname=anthra_1920_OSt
 pkgname=text2skin-$(echo ${_srcname//_/-} | tr '[:upper:]' '[:lower:]')
-pkgver=20140324
-pkgrel=2
+pkgver=20190209
+pkgrel=1
 pkgdesc="Dark, anthracite skins for Klaus Schmidingers VDR"
 arch=('any')
 url="http://www.anthra.de/"
@@ -12,7 +12,7 @@ depends=('vdr-text2skin')
 groups=('text2skin-anthra')
 license=('GPL2')
 source=("http://www.anthra.de/anthra-skins/$_srcname-$pkgver.tar.xz")
-md5sums=('097c92dc4a1adff43a60638b30fdd590')
+md5sums=('6bc3bc830c5f1869886ad7f3d92d39d7')
 
 prepare() {
   cd "$srcdir/$_srcname"
