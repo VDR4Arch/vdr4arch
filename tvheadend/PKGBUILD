@@ -15,7 +15,7 @@ optdepends=('xmltv: For an alternative source of programme listings')
 conflicts=('tvheadend-git')
 install=tvheadend.install
 
-source=("https://github.com/tvheadend/tvheadend/archive/v$pkgver.tar.gz"
+source=("$pkgname-$pkgver.tar.gz::https://github.com/tvheadend/tvheadend/archive/v$pkgver.tar.gz"
         "tvheadend.service"
         "tvheadend.sysusers"
         "tvheadend.tmpfiles"
