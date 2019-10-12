@@ -2,7 +2,7 @@ pkgbase = vdr-channelscan
 	pkgdesc = Channel scanner for VDR
 	pkgver = 1.1.2
 	pkgrel = 1
-	url = http://www.forum.free-x.de/wbb/index.php?page=Thread&threadID=1745
+	url = https://bitbucket.org/ua0lnj/channelscan
 	arch = i686
 	arch = x86_64
 	license = GPL2
