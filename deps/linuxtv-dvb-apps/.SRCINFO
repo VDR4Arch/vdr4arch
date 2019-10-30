@@ -12,7 +12,7 @@ pkgbase = linuxtv-dvb-apps
 	license = GPL
 	makedepends = mercurial
 	depends = glibc
-	optdepends = dtv-scan-tables-git: initial tuning data necessary for scannig utils
+	optdepends = dtv-scan-tables-git: initial tuning data necessary for scanning utils
 	source = hg+https://linuxtv.org/hg/dvb-apps/#revision=3d43b280298c
 	source = https://gitweb.gentoo.org/repo/gentoo.git/plain/media-tv/linuxtv-dvb-apps/files/linuxtv-dvb-apps-1.1.1.20100223-perl526.patch
 	source = https://git.busybox.net/buildroot/plain/package/dvb-apps/0003-handle-static-shared-only-build.patch
