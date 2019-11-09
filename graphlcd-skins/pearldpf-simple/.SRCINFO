@@ -1,7 +1,8 @@
 pkgbase = pearldpf-simple
 	pkgdesc = Graphlcd skin for Pearl Digital Picture Frames
-	pkgver = 20140301
+	pkgver = 20120306
 	pkgrel = 1
+	epoch = 1
 	url = http://www.vdr-portal.de/board18-vdr-hardware/board11-displays/p1054042-pearl-display-yavdr-todo-install/#post1054042
 	arch = any
 	license = GPL2
@@ -9,7 +10,7 @@ pkgbase = pearldpf-simple
 	depends = ttf-ubuntu-font-family
 	depends = vdr-graphlcd
 	backup = usr/share/vdr/plugins/graphlcd/skins/pearldpf-simple/settings.conf
-	source = git+https://github.com/M-Reimer/pearldpf-simple.git#commit=d2a403b46d1e2f77b4a7ddffa12ed6f0d847d0d2
+	source = git+https://github.com/VDR4Arch/pearldpf-simple#commit=e4fd6d7eb07d7952b4a4bd5d378837cda1bbb4d6
 	md5sums = SKIP
 
 pkgname = pearldpf-simple

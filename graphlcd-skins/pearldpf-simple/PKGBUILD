@@ -2,8 +2,9 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=pearldpf-simple
-pkgver=20140301
-_gitver=d2a403b46d1e2f77b4a7ddffa12ed6f0d847d0d2
+pkgver=20120306
+epoch=1
+_gitver=e4fd6d7eb07d7952b4a4bd5d378837cda1bbb4d6
 pkgrel=1
 pkgdesc="Graphlcd skin for Pearl Digital Picture Frames"
 arch=('any')
@@ -11,7 +12,7 @@ url="http://www.vdr-portal.de/board18-vdr-hardware/board11-displays/p1054042-pea
 depends=('ttf-ubuntu-font-family' 'vdr-graphlcd')
 makedepends=('git')
 license=('GPL2')
-source=("git+https://github.com/M-Reimer/pearldpf-simple.git#commit=$_gitver")
+source=("git+https://github.com/VDR4Arch/pearldpf-simple#commit=$_gitver")
 backup=('usr/share/vdr/plugins/graphlcd/skins/pearldpf-simple/settings.conf')
 md5sums=('SKIP')
 
