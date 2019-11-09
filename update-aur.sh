@@ -30,6 +30,7 @@ PKGLIST=( \
   'deps/graphlcd-base' \
   'deps/libdvbcsa' \
   'deps/libmcli' \
+  'deps/linuxtv-dvb-apps' \
   'deps/perl-template-plugin-javascript' \
   'deps/serdisplib' \
   'deps/tnftp6' \
@@ -43,6 +44,7 @@ PKGLIST=( \
   'kodi-addon-graphlcd' \
   'kodi-addon-pvr-vdr-vnsi' \
   'kodi-setwakeup' \
+  'minisatip' \
   'naludump' \
   'plugins/vdr-'* \
   'vdr' \
