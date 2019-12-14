@@ -5,12 +5,12 @@ pkgname=w_scan
 pkgver=20170107
 pkgrel=1
 pkgdesc="Small channel scan tool for vdr"
-url="http://wirbel.htpc-forum.de/w_scan/index2.html"
+url="https://www.gen2vdr.de/wirbel/w_scan/index2.html"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' 'glibc')
 #gcc-libs is somehow needed on arm architecture
-source=("http://wirbel.htpc-forum.de/$pkgname/$pkgname-$pkgver.tar.bz2")
+source=("https://www.gen2vdr.de/wirbel/w_scan/$pkgname-$pkgver.tar.bz2")
 md5sums=('c7f9adf92d46b8da5391be80be6fbd72')
 
 build() {
