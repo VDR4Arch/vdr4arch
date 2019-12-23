@@ -58,6 +58,7 @@ PKGLIST=( \
   'vdrnfofs' \
   'vdrpbd' \
   'vdr-xorg' \
+  'w_scan2' \
 )
 
 # Commit message-generator
