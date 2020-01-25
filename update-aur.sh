@@ -116,6 +116,8 @@ for pkgbuilddir in "${PKGLIST[@]}"; do
 
   echo "Syncing $pkgbuilddir" >&2
 
+  git -C "$aurgit" pull || exit 1
+
   # Generate source tarball of our PKGBUILD
   pushd "$pkgbuilddir" >/dev/null || exit 1
     rm -f ./*.src.tar
