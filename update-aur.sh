@@ -36,6 +36,7 @@ PKGLIST=( \
   'deps/tnftp6' \
   'deps/tntdb' \
   'deps/tntnet' \
+  'deps/xlogin' \
   'fonts/ttf-sourcesanspro' \
   'fonts/ttf-teletext2' \
   'fonts/ttf-vdrsymbols' \
@@ -100,23 +101,36 @@ for pkgbuilddir in "${PKGLIST[@]}"; do
     git clone "ssh://aur@aur.archlinux.org/${pkgbase}.git" "$aurgit" || exit 1
   fi
 
+  # Get timestamp of the Github GIT commit for the PKGBUILD we want to sync
+  commit_time=$(git log --format=%ct -1 "$pkgbuilddir/PKGBUILD")
+
   # Get timestamp of latest AUR GIT commit
   aurcommit_time=$(git --git-dir="$aurgit/.git" show -s --format=%ct HEAD)
   if [ -z "$aurcommit_time" ]; then
     aurcommit_time=0
   fi
 
-  # Get timestamp of the Github GIT commit for the PKGBUILD we want to sync
-  commit_time=$(git log --format=%ct -1 "$pkgbuilddir/PKGBUILD")
-
   # Compare the two timestamps.
   if [ "$aurcommit_time" -ge "$commit_time" ]; then
     continue
   fi
 
-  echo "Syncing $pkgbuilddir" >&2
+  # It may be possible that the AUR was updated by someone else so pull from AUR
+  if git -C "$aurgit" pull; then
 
-  git -C "$aurgit" pull || exit 1
+    # Get timestamp of latest AUR GIT commit (second time)
+    aurcommit_time=$(git --git-dir="$aurgit/.git" show -s --format=%ct HEAD)
+    if [ -z "$aurcommit_time" ]; then
+      aurcommit_time=0
+    fi
+
+    # Compare the two timestamps (second time).
+    if [ "$aurcommit_time" -ge "$commit_time" ]; then
+      continue
+    fi
+  fi
+
+  echo "Syncing $pkgbuilddir" >&2
 
   # Generate source tarball of our PKGBUILD
   pushd "$pkgbuilddir" >/dev/null || exit 1
