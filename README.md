@@ -1,12 +1,24 @@
-vdr4arch
+VDR4Arch
 ========
 
-VDR4Arch is a set of VDR packages for Archlinux.
+VDR4Arch is a set of VDR packages for Arch Linux.
 
 Our goal is it to combine the feature-richness of VDR with the bleeding edge
-design of Archlinux. We provide always the newest version (developer or stable).
-But we delay new vdr releases for at least one week in a separate vdr4arch-testing
-repository. You can find more information on this testing repository in our wiki
+design of Arch Linux. This repository also contains some "non VDR" tools that
+may be used with VDR (minisatip) or as substitute to VDR (tvheadend).
+
+The provided (and autobuilt) VDR version is always the latest stable version.
+For self-compiling of "development versions" you can use the provided "vdr-git"
+PKGBUILD which builds from an "unofficial" VDR GIT repository which contains the
+official development versions including **official** VDR patches.
+
+AUR
+---
+
+All VDR and other media packages are developed here and synced automatically
+over to AUR, so please file issues and pull requests here. If your
+changes/requests are accepted by the VDR4Arch team, then your change appears on
+AUR automatically.
 
 Install the base system
 -----------------------
@@ -30,19 +42,12 @@ Compile from source
 You can find more information about compiling vdr4arch's packages in our wiki
 https://github.com/VDR4Arch/vdr4arch/wiki/VDR4Arch-Installation-(en_US)#compile-vdr4arch
 
-Compatibility
--------------
-
-VDR4Arch may be compatible to other VDR packages (e.g. ArchVDR or AUR), but
-we don't support that. If you miss any feature/plugin/addon etc, read the next
-paragraph.
-
-
 Feature/Plugin missing?
 -----------------------
 
 You miss something and you want us to add it. No problem!
 
-File a bug, please. But be aware that we don't want add more patches to the vdr package
+File an issue, please. But be aware that we don't want to add more patches to
+the VDR package.
 
-https://github.com/CReimer/vdr4arch/issues
+https://github.com/VDR4Arch/vdr4arch/issues
