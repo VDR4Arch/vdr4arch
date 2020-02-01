@@ -48,6 +48,7 @@ PKGLIST=( \
   'minisatip' \
   'naludump' \
   'plugins/vdr-'* \
+  't2scan' \
   'vdr' \
   'vdr-git' \
   'vdr-api' \
