@@ -12,7 +12,7 @@ pkgbase = vdr-wirbelscan
 	depends = gcc-libs
 	depends = vdr-api=2.4.1
 	backup = etc/vdr/conf.avail/50-wirbelscan.conf
-	source = http://wirbel.htpc-forum.de/wirbelscan/vdr-wirbelscan-2018.11.04.tgz
+	source = https://www.gen2vdr.de/wirbel/wirbelscan/vdr-wirbelscan-2018.11.04.tgz
 	source = 50-wirbelscan.conf
 	md5sums = fc16d434f92b5b672ca1d7b918500b8e
 	md5sums = cb2ff89d8c275d790cf613d4cf9fa180
