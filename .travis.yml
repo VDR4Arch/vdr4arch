@@ -1,0 +1,42 @@
+branches:
+  only:
+  - master
+
+arch:
+  - amd64
+
+os: linux
+
+dist: bionic
+
+env:
+  - REPONAME=vdr4arch ALARCH=x86_64
+
+language: generic
+
+git:
+  quiet: true
+
+cache:
+  directories:
+    - $HOME/src
+
+before_script:
+  - git clone https://github.com/VDR4Arch/vdr4arch.git --branch gh-pages --single-branch $HOME/repo || true
+  - rm -rf $HOME/repo/.git
+
+script:
+  - sudo ./.ci/mkrepo.sh $USER $TRAVIS_BUILD_DIR $ALARCH
+
+before_deploy:
+  - sudo chown -R $USER:$USER $HOME/repo
+  - ./.ci/genindex.sh $HOME/repo $REPONAME
+
+deploy:
+  provider: pages
+  token: $GITHUB_TOKEN
+  skip_cleanup: true
+  local_dir: $HOME/repo/
+  on:
+    repo: $TRAVIS_REPO_SLUG
+    branch: master
