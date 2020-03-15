@@ -22,9 +22,8 @@ cache:
     - $HOME/src
 
 before_script:
-  - sudo mkdir -p /run/shm/
   - git clone https://github.com/VDR4Arch/vdr4arch.git --branch gh-pages --single-branch $HOME/repo || true
-  - rm -fR $HOME/repo/.git
+  - rm -rf $HOME/repo/.git
 
 script:
   - sudo ./.ci/mkrepo.sh $USER $TRAVIS_BUILD_DIR $ALARCH

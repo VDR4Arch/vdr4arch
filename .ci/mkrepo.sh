@@ -10,8 +10,6 @@ alchroot=/home/${builduser}/abs/${alarch}
 reponame=$(basename ${reposrc})
 
 setup_x86_64_chroot() {
-	distro=archlinux
-
 	wget -nc -P /home/${builduser}/ -r -l 1 -nd -A 'archlinux-bootstrap-*-x86_64.tar.gz' 'https://mirrors.ocf.berkeley.edu/archlinux/iso/latest/'
 	tar -x -z --strip 1 -C /home/${builduser}/abs/${alarch}/ -f /home/${builduser}/archlinux-bootstrap-*-x86_64.tar.gz
 	printf "Server = https://mirrors.kernel.org/archlinux/\$repo/os/\$arch\n" >> ${alchroot}/etc/pacman.d/mirrorlist
@@ -28,13 +26,12 @@ cp -f /etc/resolv.conf ${alchroot}/etc/
 printf "en_US.UTF-8 UTF-8\n" > ${alchroot}/etc/locale.gen
 chroot ${alchroot} /bin/bash -c \
 	"source /etc/profile; \
+	locale-gen; \
 	pacman-key --init; \
 	pacman-key --populate ${distro}; \
 	pacman -S -y -u --noconfirm base-devel; \
-	locale-gen; \
 	groupadd -g 2000 ${builduser}; \
-	useradd -u 2000 -g 2000 -m -G wheel -s /bin/bash ${builduser}"
-printf "%%wheel ALL=(ALL) NOPASSWD: ALL\n" > ${alchroot}/etc/sudoers.d/wheel
+	useradd -u 2000 -g 2000 -m -s /bin/bash ${builduser}"
 
 mkdir -p ${alchroot}/home/${builduser}/{repo,src,${reponame}}
 mkdir -p /home/${builduser}/{repo/${alarch},src}
@@ -50,5 +47,3 @@ chroot ${alchroot} /bin/bash -c \
 	"source /etc/profile; \
 	printenv | sort; \
 	repo-make -V -C /home/${builduser}/${reponame} -t /home/${builduser}/repo/${alarch}"
-
-exit
