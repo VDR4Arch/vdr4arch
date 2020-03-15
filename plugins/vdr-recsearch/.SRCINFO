@@ -12,7 +12,7 @@ pkgbase = vdr-recsearch
 	depends = gcc-libs
 	depends = vdr-api=2.4.1
 	backup = etc/vdr/conf.avail/50-recsearch.conf
-	source = https://github.com/flensrocker/vdr-plugin-recsearch/archive/v0.3.7.tar.gz
+	source = vdr-recsearch-0.3.7.tar.gz::https://github.com/flensrocker/vdr-plugin-recsearch/archive/v0.3.7.tar.gz
 	md5sums = 9d5e0e6ce7461ffd27895d41bc044586
 
 pkgname = vdr-recsearch

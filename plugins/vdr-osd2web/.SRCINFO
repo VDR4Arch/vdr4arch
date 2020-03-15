@@ -16,7 +16,7 @@ pkgbase = vdr-osd2web
 	depends = vdr-api=2.4.1
 	options = !emptydirs
 	backup = etc/vdr/conf.avail/50-osd2web.conf
-	source = https://github.com/horchi/vdr-plugin-osd2web/archive/0.2.48.tar.gz
+	source = vdr-osd2web-0.2.48.tar.gz::https://github.com/horchi/vdr-plugin-osd2web/archive/0.2.48.tar.gz
 	source = 50-osd2web.conf
 	md5sums = 4de4fad0b8f19084cc82b5ec760e02d3
 	md5sums = e4c8311b59cf3a28327bcae842dc4699
