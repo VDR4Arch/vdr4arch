@@ -28,8 +28,9 @@ chroot ${alchroot} /bin/bash -c \
 	"source /etc/profile; \
 	locale-gen; \
 	pacman-key --init; \
-	pacman-key --populate ${distro}; \
+	pacman-key --populate archlinux; \
 	pacman -S -y -u --noconfirm base-devel; \
+	locale-gen; \
 	groupadd -g 2000 ${builduser}; \
 	useradd -u 2000 -g 2000 -m -s /bin/bash ${builduser}"
 
