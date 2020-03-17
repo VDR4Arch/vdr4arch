@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 #    repo-make - Tool to autobuild a set of PKGBUILD's into a working repository
 #    Copyright (C) 2020 Manuel Reimer <manuel.reimer@gmx.de>
 #

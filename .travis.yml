@@ -32,7 +32,6 @@ before_script:
   - rm -rf $HOME/repo/.git
 
 script:
-  - ls -l
   - sudo ./.ci/repo-make-ci.sh
 
 before_deploy:
