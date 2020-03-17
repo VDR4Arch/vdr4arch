@@ -73,7 +73,7 @@ DownloadAndCheck () {
   DLCHECKSUM=${DLCHECKSUM%% *}
 
   # Verify checksum
-  if [ "$DLCHECKSUM" != "$3x" ]; then
+  if [ "$DLCHECKSUM" != "$3" ]; then
     echo "REPO-MAKE-CI: Checksum check failed for ${1##*/}!"
     rm "$TMPFILE"
     exit 1
