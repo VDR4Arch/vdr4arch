@@ -10,10 +10,11 @@ os: linux
 dist: bionic
 
 env:
-  - REPO_MAKE_CACHE=$HOME/cache
-  - REPO_MAKE_TARGET=$HOME/repo
-  - REPO_MAKE_PKGBUILDS=$TRAVIS_BUILD_DIR
-  - REPO_MAKE_PACKAGER="repo-make-ci.sh autobuild via Travis CI <no-reply@vdr4arch.invalid>"
+  global:
+    - REPO_MAKE_CACHE=$HOME/cache
+    - REPO_MAKE_TARGET=$HOME/repo
+    - REPO_MAKE_PKGBUILDS=$TRAVIS_BUILD_DIR
+    - REPO_MAKE_PACKAGER="repo-make-ci.sh autobuild via Travis CI <no-reply@vdr4arch.invalid>"
 
 language: generic
 
