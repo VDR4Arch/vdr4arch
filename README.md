@@ -1,6 +1,8 @@
 VDR4Arch
 ========
 
+[![Build Status](https://travis-ci.com/VDR4Arch/vdr4arch.svg?branch=master)](https://travis-ci.com/VDR4Arch/vdr4arch)
+
 VDR4Arch is a set of VDR packages for Arch Linux.
 
 Our goal is it to combine the feature-richness of VDR with the bleeding edge
