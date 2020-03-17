@@ -10,7 +10,10 @@ os: linux
 dist: bionic
 
 env:
-  - REPONAME=vdr4arch ALARCH=x86_64
+  - REPO_MAKE_CACHE=$HOME/cache
+  - REPO_MAKE_TARGET=$HOME/repo
+  - REPO_MAKE_PKGBUILDS=$TRAVIS_BUILD_DIR
+  - REPO_MAKE_PACKAGER="repo-make-ci.sh autobuild via Travis CI <no-reply@vdr4arch.invalid>"
 
 language: generic
 
@@ -19,14 +22,16 @@ git:
 
 cache:
   directories:
-    - $HOME/src
+    - $HOME/cache/sourcedir
+    - $HOME/cache/pkgcache
+    - $HOME/cache/imagecache
 
 before_script:
   - git clone https://github.com/VDR4Arch/vdr4arch.git --branch gh-pages --single-branch $HOME/repo || true
   - rm -rf $HOME/repo/.git
 
 script:
-  - sudo ./.ci/mkrepo.sh $USER $TRAVIS_BUILD_DIR $ALARCH
+  - sudo ./.ci/repo-make-ci.sh
 
 before_deploy:
   - sudo chown -R $USER:$USER $HOME/repo
