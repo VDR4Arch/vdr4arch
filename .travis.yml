@@ -23,9 +23,7 @@ git:
 
 cache:
   directories:
-    - $HOME/cache/sourcedir
-    - $HOME/cache/pkgcache
-    - $HOME/cache/imagecache
+    - $HOME/cache
 
 before_script:
   - git clone https://github.com/VDR4Arch/vdr4arch.git --branch gh-pages --single-branch $HOME/repo || true
