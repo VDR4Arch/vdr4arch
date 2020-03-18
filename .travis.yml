@@ -26,7 +26,7 @@ cache:
     - $HOME/cache
 
 before_script:
-  - git clone https://github.com/VDR4Arch/vdr4arch.git --branch gh-pages --single-branch $HOME/repo || true
+  - git clone https://github.com/VDR4Arch/repo.git --branch master --single-branch $HOME/repo || true
   - rm -rf $HOME/repo/.git
 
 script:
@@ -41,6 +41,8 @@ deploy:
   token: $GITHUB_TOKEN
   skip_cleanup: true
   local_dir: $HOME/repo/
+  repo: VDR4Arch/repo
+  target_branch: master
   on:
     repo: $TRAVIS_REPO_SLUG
     branch: master
