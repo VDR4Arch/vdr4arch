@@ -4,7 +4,7 @@ target="$1"
 repo="$2"
 
 create_index() {
-  index=$(ls --color=never --group-directories-first -1 -p --hide=index.html $1 | awk '{print "<a href=\""$1"\">"$1"</a>"}')
+  index=$(ls --color=never --group-directories-first -1 -p --hide=index.html $1 | awk '{print "<a href=\"./"$1"\">"$1"</a>"}')
 
   echo "<!DOCTYPE html>
 <html>
