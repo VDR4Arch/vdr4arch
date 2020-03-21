@@ -1,5 +1,6 @@
 #!/bin/bash
 #    repo-make - Tool to autobuild a set of PKGBUILD's into a working repository
+#    https://github.com/M-Reimer/repo-make
 #    Copyright (C) 2020 Manuel Reimer <manuel.reimer@gmx.de>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -33,13 +34,15 @@ set -e
 REPO_MAKE_CACHE=${REPO_MAKE_CACHE:-/var/tmp/repo-make-cache}
 
 # Path to create the repository in
-REPO_MAKE_TARGET=${REPO_MAKE_TARGET:-/var/tmp/repo-make-target/x86_64}
+REPO_MAKE_TARGET=${REPO_MAKE_TARGET:-/var/tmp/repo-make-target}
 
 # Source path (where PKGBUILD's and repo-make.conf is placed)
 REPO_MAKE_PKGBUILDS=${REPO_MAKE_PKGBUILDS:-/var/tmp/pkgbuilds}
 
-# Packager name
-REPO_MAKE_PACKAGER=${REPO_MAKE_PACKAGER:-"repo-make-ci autobuild for "${REPO_MAKE_PKGBUILDS##*/}}
+# makepkg.conf file to use. It is strongly recommended that you provide your
+# own fixed one as we set up the chroot from scratch every time so upstream
+# makepkg.conf changes may screw up your repository.
+REPO_MAKE_MAKEPKG_CONF=${REPO_MAKE_MAKEPKG_CONF:-/etc/makepkg.conf}
 
 # Arch Linux mirror to use
 REPO_MAKE_ARCH_MIRROR=${REPO_MAKE_ARCH_MIRROR:-https://mirrors.edge.kernel.org/archlinux/}
@@ -52,8 +55,8 @@ REPO_MAKE_ARCH_MIRROR=${REPO_MAKE_ARCH_MIRROR:-https://mirrors.edge.kernel.org/a
 # repo-make version and checksum.
 #
 
-REPO_MAKE_VERSION=3.0.0
-REPO_MAKE_SHA1=d4512e27859c49da2adce14a70ea393cc54b4233
+REPO_MAKE_VERSION=3.1.0
+REPO_MAKE_SHA1=f4199b77e1a7e0d948e1c73a33ae5f5f89adaa83
 
 #
 # Helper functions
@@ -174,6 +177,17 @@ mount --make-rslave       "$CHROOT/var/cache/pacman/pkg"
 # Copy resolve.conf
 cp -f /etc/resolv.conf "$CHROOT/etc"
 
+# Copy makepkg.conf if possible
+if [ -s "$REPO_MAKE_MAKEPKG_CONF" ]; then
+  echo "REPO-MAKE-CI: Using makepkg.conf from: $REPO_MAKE_MAKEPKG_CONF"
+  cp -f "$REPO_MAKE_MAKEPKG_CONF" "$CHROOT/etc"
+else
+  echo "REPO-MAKE-CI: WARNING: Using default makepkg.conf!"
+fi
+
+# Configure our SRCDEST for caching
+echo "SRCDEST='/home/build/srcdest'" >> "$CHROOT/etc/makepkg.conf"
+
 # Set up language
 echo "en_US.UTF-8 UTF-8" > "$CHROOT/etc/locale.gen"
 echo "LANG=en_US.UTF-8" > "$CHROOT/etc/locale.conf"
@@ -197,11 +211,6 @@ mount --rbind "$REPO_MAKE_PKGBUILDS" "$CHROOT/home/build/pkgbuilds"
 mount --rbind "$REPO_MAKE_TARGET" "$CHROOT/home/build/target"
 mount --rbind "$SOURCECACHE" "$CHROOT/home/build/srcdest"
 
-# Build configuration
-echo "MAKEFLAGS='-j2'" >> "$CHROOT/etc/makepkg.conf"
-echo "PACKAGER='$REPO_MAKE_PACKAGER'" >> "$CHROOT/etc/makepkg.conf"
-echo "SRCDEST='/home/build/srcdest'" >> "$CHROOT/etc/makepkg.conf"
-
 # Download repo-make, verify checksum
 REPO_MAKE_PKG="repo-make-$REPO_MAKE_VERSION-1-any.pkg.tar.xz"
 REPO_MAKE_URL="https://github.com/M-Reimer/repo-make/releases/download/$REPO_MAKE_VERSION/$REPO_MAKE_PKG"
@@ -216,4 +225,4 @@ chroot "$CHROOT" /bin/bash -c \
   "source /etc/profile; \
   chown -R build /home/build; \
   pacman -U --noconfirm /root/$REPO_MAKE_PKG; \
-  repo-make -V -C /home/build/pkgbuilds -t /home/build/target/$REPO_MAKE_ARCH"
+  repo-make --restore-repo-mtimes -V -C /home/build/pkgbuilds -t /home/build/target/$REPO_MAKE_ARCH"
