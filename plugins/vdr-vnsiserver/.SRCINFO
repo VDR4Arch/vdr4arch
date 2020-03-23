@@ -1,5 +1,5 @@
 pkgbase = vdr-vnsiserver
-	pkgdesc = VDR plugin to handle XBMC clients
+	pkgdesc = VDR plugin to handle Kodi clients
 	pkgver = 1.8.0.r0.g49003f0
 	pkgrel = 2
 	epoch = 2
