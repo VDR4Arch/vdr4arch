@@ -170,6 +170,11 @@ elif [ "$REPO_MAKE_ARCH" = "armv7h" ]; then
   echo "REPO-MAKE-CI: Extracting Arch Linux bootstrap image"
   tar -x -f "$IMAGECACHE/$OURIMAGENAME" -C "$CHROOT"
 
+  if [ -x "/usr/bin/qemu-arm-static" ]; then
+    echo "Test: copied over qemu"
+    cp -a "/usr/bin/qemu-arm-static" "$CHROOT/usr/bin"
+  fi
+
   # Arch Linux ARM has a symlink as /etc/resolv.conf. Remove it.
   rm "$CHROOT/etc/resolv.conf"
 fi
