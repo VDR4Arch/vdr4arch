@@ -14,10 +14,11 @@ env:
     - REPO_MAKE_CACHE=$HOME/cache
     - REPO_MAKE_TARGET=$HOME/repo
     - REPO_MAKE_PKGBUILDS=$TRAVIS_BUILD_DIR
-    - REPO_MAKE_MAKEPKG_CONF=$TRAVIS_BUILD_DIR/.ci/makepkg.conf
   jobs:
     - REPO_MAKE_ARCH=x86_64
+      REPO_MAKE_MAKEPKG_CONF=./.ci/makepkg.conf
     - REPO_MAKE_ARCH=armv7h
+      REPO_MAKE_MAKEPKG_CONF=./.ci/makepkg-armv7h.conf
 
 language: generic
 
