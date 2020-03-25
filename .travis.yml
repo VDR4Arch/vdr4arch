@@ -32,7 +32,7 @@ cache:
     - $HOME/cache
 
 before_script:
-  - sudo $SETUP_ENV_PROG
+  - $SETUP_ENV_PROG
   - git clone https://github.com/VDR4Arch/$REPO_MAKE_ARCH.git --branch master --single-branch $HOME/repo || true
   - rm -rf $HOME/repo/.git
 

@@ -170,8 +170,9 @@ elif [ "$REPO_MAKE_ARCH" = "armv7h" ]; then
   echo "REPO-MAKE-CI: Extracting Arch Linux bootstrap image"
   tar -x -f "$IMAGECACHE/$OURIMAGENAME" -C "$CHROOT"
 
+  # If the host has qemu-arm-static installed, then copy it over to our chroot.
   if [ -x "/usr/bin/qemu-arm-static" ]; then
-    echo "Test: copied over qemu"
+    echo "REPO-MAKE-CI: Copying qemu-arm-static into our chroot"
     cp -a "/usr/bin/qemu-arm-static" "$CHROOT/usr/bin"
   fi
 
