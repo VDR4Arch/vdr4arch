@@ -15,6 +15,9 @@ env:
     - REPO_MAKE_TARGET=$HOME/repo
     - REPO_MAKE_PKGBUILDS=$TRAVIS_BUILD_DIR
     - REPO_MAKE_MAKEPKG_CONF=$TRAVIS_BUILD_DIR/.ci/makepkg.conf
+  jobs:
+    - REPO_MAKE_ARCH=x86_64
+    - REPO_MAKE_ARCH=armv7h
 
 language: generic
 
@@ -26,7 +29,7 @@ cache:
     - $HOME/cache
 
 before_script:
-  - git clone https://github.com/VDR4Arch/repo.git --branch master --single-branch $HOME/repo || true
+  - git clone https://github.com/VDR4Arch/$REPO_MAKE_ARCH.git --branch master --single-branch $HOME/repo || true
   - rm -rf $HOME/repo/.git
 
 script:
@@ -41,7 +44,7 @@ deploy:
   token: $GITHUB_TOKEN
   skip_cleanup: true
   local_dir: $HOME/repo/
-  repo: VDR4Arch/repo
+  repo: VDR4Arch/$REPO_MAKE_ARCH
   target_branch: master
   on:
     repo: $TRAVIS_REPO_SLUG
