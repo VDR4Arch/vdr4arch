@@ -3,7 +3,7 @@ branches:
   - master
 
 arch:
-  - arm64
+  - amd64
 
 os: linux
 
@@ -14,7 +14,7 @@ env:
     - REPO_MAKE_CACHE=$HOME/cache
     - REPO_MAKE_TARGET=$HOME/repo
     - REPO_MAKE_PKGBUILDS=$TRAVIS_BUILD_DIR
-    - REPO_MAKE_ARCH=armv7h
+    - REPO_MAKE_MAKEPKG_CONF=$TRAVIS_BUILD_DIR/.ci/makepkg.conf
 
 language: generic
 
@@ -26,8 +26,23 @@ cache:
     - $HOME/cache
 
 before_script:
+  - git clone https://github.com/VDR4Arch/repo.git --branch master --single-branch $HOME/repo || true
   - rm -rf $HOME/repo/.git
 
 script:
   - sudo ./.ci/repo-make-ci.sh
 
+before_deploy:
+  - sudo chown -R $USER:$USER $HOME/repo
+  - ./.ci/genindex.sh $HOME/repo $REPONAME
+
+deploy:
+  provider: pages
+  token: $GITHUB_TOKEN
+  skip_cleanup: true
+  local_dir: $HOME/repo/
+  repo: VDR4Arch/repo
+  target_branch: master
+  on:
+    repo: $TRAVIS_REPO_SLUG
+    branch: master

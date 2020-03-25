@@ -47,8 +47,6 @@ REPO_MAKE_MAKEPKG_CONF=${REPO_MAKE_MAKEPKG_CONF:-/etc/makepkg.conf}
 # Arch Linux mirror to use
 REPO_MAKE_ARCH_MIRROR=${REPO_MAKE_ARCH_MIRROR:-https://mirrors.edge.kernel.org/archlinux/}
 
-# For which architecture are we meant to build?
-REPO_MAKE_ARCH=${REPO_MAKE_ARCH:-x86_64}
 
 
 
@@ -60,6 +58,32 @@ REPO_MAKE_ARCH=${REPO_MAKE_ARCH:-x86_64}
 REPO_MAKE_VERSION=3.1.0
 REPO_MAKE_SHA1=f4199b77e1a7e0d948e1c73a33ae5f5f89adaa83
 
+#
+# Helper functions
+#
+
+# Downloads file and verifies sha1sum
+# - First parameter: URL
+# - Second parameter: Target path
+# - Third parameter: SHA1SUM
+DownloadAndCheck () {
+  # Download
+  TMPFILE="$TMPDIR/download_file.tmp"
+  wget -q -nc "$1" -O "$TMPFILE"
+
+  # Get download checksum
+  DLCHECKSUM=$(sha1sum "$TMPFILE")
+  DLCHECKSUM=${DLCHECKSUM%% *}
+
+  # Verify checksum
+  if [ "$DLCHECKSUM" != "$3" ]; then
+    echo "REPO-MAKE-CI: Checksum check failed for ${1##*/}!"
+    rm "$TMPFILE"
+    exit 1
+  else
+    mv "$TMPFILE" "$2"
+  fi
+}
 
 #
 # Prepare the build environment we were launched in
@@ -68,7 +92,7 @@ REPO_MAKE_SHA1=f4199b77e1a7e0d948e1c73a33ae5f5f89adaa83
 # Build some cache paths and create them if they are not there
 SOURCECACHE="$REPO_MAKE_CACHE/sourcedir"
 mkdir -p "$SOURCECACHE"
-PKGCACHE="$REPO_MAKE_CACHE/pkgcache/$REPO_MAKE_ARCH"
+PKGCACHE="$REPO_MAKE_CACHE/pkgcache"
 mkdir -p "$PKGCACHE"
 IMAGECACHE="$REPO_MAKE_CACHE/imagecache"
 mkdir -p "$IMAGECACHE"
@@ -93,11 +117,7 @@ mkdir -p "$REPO_MAKE_TARGET"
 function cleanup {
   EXIT_CODE=$?
   set +e # disable termination on error
-  # gpg-agent blocks /dev in chroot
-  if [ -d "$CHROOT/etc/pacman.d/gnupg" ]; then
-    chroot "$CHROOT" gpgconf --homedir /etc/pacman.d/gnupg --kill gpg-agent
-  fi
-  sleep 1
+  killall gpg-agent && sleep 1 # gpg-agent blocks /dev in chroot
   umount "$CHROOT/proc"
   umount -R "$CHROOT/dev"
   umount -R "$CHROOT/sys"
@@ -115,68 +135,35 @@ trap cleanup EXIT
 # Get up-to-date Arch bootstrap image (ensures we have the image in cache)
 #
 
-if [ "$REPO_MAKE_ARCH" = "x86_64" ]; then
-  # Name of the pacman-key keyring for this architecture
-  PACMAN_KEYRING="archlinux"
+# Get name and checksum of latest bootstrap image directly from archlinux.org
+IMAGEINFO=$(wget -q https://www.archlinux.org/iso/latest/sha1sums.txt -O - | grep bootstrap)
+IMAGENAME=${IMAGEINFO##* }
+IMAGECHECKSUM=${IMAGEINFO%% *}
+if [ "$IMAGENAME" == "$IMAGECHECKSUM" ] || [ ${#IMAGECHECKSUM} -ne 40 ]; then
+  echo "REPO-MAKE-CI: Failed to parse sha1sums.txt!"
+  exit 1
+fi
 
-  # Get name and checksum of latest bootstrap image directly from archlinux.org
-  IMAGEINFO=$(wget -q https://www.archlinux.org/iso/latest/sha1sums.txt -O - | grep bootstrap | tee "$TMPDIR/archlinux-bootstrap.sha1")
-  IMAGENAME=${IMAGEINFO##* }
-  IMAGECHECKSUM=${IMAGEINFO%% *}
-  if [ "$IMAGENAME" == "$IMAGECHECKSUM" ] || [ ${#IMAGECHECKSUM} -ne 40 ]; then
-    echo "REPO-MAKE-CI: Failed to parse sha1sums.txt!"
-    exit 1
-  fi
-
-  # If image not in cache, then remove old versions and download new image
-  # Includes SHA1SUM check
-  if [ ! -s "$IMAGECACHE/$IMAGENAME" ]; then
-    rm -f "$IMAGECACHE/archlinux-bootstrap-"*
-    echo "REPO-MAKE-CI: Downloading new Arch Linux image: $IMAGENAME"
-    wget -q -nc "$REPO_MAKE_ARCH_MIRROR/iso/latest/$IMAGENAME" -O "$TMPDIR/$IMAGENAME"
-    env -C "$TMPDIR" sha1sum -c "archlinux-bootstrap.sha1"
-    mv "$TMPDIR/$IMAGENAME" "$IMAGECACHE"
-  else
-    echo "REPO-MAKE-CI: Image $IMAGENAME available in image cache!"
-  fi
-
-  # Extract image to chroot path
-  echo "REPO-MAKE-CI: Extracting Arch Linux bootstrap image"
-  tar -x --strip 1 -f "$IMAGECACHE/$IMAGENAME" -C "$CHROOT"
-
-  # Configure mirror
-  echo "Server = $REPO_MAKE_ARCH_MIRROR/\$repo/os/\$arch" >> "$CHROOT/etc/pacman.d/mirrorlist"
-elif [ "$REPO_MAKE_ARCH" = "armv7h" ]; then
-  # Name of the pacman-key keyring for this architecture
-  PACMAN_KEYRING="archlinuxarm"
-
-  # Arch Linux ARM does not have any secure way to get checksums from, so we
-  # have to use GPG for verification
-  IMAGENAME="ArchLinuxARM-rpi-2-latest.tar.gz"
-  OURIMAGENAME="$IMAGENAME-$(date +%Y-%m).tar.gz"
-  if [ ! -s "$IMAGECACHE/$OURIMAGENAME" ]; then
-    rm -f "$IMAGECACHE/ArchLinuxARM-"*
-    echo "REPO-MAKE-CI: Downloading new Arch Linux image: $OURIMAGENAME"
-    wget -q -nc "http://os.archlinuxarm.org/os/$IMAGENAME" -O "$TMPDIR/$OURIMAGENAME"
-    wget -q -nc "http://os.archlinuxarm.org/os/$IMAGENAME.sig" -O "$TMPDIR/$OURIMAGENAME.sig"
-    gpg --recv-key 68B3537F39A313B3E574D06777193F152BDBE6A6
-    gpg --verify "$TMPDIR/$OURIMAGENAME.sig"
-    mv "$TMPDIR/$OURIMAGENAME" "$IMAGECACHE"
-  else
-    echo "REPO-MAKE-CI: Image $OURIMAGENAME available in image cache!"
-  fi
-
-  # Extract image to chroot path
-  echo "REPO-MAKE-CI: Extracting Arch Linux bootstrap image"
-  tar -x -f "$IMAGECACHE/$OURIMAGENAME" -C "$CHROOT"
-
-  # Arch Linux ARM has a symlink as /etc/resolv.conf. Remove it.
-  rm "$CHROOT/etc/resolv.conf"
+# If image not in cache, then remove old versions and download new image
+# Includes SHA1SUM check
+if [ ! -s "$IMAGECACHE/$IMAGENAME" ]; then
+   rm -f "$IMAGECACHE/archlinux-bootstrap-"*
+   echo "REPO-MAKE-CI: Downloading new Arch Linux image: $IMAGENAME"
+   DownloadAndCheck "$REPO_MAKE_ARCH_MIRROR/iso/latest/$IMAGENAME" "$IMAGECACHE/$IMAGENAME" "$IMAGECHECKSUM"
+else
+  echo "REPO-MAKE-CI: Image $IMAGENAME available in image cache!"
 fi
 
 #
 # Set up chroot
 #
+
+# Extract image to chroot path
+echo "REPO-MAKE-CI: Extracting Arch Linux bootstrap image"
+tar -x --strip 1 -f "$IMAGECACHE/$IMAGENAME" -C "$CHROOT"
+
+# Configure mirror
+echo "Server = $REPO_MAKE_ARCH_MIRROR/\$repo/os/\$arch" >> "$CHROOT/etc/pacman.d/mirrorlist"
 
 # Set up some bind mounts
 mount -t proc /proc "$CHROOT/proc"
@@ -210,9 +197,9 @@ echo "LANG=en_US.UTF-8" > "$CHROOT/etc/locale.conf"
 chroot "$CHROOT" /bin/bash -c \
   "source /etc/profile; \
   pacman-key --init; \
-  pacman-key --populate $PACMAN_KEYRING; \
+  pacman-key --populate archlinux; \
   pacman -Sy --noconfirm; \
-  pacman -S --noconfirm --needed $PACMAN_KEYRING-keyring; \
+  pacman -S --noconfirm --needed archlinux-keyring; \
   pacman -Su --noconfirm; \
   pacman -S --needed --noconfirm base-devel; \
   locale-gen; \
@@ -227,9 +214,11 @@ mount --rbind "$SOURCECACHE" "$CHROOT/home/build/srcdest"
 # Download repo-make, verify checksum
 REPO_MAKE_PKG="repo-make-$REPO_MAKE_VERSION-1-any.pkg.tar.xz"
 REPO_MAKE_URL="https://github.com/M-Reimer/repo-make/releases/download/$REPO_MAKE_VERSION/$REPO_MAKE_PKG"
-wget -q -nc "$REPO_MAKE_URL" -O "$CHROOT/root/$REPO_MAKE_PKG"
-echo "$REPO_MAKE_SHA1  $REPO_MAKE_PKG" > "$CHROOT/root/$REPO_MAKE_PKG.sha1"
-env -C "$CHROOT/root" sha1sum -c "$REPO_MAKE_PKG.sha1"
+DownloadAndCheck "$REPO_MAKE_URL" "$CHROOT/root/$REPO_MAKE_PKG" "$REPO_MAKE_SHA1"
+
+# Hardcoded for now. Actually making this "multi arch" would require some
+# additional work (different bootstrap images and some adaptions for parameters)
+REPO_MAKE_ARCH="x86_64"
 
 # Install repo-make into chroot, run build
 chroot "$CHROOT" /bin/bash -c \
