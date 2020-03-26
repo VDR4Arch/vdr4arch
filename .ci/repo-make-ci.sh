@@ -199,9 +199,15 @@ cp -f /etc/resolv.conf "$CHROOT/etc"
 # Copy makepkg.conf if possible
 if [ -s "$REPO_MAKE_MAKEPKG_CONF" ]; then
   echo "REPO-MAKE-CI: Using makepkg.conf from: $REPO_MAKE_MAKEPKG_CONF"
-  cp -f "$REPO_MAKE_MAKEPKG_CONF" "$CHROOT/etc"
+  cp -f "$REPO_MAKE_MAKEPKG_CONF" "$CHROOT/etc/makepkg.conf"
 else
   echo "REPO-MAKE-CI: WARNING: Using default makepkg.conf!"
+fi
+
+# We need to install distcc if requested in makepkg.conf
+DISTCC=""
+if grep '^BUILDENV=' "$CHROOT/etc/makepkg.conf" | grep -v '!distcc'; then
+  DISTCC="distcc"
 fi
 
 # Configure our SRCDEST for caching
@@ -220,7 +226,7 @@ chroot "$CHROOT" /bin/bash -c \
   pacman -Sy --noconfirm; \
   pacman -S --noconfirm --needed $PACMAN_KEYRING-keyring; \
   pacman -Su --noconfirm; \
-  pacman -S --needed --noconfirm base-devel; \
+  pacman -S --needed --noconfirm base-devel $DISTCC; \
   locale-gen; \
   useradd -m build"
 
