@@ -68,6 +68,8 @@ REPO_MAKE_SHA1=f4199b77e1a7e0d948e1c73a33ae5f5f89adaa83
 # Build some cache paths and create them if they are not there
 SOURCECACHE="$REPO_MAKE_CACHE/sourcedir"
 mkdir -p "$SOURCECACHE"
+# Temporary. TODO: Delete!
+rm -rf "$SOURCECACHE/"*/
 PKGCACHE="$REPO_MAKE_CACHE/pkgcache/$REPO_MAKE_ARCH"
 mkdir -p "$PKGCACHE"
 IMAGECACHE="$REPO_MAKE_CACHE/imagecache"
@@ -107,6 +109,8 @@ function cleanup {
   umount "$CHROOT/home/build/srcdest"
   umount "$CHROOT"
   rm -rf --one-file-system "$TMPDIR" && echo "REPO-MAKE-CI: Deleted dir $TMPDIR"
+  # Caching/archiving of VCS sources is just asking for trouble so delete them!
+  rm -rf "$SOURCECACHE/"*/
   exit $EXIT_CODE
 }
 trap cleanup EXIT
