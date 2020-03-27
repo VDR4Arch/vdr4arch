@@ -3,9 +3,11 @@
 set -e
 
 # Get an ARM emulator going. This gets some support by repo-make-ci.sh later
-# to get the emulator copied into the chroot environment
+# to get the emulator copied into the chroot environment.
+# We need a 32 bit static qemu binary to properly emulate our ARM 32 bit target
+# https://bugs.launchpad.net/qemu/+bug/1805913
 sudo apt-get update
-sudo apt-get install qemu-user-static
+sudo apt-get install qemu-user-static:i386
 
 # Enable a reduced repo-make.conf list. ARM build is slow so we don't build the
 # full set.
