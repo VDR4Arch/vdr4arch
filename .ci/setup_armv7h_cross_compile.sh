@@ -30,7 +30,7 @@ if [ ! -s "$HOME/cache/$X_TOOLS.tar.xz" ]; then
 fi
 
 # Extract "x-tools"
-tar -vxf "$HOME/cache/$X_TOOLS.tar.xz" -C "$HOME"
+tar -xf "$HOME/cache/$X_TOOLS.tar.xz" -C "$HOME"
 
 # Fill whitelist for distcc
 sudo ln -s /usr/bin/distcc /usr/lib/distcc/armv7l-unknown-linux-gnueabihf-cpp
