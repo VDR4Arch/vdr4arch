@@ -114,9 +114,10 @@ function cleanup {
 trap cleanup EXIT
 
 #
-# Get up-to-date Arch bootstrap image (ensures we have the image in cache)
+# Get up-to-date Arch bootstrap image and extract it
 #
 
+# x86_64 architecture
 if [ "$REPO_MAKE_ARCH" = "x86_64" ]; then
   # Name of the pacman-key keyring for this architecture
   PACMAN_KEYRING="archlinux"
@@ -148,16 +149,23 @@ if [ "$REPO_MAKE_ARCH" = "x86_64" ]; then
 
   # Configure mirror
   echo "Server = $REPO_MAKE_ARCH_MIRROR/\$repo/os/\$arch" >> "$CHROOT/etc/pacman.d/mirrorlist"
-elif [ "$REPO_MAKE_ARCH" = "armv7h" ]; then
+
+# ARM architecture
+elif [ "$REPO_MAKE_ARCH" = "armv6h" -o "$REPO_MAKE_ARCH" = "armv7h" ]; then
+  # Name of the image for this architecture
+  IMAGENAME="ArchLinuxARM-rpi-latest.tar.gz"
+  if [ "$REPO_MAKE_ARCH" = "armv7h" ]; then
+    IMAGENAME="ArchLinuxARM-rpi-2-latest.tar.gz"
+  fi
+
   # Name of the pacman-key keyring for this architecture
   PACMAN_KEYRING="archlinuxarm"
 
   # Arch Linux ARM does not have any secure way to get checksums from, so we
   # have to use GPG for verification
-  IMAGENAME="ArchLinuxARM-rpi-2-latest.tar.gz"
   OURIMAGENAME="$IMAGENAME-$(date +%Y-%m).tar.gz"
   if [ ! -s "$IMAGECACHE/$OURIMAGENAME" ]; then
-    rm -f "$IMAGECACHE/ArchLinuxARM-"*
+    rm -f "$IMAGECACHE/$IMAGENAME-"*
     echo "REPO-MAKE-CI: Downloading new Arch Linux image: $OURIMAGENAME"
     wget -q -nc "http://os.archlinuxarm.org/os/$IMAGENAME" -O "$TMPDIR/$OURIMAGENAME"
     wget -q -nc "http://os.archlinuxarm.org/os/$IMAGENAME.sig" -O "$TMPDIR/$OURIMAGENAME.sig"
@@ -180,6 +188,11 @@ elif [ "$REPO_MAKE_ARCH" = "armv7h" ]; then
 
   # Arch Linux ARM has a symlink as /etc/resolv.conf. Remove it.
   rm "$CHROOT/etc/resolv.conf"
+
+# Unsupported architectures
+else
+  echo "REPO-MAKE-CI: Unsupported architecture: $REPO_MAKE_ARCH"
+  exit 1
 fi
 
 #

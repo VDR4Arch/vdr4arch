@@ -17,10 +17,10 @@ env:
   jobs:
     - REPO_MAKE_ARCH=x86_64
       REPO_MAKE_MAKEPKG_CONF=./.ci/makepkg.conf
-      SETUP_ENV_PROG=/bin/true
+    - REPO_MAKE_ARCH=armv6h
+      REPO_MAKE_MAKEPKG_CONF=./.ci/makepkg-armv7h.conf
     - REPO_MAKE_ARCH=armv7h
       REPO_MAKE_MAKEPKG_CONF=./.ci/makepkg-armv7h.conf
-      SETUP_ENV_PROG=./.ci/setup_armv7h_cross_compile.sh
 
 language: generic
 
@@ -32,7 +32,7 @@ cache:
     - $HOME/cache
 
 before_script:
-  - $SETUP_ENV_PROG
+  - ./.ci/setup_cross_compile.sh
   - git clone https://github.com/VDR4Arch/$REPO_MAKE_ARCH.git --branch master --single-branch $HOME/repo || true
   - rm -rf $HOME/repo/.git
 
