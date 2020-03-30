@@ -9,27 +9,23 @@ if [ "$REPO_MAKE_ARCH" = "x86_64" ]; then
   exit 0
 fi
 
-# Install distcc
+# Install distcc (before we mess with the apt sources :P)
 sudo apt-get update
 sudo apt-get install distcc
-
-# We need a more up-to-date qemu (or even better keep it as up-to-date as even
-# possible). But later Ubuntu releases want to fade out i386 support so they
-# won't give us the versions we want. To fix this, we hack a Debian source into
-# the Travis CI VM and get our qemu-arm-static from there.
-# WARNING: This is hacky. Do not ever do this on a proper Ubuntu setup!
-sudo apt-key adv --recv-keys E1CF20DDFFE4B89E802658F1E0B11894F66AEC98
-sudo apt-key adv --recv-keys 6ED6F5CB5FA6FB2F460AE88EEDA0D2388AE22BA9
-echo "deb http://http.us.debian.org/debian bullseye main" | sudo tee "/etc/apt/sources.list.d/debian.list"
-sudo apt-get update
 
 # Get an ARM emulator going. This gets some support by repo-make-ci.sh later
 # to get the emulator copied into the chroot environment.
 # We need a 32 bit static qemu binary to properly emulate our ARM 32 bit target
 # https://bugs.launchpad.net/qemu/+bug/1805913
-sudo apt-get install -t "$DIST" qemu-user-static:i386
-
-# For good measure: Get rid of the Debian source.
+#
+# The Bionic qemu is outdated and caused segfaults with our build process so
+# we temporarily hack a Debian repository into the Ubuntu Bionic virtual
+# machine for getting an updated package from Debian.
+sudo apt-key adv --recv-keys E1CF20DDFFE4B89E802658F1E0B11894F66AEC98
+sudo apt-key adv --recv-keys 6ED6F5CB5FA6FB2F460AE88EEDA0D2388AE22BA9
+echo "deb http://http.us.debian.org/debian bullseye main" | sudo tee "/etc/apt/sources.list.d/debian.list"
+sudo apt-get update
+sudo apt-get install qemu-user-static:i386
 sudo rm "/etc/apt/sources.list.d/debian.list"
 sudo apt-get update
 
