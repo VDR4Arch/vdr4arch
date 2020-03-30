@@ -13,16 +13,14 @@ fi
 sudo apt-get update
 sudo apt-get install distcc
 
-# Now switch packages over to "focal" to get a more current qemu-user-static
-DIST="focal"
-echo "deb http://de.archive.ubuntu.com/ubuntu/ $DIST main restricted universe multiverse
-deb-src http://de.archive.ubuntu.com/ubuntu/ $DIST main restricted universe multiverse
-deb http://de.archive.ubuntu.com/ubuntu/ $DIST-updates main restricted universe multiverse
-deb-src http://de.archive.ubuntu.com/ubuntu/ $DIST-updates main restricted universe multiverse
-deb http://de.archive.ubuntu.com/ubuntu/ $DIST-backports main restricted universe multiverse
-deb-src http://de.archive.ubuntu.com/ubuntu/ $DIST-backports main restricted universe multiverse
-deb http://security.ubuntu.com/ubuntu $DIST-security main restricted universe multiverse
-deb-src http://security.ubuntu.com/ubuntu $DIST-security main restricted universe multiverse" | sudo tee "/etc/apt/sources.list.d/ubuntu-$DIST.list"
+# We need a more up-to-date qemu (or even better keep it as up-to-date as even
+# possible). But later Ubuntu releases want to fade out i386 support so they
+# won't give us the versions we want. To fix this, we hack a Debian source into
+# the Travis CI VM and get our qemu-arm-static from there.
+# WARNING: This is hacky. Do not ever do this on a proper Ubuntu setup!
+sudo apt-key adv --recv-keys E1CF20DDFFE4B89E802658F1E0B11894F66AEC98
+sudo apt-key adv --recv-keys 6ED6F5CB5FA6FB2F460AE88EEDA0D2388AE22BA9
+echo "deb http://http.us.debian.org/debian bullseye main" | sudo tee "/etc/apt/sources.list.d/debian.list"
 sudo apt-get update
 
 # Get an ARM emulator going. This gets some support by repo-make-ci.sh later
@@ -30,6 +28,10 @@ sudo apt-get update
 # We need a 32 bit static qemu binary to properly emulate our ARM 32 bit target
 # https://bugs.launchpad.net/qemu/+bug/1805913
 sudo apt-get install -t "$DIST" qemu-user-static:i386
+
+# For good measure: Get rid of the Debian source.
+rm "/etc/apt/sources.list.d/debian.list"
+sudo apt-get update
 
 # Enable a reduced repo-make.conf list. ARM build is slow so we don't build the
 # full set.
