@@ -9,20 +9,32 @@ if [ "$REPO_MAKE_ARCH" = "x86_64" ]; then
   exit 0
 fi
 
+# Install distcc
+sudo apt-get update
+sudo apt-get install distcc
+
+# Now switch packages over to "focal" to get a more current qemu-user-static
+DIST="focal"
+echo "deb http://de.archive.ubuntu.com/ubuntu/ $DIST main restricted universe multiverse
+deb-src http://de.archive.ubuntu.com/ubuntu/ $DIST main restricted universe multiverse
+deb http://de.archive.ubuntu.com/ubuntu/ $DIST-updates main restricted universe multiverse
+deb-src http://de.archive.ubuntu.com/ubuntu/ $DIST-updates main restricted universe multiverse
+deb http://de.archive.ubuntu.com/ubuntu/ $DIST-backports main restricted universe multiverse
+deb-src http://de.archive.ubuntu.com/ubuntu/ $DIST-backports main restricted universe multiverse
+deb http://security.ubuntu.com/ubuntu $DIST-security main restricted universe multiverse
+deb-src http://security.ubuntu.com/ubuntu $DIST-security main restricted universe multiverse" | sudo tee "/etc/apt/sources.list.d/ubuntu-$DIST.list"
+sudo apt-get update
+
 # Get an ARM emulator going. This gets some support by repo-make-ci.sh later
 # to get the emulator copied into the chroot environment.
 # We need a 32 bit static qemu binary to properly emulate our ARM 32 bit target
 # https://bugs.launchpad.net/qemu/+bug/1805913
-sudo apt-get update
 sudo apt-get install qemu-user-static:i386
 
 # Enable a reduced repo-make.conf list. ARM build is slow so we don't build the
 # full set.
 rm repo-make.conf
 cp repo-make-arm.conf repo-make.conf
-
-# Install distcc
-sudo apt-get install distcc
 
 # If we don't have them cached, get "x-tools" from archlinuxarm.org
 # If they update their build-chain, we have to change the checksum here!
