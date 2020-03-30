@@ -30,7 +30,7 @@ sudo apt-get update
 sudo apt-get install -t "$DIST" qemu-user-static:i386
 
 # For good measure: Get rid of the Debian source.
-rm "/etc/apt/sources.list.d/debian.list"
+sudo rm "/etc/apt/sources.list.d/debian.list"
 sudo apt-get update
 
 # Enable a reduced repo-make.conf list. ARM build is slow so we don't build the
