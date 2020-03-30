@@ -26,7 +26,7 @@ sudo apt-get install distcc
 
 # If we don't have them cached, get "x-tools" from archlinuxarm.org
 # If they update their build-chain, we have to change the checksum here!
-if ["$REPO_MAKE_ARCH" = "armv6h"]; then
+if [ "$REPO_MAKE_ARCH" = "armv6h" ]; then
   X_TOOLS="x-tools6h"
   X_TOOLS_MD5="a9c321d97b7fde8e44a0ca1bde19595e"
 else
@@ -41,13 +41,15 @@ if [ ! -s "$HOME/cache/$X_TOOLS.tar.xz" ]; then
   echo "$X_TOOLS_MD5  $X_TOOLS.tar.xz" > "/var/tmp/$X_TOOLS.tar.xz.md5"
   env -C "/var/tmp" md5sum -c "$X_TOOLS.tar.xz.md5"
   mv "/var/tmp/$X_TOOLS.tar.xz" "$HOME/cache"
+else
+  echo "x-tools $X_TOOLS found in cache"
 fi
 
 # Extract "x-tools"
 tar -xf "$HOME/cache/$X_TOOLS.tar.xz" -C "$HOME"
 
 # Fill whitelist for distcc
-if ["$REPO_MAKE_ARCH" = "armv6h"]; then
+if [ "$REPO_MAKE_ARCH" = "armv6h" ]; then
   sudo ln -s /usr/bin/distcc /usr/lib/distcc/armv6l-unknown-linux-gnueabihf-cpp
   sudo ln -s /usr/bin/distcc /usr/lib/distcc/armv6l-unknown-linux-gnueabihf-cc
   sudo ln -s /usr/bin/distcc /usr/lib/distcc/armv6l-unknown-linux-gnueabihf-g++
