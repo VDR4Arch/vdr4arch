@@ -183,11 +183,7 @@ elif [ "$REPO_MAKE_ARCH" = "armv6h" -o "$REPO_MAKE_ARCH" = "armv7h" ]; then
   # If the host has qemu-arm-static installed, then copy it over to our chroot.
   if [ -x "/usr/bin/qemu-arm-static" ]; then
     echo "REPO-MAKE-CI: Copying qemu-arm-static into our chroot"
-    echo "REPO-MAKE-CI: qemu-arm-static version on host:"
-    qemu-arm-static --version
     cp -a "/usr/bin/qemu-arm-static" "$CHROOT/usr/bin"
-    echo "REPO-MAKE-CI: qemu-arm-static version in chroot:"
-    chroot "$CHROOT" qemu-arm-static --version
   fi
 
   # Arch Linux ARM has a symlink as /etc/resolv.conf. Remove it.
