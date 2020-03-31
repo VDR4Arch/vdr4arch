@@ -9,10 +9,10 @@ pkgbase = libmcli
 	arch = armv7h
 	arch = aarch64
 	license = GPL2
-	makedepends = subversion
+	makedepends = git
 	depends = libxml2
 	optdepends = tnftp6: Required for netcvupdate
-	source = svn+https://svn.baycom.de/repos/vdr-mcli-plugin/#revision=189
+	source = git+https://github.com/VDR4Arch/vdr-mcli-plugin.git#commit=89e6d75b49fd1de665a4370e5ccf61b29af8e83d
 	source = libmcli-fhs-socket-dir.patch
 	source = libmcli-ftp-command.patch
 	sha256sums = SKIP
