@@ -23,7 +23,7 @@ d=${repo}/
 create_index
 r=${d}
 
-for d in */; do
-  (cd ${d}
-  create_index)
-done
+#for d in */; do
+#  (cd ${d}
+#  create_index)
+#done

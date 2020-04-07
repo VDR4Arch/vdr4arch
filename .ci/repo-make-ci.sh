@@ -264,3 +264,8 @@ chroot "$CHROOT" /bin/bash -c \
   chown -R build /home/build; \
   pacman -U --noconfirm /root/$REPO_MAKE_PKG; \
   repo-make --restore-repo-mtimes -V -C /home/build/pkgbuilds -t /home/build/target"
+
+# Before we exit, cleanup package cache
+chroot "$CHROOT" /bin/bash -c \
+  "pacman -S pacman-contrib; \
+  paccache -k 1 -r"
