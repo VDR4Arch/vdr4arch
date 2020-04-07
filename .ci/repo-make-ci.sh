@@ -184,6 +184,10 @@ elif [ "$REPO_MAKE_ARCH" = "armv6h" -o "$REPO_MAKE_ARCH" = "armv7h" ]; then
   if [ -x "/usr/bin/qemu-arm-static" ]; then
     echo "REPO-MAKE-CI: Copying qemu-arm-static into our chroot"
     cp -a "/usr/bin/qemu-arm-static" "$CHROOT/usr/bin"
+    if [ -x "/bin/bash-static" ]; then
+      echo "REPO-MAKE-CI: Copying bash-static into our chroot"
+      cp -a "/bin/bash-static" "$CHROOT/usr/bin"
+    fi
   fi
 
   # Arch Linux ARM has a symlink as /etc/resolv.conf. Remove it.
@@ -244,6 +248,13 @@ chroot "$CHROOT" /bin/bash -c \
   pacman -S --needed --noconfirm base-devel $DISTCC; \
   locale-gen; \
   useradd -m build"
+
+# Now enable bash-static if it has been found and copied for our chroot
+if [ -x "$CHROOT/usr/bin/bash-static" ]; then
+  echo "REPO-MAKE-CI: Replacing bash with bash-static"
+  rm "$CHROOT/usr/bin/bash"
+  mv "$CHROOT/usr/bin/bash-static" "$CHROOT/usr/bin/bash"
+fi
 
 # Create build target, cache and source directories and connect them
 mkdir -p "$CHROOT/home/build/"{target,srcdest,pkgbuilds}

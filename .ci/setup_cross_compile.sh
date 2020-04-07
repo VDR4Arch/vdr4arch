@@ -26,6 +26,7 @@ sudo apt-key adv --recv-keys 6ED6F5CB5FA6FB2F460AE88EEDA0D2388AE22BA9
 echo "deb http://http.us.debian.org/debian bullseye main" | sudo tee "/etc/apt/sources.list.d/debian.list"
 sudo apt-get update
 sudo apt-get install qemu-user-static:i386
+sudo apt-get install bash-static
 sudo rm "/etc/apt/sources.list.d/debian.list"
 sudo apt-get update
 
