@@ -267,5 +267,5 @@ chroot "$CHROOT" /bin/bash -c \
 
 # Before we exit, cleanup package cache
 chroot "$CHROOT" /bin/bash -c \
-  "pacman -S pacman-contrib; \
+  "pacman -S --noconfirm pacman-contrib; \
   paccache -k 1 -r"
