@@ -58,29 +58,3 @@ post_remove() {
 	getent passwd kodi > /dev/null 2>&1 && userdel kodi
 	getent group kodi > /dev/null 2>&1 && groupdel kodi
 }
-
-pre_install() {
-	if [ -f /usr/lib/systemd/system/xbmc.service ]; then
-		/usr/bin/systemctl status xbmc.service &>/dev/null
-		if [[ $? -eq 0 ]]; then
-			# xbmc is running via this service
-			/usr/bin/systemctl stop xbmc.service &>/dev/null
-		else
-			/bin/true
-		fi
-	else
-		/bin/true
-	fi
-
-	if [ -f /usr/lib/systemd/system/kodi.service ]; then
-		/usr/bin/systemctl status kodi.service &>/dev/null
-		if [[ $? -eq 0 ]]; then
-			# kodi is running via this service
-			/usr/bin/systemctl stop kodi.service &>/dev/null
-		else
-			/bin/true
-		fi
-	else
-		/bin/true
-	fi
-}
