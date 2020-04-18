@@ -1,9 +1,9 @@
 pkgbase = kodi-standalone-service
 	pkgdesc = Systemd service and user to run kodi in stand-alone mode
-	pkgver = 1.8
-	pkgrel = 6
+	pkgver = 1.9
+	pkgrel = 1
 	url = https://wiki.archlinux.org/index.php/Kodi#Kodi-standalone-service
-	install = readme.install
+	install = kodi.install
 	arch = any
 	license = GPL
 	depends = systemd
@@ -21,7 +21,7 @@ pkgbase = kodi-standalone-service
 	conflicts = kodi-rbp4
 	replaces = xbmc-standalone-service
 	source = kodi.service
-	sha256sums = 7f3f95bdabfd52816a62f10e9f0e576e8bd182970b09b480ba3be1b50d34c58b
+	sha256sums = 669aa91f930ef7d5d287d2e3196343e0f029fa972ecd4a9de8c1a28a06194447
 
 pkgname = kodi-standalone-service
 

@@ -15,4 +15,4 @@ Restart=on-abort
 StandardInput=tty
 
 [Install]
-WantedBy=multi-user.target
+Alias=display-manager.service
