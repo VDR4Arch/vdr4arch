@@ -1,5 +1,5 @@
 pkgbase = vdr-markad
-	pkgdesc = automatic advertisement detection
+	pkgdesc = Plugin to mark advertisemets in recordings and optionally auto-cut
 	pkgver = 2.0.1
 	pkgrel = 1
 	epoch = 1
