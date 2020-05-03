@@ -296,8 +296,7 @@ env -C "$CHROOT/root" sha1sum -c "$REPO_MAKE_PKG.sha1"
 # Install repo-make into chroot, run build
 chroot "$CHROOT" /bin/bash -c \
   "source /etc/profile; \
-  chown -vR build /home/build; \
-  su build -c 'mkdir -p /home/build/pkgbuilds/w_scan2'; \
+  chown -R build /home/build; \
   pacman -U --noconfirm /root/$REPO_MAKE_PKG; \
   repo-make --restore-repo-mtimes -V -C /home/build/pkgbuilds -t /home/build/target"
 
