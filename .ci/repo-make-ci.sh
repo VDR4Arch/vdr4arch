@@ -254,8 +254,8 @@ chroot "$CHROOT" /bin/bash -c \
 # https://github.com/osrf/multiarch-docker-image-generation/issues/36
 # We have to work around this issue
 if [ -x "$CHROOT/usr/bin/qemu-arm-static" ]; then
-  echo "REPO-MAKE-CI: qemu-arm-static build. Building semtimedop workaround"
-  cat <<EOF > '$CHROOT/tmp/wrap_semop.c'
+  echo 'REPO-MAKE-CI: qemu-arm-static build. Building semtimedop workaround'
+  cat <<EOF > "$CHROOT/tmp/wrap_semop.c"
 #include <unistd.h>
 #include <asm/unistd.h>
 #include <sys/syscall.h>
