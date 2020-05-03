@@ -249,6 +249,30 @@ chroot "$CHROOT" /bin/bash -c \
   locale-gen; \
   useradd -m build"
 
+# There is an issue with current qemu versions which cause an error when
+# entering fakeroot:
+# https://github.com/osrf/multiarch-docker-image-generation/issues/36
+# We have to work around this issue
+if [ -x "$CHROOT/usr/bin/qemu-arm-static" ]; then
+  echo "REPO-MAKE-CI: qemu-arm-static build. Building semtimedop workaround"
+  cat <<EOF > '$CHROOT/tmp/wrap_semop.c'
+#include <unistd.h>
+#include <asm/unistd.h>
+#include <sys/syscall.h>
+#include <linux/sem.h>
+
+/* glibc 2.31 wraps semop() as a call to semtimedop() with the timespec set to NULL
+ * qemu 3.1 doesn't support semtimedop(), so this wrapper syscalls the real semop()
+ */
+int semop(int semid, struct sembuf *sops, unsigned nsops)
+{
+  return syscall(__NR_semop, semid, sops, nsops);
+}
+EOF
+  chroot "$CHROOT" gcc -fPIC -shared -o /opt/libpreload-semop.so /tmp/wrap_semop.c
+  echo '/opt/libpreload-semop.so' >> "$CHROOT/etc/ld.so.preload"
+fi
+
 # Now enable bash-static if it has been found and copied for our chroot
 #if [ -x "$CHROOT/usr/bin/bash-static" ]; then
 #  echo "REPO-MAKE-CI: Replacing bash with bash-static"
