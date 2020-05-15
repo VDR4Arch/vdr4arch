@@ -15,6 +15,7 @@ md5sums=('c7f9adf92d46b8da5391be80be6fbd72')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  export LDFLAGS="$LDFLAGS -z muldefs"
   ./configure --prefix=/usr
   make
 }
