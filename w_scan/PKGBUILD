@@ -10,12 +10,18 @@ arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' 'glibc')
 #gcc-libs is somehow needed on arm architecture
-source=("https://www.gen2vdr.de/wirbel/w_scan/$pkgname-$pkgver.tar.bz2")
-md5sums=('c7f9adf92d46b8da5391be80be6fbd72')
+source=("https://www.gen2vdr.de/wirbel/w_scan/$pkgname-$pkgver.tar.bz2"
+        "$pkgname-gcc10-fix.patch")
+md5sums=('c7f9adf92d46b8da5391be80be6fbd72'
+         '1446179a56ec5ed53f714424f12cc552')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -p1 -i "$srcdir/$pkgname-gcc10-fix.patch"
+}
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  export LDFLAGS="$LDFLAGS -z muldefs"
   ./configure --prefix=/usr
   make
 }
