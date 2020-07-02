@@ -45,7 +45,7 @@ REPO_MAKE_PKGBUILDS=${REPO_MAKE_PKGBUILDS:-/var/tmp/pkgbuilds}
 REPO_MAKE_MAKEPKG_CONF=${REPO_MAKE_MAKEPKG_CONF:-/etc/makepkg.conf}
 
 # Arch Linux mirror to use
-REPO_MAKE_ARCH_MIRROR=${REPO_MAKE_ARCH_MIRROR:-https://mirrors.edge.kernel.org/archlinux/}
+REPO_MAKE_ARCH_MIRROR=${REPO_MAKE_ARCH_MIRROR:-https://mirror.rackspace.com/archlinux/}
 
 # For which architecture are we meant to build?
 REPO_MAKE_ARCH=${REPO_MAKE_ARCH:-x86_64}
