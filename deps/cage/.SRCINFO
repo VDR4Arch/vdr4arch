@@ -1,0 +1,18 @@
+pkgbase = cage
+	pkgdesc = A Wayland kiosk
+	pkgver = 0.1.2.1
+	pkgrel = 1
+	url = https://www.hjdskes.nl/projects/cage
+	arch = x86_64
+	license = MIT
+	makedepends = meson
+	makedepends = wayland-protocols
+	depends = wlroots
+	depends = wayland
+	depends = libxkbcommon
+	depends = xorg-server-xwayland
+	source = cage-0.1.2.1.tar.gz::https://github.com/Hjdskes/cage/archive/v0.1.2.1.tar.gz
+	sha256sums = 38a3e3968f00cc58fe1d9448e972cfac7d1efa30c48699f09032f264101a55ac
+
+pkgname = cage
+

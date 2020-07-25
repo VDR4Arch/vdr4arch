@@ -1,0 +1,28 @@
+# Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
+pkgname=cage
+pkgver=0.1.2.1
+pkgrel=1
+license=("MIT")
+pkgdesc="A Wayland kiosk"
+makedepends=("meson" "wayland-protocols")
+depends=("wlroots" "wayland" "libxkbcommon" "xorg-server-xwayland")
+arch=("x86_64")
+url="https://www.hjdskes.nl/projects/cage"
+source=("$pkgname-$pkgver.tar.gz::https://github.com/Hjdskes/cage/archive/v$pkgver.tar.gz")
+sha256sums=('38a3e3968f00cc58fe1d9448e972cfac7d1efa30c48699f09032f264101a55ac')
+
+prepare() {
+  cd "$srcdir/$pkgname-$pkgver"
+  meson --buildtype=release -Dxwayland=true --prefix /usr "$srcdir/build"
+}
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ninja -C "$srcdir/build"
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  DESTDIR="$pkgdir/" ninja -C "$srcdir/build" install
+  install -D -m 644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
