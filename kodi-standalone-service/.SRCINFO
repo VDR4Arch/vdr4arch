@@ -1,27 +1,28 @@
 pkgbase = kodi-standalone-service
-	pkgdesc = Systemd service and user to run kodi in stand-alone mode
-	pkgver = 1.9
+	pkgdesc = Systemd service to run kodi in stand-alone mode without a DE
+	pkgver = 1.104
 	pkgrel = 1
-	url = https://wiki.archlinux.org/index.php/Kodi#Kodi-standalone-service
-	install = kodi.install
-	arch = any
+	url = https://github.com/graysky2/kodi-standalone-service
+	install = readme.install
+	arch = x86_64
 	license = GPL
-	depends = systemd
-	depends = xorg-server
-	depends = xorg-xinit
-	depends = kodi
-	depends = polkit
-	conflicts = kodi-c1
-	conflicts = kodi-c2
-	conflicts = kodi-imx
-	conflicts = kodi-odroid
-	conflicts = kodi-rbp-git
-	conflicts = kodi-rbp
-	conflicts = kodi-rbp3
-	conflicts = kodi-rbp4
-	replaces = xbmc-standalone-service
-	source = kodi.service
-	sha256sums = 669aa91f930ef7d5d287d2e3196343e0f029fa972ecd4a9de8c1a28a06194447
+	source = kodi-standalone-service-v1.104.tar.gz::https://github.com/graysky2/kodi-standalone-service/archive/v1.104.tar.gz
+	sha256sums = 0bd03a2db4c463838e513a415b369a9205bf4153c62aee1ab0e3525343b25333
 
 pkgname = kodi-standalone-service
+	depends = kodi
+	depends = polkit
+	depends = xorg-server
+	depends = xorg-xinit
+
+pkgname = kodi-standalone-gbm-service
+	depends = kodi-gbm
+	depends = polkit
+	depends = libinput
+
+pkgname = kodi-standalone-wayland-service
+	depends = kodi-wayland
+	depends = polkit
+	depends = libinput
+	depends = cage
 
