@@ -21,8 +21,8 @@ sudo apt-get install distcc
 # The Bionic qemu is outdated and caused segfaults with our build process so
 # we temporarily hack a Debian repository into the Ubuntu Bionic virtual
 # machine for getting an updated package from Debian.
-sudo apt-key adv --keyserver pool.sks-keyservers.net --recv-keys E1CF20DDFFE4B89E802658F1E0B11894F66AEC98
-sudo apt-key adv --keyserver pool.sks-keyservers.net --recv-keys 6ED6F5CB5FA6FB2F460AE88EEDA0D2388AE22BA9
+sudo apt-key adv --keyserver keys.gnupg.net --recv-keys E1CF20DDFFE4B89E802658F1E0B11894F66AEC98
+sudo apt-key adv --keyserver keys.gnupg.net --recv-keys 6ED6F5CB5FA6FB2F460AE88EEDA0D2388AE22BA9
 echo "deb http://http.us.debian.org/debian bullseye main" | sudo tee "/etc/apt/sources.list.d/debian.list"
 sudo apt-get update
 sudo apt-get install qemu-user-static:i386

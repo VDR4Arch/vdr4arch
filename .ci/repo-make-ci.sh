@@ -169,7 +169,7 @@ elif [ "$REPO_MAKE_ARCH" = "armv6h" -o "$REPO_MAKE_ARCH" = "armv7h" ]; then
     echo "REPO-MAKE-CI: Downloading new Arch Linux image: $OURIMAGENAME"
     wget -q -nc "http://os.archlinuxarm.org/os/$IMAGENAME" -O "$TMPDIR/$OURIMAGENAME"
     wget -q -nc "http://os.archlinuxarm.org/os/$IMAGENAME.sig" -O "$TMPDIR/$OURIMAGENAME.sig"
-    gpg --recv-key 68B3537F39A313B3E574D06777193F152BDBE6A6
+    gpg --keyserver keys.gnupg.net --recv-key 68B3537F39A313B3E574D06777193F152BDBE6A6
     gpg --verify "$TMPDIR/$OURIMAGENAME.sig"
     mv "$TMPDIR/$OURIMAGENAME" "$IMAGECACHE"
   else
