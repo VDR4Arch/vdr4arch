@@ -1,7 +1,7 @@
 pkgbase = vdr-osdteletext
 	pkgdesc = Displays teletext pages directly on VDR's OSD
 	pkgver = 0.9.7
-	pkgrel = 3
+	pkgrel = 4
 	url = http://projects.vdr-developer.org/projects/plg-osdteletext
 	arch = x86_64
 	arch = i686
@@ -10,7 +10,7 @@ pkgbase = vdr-osdteletext
 	arch = armv7h
 	license = GPL2
 	depends = gcc-libs
-	depends = vdr-api=2.4.1
+	depends = vdr-api=2.4.3
 	optdepends = ttf-teletext2: renderng special graphic characters used in Teletext
 	backup = etc/vdr/conf.avail/50-osdteletext.conf
 	source = https://projects.vdr-developer.org/git/vdr-plugin-osdteletext.git/snapshot/vdr-plugin-osdteletext-0.9.7.tar.bz2

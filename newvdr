@@ -45,7 +45,7 @@ my $PLUGINSPATH = 'plugins';
       or die("Can't read pkgrel for $plugindir\n");
 
     # Anything to do for us?
-#     next if ($vdrapi eq $vdrversion);
+     next if ($vdrapi eq $vdrversion);
 
     # Count up pkgrel
     $pkgrel++;

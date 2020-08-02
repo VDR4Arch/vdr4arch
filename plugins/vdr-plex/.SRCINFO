@@ -1,7 +1,7 @@
 pkgbase = vdr-plex
 	pkgdesc = Plex plugin for Linux VDR
 	pkgver = 0.4.0
-	pkgrel = 3
+	pkgrel = 4
 	url = https://github.com/chriszero/vdr-plugin-plex
 	arch = x86_64
 	arch = i686
@@ -10,7 +10,7 @@ pkgbase = vdr-plex
 	arch = armv7h
 	license = GPL2
 	depends = poco
-	depends = vdr-api=2.4.1
+	depends = vdr-api=2.4.3
 	depends = vdr-skindesigner
 	backup = etc/vdr/conf.avail/50-plex.conf
 	source = http://projects.vdr-developer.org/git/vdr-plugin-plex.git/snapshot/vdr-plugin-plex-0.4.0.tar.bz2
