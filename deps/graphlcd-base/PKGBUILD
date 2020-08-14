@@ -3,7 +3,7 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 # Contributor: Ole Ernst <olebowle[at]gmx[dot]com>
 pkgname=graphlcd-base
-pkgver=1.0.1.r0.g55d4bd8
+pkgver=2.0.0.r0.g046178b
 _gitver=046178bd27005e28b8db7d8e06a21cf74a26bae0
 pkgrel=1
 epoch=1

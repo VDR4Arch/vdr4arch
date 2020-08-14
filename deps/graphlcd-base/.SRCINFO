@@ -1,6 +1,6 @@
 pkgbase = graphlcd-base
 	pkgdesc = Project to support graphical LC displays connected to the PC
-	pkgver = 1.0.1.r0.g55d4bd8
+	pkgver = 2.0.0.r0.g046178b
 	pkgrel = 1
 	epoch = 1
 	url = http://projects.vdr-developer.org/projects/show/graphlcd
