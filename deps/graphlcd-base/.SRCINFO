@@ -17,7 +17,7 @@ pkgbase = graphlcd-base
 	depends = libvncserver
 	optdepends = serdisplib: Add support for more serial displays
 	backup = etc/graphlcd.conf
-	source = git://projects.vdr-developer.org/graphlcd-base.git#commit=55d4bd88164f02e33d2c3d75a036437c50afe40e
+	source = git://projects.vdr-developer.org/graphlcd-base.git#commit=046178bd27005e28b8db7d8e06a21cf74a26bae0
 	md5sums = SKIP
 
 pkgname = graphlcd-base
