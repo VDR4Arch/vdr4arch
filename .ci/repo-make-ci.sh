@@ -276,8 +276,9 @@ fi
 # Now enable bash-static if it has been found and copied for our chroot
 if [ -x "$CHROOT/usr/bin/bash-static" ]; then
   echo "REPO-MAKE-CI: Replacing bash with bash-static"
-  rm "$CHROOT/usr/bin/bash"
-  mv "$CHROOT/usr/bin/bash-static" "$CHROOT/usr/bin/bash"
+  echo "disabled!!"
+#  rm "$CHROOT/usr/bin/bash"
+#  mv "$CHROOT/usr/bin/bash-static" "$CHROOT/usr/bin/bash"
 fi
 
 # Create build target, cache and source directories and connect them
