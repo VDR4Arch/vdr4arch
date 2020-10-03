@@ -6,6 +6,7 @@ pkgbase = vdrctl
 	arch = any
 	license = GPL3
 	depends = perl
+	depends = perl-pod-parser
 	depends = pkg-config
 	depends = vdr
 	source = vdrctl-0.1.1.tar.gz::https://github.com/CReimer/vdrctl/archive/v0.1.1.tar.gz
