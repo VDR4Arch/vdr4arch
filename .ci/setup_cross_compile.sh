@@ -40,10 +40,10 @@ cp repo-make-arm.conf repo-make.conf
 # If they update their build-chain, we have to change the checksum here!
 if [ "$REPO_MAKE_ARCH" = "armv6h" ]; then
   X_TOOLS="x-tools6h"
-  X_TOOLS_MD5="a9c321d97b7fde8e44a0ca1bde19595e"
+  X_TOOLS_MD5="9e1c82ac8badc286f40d7d22e475e1b2"
 else
   X_TOOLS="x-tools7h"
-  X_TOOLS_MD5="e7f77df95a93818469a9fa562723689f"
+  X_TOOLS_MD5="7015421efcdac437de27769a421a10a2"
 fi
 
 mkdir -p "$HOME/cache"
