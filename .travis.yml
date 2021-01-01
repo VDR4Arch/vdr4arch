@@ -27,9 +27,9 @@ language: generic
 git:
   quiet: true
 
-cache:
-  directories:
-    - $HOME/cache
+#cache:
+#  directories:
+#    - /home/travis/cache
 
 before_script:
   - ./.ci/setup_cross_compile.sh
