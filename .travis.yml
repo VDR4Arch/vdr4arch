@@ -30,6 +30,7 @@ git:
 #    - /home/travis/cache
 
 before_script:
+  - ./.ci/setup_arm_build.sh
   - git clone https://github.com/VDR4Arch/$REPO_MAKE_ARCH.git --branch master --single-branch $HOME/repo || true
   - rm -rf $HOME/repo/.git
 
@@ -37,7 +38,6 @@ script:
   - sudo ./.ci/repo-make-ci.sh
 
 before_deploy:
-  - ./.ci/setup_arm_build.sh
   - sudo chown -R $USER:$USER $HOME/repo
   - ./.ci/genindex.sh $HOME/repo $REPONAME
 
