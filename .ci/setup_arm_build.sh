@@ -11,12 +11,10 @@ fi
 
 # Enable 32 bit architecture for ARM builds
 sudo dpkg --add-architecture armhf
-sudo apt-get update || /bin/true
-
-
-echo "> /etc/apt/sources.list start"
-cat /etc/apt/sources.list
-echo "> /etc/apt/sources.list end"
-
-
+sudo apt-get update
 sudo apt-get install crossbuild-essential-armhf
+
+# Enable a reduced repo-make.conf list. ARM build is slow so we don't build the
+# full set.
+rm repo-make.conf
+cp repo-make-arm.conf repo-make.conf
