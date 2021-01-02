@@ -11,5 +11,5 @@ fi
 
 # Enable 32 bit architecture for ARM builds
 sudo dpkg --add-architecture armhf
-sudo apt-get update
+sudo apt-get update || /bin/true
 sudo apt-get install crossbuild-essential-armhf
