@@ -10,5 +10,6 @@ if [ "$REPO_MAKE_ARCH" = "x86_64" ]; then
 fi
 
 # Enable 32 bit architecture for ARM builds
-sudo apt-get update
 sudo dpkg --add-architecture armhf
+sudo apt-get update
+sudo apt-get install crossbuild-essential-armhf
