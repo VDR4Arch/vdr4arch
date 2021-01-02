@@ -31,6 +31,8 @@ git:
 
 before_script:
   - ./.ci/setup_arm_build.sh
+  - sudo locale-gen en_US.UTF-8
+  - sudo update-locale LANG=en_US.UTF-8
   - git clone https://github.com/VDR4Arch/$REPO_MAKE_ARCH.git --branch master --single-branch $HOME/repo || true
   - rm -rf $HOME/repo/.git
 
