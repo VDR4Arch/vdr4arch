@@ -37,6 +37,7 @@ script:
   - sudo ./.ci/repo-make-ci.sh
 
 before_deploy:
+  - ./.ci/setup_arm_build.sh
   - sudo chown -R $USER:$USER $HOME/repo
   - ./.ci/genindex.sh $HOME/repo $REPONAME
 
