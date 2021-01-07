@@ -6,7 +6,6 @@ pkgbase = vdr-mpv
 	arch = x86_64
 	arch = i686
 	license = AGPL3
-	makedepends = git
 	depends = mpv
 	depends = vdr-api=2.4.6
 	backup = etc/vdr/conf.avail/50-mpv.conf
