@@ -8,6 +8,7 @@ dist: focal
 
 env:
   global:
+    - LANG=en_US.UTF-8
     - REPO_MAKE_CACHE=$HOME/cache
     - REPO_MAKE_TARGET=$HOME/repo
     - REPO_MAKE_PKGBUILDS=$TRAVIS_BUILD_DIR
