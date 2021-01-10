@@ -20,7 +20,7 @@ jobs:
   - env: REPO_MAKE_ARCH=armv7h REPO_MAKE_MAKEPKG_CONF=./.ci/makepkg-armv7h.conf
     arch: arm64
 
-language: generic
+language: minimal
 
 git:
   quiet: true
