@@ -6,6 +6,15 @@ os: linux
 
 dist: focal
 
+language: minimal
+
+git:
+  quiet: true
+
+#cache:
+#  directories:
+#    - /home/travis/cache
+
 env:
   global:
     - LANG=en_US.UTF-8
@@ -20,15 +29,6 @@ jobs:
     arch: arm64
   - env: REPO_MAKE_ARCH=armv7h REPO_MAKE_MAKEPKG_CONF=./.ci/makepkg-armv7h.conf
     arch: arm64
-
-language: minimal
-
-git:
-  quiet: true
-
-#cache:
-#  directories:
-#    - /home/travis/cache
 
 before_script:
   - ./.ci/setup_arm_build.sh
