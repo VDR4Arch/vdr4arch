@@ -50,7 +50,11 @@ REPO_MAKE_ARCH_MIRROR=${REPO_MAKE_ARCH_MIRROR:-https://mirror.rackspace.com/arch
 # For which architecture are we meant to build?
 REPO_MAKE_ARCH=${REPO_MAKE_ARCH:-x86_64}
 
-
+# Set arch for configure scripts
+if [ "$REPO_MAKE_ARCH" = "armv6h" ]; then CHROOT_ARCH=linux32
+elif [ "$REPO_MAKE_ARCH" = "armv7h" ]; then CHROOT_ARCH=linux32
+else CHROOT_ARCH="$REPO_MAKE_ARCH"
+fi
 
 
 #
@@ -299,7 +303,7 @@ chroot "$CHROOT" /bin/bash -c \
   "source /etc/profile; \
   chown -R build /home/build; \
   pacman -U --noconfirm /root/$REPO_MAKE_PKG; \
-  repo-make --restore-repo-mtimes -V -C /home/build/pkgbuilds -t /home/build/target"
+  setarch $CHROOT_ARCH repo-make --restore-repo-mtimes -V -C /home/build/pkgbuilds -t /home/build/target"
 
 # Before we exit, cleanup package cache
 chroot "$CHROOT" /bin/bash -c \
