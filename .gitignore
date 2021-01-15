@@ -3,6 +3,7 @@
 *.tar.bz2
 *.tar.gz
 *.tar.xz
+*.tar.zst
 *.tgz
 *.zip
 pkg/

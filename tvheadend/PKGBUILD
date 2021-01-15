@@ -4,7 +4,7 @@
 pkgname=tvheadend
 
 pkgver=4.2.8
-pkgrel=3
+pkgrel=4
 pkgdesc="TV streaming server for Linux"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://tvheadend.org/projects/tvheadend"
@@ -16,14 +16,24 @@ conflicts=('tvheadend-git')
 install=tvheadend.install
 
 source=("$pkgname-$pkgver.tar.gz::https://github.com/tvheadend/tvheadend/archive/v$pkgver.tar.gz"
+        'tvheadend-4.2.8-fno-common.patch'
+        'tvheadend-4.2.8-allocate-space-for-buf-on-heap.patch'
         "tvheadend.service"
         "tvheadend.sysusers"
         "tvheadend.tmpfiles"
 )
 sha256sums=('1aef889373d5fad2a7bd2f139156d4d5e34a64b6d38b87b868a2df415f01f7ad'
+            '79a6f04859050830f2b0a8f3c025841627d8ab91fe2f5f73109cd72b02bb4ea8'
+            'd9f89d523763e3dd45599f6ba9f0604184c6fc9f99da4397d8434719b5078798'
             '0fba50a4d8993aa32815ffcc7eac6b372a85f3334bd804571cc6c6cf0795fff1'
             'd8d63f20a568e16e94df8b427c690075162627dab5201ae3f9d4b65bf758f0d3'
             '4f805a90862d7999adbf082270199d2b5dd0b681711248135fd1e35ecea7aa38')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -p1 -i "${srcdir}/tvheadend-4.2.8-fno-common.patch"
+  patch -p1 -i "${srcdir}/tvheadend-4.2.8-allocate-space-for-buf-on-heap.patch"
+}
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
