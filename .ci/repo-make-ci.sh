@@ -50,11 +50,6 @@ REPO_MAKE_ARCH_MIRROR=${REPO_MAKE_ARCH_MIRROR:-https://mirror.rackspace.com/arch
 # For which architecture are we meant to build?
 REPO_MAKE_ARCH=${REPO_MAKE_ARCH:-x86_64}
 
-# Set arch for configure scripts
-if [ "$REPO_MAKE_ARCH" = "armv6h" ]; then CHROOT_ARCH=linux32
-elif [ "$REPO_MAKE_ARCH" = "armv7h" ]; then CHROOT_ARCH=linux32
-else CHROOT_ARCH="$REPO_MAKE_ARCH"
-fi
 
 
 #
@@ -68,6 +63,9 @@ REPO_MAKE_SHA1=827371403eee270a3aa2554c1b3bd0bac6601b78
 #
 # Prepare the build environment we were launched in
 #
+
+# Default arch we set our chroot environment to
+CHROOT_ARCH="$REPO_MAKE_ARCH"
 
 # Build some cache paths and create them if they are not there
 SOURCECACHE="$REPO_MAKE_CACHE/sourcedir"
@@ -154,8 +152,12 @@ if [ "$REPO_MAKE_ARCH" = "x86_64" ]; then
   # Configure mirror
   echo "Server = $REPO_MAKE_ARCH_MIRROR/\$repo/os/\$arch" >> "$CHROOT/etc/pacman.d/mirrorlist"
 
-# ARM architecture
+# ARM 32 bit architecture
 elif [ "$REPO_MAKE_ARCH" = "armv6h" -o "$REPO_MAKE_ARCH" = "armv7h" ]; then
+  # Get sure the chroot environment runs in a 32 bit environment matching the
+  # target ARM architecture
+  CHROOT_ARCH=linux32
+
   # Name of the image for this architecture
   IMAGENAME="ArchLinuxARM-rpi-latest.tar.gz"
   if [ "$REPO_MAKE_ARCH" = "armv7h" ]; then
@@ -188,10 +190,6 @@ elif [ "$REPO_MAKE_ARCH" = "armv6h" -o "$REPO_MAKE_ARCH" = "armv7h" ]; then
   if [ -x "/usr/bin/qemu-arm-static" ]; then
     echo "REPO-MAKE-CI: Copying qemu-arm-static into our chroot"
     cp -a "/usr/bin/qemu-arm-static" "$CHROOT/usr/bin"
-    if [ -x "/bin/bash-static" ]; then
-      echo "REPO-MAKE-CI: Copying bash-static into our chroot"
-      cp -a "/bin/bash-static" "$CHROOT/usr/bin"
-    fi
   fi
 
   # Arch Linux ARM has a symlink as /etc/resolv.conf. Remove it.
@@ -277,19 +275,11 @@ EOF
   echo '/opt/libpreload-semop.so' >> "$CHROOT/etc/ld.so.preload"
 fi
 
-# Now enable bash-static if it has been found and copied for our chroot
-if [ -x "$CHROOT/usr/bin/bash-static" ]; then
-  echo "REPO-MAKE-CI: Replacing bash with bash-static"
-  echo "disabled!!"
-#  rm "$CHROOT/usr/bin/bash"
-#  mv "$CHROOT/usr/bin/bash-static" "$CHROOT/usr/bin/bash"
-fi
-
 # Create build target, cache and source directories and connect them
 mkdir -p "$CHROOT/home/build/"{target,srcdest,pkgbuilds}
 mount --rbind "$REPO_MAKE_PKGBUILDS" "$CHROOT/home/build/pkgbuilds"
 mount --rbind "$REPO_MAKE_TARGET" "$CHROOT/home/build/target"
-mount --rbind "$SOURCECACHE" "$CHROOT/home/build/srcdest"
+#mount --rbind "$SOURCECACHE" "$CHROOT/home/build/srcdest"
 
 # Download repo-make, verify checksum
 REPO_MAKE_PKG="repo-make-$REPO_MAKE_VERSION-1-any.pkg.tar.xz"
@@ -300,7 +290,7 @@ env -C "$CHROOT/root" sha1sum -c "$REPO_MAKE_PKG.sha1"
 
 # Install repo-make into chroot, run build
 chroot "$CHROOT" /bin/bash -c \
-  "source /etc/profile; \
+  "unset LANG; source /etc/profile; \
   chown -R build /home/build; \
   pacman -U --noconfirm /root/$REPO_MAKE_PKG; \
   setarch $CHROOT_ARCH repo-make --restore-repo-mtimes -V -C /home/build/pkgbuilds -t /home/build/target"

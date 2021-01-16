@@ -11,9 +11,9 @@ language: minimal
 git:
   quiet: true
 
-#cache:
-#  directories:
-#    - /home/travis/cache
+cache:
+  directories:
+    - /home/travis/cache
 
 env:
   global:
