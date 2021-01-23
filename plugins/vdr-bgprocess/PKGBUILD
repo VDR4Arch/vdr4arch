@@ -6,7 +6,7 @@ pkgver=0.1.1
 _vdrapi=2.4.6
 pkgrel=1
 pkgdesc="Displays information about background processes"
-url="http://www.vdr-wiki.de/wiki/index.php/Bgprocess-plugin"
+url="https://github.com/vdr-projects/vdr-plugin-bgprocess"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")
