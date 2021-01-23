@@ -12,6 +12,7 @@ pkgbase = tntnet
 	depends = cxxtools
 	depends = openssl
 	depends = zlib
+	depends = perl
 	source = http://www.tntnet.org/download/tntnet-2.2.1.tar.gz
 	md5sums = febe799675c1b8b2f7259bad30cf6f23
 
