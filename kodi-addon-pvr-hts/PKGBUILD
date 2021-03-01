@@ -2,8 +2,8 @@
 
 # Maintainer: Manuel Reimer <manuel.reimer@gmx.de>
 pkgname=kodi-addon-pvr-hts
-pkgver=4.4.14
-_gitver=2b7348aff8172dd211d2cee608bdee711d995218
+pkgver=8.2.2
+_gitver=6a4a3a8139d6e921a2b36e2bc43a747d2eeea6aa
 pkgrel=1
 url="https://github.com/kodi-pvr/pvr.hts"
 arch=('x86_64' 'i686' 'armv6h' 'armv7h')
