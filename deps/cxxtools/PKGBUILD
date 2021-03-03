@@ -2,15 +2,15 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=cxxtools
-pkgver=2.2.1
-pkgrel=3
+pkgver=3.0
+pkgrel=1
 pkgdesc="Collection of general-purpose C++ classes"
 url="http://www.tntnet.org"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('bash' 'gcc-libs' 'libnsl')
 source=("http://www.tntnet.org/download/${pkgname}-${pkgver}.tar.gz")
-md5sums=('aab00068ae5237435b37ac86f2ac7576')
+sha256sums=('07b18037fb0983f6292f5c8d53e2369e9e7a9711df2c9ad50838aacbc8c62f7c')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
