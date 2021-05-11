@@ -1,6 +1,6 @@
 pkgbase = vdr
 	pkgver = 2.4.7
-	pkgrel = 1
+	pkgrel = 2
 	url = http://tvdr.de/
 	arch = x86_64
 	arch = i686
@@ -37,7 +37,7 @@ pkgbase = vdr
 	sha256sums = 7313a8db29693fa84d19be7b715b3ab04fd77eddcb52682588cc0a094764b6ba
 	sha256sums = 17b82fd995e9a39ad8d73d46b586d6c1934a6747c2859bd6d6df22ed254b5c4b
 	sha256sums = f33f42a77bd93f00e7aa18f22667f0097468de76a0269c6e35fdc0fd2e30f6e6
-	sha256sums = c6a6ed882190d487b1df3023d6b950685714ac75503ba40b4f6567ac1a983bad
+	sha256sums = 7ca24fe1df90ffc20ae7fc6578193874b21ef8f303d7aac421d394a6106eef2a
 
 pkgname = vdr
 	pkgdesc = 'open' digital satellite receiver and timer controlled video disk recorder
