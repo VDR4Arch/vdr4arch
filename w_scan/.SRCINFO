@@ -1,6 +1,6 @@
 pkgbase = w_scan
 	pkgdesc = Small channel scan tool for vdr
-	pkgver = 20170107
+	pkgver = 20210218
 	pkgrel = 1
 	url = https://www.gen2vdr.de/wirbel/w_scan/index2.html
 	arch = x86_64
@@ -10,11 +10,8 @@ pkgbase = w_scan
 	arch = armv7h
 	license = GPL2
 	depends = gcc-libs
-	depends = glibc
-	source = https://www.gen2vdr.de/wirbel/w_scan/w_scan-20170107.tar.bz2
-	source = w_scan-gcc10-fix.patch
-	md5sums = c7f9adf92d46b8da5391be80be6fbd72
-	md5sums = 1446179a56ec5ed53f714424f12cc552
+	source = https://www.gen2vdr.de/wirbel/w_scan_cpp/w_scan-20210218.tar.bz2
+	md5sums = e80cb986c1830e0ed9b8fe8f6c89809d
 
 pkgname = w_scan
 
