@@ -25,6 +25,13 @@
 # Configuration
 #
 
+# Manually map out "vdr-rpihddevice".
+# It is disallowed, according to AUR guidelines, to upload PKGBUILDs which
+# don't work on "original Arch" and as an ARM only package, vdr-rpihddevice is
+# disallowed. It was on AUR for years, but for some reason there seem to be
+# people without real hobbies that request deletion on such packages.
+GLOBIGNORE="plugins/vdr-rpihddevice"
+
 # AUR packages handled in this Git repository (full relative path).
 PKGLIST=( \
   'deps/graphlcd-base' \
