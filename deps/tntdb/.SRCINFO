@@ -1,7 +1,7 @@
 pkgbase = tntdb
 	pkgdesc = C++-class-library for easy access to databases (only sqlite support)
 	pkgver = 1.4
-	pkgrel = 1
+	pkgrel = 2
 	url = http://www.tntnet.org
 	arch = x86_64
 	arch = i686
@@ -15,4 +15,3 @@ pkgbase = tntdb
 	sha256sums = 48cefd354acf2579c80b77d789d67f8b8162f1a02a3c2fb8157a9a32dc332859
 
 pkgname = tntdb
-

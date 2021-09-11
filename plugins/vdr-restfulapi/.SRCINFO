@@ -1,7 +1,7 @@
 pkgbase = vdr-restfulapi
 	pkgdesc = Restful-API Control for VDR
 	pkgver = 0.2.6.5
-	pkgrel = 5
+	pkgrel = 6
 	epoch = 1
 	url = https://github.com/yavdr/vdr-plugin-restfulapi
 	arch = x86_64
@@ -23,4 +23,3 @@ pkgbase = vdr-restfulapi
 	md5sums = 7b482249828a58f1f6ce2cd4a577f773
 
 pkgname = vdr-restfulapi
-

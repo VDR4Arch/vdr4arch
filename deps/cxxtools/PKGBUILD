@@ -3,14 +3,22 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=cxxtools
 pkgver=3.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Collection of general-purpose C++ classes"
 url="http://www.tntnet.org"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('bash' 'gcc-libs' 'libnsl')
-source=("http://www.tntnet.org/download/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('07b18037fb0983f6292f5c8d53e2369e9e7a9711df2c9ad50838aacbc8c62f7c')
+source=("http://www.tntnet.org/download/${pkgname}-${pkgver}.tar.gz"
+        "$pkgname-char-trivial-class.patch::https://github.com/maekitalo/cxxtools/commit/b773c01fc13d2ae67abc0839888e383be23562fd.patch")
+sha256sums=('07b18037fb0983f6292f5c8d53e2369e9e7a9711df2c9ad50838aacbc8c62f7c'
+            '57f2e6c037f645a93f8979b923491ea3e996ee87ceebf790177f2b4e902d51d9')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  patch -p1 -i "$srcdir/$pkgname-char-trivial-class.patch"
+}
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
