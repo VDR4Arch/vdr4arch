@@ -1,5 +1,5 @@
 pkgbase = vdr-epg-daemon
-	pkgver = 1.1.162
+	pkgver = 1.1.165
 	pkgrel = 1
 	url = http://projects.vdr-developer.org/projects/vdr-epg-daemon
 	arch = x86_64
@@ -9,7 +9,6 @@ pkgbase = vdr-epg-daemon
 	arch = armv7h
 	license = GPL2
 	makedepends = curl
-	makedepends = git
 	makedepends = imlib2
 	makedepends = jansson
 	makedepends = libarchive
@@ -18,8 +17,8 @@ pkgbase = vdr-epg-daemon
 	makedepends = libmicrohttpd
 	makedepends = libxslt
 	makedepends = python
-	source = https://projects.vdr-developer.org/git/vdr-epg-daemon.git/snapshot/vdr-epg-daemon-1.1.162.tar.bz2
-	sha256sums = 5b71be706b170f4cdb278c639e337f3d637e5d21cbf0eb9ef3c7513534d6bf7b
+	source = https://projects.vdr-developer.org/git/vdr-epg-daemon.git/snapshot/vdr-epg-daemon-1.1.165.tar.bz2
+	sha256sums = 8f2a6b286f082b620b7b83891de0c88cef19dba67fb414a4ff77379b5d144058
 
 pkgname = epgd
 	pkgdesc = write epg data to a mysql database
@@ -31,6 +30,7 @@ pkgname = epgd
 	depends = libmicrohttpd
 	depends = libxslt
 	depends = python
+	depends = perl
 	backup = 
 
 pkgname = mariadb-epglv
@@ -38,4 +38,3 @@ pkgname = mariadb-epglv
 	install = mariadb-epglv.install
 	depends = libmariadbclient
 	backup = usr/lib/mysql/plugin/mysqlepglv.so
-
