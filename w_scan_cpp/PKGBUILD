@@ -3,7 +3,7 @@
 
 pkgname=w_scan_cpp
 pkgver=20211128
-pkgrel=1
+pkgrel=2
 
 # These are versions of dependencies used by w_scan_cpp
 _wirbelscan_version=wirbelscan-2021.11.28
@@ -14,7 +14,7 @@ pkgdesc="A dtv channel scanner based on VDR. Successor of w_scan"
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
 url="https://www.gen2vdr.de/wirbel/w_scan_cpp/index2.html"
 license=('GPL')
-depends=('glibc' 'libcap' 'freetype2' 'fontconfig' 'pugixml' 'librepfunc' 'libjpeg' 'curl')
+depends=('freetype2' 'fontconfig' 'pugixml' 'librepfunc' 'libjpeg' 'curl')
 makedepends=('git' 'pango')
 source=("https://www.gen2vdr.de/wirbel/$pkgname/$pkgname-$pkgver.tar.bz2"
         "https://www.gen2vdr.de/wirbel/wirbelscan/vdr-${_wirbelscan_version}.tgz"
@@ -27,7 +27,7 @@ sha256sums=('c3a859a42f338d9c4bbdde2883e32989cd02f72bf2c31bfb18f7b6b23fc61254'
             'SKIP')
 
 prepare() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$pkgname-$pkgver"
 
   # Copy VDR source into place
   cp -a "$srcdir/vdr" .
@@ -43,11 +43,12 @@ prepare() {
 }
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$pkgname-$pkgver"
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$pkgname-$pkgver"
   make prefix="$pkgdir/usr" install
 }
+
