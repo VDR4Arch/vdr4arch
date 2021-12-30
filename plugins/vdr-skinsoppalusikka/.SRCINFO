@@ -1,7 +1,7 @@
 pkgbase = vdr-skinsoppalusikka
 	pkgdesc = Standalone skin providing the good old "ElchiAIO" looks
 	pkgver = 2.4.0
-	pkgrel = 6
+	pkgrel = 7
 	url = https://github.com/rofafor/vdr-plugin-skinsoppalusikka
 	arch = x86_64
 	arch = i686
@@ -10,7 +10,7 @@ pkgbase = vdr-skinsoppalusikka
 	arch = armv7h
 	license = GPL2
 	depends = gcc-libs
-	depends = vdr-api=2.4.7
+	depends = vdr-api=2.6.0
 	backup = etc/vdr/conf.avail/50-skinsoppalusikka.conf
 	source = vdr-skinsoppalusikka-2.4.0.tar.gz::https://github.com/rofafor/vdr-plugin-skinsoppalusikka/archive/v2.4.0.tar.gz
 	source = 50-skinsoppalusikka.conf
@@ -18,4 +18,3 @@ pkgbase = vdr-skinsoppalusikka
 	sha256sums = 47aa997228e61df5b858f861b1e941efade54a79186ff771600772c5b50a41f1
 
 pkgname = vdr-skinsoppalusikka
-

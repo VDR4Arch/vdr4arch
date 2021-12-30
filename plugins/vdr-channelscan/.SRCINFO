@@ -1,13 +1,13 @@
 pkgbase = vdr-channelscan
 	pkgdesc = Channel scanner for VDR
 	pkgver = 1.1.4
-	pkgrel = 2
+	pkgrel = 3
 	url = https://bitbucket.org/ua0lnj/channelscan
 	arch = i686
 	arch = x86_64
 	license = GPL2
 	depends = bzip2
-	depends = vdr-api=2.4.7
+	depends = vdr-api=2.6.0
 	depends = zlib
 	backup = etc/vdr/conf.avail/50-channelscan.conf
 	source = vdr-channelscan-1.1.4.tar.bz2::https://bitbucket.org/ua0lnj/channelscan/get/1.1.4.tar.bz2
@@ -18,4 +18,3 @@ pkgbase = vdr-channelscan
 	sha256sums = 752007321f8413e5608738863962807f4d767983844af684e4b6e240fe2c7139
 
 pkgname = vdr-channelscan
-

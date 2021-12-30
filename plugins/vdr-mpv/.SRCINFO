@@ -1,13 +1,13 @@
 pkgbase = vdr-mpv
 	pkgdesc = mpv player plugin for VDR
 	pkgver = 1.1.1
-	pkgrel = 2
+	pkgrel = 3
 	url = https://github.com/ua0lnj/vdr-plugin-mpv
 	arch = x86_64
 	arch = i686
 	license = AGPL3
 	depends = mpv
-	depends = vdr-api=2.4.7
+	depends = vdr-api=2.6.0
 	backup = etc/vdr/conf.avail/50-mpv.conf
 	source = vdr-mpv-1.1.1.tar.gz::https://github.com/ua0lnj/vdr-plugin-mpv/archive/v1.1.1.tar.gz
 	source = 50-mpv.conf
@@ -15,4 +15,3 @@ pkgbase = vdr-mpv
 	sha256sums = e03891f550b215efa19cdb51e133434d99b416e91f0f6e7204ffaee70287633c
 
 pkgname = vdr-mpv
-
