@@ -34,6 +34,7 @@ GLOBIGNORE="plugins/vdr-rpihddevice"
 
 # AUR packages handled in this Git repository (full relative path).
 PKGLIST=( \
+  'deps/cxxtools' \
   'deps/graphlcd-base' \
   'deps/libdvbcsa' \
   'deps/libmcli' \
