@@ -59,7 +59,6 @@ PKGLIST=( \
   't2scan' \
   'vdr' \
   'vdr-git' \
-  'vdr-api' \
   'vdr-addon-lifeguard' \
   'vdradmin-am' \
   'vdr-checkts' \
