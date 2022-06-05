@@ -18,7 +18,7 @@ backup=("etc/vdr/conf.avail/50-$_plugname.conf"
         'var/lib/vdr/plugins/restfulapi/API.html'
         'var/lib/vdr/plugins/restfulapi/osd.css'
         'var/lib/vdr/plugins/restfulapi/osd.js')
-md5sums=('66da21ec918886135120b1d8bb8094e2'
+md5sums=('0ebe227bd662532dfe785452b5a325ba'
          '7b482249828a58f1f6ce2cd4a577f773')
 
 prepare() {
