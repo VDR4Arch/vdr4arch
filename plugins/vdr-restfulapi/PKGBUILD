@@ -3,7 +3,7 @@
 # Maintainer: Alexander Grothe <seahawk1986[at]hotmail[dot]com>
 pkgname=vdr-restfulapi
 epoch=1
-pkgver=0.2.6.5
+pkgver=0.2.6.6
 pkgrel=8
 _vdrapi=2.6.1
 pkgdesc="Restful-API Control for VDR"
