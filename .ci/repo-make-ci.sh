@@ -125,7 +125,7 @@ if [ "$REPO_MAKE_ARCH" = "x86_64" ]; then
   PACMAN_KEYRING="archlinux"
 
   # Get name and checksum of latest bootstrap image directly from archlinux.org
-  IMAGEINFO=$(wget -q https://www.archlinux.org/iso/latest/sha1sums.txt -O - | grep bootstrap | tee "$TMPDIR/archlinux-bootstrap.sha1")
+  IMAGEINFO=$(wget -q https://www.archlinux.org/iso/latest/sha1sums.txt -O - | grep "bootstrap-$REPO_MAKE_ARCH" | tee "$TMPDIR/archlinux-bootstrap.sha1")
   IMAGENAME=${IMAGEINFO##* }
   IMAGECHECKSUM=${IMAGEINFO%% *}
   if [ "$IMAGENAME" == "$IMAGECHECKSUM" ] || [ ${#IMAGECHECKSUM} -ne 40 ]; then
