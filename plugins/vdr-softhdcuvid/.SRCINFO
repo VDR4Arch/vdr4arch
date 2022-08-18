@@ -1,7 +1,7 @@
 pkgbase = vdr-softhdcuvid
 	pkgdesc = VDR output plugin with CUDA and Opengl
 	pkgver = 3.6
-	pkgrel = 2
+	pkgrel = 3
 	url = https://github.com/jojo61/vdr-plugin-softhdcuvid
 	arch = x86_64
 	license = AGPL3
@@ -18,6 +18,7 @@ pkgbase = vdr-softhdcuvid
 	makedepends = glu
 	makedepends = vulkan-headers
 	makedepends = ffnvcodec-headers
+	makedepends = freetype2
 	source = vdr-softhdcuvid-3.6.tar.gz::https://github.com/jojo61/vdr-plugin-softhdcuvid/archive/refs/tags/V3.6.tar.gz
 	source = 50-softhdcuvid.conf
 	sha512sums = f61db0fde5f9543cfb7ba2bc7bfcb0a336e50c2b019d86cf9116905f7d53054bdbb001a6b8f5768db4ed70d9ad013aea01e960f9ce4e4d9ca8bfcd23d3fdc43e
@@ -31,6 +32,7 @@ pkgname = vdr-softhdcuvid
 	depends = xcb-util-wm
 	depends = xorg-server
 	depends = nvidia>=410.48
+	depends = glu
 	depends = libavcodec.so
 	depends = libavutil.so
 	depends = libplacebo.so
@@ -45,6 +47,7 @@ pkgname = vdr-softhdvaapi
 	depends = vdr-api=2.6.1
 	depends = xcb-util-wm
 	depends = xorg-server
+	depends = glu
 	depends = libavcodec.so
 	depends = libavfilter.so
 	depends = libavutil.so
@@ -59,6 +62,8 @@ pkgname = vdr-softhddrm
 	depends = mesa
 	depends = vdr-api=2.6.1
 	depends = xcb-util-wm
+	depends = glu
+	depends = freetype2
 	depends = libavcodec.so
 	depends = libavfilter.so
 	depends = libavutil.so
