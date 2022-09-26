@@ -38,6 +38,7 @@ PKGLIST=( \
   'deps/graphlcd-base' \
   'deps/libdvbcsa' \
   'deps/libmcli' \
+  'deps/librepfunc' \
   'deps/linuxtv-dvb-apps' \
   'deps/perl-template-plugin-javascript' \
   'deps/serdisplib' \
