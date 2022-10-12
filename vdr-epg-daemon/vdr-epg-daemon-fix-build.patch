@@ -1,8 +1,9 @@
-commit 65a2655f37420c9d4b14525a6abd9f4b4d9f4469
-Author: Manuel Reimer <manuel.reimer@gmx.de>
+Author: horchi <horchi@vdr-portal.invalid>
 Date:   Wed Oct 12 16:34:43 2022 +0200
 
     Fix build
+
+    https://www.vdr-portal.de/forum/index.php?thread/135287-vdr-epg-daemon-kompiliert-unter-arch-nicht-mehr/&postID=1353029#post1353029
 
 diff --git a/lib/common.h b/lib/common.h
 index 578ab7c..194a934 100644

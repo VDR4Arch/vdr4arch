@@ -12,7 +12,7 @@ makedepends=('curl' 'imlib2' 'jansson' 'libarchive' 'libjpeg' 'libmariadbclient'
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/vdr-projects/vdr-epg-daemon/archive/refs/tags/$pkgver.tar.gz"
         "$pkgbase-fix-build.patch")
 sha256sums=('344702754760b7db3826b7c76510c685ec417ae30a7f816fdad75e71e5bf22e9'
-            'b0f7ecbc0c46d8a07e16a13c7f3325054cac1a60bc7143592d6bea67900a2192')
+            '796797248d1f6b41fe202c4ec71811a130b5c64fefab250601d6324695d9e8a6')
 
 prepare() {
   cd "$srcdir/$pkgbase-$pkgver"
