@@ -1,0 +1,18 @@
+commit 65a2655f37420c9d4b14525a6abd9f4b4d9f4469
+Author: Manuel Reimer <manuel.reimer@gmx.de>
+Date:   Wed Oct 12 16:34:43 2022 +0200
+
+    Fix build
+
+diff --git a/lib/common.h b/lib/common.h
+index 578ab7c..194a934 100644
+--- a/lib/common.h
++++ b/lib/common.h
+@@ -8,6 +8,7 @@
+ #ifndef __COMMON_H
+ #define __COMMON_H
+ 
++#include <pthread.h>
+ #include <stdint.h>      // uint_64_t
+ #include <stdio.h>
+ #include <stdlib.h>

@@ -3,14 +3,21 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgbase=vdr-epg-daemon
 pkgname=('epgd' 'mariadb-epglv')
-pkgver=1.1.165
+pkgver=1.2.3
 pkgrel=1
-url='http://projects.vdr-developer.org/projects/vdr-epg-daemon'
+url='https://github.com/vdr-projects/vdr-epg-daemon'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 makedepends=('curl' 'imlib2' 'jansson' 'libarchive' 'libjpeg' 'libmariadbclient' 'libmicrohttpd' 'libxslt' 'python')
-source=("https://projects.vdr-developer.org/git/vdr-epg-daemon.git/snapshot/$pkgbase-$pkgver.tar.bz2")
-sha256sums=('8f2a6b286f082b620b7b83891de0c88cef19dba67fb414a4ff77379b5d144058')
+source=("$pkgbase-$pkgver.tar.gz::https://github.com/vdr-projects/vdr-epg-daemon/archive/refs/tags/$pkgver.tar.gz"
+        "$pkgbase-fix-build.patch")
+sha256sums=('344702754760b7db3826b7c76510c685ec417ae30a7f816fdad75e71e5bf22e9'
+            'b0f7ecbc0c46d8a07e16a13c7f3325054cac1a60bc7143592d6bea67900a2192')
+
+prepare() {
+  cd "$srcdir/$pkgbase-$pkgver"
+  patch -p1 -i "${srcdir}/$pkgbase-fix-build.patch"
+}
 
 build() {
   cd "$srcdir/$pkgbase-$pkgver"
