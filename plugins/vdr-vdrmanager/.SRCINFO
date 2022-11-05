@@ -1,8 +1,8 @@
 pkgbase = vdr-vdrmanager
 	pkgdesc = Allows remote programming VDR using VDR-Manager running on Android devices
 	pkgver = 0.15
-	pkgrel = 7
-	url = http://projects.vdr-developer.org/projects/vdr-manager
+	pkgrel = 8
+	url = https://github.com/vdr-projects/vdr-plugin-vdrmanager
 	arch = x86_64
 	arch = i686
 	arch = arm
@@ -15,7 +15,7 @@ pkgbase = vdr-vdrmanager
 	depends = zlib
 	depends = vdr-api=2.6.1
 	backup = etc/vdr/conf.avail/50-vdrmanager.conf
-	source = git+https://projects.vdr-developer.org/git/vdr-manager.git#commit=0398f105bcc166d2695f3b8b2f91327c04acca48
+	source = git+https://github.com/vdr-projects/vdr-plugin-vdrmanager.git#commit=0398f105bcc166d2695f3b8b2f91327c04acca48
 	source = 50-vdrmanager.conf
 	md5sums = SKIP
 	md5sums = 71313516d4f88aeee23f76dc3c82dca9
