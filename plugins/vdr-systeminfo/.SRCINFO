@@ -1,8 +1,8 @@
 pkgbase = vdr-systeminfo
 	pkgdesc = displays system informations like CPU type and speed, disk and swap space etc.
-	pkgver = 0.1.4
-	pkgrel = 8
-	url = http://firefly.vdr-developer.org/systeminfo/index.html
+	pkgver = 0.1.5
+	pkgrel = 1
+	url = https://github.com/FireFlyVDR/vdr-plugin-systeminfo
 	arch = x86_64
 	arch = i686
 	arch = arm
@@ -15,11 +15,9 @@ pkgbase = vdr-systeminfo
 	depends = vdr-api=2.6.1
 	backup = etc/vdr/conf.avail/50-systeminfo.conf
 	backup = usr/lib/vdr/bin/systeminfo.sh
-	source = http://firefly.vdr-developer.org/systeminfo/vdr-systeminfo-0.1.4.tar.bz2
+	source = vdr-plugin-systeminfo-0.1.5.tar.gz::https://github.com/FireFlyVDR/vdr-plugin-systeminfo/archive/refs/tags/v0.1.5.tar.gz
 	source = systeminfo.sh
-	source = 50-systeminfo.conf
-	md5sums = 6bf8a7d9def1d16b0819c755f507e9cd
+	md5sums = 308e98d2ad2ccd624bebce79a430f123
 	md5sums = ea31a11d19b78f30f389793ebc34c3cb
-	md5sums = 62018cc3ec0c08c596255821d9e7163e
 
 pkgname = vdr-systeminfo
