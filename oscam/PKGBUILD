@@ -3,16 +3,16 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=oscam
 pkgver=11532
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source Conditional Access Module software"
-url="http://www.streamboard.tv/oscam"
+url='https://www.streamboard.tv/oscam'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL3')
-depends=('libusb' 'openssl' 'pcsclite')
+depends=('libusb' 'openssl-1.1' 'pcsclite')
 makedepends=('subversion')
 optdepends=('ccid: PC/SC reader generic driver')
 install='oscam.install'
-source=("oscam::svn+http://www.streamboard.tv/svn/oscam/trunk#revision=${pkgver}"
+source=("oscam::svn+https://svn.streamboard.tv/oscam/trunk#revision=${pkgver}"
         'oscam.service'
         'oscam.sysuser')
 md5sums=('SKIP'
@@ -29,6 +29,8 @@ build() {
 
   make CONF_DIR=/var/lib/oscam \
        USE_SSL=1 \
+       SSL_CFLAGS='-DWITH_SSL=1 -I/usr/include/openssl-1.1' \
+       SSL_LIB='-lssl -L/usr/lib/openssl-1.1' \
        USE_LIBUSB=1 \
        USE_PCSC=1 \
        OSCAM_BIN=oscam \
