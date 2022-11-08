@@ -1,8 +1,8 @@
 pkgbase = vdr-zaphistory
 	pkgdesc = History of the latest viewed channels
 	pkgver = 0.9.6
-	pkgrel = 16
-	url = http://projects.vdr-developer.org/projects/plg-zaphistory
+	pkgrel = 17
+	url = https://vdr-projects.e-tobi.net/projects/plg-zaphistory
 	arch = x86_64
 	arch = i686
 	arch = arm
@@ -10,12 +10,9 @@ pkgbase = vdr-zaphistory
 	arch = armv7h
 	license = GPL2
 	depends = gcc-libs
-	depends = vdr-api=2.4.1
+	depends = vdr-api=2.6.1
 	backup = etc/vdr/conf.avail/50-zaphistory.conf
-	source = http://projects.vdr-developer.org/attachments/download/1437/zaphistory-0.9.6.tar.gz
-	source = vdr-2.3.2-zaphistory.diff::https://projects.vdr-developer.org/git/vdr-plugin-zaphistory.git/patch/?id=484b48a61c841a72c12c3a347bbafd0b96826da3
-	md5sums = 70298659539f63c043694b565396e513
-	md5sums = df8658efdb7cacc066e31b6c4725c299
+	source = vdr-plugin-zaphistory-0.9.6.tar.gz::https://github.com/vdr-projects/vdr-plugin-zaphistory/archive/484b48a61c841a72c12c3a347bbafd0b96826da3.tar.gz
+	md5sums = 8a4a1178b1dde04e2dfbb91864841f20
 
 pkgname = vdr-zaphistory
-
