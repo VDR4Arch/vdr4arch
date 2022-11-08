@@ -2,7 +2,7 @@ pkgbase = vdr-weatherforecast
 	pkgdesc = provides a weather forecast based on forecast.io data
 	pkgver = 0.2.0
 	pkgrel = 8
-	url = http://projects.vdr-developer.org/projects/plg-weatherforecast
+	url = https://vdr-projects.e-tobi.net/projects/plg-weatherforecast
 	arch = x86_64
 	arch = i686
 	arch = arm
@@ -14,7 +14,7 @@ pkgbase = vdr-weatherforecast
 	depends = vdr-api=2.6.1
 	depends = vdr-skindesigner
 	backup = etc/vdr/conf.avail/50-weatherforecast.conf
-	source = http://projects.vdr-developer.org/git/vdr-plugin-weatherforecast.git/snapshot/vdr-plugin-weatherforecast-0.2.0.tar.bz2
-	md5sums = e28456a1b475fc2ba31b2ecc373634d6
+	source = vdr-plugin-weatherforecast-0.2.0.tar.gz::https://github.com/vdr-projects/vdr-plugin-weatherforecast/archive/refs/tags/0.2.0.tar.gz
+	md5sums = f731b7175321ca1d6e28e7ef49095d8d
 
 pkgname = vdr-weatherforecast

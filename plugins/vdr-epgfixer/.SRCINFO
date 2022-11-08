@@ -2,7 +2,7 @@ pkgbase = vdr-epgfixer
 	pkgdesc = VDR plugin for doing extra fixing of EPG data
 	pkgver = 0.3.1_21_g354f28b
 	pkgrel = 7
-	url = http://projects.vdr-developer.org/projects/plg-epgfixer
+	url = https://vdr-projects.e-tobi.net/projects/plg-epgfixer
 	arch = x86_64
 	arch = i686
 	arch = arm
@@ -18,7 +18,7 @@ pkgbase = vdr-epgfixer
 	backup = var/lib/vdr/plugins/epgfixer/charset.conf
 	backup = var/lib/vdr/plugins/epgfixer/epgclone.conf
 	backup = var/lib/vdr/plugins/epgfixer/regexp.conf
-	source = git+https://projects.vdr-developer.org/git/vdr-plugin-epgfixer.git#commit=354f28b0112ba27f08f6509243b410899f74b6ed
+	source = git+https://github.com/vdr-projects/vdr-plugin-epgfixer.git#commit=354f28b0112ba27f08f6509243b410899f74b6ed
 	md5sums = SKIP
 
 pkgname = vdr-epgfixer
