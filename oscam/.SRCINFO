@@ -1,7 +1,7 @@
 pkgbase = oscam
 	pkgdesc = Open Source Conditional Access Module software
-	pkgver = 11532
-	pkgrel = 2
+	pkgver = 11718
+	pkgrel = 1
 	url = https://www.streamboard.tv/oscam
 	install = oscam.install
 	arch = x86_64
@@ -15,7 +15,7 @@ pkgbase = oscam
 	depends = openssl-1.1
 	depends = pcsclite
 	optdepends = ccid: PC/SC reader generic driver
-	source = oscam::svn+https://svn.streamboard.tv/oscam/trunk#revision=11532
+	source = oscam::svn+https://svn.streamboard.tv/oscam/trunk#revision=11718
 	source = oscam.service
 	source = oscam.sysuser
 	md5sums = SKIP
