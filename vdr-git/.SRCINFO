@@ -1,5 +1,5 @@
 pkgbase = vdr-git
-	pkgver = 2.5.6.r0.g0d50ec5
+	pkgver = 2.6.3.r0.g8b14723
 	pkgrel = 1
 	url = http://tvdr.de/
 	arch = x86_64
@@ -50,7 +50,7 @@ pkgname = vdr-git
 	depends = ttf-font
 	optdepends = lirc-utils: remote control support
 	optdepends = vdr-xorg: To start X11
-	provides = vdr-api=2.4.7
+	provides = vdr-api=2.6.3
 	provides = vdr
 	conflicts = runvdr-extreme
 	conflicts = vdr
@@ -67,7 +67,7 @@ pkgname = vdr-git
 
 pkgname = vdr-examples-git
 	pkgdesc = Plugins for vdr to show some possible features
-	depends = vdr-api=2.4.7
+	depends = vdr-api=2.6.3
 	depends = gcc-libs
 	depends = ncurses
 	provides = vdr-examples
