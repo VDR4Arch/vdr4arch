@@ -2,7 +2,7 @@ pkgbase = vdr-neutrinoepg
 	pkgdesc = Neat EPG-Viewer for VDR
 	pkgver = 0.3.6.r7.gc3615ff
 	pkgrel = 6
-	url = http://projects.vdr-developer.org/projects/plg-neutrinoepg
+	url = https://vdr-projects.e-tobi.net/projects/plg-neutrinoepg
 	arch = x86_64
 	arch = i686
 	arch = arm
@@ -13,7 +13,7 @@ pkgbase = vdr-neutrinoepg
 	depends = gcc-libs
 	depends = vdr-api=2.6.1
 	backup = etc/vdr/conf.avail/50-neutrinoepg.conf
-	source = git+https://projects.vdr-developer.org/git/vdr-plugin-neutrinoepg.git#commit=c3615ffcb0f5e5c2d380052fffd4a5d53293cde3
+	source = git+https://github.com/vdr-projects/vdr-plugin-neutrinoepg.git#commit=c3615ffcb0f5e5c2d380052fffd4a5d53293cde3
 	md5sums = SKIP
 
 pkgname = vdr-neutrinoepg

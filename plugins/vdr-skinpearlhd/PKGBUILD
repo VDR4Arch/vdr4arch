@@ -7,16 +7,16 @@ _gitver=9899940a4920e77d1d6c14a3b1bb16be47f5045d
 _vdrapi=2.4.1
 pkgrel=29
 pkgdesc="conversion of the PearlHD-Skin written by mapovi to a native vdr-plugin"
-url="http://projects.vdr-developer.org/projects/show/plg-skinpearlhd"
+url='https://vdr-projects.e-tobi.net/projects/plg-skinpearlhd'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=${pkgname//vdr-/}
-source=("git://projects.vdr-developer.org/vdr-plugin-skinpearlhd.git#commit=$_gitver"
+source=("git+https://github.com/vdr-projects/vdr-plugin-${_plugname}.git#commit=${_gitver}"
         'pearlhd-use_graphicsmagick.diff'
         'skinpearlhd-search_for_logos_in_resourcedir.diff'
-        'http://projects.vdr-developer.org/attachments/download/1386/setup-page-fix.diff'
+        'https://vdr-projects.e-tobi.net/attachments/download/1386/setup-page-fix.diff'
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 md5sums=('SKIP'
@@ -27,7 +27,7 @@ md5sums=('SKIP'
 
 pkgver() {
   cd "${srcdir}/vdr-plugin-${_plugname}"
-  git describe --tags | sed 's/-/_/g;s/v//'
+  git describe --tags --abbrev=7 | sed 's/-/_/g;s/v//'
 }
 
 prepare() {

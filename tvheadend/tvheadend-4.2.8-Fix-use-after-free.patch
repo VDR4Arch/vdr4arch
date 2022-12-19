@@ -1,0 +1,41 @@
+From 351b5b4158e4201b3567371f80775aca182cbb0e Mon Sep 17 00:00:00 2001
+From: dave-p <gh@pickles.me.uk>
+Date: Fri, 1 Jul 2022 14:56:09 +0100
+Subject: [PATCH] Fix use-after-free
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Building Tvheadend on Raspberry Pi with gcc 12 fails with this error
+
+src/misc/json.c: In function ‘json_parse_string’:
+src/misc/json.c:120:31: error: pointer ‘r’ used after ‘free’ [-Werror=use-after-free]
+  120 |                   *failp = (a - r) + start;
+      |                            ~~~^~~~
+src/misc/json.c:118:19: note: call to ‘free’ here
+  118 |                   free(r);
+      |                   ^~~~~~~
+
+This PR appears correct and fixes the gcc error but has not been tested as it is an error path.
+---
+ src/misc/json.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/misc/json.c b/src/misc/json.c
+index a1ee74486b1a..27be484129b9 100644
+--- a/src/misc/json.c
++++ b/src/misc/json.c
+@@ -115,9 +115,9 @@ json_parse_string(const char *s, const char **endp,
+ 		  v |= a[i] - 'F' + 10;
+ 		  break;
+ 		default:
+-		  free(r);
+ 		  *failmsg = "Incorrect escape sequence";
+ 		  *failp = (a - r) + start;
++		  free(r);
+ 		  return NULL;
+ 		}
+ 	      }
+-- 
+2.38.1
+
