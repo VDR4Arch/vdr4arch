@@ -7,7 +7,7 @@ _gitver=c3615ffcb0f5e5c2d380052fffd4a5d53293cde3
 _vdrapi=2.6.1
 pkgrel=6
 pkgdesc="Neat EPG-Viewer for VDR"
-url='https://vdr-projects.e-tobi.net/projects/plg-neutrinoepg'
+url='https://github.com/vdr-projects/vdr-plugin-neutrinoepg'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=$_vdrapi")

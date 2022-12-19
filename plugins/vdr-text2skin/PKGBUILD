@@ -7,7 +7,7 @@ _gitver=8f7954da2488ced734c30e7c2704b92a44e6e1ad
 _vdrapi=2.6.1
 pkgrel=7
 pkgdesc="VDR Text2Skin Plugin"
-url='https://vdr-projects.e-tobi.net/projects/plg-text2skin'
+url='https://github.com/vdr-projects/vdr-plugin-text2skin'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('graphicsmagick' "vdr-api=${_vdrapi}")

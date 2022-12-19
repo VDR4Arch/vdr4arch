@@ -7,7 +7,7 @@ _gitver=354f28b0112ba27f08f6509243b410899f74b6ed
 _vdrapi=2.6.1
 pkgrel=7
 pkgdesc="VDR plugin for doing extra fixing of EPG data"
-url='https://vdr-projects.e-tobi.net/projects/plg-epgfixer'
+url='https://github.com/vdr-projects/vdr-plugin-epgfixer'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' 'pcre' "vdr-api=${_vdrapi}")

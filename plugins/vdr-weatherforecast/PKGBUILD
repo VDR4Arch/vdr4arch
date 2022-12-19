@@ -6,7 +6,7 @@ pkgver=0.2.0
 _vdrapi=2.6.1
 pkgrel=8
 pkgdesc="provides a weather forecast based on forecast.io data"
-url='https://vdr-projects.e-tobi.net/projects/plg-weatherforecast'
+url='https://github.com/vdr-projects/vdr-plugin-weatherforecast'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('curl' 'jansson' "vdr-api=$_vdrapi" 'vdr-skindesigner')

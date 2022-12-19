@@ -7,7 +7,7 @@ _gitver=8035264d471f75407222a48f2fa707795e25d461
 _vdrapi=2.6.1
 pkgrel=8
 pkgdesc="Mediaplayer plugin for VDR and X11"
-url='https://vdr-projects.e-tobi.net/projects/plg-play'
+url='https://github.com/vdr-projects/vdr-plugin-play'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('AGPL3')
 depends=('mplayer' "vdr-api=${_vdrapi}" 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-wm')

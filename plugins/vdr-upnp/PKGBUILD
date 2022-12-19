@@ -7,7 +7,7 @@ _gitver=11a035aa4ec2b55faaef1eaa48b7726a28422048
 _vdrapi=2.4.1
 pkgrel=3
 pkgdesc="extends the VDR with the possibility to act as an UPnP/DLNA Media Server (DMS)"
-url='https://vdr-projects.e-tobi.net/projects/plg-upnp'
+url='https://github.com/vdr-projects/vdr-plugin-upnp'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('libupnp' 'tntdb' 'tntnet' "vdr-api=${_vdrapi}")

@@ -6,7 +6,7 @@ pkgver=1.1.0
 _vdrapi=2.6.1
 pkgrel=7
 pkgdesc="Display an background image while the vdr is switched to radio channels"
-url='https://vdr-projects.e-tobi.net/projects/vdr-plugin-radio'
+url='https://github.com/vdr-projects/vdr-plugin-radio'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")

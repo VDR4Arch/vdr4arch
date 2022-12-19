@@ -2,11 +2,11 @@ pkgbase = text2skin-narrowhd
 	pkgdesc = Full HD skin inital based on the famous PearlHD skin
 	pkgver = 0.2
 	pkgrel = 1
-	url = https://vdr-projects.e-tobi.net/projects/skin-narrowhd
+	url = https://github.com/vdr-projects/text2skin-narrowhd
 	arch = any
 	license = GPL2
 	depends = vdr-text2skin
-	source = NarrowHD_v0.2.zip::https://www.vdr-portal.de/index.php?attachment/35935
-	sha256sums = badbf64aecdde7883dce25ae8641de0707bdad89516fbaa6d251aef4fa35dd42
+	source = text2skin-narrowhd-0.2.tar.gz::https://github.com/vdr-projects/text2skin-narrowhd/archive/refs/tags/0.2.tar.gz
+	sha256sums = 51797545585d35215cac367510978989c197969f17a56422b9bea2ec6c44a090
 
 pkgname = text2skin-narrowhd

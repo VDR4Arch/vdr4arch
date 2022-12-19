@@ -7,7 +7,7 @@ _gitver=68739fd72beb9745b3e47b9e466311ef23a8ca97
 _vdrapi=2.6.1
 pkgrel=7
 pkgdesc="Shows duplicate recordings"
-url='https://vdr-projects.e-tobi.net/projects/plg-duplicates'
+url='https://github.com/vdr-projects/vdr-plugin-duplicates'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' "vdr-api=${_vdrapi}")

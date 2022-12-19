@@ -1,7 +1,7 @@
 pkgbase = vdr-zaphistory
 	pkgdesc = History of the latest viewed channels
-	pkgver = 0.9.6
-	pkgrel = 17
+	pkgver = 0.9.7
+	pkgrel = 1
 	url = https://vdr-projects.e-tobi.net/projects/plg-zaphistory
 	arch = x86_64
 	arch = i686
@@ -12,7 +12,7 @@ pkgbase = vdr-zaphistory
 	depends = gcc-libs
 	depends = vdr-api=2.6.1
 	backup = etc/vdr/conf.avail/50-zaphistory.conf
-	source = vdr-plugin-zaphistory-0.9.6.tar.gz::https://github.com/vdr-projects/vdr-plugin-zaphistory/archive/484b48a61c841a72c12c3a347bbafd0b96826da3.tar.gz
-	md5sums = 8a4a1178b1dde04e2dfbb91864841f20
+	source = vdr-zaphistory-0.9.7.tar.gz::https://github.com/vdr-projects/vdr-plugin-zaphistory/archive/refs/tags/0.9.7.tar.gz
+	sha256sums = 1cb1e2e7213e228a9bb8bb8a10f015a055fdccb47d67bc619897379d4126820e
 
 pkgname = vdr-zaphistory
