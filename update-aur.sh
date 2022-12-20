@@ -142,19 +142,12 @@ for pkgbuilddir in "${PKGLIST[@]}"; do
 
   echo "Syncing $pkgbuilddir" >&2
 
-  # Generate source tarball of our PKGBUILD
-  pushd "$pkgbuilddir" >/dev/null || exit 1
-    rm -f ./*.src.tar
-    SRCEXT='.src.tar' makepkg --skipinteg --source >/dev/null
-    commitid=$(git log --format="%H" -n 1 .)
-  popd >/dev/null
-
   # Place the new files into the AUR cache
   pushd "$aurgit" >/dev/null || exit 1
     git rm ./* .SRCINFO >/dev/null 2>&1
   popd >/dev/null
-  bsdtar -xf "$pkgbuilddir/"*.src.tar --strip 1 -C "$aurgit"
-  rm -f "$pkgbuilddir/"*.src.tar
+  git archive "HEAD:$pkgbuilddir" | bsdtar -x -C "$aurgit"
+  commitid=$(git log --format="%H" -n 1 $pkgbuilddir)
   pushd "$aurgit" >/dev/null || exit 1
     git add ./* .SRCINFO >/dev/null 2>&1
     if ! git diff --cached --exit-code --quiet; then
