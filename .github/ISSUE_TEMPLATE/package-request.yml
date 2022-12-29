@@ -23,14 +23,14 @@ body:
     attributes:
       label: Additional information
     validations:
-      required: true
+      required: false
   - type: checkboxes
     id: checklist
     attributes:
       label: Issue checklist
       description: Please double-check that you have done each of the following things before submitting the issue.
       options:
-        - label: I searched for previous reports in [the issue tracker](https://github.com/arduino/arduino-ide/issues?q=)
+        - label: I searched for previous reports in [the issue tracker](https://github.com/VDR4Arch/vdr4arch/issues)
           required: true
-        - label: I accept being available for testing the prepared PKGBUILD.
+        - label: I accept being responsible for testing the prepared PKGBUILD.
           required: true
