@@ -4,7 +4,8 @@ labels:
   - enhancement
 body:
   - type: markdown
-    value: IMPORTANT: No testing can be provided for new packages and untested packages will not be added! If at all possible it is recommended that you prepare the **tested** PKGBUILD by yourself and provide it with an pull request. This can be directly merged after a short syntax check and a compile test. If you don't want to do this, then proceed with this form, but you have to apply as tester for the prepared PKGBUILD at the end of this report!
+    attributes:
+      value: IMPORTANT: No testing can be provided for new packages and untested packages will not be added! If at all possible it is recommended that you prepare the **tested** PKGBUILD by yourself and provide it with an pull request. This can be directly merged after a short syntax check and a compile test. If you don't want to do this, then proceed with this form, but you have to apply as tester for the prepared PKGBUILD at the end of this report!
   - type: input
     id: name
     attributes:
