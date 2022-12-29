@@ -1,0 +1,35 @@
+name: Bug report
+description: Request a new PKGBUILD to be managed by vdr4arch.
+labels:
+  - enhancement
+body:
+  - type: markdown
+    value: IMPORTANT: No testing can be provided for new packages and untested packages will not be added! If at all possible it is recommended that you prepare the **tested** PKGBUILD by yourself and provide it with an pull request. This can be directly merged after a short syntax check and a compile test. If you don't want to do this, then proceed with this form, but you have to apply as tester for the prepared PKGBUILD at the end of this report!
+  - type: input
+    id: name
+    attributes:
+      label: Name of the software, you want to be added to vdr4arch.
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL of the project page.
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Issue checklist
+      description: Please double-check that you have done each of the following things before submitting the issue.
+      options:
+        - label: I searched for previous reports in [the issue tracker](https://github.com/arduino/arduino-ide/issues?q=)
+          required: true
+        - label: I accept being available for testing the prepared PKGBUILD.
+          required: true
