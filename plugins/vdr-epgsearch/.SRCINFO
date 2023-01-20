@@ -1,7 +1,7 @@
 pkgbase = vdr-epgsearch
 	pkgdesc = Searchtimer and replacement of the VDR program menu
 	pkgver = 2.4.2
-	pkgrel = 4
+	pkgrel = 1
 	epoch = 1
 	url = https://github.com/vdr-projects/vdr-plugin-epgsearch
 	arch = x86_64
