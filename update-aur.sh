@@ -37,7 +37,7 @@ PKGLIST=( \
   'deps/cxxtools' \
   'deps/graphlcd-base' \
   'deps/libdvbcsa' \
-  'deps/libmcli' \
+  'deps/libnetceiver' \
   'deps/librepfunc' \
   'deps/perl-template-plugin-javascript' \
   'deps/serdisplib' \
