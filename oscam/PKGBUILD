@@ -2,22 +2,28 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=oscam
-pkgver=11718
+pkgver=11769
+_gitver=a1cd3e668f20e917e56e9e3aff5d3d994fd7d8ab
 pkgrel=1
 pkgdesc="Open Source Conditional Access Module software"
-url='https://www.streamboard.tv/oscam'
+url='https://wiki.streamboard.tv/wiki/OSCam'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
-license=('GPL3')
-depends=('libusb' 'openssl-1.1' 'pcsclite')
-makedepends=('subversion')
+license=('GPL-3.0-or-later')
+depends=('libusb' 'openssl' 'pcsclite')
+makedepends=('git')
 optdepends=('ccid: PC/SC reader generic driver')
 install='oscam.install'
-source=("oscam::svn+https://svn.streamboard.tv/oscam/trunk#revision=${pkgver}"
+source=("git+https://git.streamboard.tv/common/oscam.git#commit=${_gitver}"
         'oscam.service'
         'oscam.sysuser')
-md5sums=('SKIP'
-         '596b902e3f4a66d39e7f993437feec74'
-         'be0d9d7a5fdd8cf4918c4ea91cebd989')
+sha256sums=('cccf3024f5a085cba3ba4953501a20947faad532b54c92b9694aa5a66871a953'
+            'ad08ee6fc95909b8b9f10c804a8158901383548c27720cf863a868114f45887f'
+            '3adbbfa4f388c6510b365719da251360dee9cc2885c5f82e06d56c246fcd26b0')
+
+pkgver() {
+  cd "$srcdir/$pkgname"
+  ./config.sh --oscam-revision
+}
 
 build() {
   cd "$srcdir/$pkgname"
@@ -29,13 +35,10 @@ build() {
 
   make CONF_DIR=/var/lib/oscam \
        USE_SSL=1 \
-       SSL_CFLAGS='-DWITH_SSL=1 -I/usr/include/openssl-1.1' \
-       SSL_LIB='-lssl -L/usr/lib/openssl-1.1' \
        USE_LIBUSB=1 \
        USE_PCSC=1 \
        OSCAM_BIN=oscam \
-       LIST_SMARGO_BIN=list_smargo \
-       SVN_REV=$pkgver
+       LIST_SMARGO_BIN=list_smargo
 }
 
 package() {
