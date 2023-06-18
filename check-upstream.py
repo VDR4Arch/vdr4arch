@@ -34,8 +34,10 @@ PACKAGES = [
     ["plugins/vdr-burn", "github"],
     ["plugins/vdr-chanman", "github"],
     ["plugins/vdr-channellists", "github"],
+    ["plugins/vdr-channelscan", "bitbucket"],
     ["plugins/vdr-cinebars", "github"],
     ["plugins/vdr-dbus2vdr", "github"],
+    ["plugins/vdr-devstatus", "gitlab"],
     ["plugins/vdr-ddci2", "github"],
     ["plugins/vdr-dfatmo", "github"],
     #["plugins/vdr-duplicates", "github"],
@@ -45,6 +47,7 @@ PACKAGES = [
     ["plugins/vdr-epgborder", "github"],
     ["plugins/vdr-epgsearch", "github"],
     ["plugins/vdr-epgsync", "github"],
+    ["plugins/vdr-extrecmenung", "gitlab"],
     ["plugins/vdr-favorites", "github"],
     ["plugins/vdr-femon", "github"],
     ["plugins/vdr-filebrowser", "github"],
@@ -67,6 +70,7 @@ PACKAGES = [
     ["plugins/vdr-rpihddevice", "github"],
     ["plugins/vdr-rssreader", "github"],
     ["plugins/vdr-scraper2vdr", "github"],
+    ["plugins/vdr-skindesigner", "gitlab"],
     ["plugins/vdr-skinenigmang", "github"],
     ["plugins/vdr-skinflat", "github"],
     ["plugins/vdr-skinpearlhd", "github"],
@@ -77,6 +81,8 @@ PACKAGES = [
     ["plugins/vdr-streamdev", "github"],
     ["plugins/vdr-systeminfo", "github"],
     ["plugins/vdr-targavfd", "github"],
+    ["plugins/vdr-tvguide", "gitlab"],
+    ["plugins/vdr-tvguideng", "gitlab"],
     ["plugins/vdr-tvscraper", "github"],
     ["plugins/vdr-vdrmanager", "github"],
     ["plugins/vdr-vdrtva", "github"],
@@ -115,6 +121,23 @@ def get_github_version(source):
     latest = versions[0].replace("v", "").replace("V", "")
     return latest
 
+# Get latest version of a GitLab project without using their API
+def get_gitlab_version(source):
+    projecturl = "/".join(source.split("/", 5)[:-1])
+    tagsurl = f"{projecturl}/-/tags?format=atom"
+    text = requests.get(tagsurl).text
+    versions = re.findall(r'<title>([^<]+)', text)
+    latest = versions[1].replace("v", "").replace("V", "")
+    return latest
+
+# Get latest version of a BitBucket project without using their API
+def get_bitbucket_version(source):
+    projecturl = "/".join(source.split("/", 5)[:-1])
+    tagsurl = f"{projecturl}/downloads/?tab=tags"
+    text = requests.get(tagsurl).text
+    versions = re.findall(r'<td class="name">([^<]+)', text)
+    latest = versions[0].replace("v", "").replace("V", "")
+    return latest
 
 def main():
     for package in PACKAGES:
@@ -126,6 +149,10 @@ def main():
 
         if host == "github":
             version = get_github_version(source)
+        elif host == "gitlab":
+            version = get_gitlab_version(source)
+        elif host == "bitbucket":
+            version = get_bitbucket_version(source)
         # TODO: Add more hosting platforms
         else:
             raise Exception()
