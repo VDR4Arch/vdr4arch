@@ -55,6 +55,7 @@ PACKAGES = [
     ["plugins/vdr-graphlcd", "github"],
     ["plugins/vdr-imonlcd", "github"],
     ["plugins/vdr-iptv", "github"],
+    ["plugins/vdr-lcdproc", "github"],
     ["plugins/vdr-live", "github"],
     ["plugins/vdr-markad", "github"],
     ["plugins/vdr-mcli", "github"],
