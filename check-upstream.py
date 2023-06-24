@@ -51,6 +51,7 @@ PACKAGES = [
     ["plugins/vdr-favorites", "github"],
     ["plugins/vdr-femon", "github"],
     ["plugins/vdr-filebrowser", "github"],
+    ["plugins/vdr-fritzbox", "github"],
     ["plugins/vdr-gamepad", "github"],
     ["plugins/vdr-graphlcd", "github"],
     ["plugins/vdr-imonlcd", "github"],
