@@ -161,7 +161,7 @@ def main():
 
         status = "OK"
         if version != srcinfo["pkgver"]:
-            status = f"Local: {srcinfo['pkgver']} Upstram: {version}"
+            status = f"Local: {srcinfo['pkgver']} Upstream: {version}"
         print(srcinfo["pkgbase"], status)
 
 
