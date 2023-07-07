@@ -75,6 +75,7 @@ PACKAGES = [
     ["plugins/vdr-skindesigner", "gitlab"],
     ["plugins/vdr-skinenigmang", "github"],
     ["plugins/vdr-skinflat", "github"],
+    ["plugins/vdr-skinflatplus", "github"],
     ["plugins/vdr-skinpearlhd", "github"],
     ["plugins/vdr-skinsoppalusikka", "github"],
     ["plugins/vdr-sleeptimer", "github"],
