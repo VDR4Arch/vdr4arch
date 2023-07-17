@@ -34,7 +34,7 @@ PACKAGES = [
     ["plugins/vdr-burn", "github"],
     ["plugins/vdr-chanman", "github"],
     ["plugins/vdr-channellists", "github"],
-    ["plugins/vdr-channelscan", "bitbucket"],
+    ["plugins/vdr-channelscan", "github"],
     ["plugins/vdr-cinebars", "github"],
     ["plugins/vdr-dbus2vdr", "github"],
     ["plugins/vdr-ddci2", "github"],
