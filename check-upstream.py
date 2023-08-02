@@ -22,6 +22,7 @@ import re
 # Packages to check
 PACKAGES = [
     ["minisatip", "github"],
+    ["vdradmin-am", "github"],
     ["vdr-epg-daemon", "github"],
     ["w_scan_cpp", "github"],
     ["deps/cxxtools", "github"],
