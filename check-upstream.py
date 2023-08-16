@@ -21,7 +21,9 @@ import re
 
 # Packages to check
 PACKAGES = [
+    ["irctl", "github"],
     ["minisatip", "github"],
+    ["t2scan", "github"],
     ["vdradmin-am", "github"],
     ["vdr-epg-daemon", "github"],
     ["w_scan_cpp", "github"],
@@ -41,11 +43,12 @@ PACKAGES = [
     ["plugins/vdr-ddci2", "github"],
     ["plugins/vdr-devstatus", "gitlab"],
     ["plugins/vdr-dfatmo", "github"],
-    #["plugins/vdr-duplicates", "github"],
+    ["plugins/vdr-duplicates", "github"],
     ["plugins/vdr-dvbapi", "github"],
     ["plugins/vdr-eepg", "github"],
     ["plugins/vdr-epg2vdr", "github"],
     ["plugins/vdr-epgborder", "github"],
+#    ["plugins/vdr-epgfixer", "github"],
     ["plugins/vdr-epgsearch", "github"],
     ["plugins/vdr-epgsync", "github"],
     ["plugins/vdr-extrecmenung", "gitlab"],
