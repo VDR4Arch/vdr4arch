@@ -83,6 +83,8 @@ PACKAGES = [
     ["plugins/vdr-softhdcuvid", "github"],
     ["plugins/vdr-softhddevice", "github"],
     ["plugins/vdr-streamdev", "github"],
+    ["plugins/vdr-svdrposd", "github"],
+    ["plugins/vdr-svdrpservice", "github"],
     ["plugins/vdr-systeminfo", "github"],
     ["plugins/vdr-targavfd", "github"],
     ["plugins/vdr-tvguide", "gitlab"],
