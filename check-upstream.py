@@ -98,6 +98,7 @@ PACKAGES = [
     ["plugins/vdr-vnsiserver", "github"],
     ["plugins/vdr-weatherforecast", "github"],
     ["plugins/vdr-wirbelscan", "github"],
+    ["plugins/vdr-xmltv2vdr", "github"],
     ["plugins/vdr-zaphistory", "github"],
     ["plugins/vdr-zappilot", "github"]
 ]
