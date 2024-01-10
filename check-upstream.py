@@ -27,6 +27,7 @@ PACKAGES = [
     ["vdradmin-am", "github"],
     ["vdr-epg-daemon", "github"],
     ["w_scan_cpp", "github"],
+    ["w_scan2", "github"],
     ["deps/cxxtools", "github"],
     ["deps/graphlcd-base", "github"],
     ["deps/libnetceiver", "github"],
