@@ -30,7 +30,8 @@ echo "$PACKAGES" | while read PKG; do
       -e "E: Dependency .* detected .*/plugins/libxineliboutput-" \
       -e "xineliboutput-frontends" \
       -e "kodi-addon-graphlcd E: ELF file .* outside of a valid path" \
-      -e "dkms W: File (usr/src.* exists in a non-standard directory")
+      -e "dkms W: File (usr/src.* exists in a non-standard directory" \
+      -e "E: .* is not a valid SPDX license identifier.")
     echo "$REPORT" >&2
     if grep -q 'E:' <<<"$REPORT"; then
       echo "namcap error in $PKG!" >&2
@@ -83,7 +84,7 @@ echo "$PACKAGES" | while read PKG; do
   #
   # "Cache stuff" shouldn't be packaged
   #
-  if grep -q '^var/cache/' <<<"$FILELIST"; then
+  if grep -v '/$' <<<"$FILELIST" | grep -q '^var/cache/'; then
     echo "Cache files shouldn't be part of $PKG!" >&2
     exit 1
   fi
