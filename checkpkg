@@ -15,7 +15,7 @@ else
   PACKAGES=$(find -name "*.pkg.tar.xz" -not -name "*-debug-*")
 fi
 
-for PKG in ${PACKAGES}; do
+echo "$PACKAGES" | while read PKG; do
   #
   # Namcap checks (optional). Some messages are filtered out for vdr4arch.
   # Only namcap *Errors* make the script return with error status.
@@ -43,15 +43,20 @@ for PKG in ${PACKAGES}; do
   #
   # Prepare some variables for faster access in the following checks
   #
-  FILELIST=$(bsdtar --numeric-owner -tvf "$PKG" | tr -s ' ' ' ');
+  FILELIST=$(bsdtar -tf "$PKG");
   if [[ $? != 0 ]]; then exit 1; fi
   INSTALL=$(bsdtar -xOf "$PKG" .INSTALL 2>/dev/null)
 
   #
   # If we package "var/lib/vdr" then we *have to* chown it to vdr:vdr!
   #
-  IFS=$'\n'
-  for i in ${FILELIST}; do
+  bsdtar --numeric-owner -tvf "$PKG" | tr -s ' ' ' ' \
+    | grep -e 'var/lib/vdr' \
+           -e 'srv/vdr' \
+           -e 'var/cache/vdr' \
+    | grep -ve '666 666' \
+    | while read i; do
+
     NAME=$(echo ${i} | cut -d' ' -f9)
     UIDGID=$(echo ${i} | cut -d' ' -f3-4)
     if grep -q \
@@ -107,10 +112,11 @@ for PKG in ${PACKAGES}; do
   # Backup array needed
   #
   PKGINFO=$(bsdtar -xOf "$PKG" .PKGINFO 2>/dev/null)
-  BACKUPFILES=$(grep -e '^etc' -e '^var/lib/vdr' <<<"$FILELIST" | grep -v '/$' | grep -v '.theme$' \
-    | grep -v '.png$')
-  # | grep '.conf$'
-  for FILE in ${BACKUPFILES}; do
+  echo $FILELIST | grep -e '^etc' -e '^var/lib/vdr' \
+    | grep -v '/$' | grep -v '.theme$' \
+    | grep -v '.png$' \
+    | while read FILE; do
+
     if ! grep -q ${FILE} <<<${PKGINFO}; then
       echo "Backup entry needed for file $FILE";
       exit 1
