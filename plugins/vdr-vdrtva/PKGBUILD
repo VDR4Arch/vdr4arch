@@ -3,8 +3,8 @@
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=vdr-vdrtva
 pkgver=0.3.7
-_vdrapi=2.6.7
-pkgrel=7
+_vdrapi=5
+pkgrel=8
 pkgdesc="Automatic 'series record' function. Written for UK Freeview"
 url='https://github.com/vdr-projects/vdr-plugin-vdrtva'
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
@@ -13,10 +13,17 @@ depends=('gcc-libs' "vdr-api=${_vdrapi}")
 makedepends=('git')
 _plugname=${pkgname//vdr-/}
 source=("vdr-plugin-${_plugname}-${pkgver}.tar.gz::https://github.com/vdr-projects/vdr-plugin-${_plugname}/archive/refs/tags/v${pkgver}.tar.gz"
+        "${pkgname}-vdr-2.7.1-compat.patch"
         "50-$_plugname.conf")
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 sha256sums=('a9bed819c424256ad587e3c9d0f580b7cffdcdd9c0c020f2bfc92c09f002cb84'
+            '7ebbb4a8ca755691f91dd04fdaa6ee29848a2c8adde91c6dfb793cdbcedc08dc'
             'c9d53920822753461d997a7190992c867af4f523d7c64ec2f528f7fce783840f')
+
+prepare() {
+  cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"
+  patch -p1 -i "${srcdir}/${pkgname}-vdr-2.7.1-compat.patch"
+}
 
 build() {
   cd "${srcdir}/vdr-plugin-${_plugname}-${pkgver}"

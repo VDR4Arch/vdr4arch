@@ -1,0 +1,56 @@
+--- a/vdrtva-2.3.c
++++ b/vdrtva-2.3.c
+@@ -587,7 +587,7 @@ void cPluginvdrTva::AddNewEventsToSeries()
+ 	  const cChannel *channel = Channels->GetByNumber(eventCRID->Cid());
+ 	  const cSchedule *schedule = Schedules->GetSchedule(channel);
+ 	  if (schedule && (!Item->channelName() || !strcmp(channel->Name(), Item->channelName()))) {
+-	    const cEvent *event = schedule->GetEvent(eventCRID->Eid());
++	    const cEvent *event = schedule->GetEventById(eventCRID->Eid());
+ 	    if (CreateTimerFromEvent(event, Item->Path())) {
+ 	      Links.AddSeriesLink(scrid, event->StartTime(), icrid, NULL, NULL, NULL);
+ 	    }
+@@ -614,7 +614,7 @@ void cPluginvdrTva::CheckChangedEvents()
+       if (!ti->HasFlags(tfVps)) {
+ 	start_time += Setup.MarginStart * 60;
+       }
+-      const cEvent *event = schedule->GetEvent(0, start_time);
++      const cEvent *event = schedule->GetEventByTime(start_time);
+       const char *file = strrchr(ti->File(), '~');
+       if (!file) file = ti->File();
+       else file++;
+@@ -682,7 +682,7 @@ void cPluginvdrTva::FindAlternatives(const cEvent *event)
+ 	const cChannel *channel2 = Channels->GetByNumber(eventcrid2->Cid());
+ 	const cSchedule *schedule = Schedules->GetSchedule(channel2);
+ 	if (schedule) {
+-	  const cEvent *event2 = schedule->GetEvent(eventcrid2->Eid(), 0);
++	  const cEvent *event2 = schedule->GetEventById(eventcrid2->Eid());
+ 	  if (event2) {
+ 	    if (!found) {
+ 	      REPORT("Alternatives for '%s':", event->Title());
+@@ -807,7 +807,7 @@ void cPluginvdrTva::FindSuggestions(const cEvent *event)
+ 	      const cChannel *channel2 = Channels->GetByNumber(ecrid2->Cid());
+ 	      const cSchedule *schedule = Schedules->GetSchedule(channel2);
+ 	      if (schedule) {
+-		const cEvent *event2 = schedule->GetEvent(ecrid2->Eid(), 0);
++		const cEvent *event2 = schedule->GetEventById(ecrid2->Eid());
+ 		if (!found) {
+ 		  REPORT("  Suggestions for this event:");
+ 		  found = true;
+@@ -1030,7 +1030,7 @@ void cTvaFilter::Process(u_short Pid, u_char Tid, const u_char *Data, int Length
+         StateKey.Remove();
+         return;
+       }
+-      if (!sectionSyncer.Sync(sdt.getVersionNumber(), sdt.getSectionNumber(), sdt.getLastSectionNumber())) {
++      if (!sectionSyncer.Check(sdt.getVersionNumber(), sdt.getSectionNumber())) {
+         StateKey.Remove();
+         return;
+       }
+@@ -1245,7 +1245,7 @@ void cEventCRIDs::Expire(void)
+     const cChannel *channel = Channels->GetByNumber(crid->Cid());
+     const cSchedule *schedule = Schedules->GetSchedule(channel);
+     if (schedule) {
+-      const cEvent *event = schedule->GetEvent(crid->Eid(), 0);
++      const cEvent *event = schedule->GetEventById(crid->Eid());
+       if (!event) {
+ 	Del(crid);
+ 	maxNumber--;
