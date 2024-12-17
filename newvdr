@@ -18,7 +18,7 @@ my $PLUGINSPATH = 'plugins';
   my $vdrversion;
   open(my $fh, '<', $VDRPKGBUILD) or die("Failed to read VDR PKGBUILD\n");
   while (my $line = <$fh>) {
-    ($vdrversion) = $line =~ /^_vdrapi=(\d+\.\d+\.\d+)/ and last;
+    ($vdrversion) = $line =~ /^_vdrapi=(\d+)/ and last;
   }
   close($fh);
   die ("Can't read vdr-api from '$VDRPKGBUILD'\n") unless ($vdrversion);
