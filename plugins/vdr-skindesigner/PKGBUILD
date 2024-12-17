@@ -16,22 +16,14 @@ conflicts=(skindesigner-{blackhole,holo,metrixhd,nopacity,shady,shady_kiss,skine
 replaces=(skindesigner-{blackhole,holo,metrixhd,nopacity,shady,shady_kiss,skinelchi,tryouts})
 _plugname=${pkgname//vdr-/}
 source=("$pkgname-$pkgver.tar.bz2::https://gitlab.com/kamel5/skindesigner/-/archive/$pkgver/skindesigner-$pkgver.tar.bz2"
-        "$pkgname-libxml2_12.patch"
         '99-skindesigner.conf'
         "50-$_plugname.conf")
 install="$pkgname.install"
 backup=("etc/vdr/conf.avail/50-$_plugname.conf")
 options=('!emptydirs')
 sha256sums=('0a46d822eb2af46769e8f54b072f733b32cb5b6be80a675c8a676603077929a2'
-            '8231317dad94a02349aaff78f7659d81264d357049047490a2fc3dba885e5f8b'
             '25c1359cb6c61c3e7ebd6738fce6c21fa21f62ea4f274a522c30015210c3f4e5'
             'dcd2381d49d79bbfbf9cd2a7bdd5ec24c1fc2c00b4e8e58b68c9afc874f6650e')
-
-prepare() {
-  cd "${srcdir}/$_plugname-$pkgver"
-#  sed -i 's/libskindesigner/..\/libskindesigner/' extensions/pluginmanager.h
-  patch -p1 -i "$srcdir/$pkgname-libxml2_12.patch"
-}
 
 build() {
   cd "${srcdir}/$_plugname-$pkgver"
