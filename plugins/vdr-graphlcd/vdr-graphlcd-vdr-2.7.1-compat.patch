@@ -1,0 +1,17 @@
+Index: vdr-plugin-graphlcd-1.0.7/service.c
+===================================================================
+--- vdr-plugin-graphlcd-1.0.7.orig/service.c	2024-01-26 17:20:54.000000000 +0100
++++ vdr-plugin-graphlcd-1.0.7/service.c	2024-09-10 07:01:23.934538477 +0200
+@@ -583,7 +583,12 @@
+         spanActive = false;
+         p = cPluginManager::CallFirstService("Span-ClientCheck-v1.0", NULL);
+         if (p) {
++#if APIVERSNUM > 20402
++            cMutexLock ControlMutexLock;
++            cControl* c = cControl::Control(ControlMutexLock); // workaround a bug somewhere in music or span-plugin
++#else
+             cControl* c = cControl::Control(); // workaround a bug somewhere in music or span-plugin
++#endif
+             if (c != NULL && cPluginManager::CallFirstService("Span-GetBarHeights-v1.0", &checkSpanData)) {
+                 spanActive = true;
+                 bool chg = false;
