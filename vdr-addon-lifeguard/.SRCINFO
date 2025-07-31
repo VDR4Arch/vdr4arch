@@ -2,7 +2,7 @@ pkgbase = vdr-addon-lifeguard
 	pkgdesc = check whether vdr should shutdown the machine
 	pkgver = 0.0.4
 	pkgrel = 3
-	url = http://e-tobi.net/vdr-experimental/pool-squeeze/source/addons
+	url = https://packages.e-tobi.net/vdr-experimental/pool-squeeze/source/addons
 	arch = any
 	license = GPL2
 	depends = bash
@@ -15,4 +15,3 @@ pkgbase = vdr-addon-lifeguard
 	md5sums = de99fdd8d1662150408200dcf095519f
 
 pkgname = vdr-addon-lifeguard
-
