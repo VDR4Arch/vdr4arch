@@ -9,7 +9,7 @@ pkgrel=1
 url="http://tvdr.de/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL-2.0-or-later')
-makedepends=('fontconfig' 'libcap' 'libjpeg-turbo' 'libsystemd' 'perl' 'ttf-font' 'systemd' 'ncurses' 'patch')
+makedepends=('fontconfig' 'libcap' 'libjpeg-turbo' 'libsystemd' 'perl' 'ttf-font' 'systemd' 'ncurses')
 source=("$pkgname-$pkgver.tar.bz2::http://git.tvdr.de/?p=vdr.git;a=snapshot;h=refs/tags/$pkgver;sf=tbz2"
         'Make.config'
         'vdr-MainMenuHooks.patch'

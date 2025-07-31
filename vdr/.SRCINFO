@@ -16,7 +16,6 @@ pkgbase = vdr
 	makedepends = ttf-font
 	makedepends = systemd
 	makedepends = ncurses
-	makedepends = patch
 	source = vdr-2.7.7.tar.bz2::http://git.tvdr.de/?p=vdr.git;a=snapshot;h=refs/tags/2.7.7;sf=tbz2
 	source = Make.config
 	source = vdr-MainMenuHooks.patch
