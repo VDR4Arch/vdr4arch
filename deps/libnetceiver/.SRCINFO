@@ -1,7 +1,7 @@
 pkgbase = libnetceiver
 	pkgdesc = Library and tools to access the REEL NetCeiver
-	pkgver = 0.0.7
-	pkgrel = 2
+	pkgver = 0.0.8
+	pkgrel = 1
 	url = https://github.com/vdr-projects/libnetceiver
 	arch = x86_64
 	arch = arm
@@ -10,8 +10,8 @@ pkgbase = libnetceiver
 	arch = aarch64
 	license = LGPL2.1
 	makedepends = libxml2
-	source = libnetceiver-0.0.7.tar.gz::https://github.com/vdr-projects/libnetceiver/archive/refs/tags/0.0.7.tar.gz
-	sha256sums = b420a98b9f7c10c90d8506a8e6f59de506eaa6dfab2fbb7e499b91e291a64f83
+	source = libnetceiver-0.0.8.tar.gz::https://github.com/vdr-projects/libnetceiver/archive/refs/tags/0.0.8.tar.gz
+	sha256sums = fdf9c6498206d5e013f782ea478b100fc732dc5064154bad5d1c505684ff9aac
 
 pkgname = libnetceiver
 	pkgdesc = NetCeiver client protocol library
