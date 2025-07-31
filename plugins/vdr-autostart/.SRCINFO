@@ -12,7 +12,7 @@ pkgbase = vdr-autostart
 	depends = libcdio
 	depends = libdbus
 	depends = libdvdread
-	depends = vdr-api=8
+	depends = vdr-api=9
 	backup = etc/vdr/conf.avail/50-autostart.conf
 	backup = var/lib/vdr/plugins/autostart/autostart.conf
 	source = https://www.uli-eckhardt.de/vdr/download/vdr-autostart-0.9.7.tgz

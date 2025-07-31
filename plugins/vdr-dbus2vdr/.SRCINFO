@@ -14,7 +14,7 @@ pkgbase = vdr-dbus2vdr
 	depends = gcc-libs
 	depends = glib2
 	depends = libpng
-	depends = vdr-api=8
+	depends = vdr-api=9
 	backup = etc/dbus-1/system.d/de.tvdr.vdr.conf
 	backup = etc/vdr/conf.avail/50-dbus2vdr.conf
 	backup = var/lib/vdr/plugins/dbus2vdr/network.conf

@@ -19,7 +19,7 @@ pkgbase = vdr-burn
 	depends = mjpegtools
 	depends = lxdvdrip
 	depends = projectx
-	depends = vdr-api=2.6.1
+	depends = vdr-api=9
 	backup = etc/vdr/conf.avail/50-burn.conf
 	source = vdr-plugin-burn-0.3.0.tar.gz::https://github.com/FireFlyVDR/vdr-plugin-burn/archive/refs/tags/v0.3.0.tar.gz
 	md5sums = 431565fa7a9438368e8cc7d0772932a9

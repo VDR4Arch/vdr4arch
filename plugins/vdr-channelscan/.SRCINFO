@@ -8,7 +8,7 @@ pkgbase = vdr-channelscan
 	license = GPL2
 	makedepends = libnetceiver
 	depends = bzip2
-	depends = vdr-api=8
+	depends = vdr-api=9
 	depends = zlib
 	backup = etc/vdr/conf.avail/50-channelscan.conf
 	backup = var/lib/vdr/plugins/channelscan/0019.ini

@@ -13,7 +13,7 @@ pkgbase = vdr-softhddevice
 	depends = freeglut
 	depends = glew
 	depends = mesa
-	depends = vdr-api=8
+	depends = vdr-api=9
 	depends = xcb-util-wm
 	depends = xorg-server
 	depends = libva

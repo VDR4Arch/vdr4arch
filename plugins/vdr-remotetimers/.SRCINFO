@@ -10,11 +10,10 @@ pkgbase = vdr-remotetimers
 	arch = armv7h
 	license = GPL2
 	depends = gcc-libs
-	depends = vdr-api=2.4.1
+	depends = vdr-api=9
 	depends = vdr-svdrpservice
 	backup = etc/vdr/conf.avail/50-remotetimers.conf
 	source = http://vdr.schmirler.de/remotetimers/vdr-remotetimers-1.0.2.tgz
 	md5sums = b3e7e8895d5e94362e8375882702cb83
 
 pkgname = vdr-remotetimers
-

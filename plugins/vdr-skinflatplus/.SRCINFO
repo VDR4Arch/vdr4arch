@@ -11,7 +11,7 @@ pkgbase = vdr-skinflatplus
 	license = GPL-2.0-or-later
 	depends = fontconfig
 	depends = graphicsmagick
-	depends = vdr-api=8
+	depends = vdr-api=9
 	backup = etc/epgd/eventsview-flatplus.sql
 	backup = etc/vdr/conf.avail/50-skinflatplus.conf
 	backup = var/lib/vdr/plugins/skinflatplus/configs/MV_default

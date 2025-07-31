@@ -10,7 +10,7 @@ pkgbase = vdr-skinpearlhd
 	arch = armv7h
 	license = GPL2
 	depends = graphicsmagick
-	depends = vdr-api=2.4.1
+	depends = vdr-api=9
 	backup = etc/vdr/conf.avail/50-skinpearlhd.conf
 	source = vdr-skinpearlhd-0.0.2.tar.gz::https://github.com/vdr-projects/vdr-plugin-skinpearlhd/archive/refs/tags/0.0.2.tar.gz
 	source = pearlhd-use_graphicsmagick.diff

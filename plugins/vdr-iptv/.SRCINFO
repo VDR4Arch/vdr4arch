@@ -10,7 +10,7 @@ pkgbase = vdr-iptv
 	arch = armv7h
 	license = GPL2
 	depends = curl
-	depends = vdr-api=8
+	depends = vdr-api=9
 	optdepends = vlc: Needed for vlc2iptv
 	backup = etc/vdr/conf.avail/50-iptv.conf
 	backup = etc/vdr/plugins/iptv/vlcinput/3Sat.conf

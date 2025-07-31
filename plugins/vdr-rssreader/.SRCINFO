@@ -11,7 +11,7 @@ pkgbase = vdr-rssreader
 	license = GPL2
 	depends = curl
 	depends = expat
-	depends = vdr-api=8
+	depends = vdr-api=9
 	backup = var/lib/vdr/plugins/rssreader/rssreader.conf
 	backup = etc/vdr/conf.avail/50-rssreader.conf
 	source = vdr-rssreader-2.4.0.tar.gz::https://github.com/rofafor/vdr-plugin-rssreader/archive/v2.4.0.tar.gz

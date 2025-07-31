@@ -10,7 +10,7 @@ pkgbase = vdr-trayopenng
 	arch = armv7h
 	license = GPL2
 	depends = gcc-libs
-	depends = vdr-api=8
+	depends = vdr-api=9
 	backup = etc/vdr/conf.avail/50-trayopenng.conf
 	source = https://www.uli-eckhardt.de/vdr/download/vdr-trayopenng-1.0.2.tgz
 	source = 50-trayopenng.conf

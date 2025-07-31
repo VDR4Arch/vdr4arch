@@ -10,7 +10,7 @@ pkgbase = vdr-peer
 	arch = armv7h
 	license = GPL2
 	depends = gcc-libs
-	depends = vdr-api=2.4.1
+	depends = vdr-api=9
 	optdepends = remoteosd: Add/edit/remove timers on local and peer VDR or move timers between them
 	optdepends = remotetimers: Access menu of peer
 	backup = etc/vdr/conf.avail/50-peer.conf
@@ -18,4 +18,3 @@ pkgbase = vdr-peer
 	md5sums = 6a50045f82d3a5784cb26d7e6cf4fb39
 
 pkgname = vdr-peer
-

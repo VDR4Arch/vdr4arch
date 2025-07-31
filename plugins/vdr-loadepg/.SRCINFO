@@ -10,7 +10,7 @@ pkgbase = vdr-loadepg
 	arch = armv7h
 	license = GPL2
 	depends = gcc-libs
-	depends = vdr-api=2.4.1
+	depends = vdr-api=9
 	backup = var/lib/vdr/plugins/loadepg/loadepg.conf
 	backup = var/lib/vdr/plugins/loadepg/loadepg.equiv
 	backup = var/lib/vdr/plugins/loadepg/sky_it.dict
@@ -24,4 +24,3 @@ pkgbase = vdr-loadepg
 	md5sums = 957b12f37a9136153e934c318b2772ab
 
 pkgname = vdr-loadepg
-

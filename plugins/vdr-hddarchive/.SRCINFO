@@ -14,11 +14,11 @@ pkgbase = vdr-hddarchive
 	makedepends = git
 	depends = bash
 	depends = gcc-libs
-	depends = vdr-api=2.4.1
+	depends = vdr-api=9
 	backup = etc/vdr/conf.avail/50-hddarchive.conf
 	source = git+https://github.com/vdr-projects/vdr-plugin-hddarchive.git#commit=d014d52dcb3790bd1ba38fe7b6fb0c4136364148
 	source = hddarchive-default_settings.diff
-	md5sums = SKIP
+	md5sums = bdf7a9632630d6d811f55ea468c0e640
 	md5sums = 9982fc924c8300567052b239b4535228
 
 pkgname = vdr-hddarchive
