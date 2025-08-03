@@ -1,7 +1,7 @@
 pkgbase = vdr-softhdcuvid
 	pkgdesc = VDR output plugin with CUDA and Opengl
 	pkgver = 3.31
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/jojo61/vdr-plugin-softhdcuvid
 	arch = x86_64
 	arch = aarch64

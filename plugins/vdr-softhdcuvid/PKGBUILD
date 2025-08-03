@@ -1,6 +1,4 @@
 # This PKGBUILD is part of the VDR4Arch project [https://github.com/vdr4arch]
-
-# Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgbase=vdr-softhdcuvid
 pkgname=(vdr-softhddrm)
 pkgver=3.31
