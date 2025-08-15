@@ -1,7 +1,7 @@
 # -*- mode: shell-script -*-
 pkgbase=libnetceiver
 pkgname=($pkgbase $pkgbase-tools)
-pkgver=0.0.8
+pkgver=0.0.9
 pkgrel=1
 pkgdesc='Library and tools to access the REEL NetCeiver'
 url='https://github.com/vdr-projects/libnetceiver'
@@ -9,7 +9,7 @@ arch=('x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 license=('LGPL2.1')
 makedepends=('libxml2')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/vdr-projects/libnetceiver/archive/refs/tags/$pkgver.tar.gz")
-sha256sums=('fdf9c6498206d5e013f782ea478b100fc732dc5064154bad5d1c505684ff9aac')
+sha256sums=('0da7fd22943d0a2fc7c6d5f825715f49f3a201e27acd7635e234a30f98e3eb43')
 
 build() {
   cd "${srcdir}/$pkgbase-$pkgver"
@@ -25,7 +25,7 @@ package_libnetceiver() {
   conflicts=('libmcli')
 
   cd "${srcdir}/$pkgbase-$pkgver/lib"
-  make PREFIX="/usr" DESTDIR="${pkgdir}" install
+  make PREFIX="/usr" DESTDIR="${pkgdir}" install-lib
 }
 
 package_libnetceiver-tools() {
