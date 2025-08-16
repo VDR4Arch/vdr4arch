@@ -22,10 +22,8 @@ pkgbase = vdradmin-am
 	optdepends = perl-io-socket-inet6: Required for IPv6 support
 	optdepends = perl-http-daemon-ssl: Required for SSL support (https)
 	source = vdradmin-am-3.6.14.tar.gz::https://github.com/vdr-projects/vdradmin-am/archive/refs/tags/v3.6.14.tar.gz
-	source = fix-install.sh.diff
 	source = vdradmin-am.service
 	sha256sums = 6595e5e35e989ac641e8acf6dd75d5f37476577359f7bdeae1d2caa758347967
-	sha256sums = 06d731235c03d94b5b6bb872e7be92bad587642e26eec38dd78daf0256602141
 	sha256sums = 2a33bbdac1ba7c80139d17e5d7cca7ccbf2a2945aeaf0777d0dd6fbe594bfe54
 
 pkgname = vdradmin-am
