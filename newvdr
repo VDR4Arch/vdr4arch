@@ -1,74 +1,66 @@
-#!/usr/bin/perl
-# newvdr - Helper script to spread the VDR version number to plugin PKGBUILD's
-# Copyright (C) 2019 Manuel Reimer <manuel.reimer@gmx.de>
+#!/usr/bin/python3
+# newvdr - Helper script to spread the VDR version number to plugin PKGBUILDs
+# Copyright (C) 2025 Manuel Reimer <manuel.reimer@gmx.de>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 
-use strict;
-use warnings;
+import re
+import subprocess
 
-my $VDRPKGBUILD = 'vdr/PKGBUILD';
-my $PLUGINSPATH = 'plugins';
+VDRPKGBUILD = 'vdr/PKGBUILD';
+PLUGINSPATH = 'plugins';
 
-{
-  # Read VDR's API version
-  my $vdrversion;
-  open(my $fh, '<', $VDRPKGBUILD) or die("Failed to read VDR PKGBUILD\n");
-  while (my $line = <$fh>) {
-    ($vdrversion) = $line =~ /^_vdrapi=(\d+)/ and last;
-  }
-  close($fh);
-  die ("Can't read vdr-api from '$VDRPKGBUILD'\n") unless ($vdrversion);
+# Read VDR's API version
+with open(VDRPKGBUILD, encoding="utf-8") as fh:
+    for line in fh:
+        if match := re.match(r"_vdrapi=(\d+)", line):
+            vdrversion = match.group(1)
+            break
+    else:
+        raise Exception(f"Can't read vdr-api from '{VDRPKGBUILD}'")
+vdrversion = "TEST"
 
-  # Loop over the plugins
-  open($fh, '<', 'repo-make.conf') or die($!);
-  my @plugindirs = grep(/^\Q$PLUGINSPATH\E\//, <$fh>);
-  close($fh);
-  chomp(@plugindirs);
-  my $counter = 0;
-  foreach my $plugindir (@plugindirs) {
-    next unless (-d $plugindir);
+# Loop over the plugins
+with open("repo-make.conf", encoding="utf-8") as fh:
+    plugindirs = [x.strip() for x in fh if x.startswith(f"{PLUGINSPATH}/")]
+counter = 0;
+for plugindir in plugindirs:
 
     # Read full plugin PKGBUILD content
-    open($fh, '<', "$plugindir/PKGBUILD")
-      or die("Can't read PKGBUILD in $plugindir\n");
-    my $pkgbuildcontent = join('', <$fh>);
-    close($fh);
+    with open(f"{plugindir}/PKGBUILD", encoding="utf-8") as fh:
+        pkgbuildcontent = fh.read()
 
     # Parse out variables
-    my ($vdrapi) = $pkgbuildcontent =~ /^_vdrapi=(.+)/m
-      or die("Can't read _vdrapi for $plugindir\n");
-    my ($pkgrel) = $pkgbuildcontent =~ /^pkgrel=(\d+)/m
-      or die("Can't read pkgrel for $plugindir\n");
+    vdrapi = re.search(r"^_vdrapi=(.+)",
+                       pkgbuildcontent, flags=re.MULTILINE).group(1)
+    pkgrel = int(re.search(r"^pkgrel=(\d+)",
+                           pkgbuildcontent, flags=re.MULTILINE).group(1))
 
     # Anything to do for us?
-     next if ($vdrapi eq $vdrversion);
+    if vdrapi == vdrversion:
+        continue
 
     # Count up pkgrel
-    $pkgrel++;
+    pkgrel += 1
 
     # Edit PKGBUILD content
-    $pkgbuildcontent =~ s/^_vdrapi=.+$/_vdrapi=$vdrversion/m;
-    $pkgbuildcontent =~ s/^pkgrel=.+$/pkgrel=$pkgrel/m;
+    pkgbuildcontent = re.sub(r"^_vdrapi=.+$", rf"_vdrapi={vdrversion}",
+                             pkgbuildcontent, flags=re.MULTILINE)
+    pkgbuildcontent = re.sub(r"^pkgrel=.+$", rf"pkgrel={pkgrel}",
+                             pkgbuildcontent, flags=re.MULTILINE)
 
     # Write out changes
-    open($fh, '>', "$plugindir/PKGBUILD")
-      or die("Can't write PKGBUILD in $plugindir\n");
-    print $fh $pkgbuildcontent;
-    close($fh);
+    with open(f"{plugindir}/PKGBUILD", "w", encoding="utf-8") as fh:
+        fh.write(pkgbuildcontent)
 
     # Count up
-    $counter++;
-  }
+    counter += 1;
 
-  if ($counter > 1) {
-    print "Successfully edited $counter PKGBUILD's\n";
-    print "Don't forget to review the automatic changes via 'git diff'!\n";
-  }
-  else {
-    print "Nothing to do!\n";
-  }
-}
+if counter > 1:
+    print(f"Successfully edited {counter} PKGBUILDs")
+    print("Don't forget to review the automatic changes via 'git diff'!")
+else:
+    print("Nothing to do!")
