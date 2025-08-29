@@ -16,7 +16,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import requests
+import urllib.request
 import re
 
 # Packages to check
@@ -127,7 +127,7 @@ def parse_srcinfo(path):
 def get_github_version(source):
     projecturl = "/".join(source.split("/", 5)[:-1])
     tagsurl = f"{projecturl}/tags"
-    text = requests.get(tagsurl).text
+    text = urllib.request.urlopen(tagsurl).read().decode("utf-8")
     versions = re.findall(r'<a href=".+?/tag/([^"]+)', text)
     latest = versions[0].replace("v", "").replace("V", "")
     return latest
@@ -136,7 +136,7 @@ def get_github_version(source):
 def get_gitlab_version(source):
     projecturl = "/".join(source.split("/", 5)[:-1])
     tagsurl = f"{projecturl}/-/tags?format=atom"
-    text = requests.get(tagsurl).text
+    text = urllib.request.urlopen(tagsurl).read().decode("utf-8")
     versions = re.findall(r'<title>([^<]+)', text)
     latest = versions[1].replace("v", "").replace("V", "")
     return latest
@@ -145,7 +145,7 @@ def get_gitlab_version(source):
 def get_bitbucket_version(source):
     projecturl = "/".join(source.split("/", 5)[:-1])
     tagsurl = f"{projecturl}/downloads/?tab=tags"
-    text = requests.get(tagsurl).text
+    text = urllib.request.urlopen(tagsurl).read().decode("utf-8")
     versions = re.findall(r'<td class="name">([^<]+)', text)
     latest = versions[0].replace("v", "").replace("V", "")
     return latest
