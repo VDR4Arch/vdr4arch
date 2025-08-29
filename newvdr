@@ -27,7 +27,7 @@ vdrversion = "TEST"
 with open("repo-make.conf", encoding="utf-8") as fh:
     plugindirs = [x.strip() for x in fh if x.startswith(f"{PLUGINSPATH}/")]
 counter = 0;
-for plugindir in plugindirs:
+for idx, plugindir in enumerate(plugindirs):
 
     # Read full plugin PKGBUILD content
     with open(f"{plugindir}/PKGBUILD", encoding="utf-8") as fh:
@@ -55,6 +55,13 @@ for plugindir in plugindirs:
     # Write out changes
     with open(f"{plugindir}/PKGBUILD", "w", encoding="utf-8") as fh:
         fh.write(pkgbuildcontent)
+
+    # Create .SRCINFO
+    print(f"Create {plugindir}/.SRCINFO ({idx+1}/{len(plugindirs)})")
+    srcinfocontent = subprocess.check_output(
+        ["makepkg", "-D", plugindir, "--printsrcinfo"]).decode()
+    with open(f"{plugindir}/.SRCINFO", "w", encoding="utf-8") as fh:
+        fh.write(srcinfocontent)
 
     # Count up
     counter += 1;
