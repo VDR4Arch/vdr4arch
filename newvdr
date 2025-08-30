@@ -10,8 +10,8 @@
 import re
 import subprocess
 
-VDRPKGBUILD = 'vdr/PKGBUILD';
-PLUGINSPATH = 'plugins';
+VDRPKGBUILD = 'vdr/PKGBUILD'
+PLUGINSPATH = 'plugins'
 
 # Read VDR's API version
 with open(VDRPKGBUILD, encoding="utf-8") as fh:
@@ -21,7 +21,6 @@ with open(VDRPKGBUILD, encoding="utf-8") as fh:
             break
     else:
         raise Exception(f"Can't read vdr-api from '{VDRPKGBUILD}'")
-vdrversion = "TEST"
 
 # Loop over the plugins
 with open("repo-make.conf", encoding="utf-8") as fh:
