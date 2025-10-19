@@ -93,11 +93,15 @@ mkdir -p "$AURCACHE" || exit 1
 for pkgbuilddir in "${PKGLIST[@]}"; do
 
   # Extract the pkgbase (Requires .SRCINFO to be existent and up-to-date!)
+  pkgbuildcdate=$(git log -1 --format=%ct "$pkgbuilddir/PKGBUILD")
+  srcinfocdate=$(git log -1 --format=%ct "$pkgbuilddir/.SRCINFO")
   pkgbuildmod=$(date +%s -r "$pkgbuilddir/PKGBUILD")
   srcinfomod=$(date +%s -r "$pkgbuilddir/.SRCINFO" || echo 0)
   if [ "$srcinfomod" -lt "$pkgbuildmod" ]; then
-    echo ".SRCINFO is outdated for $pkgbuilddir! Recreate first!" >&2
-    exit 1
+    if [ "$srcinfocdate" -lt "$pkgbuildcdate" ]; then
+      echo ".SRCINFO is outdated for $pkgbuilddir! Recreate first!" >&2
+      exit 1
+    fi
   fi
   pkgbase=$(sed -n 's/^pkgbase = //p' "$pkgbuilddir/.SRCINFO")
   if [ -z "$pkgbase" ]; then
