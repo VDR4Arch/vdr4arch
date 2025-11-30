@@ -19,12 +19,12 @@ sha256sums=('7a62a5f19ed2135b01a128a6d742f8e8620ce0b1c1f9fa4226dd91c8be23e44a'
             'fce92c838c53ac84cb750942d2b016d2de2032f03b837ad68f773c36373305e1')
 
 build() {
-  cd "${srcdir}/vdr-plugin-$_plugname"
+  cd "${srcdir}/vdr-plugin-${_plugname}-$pkgver"
   make GITTAG=''
 }
 
 package() {
-  cd "${srcdir}/vdr-plugin-$_plugname"
+  cd "${srcdir}/vdr-plugin-${_plugname}-$pkgver"
   make DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir/50-$_plugname.conf" "$pkgdir/etc/vdr/conf.avail/50-$_plugname.conf"
