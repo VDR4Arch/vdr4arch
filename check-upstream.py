@@ -76,6 +76,7 @@ PACKAGES = [
     ["plugins/vdr-restfulapi", "github"],
     ["plugins/vdr-rpihddevice", "github"],
     ["plugins/vdr-rssreader", "github"],
+    ["plugins/vdr-satip", "github"],
     ["plugins/vdr-scraper2vdr", "github"],
     ["plugins/vdr-skindesigner", "gitlab"],
     ["plugins/vdr-skinenigmang", "github"],
