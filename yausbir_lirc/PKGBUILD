@@ -2,29 +2,23 @@
 
 # Maintainer: Christopher Reimer <mail+vdr4arch[at]c-reimer[dot]de>
 pkgname=yausbir_lirc
-pkgver=20140415
-_gitver=4fbc03d5d8b6a28abc3f3f054739cd22cd9f753b
-pkgrel=2
+pkgver=1.0.0
+pkgrel=1
+epoch=1
 pkgdesc="Small UDP LIRC daemon for yausbir"
 url="https://github.com/M-Reimer/yausbir_lirc/"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h')
 license=('GPL2')
 depends=('gcc-libs' 'libusb-compat')
-makedepends=('git')
-source=("git+https://github.com/M-Reimer/yausbir_lirc.git#commit=$_gitver")
-md5sums=('SKIP')
-
-pkgver() {
-  cd "${srcdir}/${pkgname}"
-  git log -1 --pretty=format:%ad --date=short | sed 's/-//g'
-}
+source=("$pkgname-$pkgver.tar.gz::https://github.com/M-Reimer/yausbir_lirc/archive/refs/tags/$pkgver.tar.gz")
+sha256sums=('b249d435f05b483115a5d7d3c7e7ab97e630aa8c04c5ca699145f23a0ef8e13f')
 
 build() {
-  cd "${srcdir}/${pkgname}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
   make BINDIR=/usr/bin DESTDIR="$pkgdir" install
 }
