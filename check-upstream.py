@@ -22,6 +22,8 @@ import re
 # Packages to check
 PACKAGES = [
     ["irctl", "github"],
+    ["kodi-addon-graphlcd", "github"],
+    ["kodi-standalone-service", "github"],
     ["minisatip", "github"],
     ["t2scan", "github"],
     ["vdradmin-am", "github"],
