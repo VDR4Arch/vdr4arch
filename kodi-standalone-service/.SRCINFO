@@ -12,16 +12,19 @@ pkgbase = kodi-standalone-service
 pkgname = kodi-standalone-service
 	depends = kodi
 	depends = polkit
+	depends = udisks2
 	depends = xorg-server
 	depends = xorg-xinit
 
 pkgname = kodi-standalone-gbm-service
 	depends = kodi-gbm
 	depends = polkit
+	depends = udisks2
 	depends = libinput
 
 pkgname = kodi-standalone-wayland-service
 	depends = kodi-wayland
 	depends = polkit
+	depends = udisks2
 	depends = libinput
 	depends = cage

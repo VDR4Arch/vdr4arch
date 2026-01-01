@@ -15,7 +15,7 @@ source=("$pkgbase-v$pkgver.tar.gz::https://github.com/graysky2/$pkgbase/archive/
 sha256sums=('f52dd8455efd0a80ec720f6bf27694b9391382417db111f74fb23f7567b46d21')
 
 package_kodi-standalone-service() {
-  depends=('kodi' 'polkit' 'xorg-server' 'xorg-xinit')
+  depends=('kodi' 'polkit' 'udisks2' 'xorg-server' 'xorg-xinit')
 
   cd "$pkgbase-$pkgver"
   install -Dm644 x86/init/kodi-x11.service "$pkgdir/usr/lib/systemd/system/kodi.service"
@@ -24,7 +24,7 @@ package_kodi-standalone-service() {
 }
 
 package_kodi-standalone-gbm-service() {
-  depends=('kodi-gbm' 'polkit' 'libinput')
+  depends=('kodi-gbm' 'polkit' 'udisks2' 'libinput')
 
   cd "$pkgbase-$pkgver"
   install -Dm644 x86/init/kodi-gbm.service "$pkgdir/usr/lib/systemd/system/kodi-gbm.service"
@@ -33,7 +33,7 @@ package_kodi-standalone-gbm-service() {
 }
 
 package_kodi-standalone-wayland-service() {
-  depends=('kodi-wayland' 'polkit' 'libinput' 'cage')
+  depends=('kodi-wayland' 'polkit' 'udisks2' 'libinput' 'cage')
 
   cd "$pkgbase-$pkgver"
   install -Dm644 x86/init/kodi-wayland.service "$pkgdir/usr/lib/systemd/system/kodi-wayland.service"
