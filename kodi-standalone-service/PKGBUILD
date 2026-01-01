@@ -9,7 +9,7 @@ pkgdesc="Systemd service to run kodi in stand-alone mode without a DE"
 # You have been warned.
 arch=('x86_64')
 url="https://github.com/graysky2/kodi-standalone-service"
-license=('GPL')
+license=('MIT')
 install=readme.install
 source=("$pkgbase-v$pkgver.tar.gz::https://github.com/graysky2/$pkgbase/archive/v$pkgver.tar.gz")
 sha256sums=('f52dd8455efd0a80ec720f6bf27694b9391382417db111f74fb23f7567b46d21')

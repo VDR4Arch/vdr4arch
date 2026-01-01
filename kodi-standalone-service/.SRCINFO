@@ -5,7 +5,7 @@ pkgbase = kodi-standalone-service
 	url = https://github.com/graysky2/kodi-standalone-service
 	install = readme.install
 	arch = x86_64
-	license = GPL
+	license = MIT
 	source = kodi-standalone-service-v1.160.tar.gz::https://github.com/graysky2/kodi-standalone-service/archive/v1.160.tar.gz
 	sha256sums = f52dd8455efd0a80ec720f6bf27694b9391382417db111f74fb23f7567b46d21
 
