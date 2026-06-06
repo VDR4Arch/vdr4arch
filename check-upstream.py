@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 #   VDR4Arch upstream check script
-#   Copyright (C) 2023 Manuel Reimer <manuel.reimer@gmx.de>
+#   Copyright (C) 2026 Manuel Reimer <manuel.reimer@gmx.de>
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ PACKAGES = [
     ["t2scan", "github"],
     ["vdradmin-am", "github"],
     ["vdr-epg-daemon", "github"],
+    ["vdrpbd", "github"],
     ["w_scan_cpp", "github"],
     ["w_scan2", "github"],
     ["deps/cxxtools", "github"],
